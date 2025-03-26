@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Добавление случайных глюков к тексту
     function addRandomGlitches() {
         document.querySelectorAll('.glitch-text').forEach(element => {
-            if (Math.random() > 0.95) {
+                        if (Math.random() > 0.95) {
                 element.classList.add('active-glitch');
                 setTimeout(() => {
                     element.classList.remove('active-glitch');
@@ -155,4 +155,43 @@ document.addEventListener('DOMContentLoaded', function() {
             this.classList.add('connected');
         }, 2000);
     });
+
+    // Добавляем эффект пиксельной анимации для логотипа
+    const logo = document.querySelector('.logo img');
+    if (logo) {
+        logo.addEventListener('mouseover', () => {
+            logo.style.imageRendering = 'pixelated';
+            logo.style.transform = 'scale(1.1)';
+        });
+        logo.addEventListener('mouseout', () => {
+            logo.style.imageRendering = 'auto';
+            logo.style.transform = 'scale(1)';
+        });
+    }
+
+    // Добавляем эффект "глитча" для заголовков секций
+    const sectionHeadings = document.querySelectorAll('.section-heading');
+    sectionHeadings.forEach(heading => {
+        heading.addEventListener('mouseover', () => {
+            heading.classList.add('glitch-effect');
+        });
+        heading.addEventListener('mouseout', () => {
+            heading.classList.remove('glitch-effect');
+        });
+    });
+
+    // Анимация появления элементов при скролле
+    const animatedElements = document.querySelectorAll('.about-item, .nft-card, .roadmap-item');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    animatedElements.forEach(element => {
+        observer.observe(element);
+    });
 });
+
