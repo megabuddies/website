@@ -1,4 +1,4 @@
-// Обновленная версия three-animation.js с моделью кролика
+// Обновленная версия three-animation.js с использованием кролика вместо Buddy
 let scene, camera, renderer;
 let particleSystem, pixelRabbit;
 let mouseX = 0, mouseY = 0;
@@ -23,7 +23,7 @@ function initThree() {
                 powerPreference: "high-performance"
             });
             renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // Ограничиваем pixelRatio для оптимизации
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             renderer.domElement.classList.add('fullscreen-bg');
             document.body.appendChild(renderer.domElement);
             
@@ -69,63 +69,65 @@ function initThree() {
 }
 
 function createPixelRabbit() {
-    // Создаем геометрию кролика из примитивов
-    const rabbitGroup = new THREE.Group();
+    // Создаем группу для кролика
+    pixelRabbit = new THREE.Group();
     
-    // Тело кролика
+    // Создаем тело кролика
     const bodyGeometry = new THREE.BoxGeometry(1.5, 2, 1, 8, 8, 8);
-    const bodyMaterial = new THREE.MeshBasicMaterial({
+    const material = new THREE.MeshBasicMaterial({
         color: 0x32b288,
         wireframe: true,
         transparent: true,
         opacity: 0.8
     });
-    const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
-    rabbitGroup.add(body);
     
-    // Голова кролика
+    const body = new THREE.Mesh(bodyGeometry, material);
+    body.position.y = -0.2;
+    pixelRabbit.add(body);
+    
+    // Создаем голову кролика
     const headGeometry = new THREE.BoxGeometry(1.2, 1.2, 1.2, 8, 8, 8);
-    const head = new THREE.Mesh(headGeometry, bodyMaterial);
-    head.position.set(0, 1.4, 0);
-    rabbitGroup.add(head);
+    const head = new THREE.Mesh(headGeometry, material);
+    head.position.y = 1.2;
+    pixelRabbit.add(head);
     
-    // Уши кролика
-    const earGeometry = new THREE.BoxGeometry(0.3, 1.2, 0.2, 4, 8, 2);
+    // Создаем уши кролика
+    const earGeometry = new THREE.BoxGeometry(0.3, 1.5, 0.2, 4, 8, 2);
     
-    const leftEar = new THREE.Mesh(earGeometry, bodyMaterial);
+    const leftEar = new THREE.Mesh(earGeometry, material);
     leftEar.position.set(-0.4, 2.2, 0);
     leftEar.rotation.z = Math.PI / 12;
-    rabbitGroup.add(leftEar);
+    pixelRabbit.add(leftEar);
     
-    const rightEar = new THREE.Mesh(earGeometry, bodyMaterial);
+    const rightEar = new THREE.Mesh(earGeometry, material);
     rightEar.position.set(0.4, 2.2, 0);
     rightEar.rotation.z = -Math.PI / 12;
-    rabbitGroup.add(rightEar);
+    pixelRabbit.add(rightEar);
     
-    // Лапки кролика
-    const legGeometry = new THREE.BoxGeometry(0.4, 0.6, 0.4, 4, 4, 4);
+    // Создаем лапы кролика
+    const legGeometry = new THREE.BoxGeometry(0.4, 0.8, 0.4, 4, 6, 4);
     
-    const frontLeftLeg = new THREE.Mesh(legGeometry, bodyMaterial);
-    frontLeftLeg.position.set(-0.5, -1.2, 0.3);
-    rabbitGroup.add(frontLeftLeg);
+    const frontLeftLeg = new THREE.Mesh(legGeometry, material);
+    frontLeftLeg.position.set(-0.5, -1.4, 0.3);
+    pixelRabbit.add(frontLeftLeg);
     
-    const frontRightLeg = new THREE.Mesh(legGeometry, bodyMaterial);
-    frontRightLeg.position.set(0.5, -1.2, 0.3);
-    rabbitGroup.add(frontRightLeg);
+    const frontRightLeg = new THREE.Mesh(legGeometry, material);
+    frontRightLeg.position.set(0.5, -1.4, 0.3);
+    pixelRabbit.add(frontRightLeg);
     
-    const backLeftLeg = new THREE.Mesh(legGeometry, bodyMaterial);
-    backLeftLeg.position.set(-0.5, -1.2, -0.3);
-    rabbitGroup.add(backLeftLeg);
+    const backLeftLeg = new THREE.Mesh(legGeometry, material);
+    backLeftLeg.position.set(-0.5, -1.4, -0.3);
+    pixelRabbit.add(backLeftLeg);
     
-    const backRightLeg = new THREE.Mesh(legGeometry, bodyMaterial);
-    backRightLeg.position.set(0.5, -1.2, -0.3);
-    rabbitGroup.add(backRightLeg);
+    const backRightLeg = new THREE.Mesh(legGeometry, material);
+    backRightLeg.position.set(0.5, -1.4, -0.3);
+    pixelRabbit.add(backRightLeg);
     
-    // Хвост
+    // Создаем хвост кролика
     const tailGeometry = new THREE.SphereGeometry(0.3, 8, 8);
-    const tail = new THREE.Mesh(tailGeometry, bodyMaterial);
-    tail.position.set(0, -0.8, -0.7);
-    rabbitGroup.add(tail);
+    const tail = new THREE.Mesh(tailGeometry, material);
+    tail.position.set(0, -0.8, -0.8);
+    pixelRabbit.add(tail);
     
     // Добавляем свечение
     const glowMaterial = new THREE.MeshBasicMaterial({
@@ -134,24 +136,24 @@ function createPixelRabbit() {
         opacity: 0.3
     });
     
-    const bodyGlow = new THREE.Mesh(bodyGeometry.clone(), glowMaterial);
-    bodyGlow.scale.set(1.1, 1.1, 1.1);
-    body.add(bodyGlow);
+    // Создаем копию каждой части для свечения
+    pixelRabbit.children.forEach(part => {
+        const glowMesh = new THREE.Mesh(part.geometry.clone(), glowMaterial);
+        glowMesh.position.copy(part.position);
+        glowMesh.rotation.copy(part.rotation);
+        glowMesh.scale.set(1.1, 1.1, 1.1);
+        pixelRabbit.add(glowMesh);
+    });
     
-    const headGlow = new THREE.Mesh(headGeometry.clone(), glowMaterial);
-    headGlow.scale.set(1.1, 1.1, 1.1);
-    head.add(headGlow);
+    // Масштабируем кролика до подходящего размера
+    pixelRabbit.scale.set(0.8, 0.8, 0.8);
     
-    // Масштабируем всего кролика
-    rabbitGroup.scale.set(0.8, 0.8, 0.8);
-    
-    pixelRabbit = rabbitGroup;
     scene.add(pixelRabbit);
 }
 
 function createParticleSystem() {
-    // Создаем систему частиц с оптимизированным количеством
-    const particleCount = window.innerWidth < 768 ? 500 : 1000; // Меньше частиц на мобильных устройствах
+    // Создаем систему частиц с новыми цветами
+    const particleCount = 1000;
     const particles = new THREE.BufferGeometry();
     
     const positions = new Float32Array(particleCount * 3);
@@ -192,13 +194,11 @@ function createParticleSystem() {
     particles.setAttribute('color', new THREE.BufferAttribute(colors, 3));
     particles.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
     
-    // Оптимизированный материал
     const particleMaterial = new THREE.PointsMaterial({
         size: 0.1,
         vertexColors: true,
         transparent: true,
-        opacity: 0.8,
-        sizeAttenuation: true
+        opacity: 0.8
     });
     
     particleSystem = new THREE.Points(particles, particleMaterial);
@@ -208,7 +208,7 @@ function createParticleSystem() {
 function createGrid() {
     // Создаем сетку для фона с новым цветом
     const gridSize = 50;
-    const gridDivisions = 30; // Уменьшаем количество делений для оптимизации
+    const gridDivisions = 50;
     const gridColor = 0x32b288;
     
     const gridHelper = new THREE.GridHelper(gridSize, gridDivisions, gridColor, gridColor);
@@ -221,13 +221,10 @@ function createGrid() {
 function createFallbackAnimation() {
     // Создаем простую анимацию без WebGL с новыми цветами
     const heroSection = document.getElementById('hero-animation');
-    if (!heroSection) return;
-    
     heroSection.style.background = 'radial-gradient(circle at center, rgba(50, 178, 136, 0.2) 0%, transparent 70%)';
     
     // Добавляем несколько "звезд"
-    const starCount = window.innerWidth < 768 ? 50 : 100; // Меньше звезд на мобильных устройствах
-    for (let i = 0; i < starCount; i++) {
+    for (let i = 0; i < 100; i++) {
         const star = document.createElement('div');
         star.style.position = 'absolute';
         star.style.width = '2px';
@@ -264,33 +261,6 @@ function createFallbackAnimation() {
         }
     `;
     document.head.appendChild(style);
-    
-    // Добавляем простую 2D анимацию кролика
-    const rabbit = document.createElement('div');
-    rabbit.style.position = 'absolute';
-    rabbit.style.left = '50%';
-    rabbit.style.top = '50%';
-    rabbit.style.transform = 'translate(-50%, -50%)';
-    rabbit.style.width = '100px';
-    rabbit.style.height = '100px';
-    rabbit.style.backgroundColor = 'transparent';
-    rabbit.style.boxShadow = '0 0 20px rgba(50, 178, 136, 0.5)';
-    rabbit.style.animation = 'rabbitPulse 3s infinite alternate';
-    rabbit.innerHTML = `
-        <div style="position: absolute; width: 50px; height: 70px; border: 2px solid #32b288; left: 25px; top: 30px;"></div>
-        <div style="position: absolute; width: 40px; height: 40px; border: 2px solid #32b288; left: 30px; top: 0;"></div>
-        <div style="position: absolute; width: 10px; height: 40px; border: 2px solid #32b288; left: 20px; top: -20px; transform: rotate(-10deg);"></div>
-        <div style="position: absolute; width: 10px; height: 40px; border: 2px solid #32b288; left: 70px; top: -20px; transform: rotate(10deg);"></div>
-    `;
-    
-    heroSection.appendChild(rabbit);
-    
-    style.textContent += `
-        @keyframes rabbitPulse {
-            0% { transform: translate(-50%, -50%) scale(1); }
-            100% { transform: translate(-50%, -50%) scale(1.1); }
-        }
-    `;
 }
 
 function onDocumentMouseMove(event) {
@@ -311,51 +281,42 @@ function animate() {
     
     if (pixelRabbit) {
         // Вращаем модель кролика
-        pixelRabbit.rotation.x += 0.003; // Уменьшаем скорость вращения для плавности
-        pixelRabbit.rotation.y += 0.007;
+        pixelRabbit.rotation.x += 0.005;
+        pixelRabbit.rotation.y += 0.01;
         
         // Интерактивное движение в зависимости от положения курсора
-        pixelRabbit.rotation.x += (mouseY - pixelRabbit.rotation.x * 0.1) * 0.01;
-        pixelRabbit.rotation.y += (mouseX - pixelRabbit.rotation.y * 0.1) * 0.01;
+        pixelRabbit.rotation.x += (mouseY - pixelRabbit.rotation.x * 0.1) * 0.02;
+        pixelRabbit.rotation.y += (mouseX - pixelRabbit.rotation.y * 0.1) * 0.02;
         
         // Пульсация размера
-        const pulseFactor = Math.sin(elapsedTime * 1.5) * 0.05 + 1; // Уменьшаем частоту для плавности
+        const pulseFactor = Math.sin(elapsedTime * 2) * 0.05 + 1;
         pixelRabbit.scale.set(pulseFactor * 0.8, pulseFactor * 0.8, pulseFactor * 0.8);
         
         // Анимация ушей кролика
         if (pixelRabbit.children[2] && pixelRabbit.children[3]) {
-            pixelRabbit.children[2].rotation.z = Math.PI / 12 + Math.sin(elapsedTime * 2) * 0.1;
-            pixelRabbit.children[3].rotation.z = -Math.PI / 12 - Math.sin(elapsedTime * 2) * 0.1;
+            const leftEar = pixelRabbit.children[2];
+            const rightEar = pixelRabbit.children[3];
+            
+            leftEar.rotation.z = Math.PI / 12 + Math.sin(elapsedTime * 1.5) * 0.1;
+            rightEar.rotation.z = -Math.PI / 12 + Math.sin(elapsedTime * 1.5) * 0.1;
         }
     }
     
-    // Вращаем систему частиц с оптимизированной скоростью
+    // Вращаем систему частиц
     if (particleSystem) {
-        particleSystem.rotation.x += 0.0003;
-        particleSystem.rotation.y += 0.0005;
+        particleSystem.rotation.x += 0.0005;
+        particleSystem.rotation.y += 0.0008;
     }
     
     renderer.render(scene, camera);
 }
 
-// Оптимизированная инициализация Three.js с проверкой поддержки WebGL
+// Инициализация Three.js при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
-    // Проверяем поддержку WebGL
-    if (window.WebGLRenderingContext) {
-        try {
-            const canvas = document.createElement('canvas');
-            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-            
-            if (gl && gl instanceof WebGLRenderingContext) {
-                initThree();
-            } else {
-                createFallbackAnimation();
-            }
-        } catch (error) {
-            console.error("Ошибка при проверке WebGL:", error);
-            createFallbackAnimation();
-        }
-    } else {
+    try {
+        initThree();
+    } catch (error) {
+        console.error("Ошибка инициализации Three.js:", error);
         createFallbackAnimation();
     }
 });
