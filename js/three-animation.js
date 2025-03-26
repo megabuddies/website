@@ -1,6 +1,6 @@
-// Обновленная версия three-animation.js с использованием новых цветов
+// Обновленная версия three-animation.js с использованием пиксельного кролика
 let scene, camera, renderer;
-let particleSystem, pixelBuddy;
+let particleSystem, pixelRabbit;
 let mouseX = 0, mouseY = 0;
 let clock = new THREE.Clock();
 
@@ -35,8 +35,8 @@ function initThree() {
             directionalLight.position.set(10, 10, 10);
             scene.add(directionalLight);
             
-            // Создаем пиксельного Buddy
-            createPixelBuddy();
+            // Создаем пиксельного кролика
+            createPixelRabbit();
             
             // Создаем систему частиц в стиле MegaETH
             createParticleSystem();
@@ -68,31 +68,115 @@ function initThree() {
     loadingManager.itemEnd();
 }
 
-function createPixelBuddy() {
-    // Создаем пиксельную геометрию для Buddy
-    const geometry = new THREE.BoxGeometry(2, 2, 0.2, 8, 8, 1);
+function createPixelRabbit() {
+    // Создаем группу для всех элементов кролика
+    pixelRabbit = new THREE.Group();
     
-    // Создаем базовый материал с новыми цветами
-    const material = new THREE.MeshBasicMaterial({
-        color: 0x32b288,
+    // Основное тело кролика (белое)
+    const bodyGeometry = new THREE.BoxGeometry(1.6, 1.4, 0.2);
+    const bodyMaterial = new THREE.MeshBasicMaterial({
+        color: 0xffffff,
+        wireframe: false
+    });
+    const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+    pixelRabbit.add(body);
+    
+    // Голова кролика (белая)
+    const headGeometry = new THREE.BoxGeometry(1.8, 1.2, 0.2);
+    const headMaterial = new THREE.MeshBasicMaterial({
+        color: 0xffffff,
+        wireframe: false
+    });
+    const head = new THREE.Mesh(headGeometry, headMaterial);
+    head.position.y = 1.3;
+    pixelRabbit.add(head);
+    
+    // Уши кролика (черная обводка)
+    const earOutlineGeometry = new THREE.BoxGeometry(0.4, 0.8, 0.1);
+    const earOutlineMaterial = new THREE.MeshBasicMaterial({
+        color: 0x000000,
+        wireframe: false
+    });
+    
+    // Левое ухо (черная обводка)
+    const leftEarOutline = new THREE.Mesh(earOutlineGeometry, earOutlineMaterial);
+    leftEarOutline.position.set(-0.5, 2.1, 0);
+    pixelRabbit.add(leftEarOutline);
+    
+    // Правое ухо (черная обводка)
+    const rightEarOutline = new THREE.Mesh(earOutlineGeometry, earOutlineMaterial);
+    rightEarOutline.position.set(0.5, 2.1, 0);
+    pixelRabbit.add(rightEarOutline);
+    
+    // Внутренняя часть ушей (розовая)
+    const earInnerGeometry = new THREE.BoxGeometry(0.2, 0.6, 0.12);
+    const earInnerMaterial = new THREE.MeshBasicMaterial({
+        color: 0xf7a18c, // Розовый цвет для внутренней части ушей
+        wireframe: false
+    });
+    
+    // Левое ухо (внутренняя часть)
+    const leftEarInner = new THREE.Mesh(earInnerGeometry, earInnerMaterial);
+    leftEarInner.position.set(-0.5, 2.1, 0.02);
+    pixelRabbit.add(leftEarInner);
+    
+    // Правое ухо (внутренняя часть)
+    const rightEarInner = new THREE.Mesh(earInnerGeometry, earInnerMaterial);
+    rightEarInner.position.set(0.5, 2.1, 0.02);
+    pixelRabbit.add(rightEarInner);
+    
+    // Глаза (черные)
+    const eyeGeometry = new THREE.BoxGeometry(0.2, 0.3, 0.12);
+    const eyeMaterial = new THREE.MeshBasicMaterial({
+        color: 0x000000,
+        wireframe: false
+    });
+    
+    // Левый глаз
+    const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+    leftEye.position.set(-0.4, 1.3, 0.12);
+    pixelRabbit.add(leftEye);
+    
+    // Правый глаз
+    const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+    rightEye.position.set(0.4, 1.3, 0.12);
+    pixelRabbit.add(rightEye);
+    
+    // Нос (черный)
+    const noseGeometry = new THREE.BoxGeometry(0.3, 0.2, 0.12);
+    const noseMaterial = new THREE.MeshBasicMaterial({
+        color: 0x000000,
+        wireframe: false
+    });
+    const nose = new THREE.Mesh(noseGeometry, noseMaterial);
+    nose.position.set(0, 1.1, 0.12);
+    pixelRabbit.add(nose);
+    
+    // Черная обводка для тела и головы
+    const outlineGeometry = new THREE.BoxGeometry(2, 2.8, 0.15);
+    const outlineMaterial = new THREE.MeshBasicMaterial({
+        color: 0x000000,
         wireframe: true,
         transparent: true,
-        opacity: 0.8
+        opacity: 1
     });
+    const outline = new THREE.Mesh(outlineGeometry, outlineMaterial);
+    outline.position.y = 0.7;
+    pixelRabbit.add(outline);
     
-    pixelBuddy = new THREE.Mesh(geometry, material);
-    scene.add(pixelBuddy);
-    
-    // Добавляем свечение с новым цветом
-    const glowMaterial = new THREE.MeshBasicMaterial({
-        color: 0x32b288,
-        transparent: true,
-        opacity: 0.3
+    // Добавляем зеленую подставку (трава)
+    const grassGeometry = new THREE.BoxGeometry(2.2, 0.3, 0.2);
+    const grassMaterial = new THREE.MeshBasicMaterial({
+        color: 0x00aa00,
+        wireframe: false
     });
+    const grass = new THREE.Mesh(grassGeometry, grassMaterial);
+    grass.position.y = -1;
+    pixelRabbit.add(grass);
     
-    const glowMesh = new THREE.Mesh(geometry.clone(), glowMaterial);
-    glowMesh.scale.set(1.1, 1.1, 1.1);
-    pixelBuddy.add(glowMesh);
+    // Масштабируем и добавляем на сцену
+    pixelRabbit.scale.set(0.8, 0.8, 0.8);
+    scene.add(pixelRabbit);
 }
 
 function createParticleSystem() {
@@ -223,18 +307,20 @@ function animate() {
     
     const elapsedTime = clock.getElapsedTime();
     
-    if (pixelBuddy) {
-        // Вращаем модель Buddy
-        pixelBuddy.rotation.x += 0.005;
-        pixelBuddy.rotation.y += 0.01;
+    if (pixelRabbit) {
+        // Вращаем модель кролика
+        pixelRabbit.rotation.y += 0.01;
         
         // Интерактивное движение в зависимости от положения курсора
-        pixelBuddy.rotation.x += (mouseY - pixelBuddy.rotation.x * 0.1) * 0.02;
-        pixelBuddy.rotation.y += (mouseX - pixelBuddy.rotation.y * 0.1) * 0.02;
+        pixelRabbit.rotation.x += (mouseY - pixelRabbit.rotation.x * 0.1) * 0.02;
+        pixelRabbit.rotation.y += (mouseX - pixelRabbit.rotation.y * 0.1) * 0.02;
         
         // Пульсация размера
         const pulseFactor = Math.sin(elapsedTime * 2) * 0.05 + 1;
-        pixelBuddy.scale.set(pulseFactor, pulseFactor, pulseFactor);
+        pixelRabbit.scale.set(pulseFactor * 0.8, pulseFactor * 0.8, pulseFactor * 0.8);
+        
+        // Легкое покачивание вверх-вниз
+        pixelRabbit.position.y = Math.sin(elapsedTime * 1.5) * 0.1;
     }
     
     // Вращаем систему частиц
