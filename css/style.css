@@ -1,9 +1,15 @@
 :root {
-  --background-color: #0c0c0c;
-  --text-color: #e0e0e0;
-  --accent-color: #00ff41;
-  --secondary-color: #ff3e9a;
-  --terminal-bg: #121212;
+  --background-color: #1a1a1a;
+  --text-color: #dfd9d9;
+  --accent-color: #32b288;
+  --secondary-color: #f7519b;
+  --tertiary-color: #f6ae5c;
+  --dark-accent: #497a4b;
+  --light-accent: #70aec7;
+  --bright-accent: #ff0090;
+  --muted-accent: #4ea3a0;
+  --danger-color: #ef5435;
+  --terminal-bg: #222222;
   --glow-intensity: 0.8;
   --font-mono: 'VT323', 'Courier New', monospace;
   --font-display: 'Press Start 2P', monospace;
@@ -17,6 +23,12 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  background-image: 
+    linear-gradient(0deg, rgba(50, 178, 136, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(50, 178, 136, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: center;
+  position: relative;
 }
 
 /* Глобальные стили */
@@ -41,6 +53,9 @@ body {
   position: relative;
   opacity: 1;
   visibility: visible;
+  border: 4px solid transparent;
+  border-image: linear-gradient(to right, var(--accent-color), var(--secondary-color)) 1;
+  margin: 20px 0;
 }
 
 .section-heading {
@@ -50,6 +65,7 @@ body {
   margin-bottom: 10px;
   text-transform: uppercase;
   letter-spacing: 2px;
+  text-shadow: 0 0 10px rgba(50, 178, 136, 0.5);
 }
 
 .section-line {
@@ -57,6 +73,23 @@ body {
   height: 3px;
   background-color: var(--accent-color);
   margin-bottom: 30px;
+  position: relative;
+}
+
+.section-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+  animation: linePulse 2s infinite alternate;
+}
+
+@keyframes linePulse {
+  from { opacity: 0.5; }
+  to { opacity: 1; }
 }
 
 /* Хедер в стиле MegaETH */
@@ -68,14 +101,14 @@ body {
   z-index: 1000;
   padding: 15px 0;
   transition: all 0.3s ease;
-  background: rgba(12, 12, 12, 0.8);
+  background: rgba(26, 26, 26, 0.8);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+  border-bottom: 2px solid var(--accent-color);
 }
 
 .header-scrolled {
-  background: rgba(12, 12, 12, 0.95);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  background: rgba(26, 26, 26, 0.95);
+  box-shadow: 0 5px 15px rgba(50, 178, 136, 0.3);
 }
 
 .header-container {
@@ -96,6 +129,7 @@ body {
 .logo img {
   height: 40px;
   margin-right: 10px;
+  filter: drop-shadow(0 0 5px var(--accent-color));
 }
 
 .main-nav {
@@ -111,6 +145,23 @@ body {
 
 .nav-item {
   margin: 0 15px;
+  position: relative;
+}
+
+.nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.nav-item:hover::after {
+  transform: scaleX(1);
 }
 
 .nav-link {
@@ -153,6 +204,7 @@ body {
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
 }
 
 .wallet-btn::before {
@@ -162,13 +214,13 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(50, 178, 136, 0.4), transparent);
   transition: 0.5s;
 }
 
 .wallet-btn:hover {
-  background-color: rgba(0, 255, 65, 0.1);
-  box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+  background-color: rgba(50, 178, 136, 0.1);
+  box-shadow: 0 0 10px rgba(50, 178, 136, 0.5);
 }
 
 .wallet-btn:hover::before {
@@ -176,13 +228,22 @@ body {
 }
 
 .wallet-btn.connecting {
-  background-color: rgba(0, 255, 65, 0.2);
+  background-color: rgba(50, 178, 136, 0.2);
   animation: glitch 0.3s infinite alternate;
 }
 
 .wallet-btn.connected {
-  background-color: rgba(0, 255, 65, 0.2);
-  box-shadow: 0 0 15px rgba(0, 255, 65, 0.7);
+  background-color: rgba(50, 178, 136, 0.2);
+  box-shadow: 0 0 15px rgba(50, 178, 136, 0.7);
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
 }
 
 /* Мобильное меню */
@@ -219,7 +280,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at center, rgba(0, 255, 65, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle at center, rgba(50, 178, 136, 0.1) 0%, transparent 70%);
   z-index: 1;
 }
 
@@ -227,6 +288,10 @@ body {
   position: relative;
   z-index: 2;
   max-width: 600px;
+  border: 4px solid transparent;
+  border-image: linear-gradient(45deg, var(--accent-color), var(--secondary-color)) 1;
+  padding: 20px;
+  background-color: rgba(26, 26, 26, 0.7);
 }
 
 .glitch-container {
@@ -245,11 +310,12 @@ body {
   padding: 5px 10px;
   transform: rotate(15deg);
   animation: badgePulse 2s infinite alternate;
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
 }
 
 @keyframes badgePulse {
-  from { box-shadow: 0 0 5px rgba(255, 62, 154, 0.7); }
-  to { box-shadow: 0 0 15px rgba(255, 62, 154, 1); }
+  from { box-shadow: 0 0 5px rgba(247, 81, 155, 0.7); }
+  to { box-shadow: 0 0 15px rgba(247, 81, 155, 1); }
 }
 
 .hero-title {
@@ -259,12 +325,15 @@ body {
   color: var(--accent-color);
   text-transform: uppercase;
   line-height: 1.2;
+  text-shadow: 0 0 10px rgba(50, 178, 136, 0.5);
 }
 
 .hero-subtitle {
   font-size: 1.2rem;
   margin-bottom: 30px;
   color: var(--text-color);
+  border-left: 4px solid var(--accent-color);
+  padding-left: 10px;
 }
 
 .hero-buttons {
@@ -286,6 +355,7 @@ body {
   position: relative;
   overflow: hidden;
   text-decoration: none;
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
 }
 
 .btn-primary::before {
@@ -300,7 +370,7 @@ body {
 }
 
 .btn-primary:hover {
-  box-shadow: 0 0 15px rgba(0, 255, 65, 0.7);
+  box-shadow: 0 0 15px rgba(50, 178, 136, 0.7);
 }
 
 .btn-primary:hover::before {
@@ -321,6 +391,7 @@ body {
   position: relative;
   overflow: hidden;
   text-decoration: none;
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
 }
 
 .btn-secondary::before {
@@ -330,13 +401,13 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(50, 178, 136, 0.2), transparent);
   transition: 0.5s;
 }
 
 .btn-secondary:hover {
-  background-color: rgba(0, 255, 65, 0.1);
-  box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+  background-color: rgba(50, 178, 136, 0.1);
+  box-shadow: 0 0 10px rgba(50, 178, 136, 0.5);
 }
 
 .btn-secondary:hover::before {
@@ -354,7 +425,7 @@ body {
   transition: opacity 0.3s ease;
 }
 
-/* Секция "О проекте" в стиле MegaETH */
+/* Секция "О проекте" */
 .about-content {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -362,15 +433,17 @@ body {
 }
 
 .about-item {
-  background: rgba(12, 12, 12, 0.8);
+  background: rgba(26, 26, 26, 0.8);
   padding: 30px;
-  border-radius: 10px;
+  border-radius: 0;
   margin-bottom: 30px;
   position: relative;
   overflow: hidden;
   opacity: 1;
   transform: translateY(0);
   transition: all 0.3s ease;
+  border: 2px solid var(--accent-color);
+  clip-path: polygon(0 0, 100% 0, 100% 90%, 90% 100%, 0 100%);
 }
 
 .about-item::before {
@@ -380,14 +453,15 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, transparent, rgba(0, 255, 65, 0.1), transparent);
+  background: linear-gradient(45deg, transparent, rgba(50, 178, 136, 0.1), transparent);
   transform: translateX(-100%);
   transition: transform 0.5s ease;
 }
 
 .about-item:hover {
   transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 255, 65, 0.2);
+  box-shadow: 0 5px 15px rgba(50, 178, 136, 0.2);
+  border-color: var(--secondary-color);
 }
 
 .about-item:hover::before {
@@ -399,9 +473,21 @@ body {
   font-size: 1.5rem;
   margin-bottom: 15px;
   color: var(--accent-color);
+  position: relative;
+  display: inline-block;
 }
 
-/* Секция "Манифест" в стиле MegaETH */
+.about-item h3::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+}
+
+/* Секция "Манифест" */
 #manifesto::after {
   content: '';
   position: absolute;
@@ -415,7 +501,7 @@ body {
 
 .terminal-container {
   background: var(--terminal-bg);
-  border-radius: 10px;
+  border-radius: 0;
   padding: 30px;
   margin-top: 30px;
   opacity: 1;
@@ -426,7 +512,9 @@ body {
   z-index: 1;
   font-family: var(--font-mono);
   overflow: hidden;
-  box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+  box-shadow: 0 0 15px rgba(50, 178, 136, 0.3);
+  border: 2px solid var(--accent-color);
+  clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
 }
 
 .terminal-header {
@@ -434,7 +522,7 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
-  border-bottom: 1px solid rgba(0, 255, 65, 0.3);
+  border-bottom: 1px solid rgba(50, 178, 136, 0.3);
   padding-bottom: 10px;
 }
 
@@ -452,19 +540,20 @@ body {
 .terminal-button {
   width: 12px;
   height: 12px;
-  border-radius: 50%;
+  border-radius: 0;
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
 }
 
 .terminal-button.red {
-  background-color: #ff5f56;
+  background-color: var(--danger-color);
 }
 
 .terminal-button.yellow {
-  background-color: #ffbd2e;
+  background-color: var(--tertiary-color);
 }
 
 .terminal-button.green {
-  background-color: #27c93f;
+  background-color: var(--accent-color);
 }
 
 .terminal-content {
@@ -475,6 +564,7 @@ body {
   margin: 0;
   color: var(--text-color);
   position: relative;
+  margin-bottom: 8px;
 }
 
 .terminal-prompt {
@@ -482,7 +572,7 @@ body {
   margin-right: 10px;
 }
 
-/* Секция "Коллекция" в стиле MegaETH */
+/* Секция "Коллекция" */
 .collection-filters {
   display: flex;
   justify-content: center;
@@ -501,11 +591,12 @@ body {
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
 }
 
-.filter-btn.active, .filter-btn:hover {
-  background-color: rgba(0, 255, 65, 0.1);
-  box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+.filter-btn:hover {
+  background-color: rgba(50, 178, 136, 0.1);
+  box-shadow: 0 0 10px rgba(50, 178, 136, 0.5);
 }
 
 .nft-grid {
@@ -521,24 +612,27 @@ body {
 .nft-card {
   flex: 0 0 auto;
   width: 250px;
-  background: rgba(18, 18, 18, 0.8);
-  border: 1px solid rgba(0, 255, 65, 0.2);
-  border-radius: 8px;
+  background: rgba(26, 26, 26, 0.8);
+  border: 2px solid var(--accent-color);
+  border-radius: 0;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
+  clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
 }
 
 .nft-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 255, 65, 0.3);
+  box-shadow: 0 5px 15px rgba(50, 178, 136, 0.3);
+  border-color: var(--secondary-color);
 }
 
 .nft-image {
   width: 100%;
   height: 300px;
   object-fit: cover;
-  border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+  border-bottom: 2px solid var(--accent-color);
+  image-rendering: pixelated;
 }
 
 .nft-info {
@@ -564,7 +658,7 @@ body {
   margin: 0;
 }
 
-/* Секция "Дорожная карта" в стиле MegaETH */
+/* Секция "Дорожная карта" */
 .roadmap-container {
   position: relative;
   max-width: 800px;
@@ -589,8 +683,9 @@ body {
   width: 20px;
   height: 20px;
   background-color: var(--accent-color);
-  border-radius: 50%;
-  box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+  border-radius: 0;
+  box-shadow: 0 0 10px rgba(50, 178, 136, 0.5);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
 
 .roadmap-item {
@@ -602,7 +697,7 @@ body {
 .roadmap-icon {
   width: 60px;
   height: 60px;
-  border-radius: 50%;
+  border-radius: 0;
   background: var(--terminal-bg);
   display: flex;
   align-items: center;
@@ -610,6 +705,7 @@ body {
   margin-right: 20px;
   border: 2px solid var(--accent-color);
   z-index: 2;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
 
 .roadmap-icon i {
@@ -620,8 +716,10 @@ body {
 .roadmap-content {
   flex: 1;
   padding: 20px;
-  border-radius: 10px;
-  background: rgba(18, 18, 18, 0.7);
+  border-radius: 0;
+  background: rgba(26, 26, 26, 0.7);
+  border: 2px solid var(--accent-color);
+  clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
 }
 
 .roadmap-date {
@@ -634,26 +732,28 @@ body {
 .roadmap-status {
   display: inline-block;
   padding: 5px 10px;
-  border-radius: 5px;
+  border-radius: 0;
   font-size: 0.8rem;
   margin-top: 10px;
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
 }
 
 .roadmap-status.completed {
-  background-color: rgba(0, 255, 65, 0.2);
+  background-color: rgba(50, 178, 136, 0.2);
   color: var(--accent-color);
 }
 
 .roadmap-status.in-progress {
-  background-color: rgba(255, 193, 7, 0.2);
-  color: #ffc107;
+  background-color: rgba(246, 174, 92, 0.2);
+  color: var(--tertiary-color);
 }
 
 .roadmap-status.planned {
-  background-color: rgba(255, 62, 154, 0.2);
+  background-color: rgba(247, 81, 155, 0.2);
   color: var(--secondary-color);
 }
 
+/* Секция "Сообщество" */
 .community-content {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -661,18 +761,20 @@ body {
 }
 
 .twitter-feed, .discord-community {
-  background: rgba(12, 12, 12, 0.8);
+  background: rgba(26, 26, 26, 0.8);
   padding: 30px;
-  border-radius: 10px;
+  border-radius: 0;
   margin-bottom: 30px;
   opacity: 1;
   transform: translateX(0);
   transition: all 0.3s ease;
+  border: 2px solid var(--accent-color);
+  clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
 }
 
 .twitter-feed:hover, .discord-community:hover {
-  border-color: var(--accent-color);
-  box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 15px rgba(50, 178, 136, 0.3);
 }
 
 .community-heading {
@@ -704,6 +806,7 @@ body {
   overflow: hidden;
   text-decoration: none;
   margin-top: 15px;
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
 }
 
 .community-btn::before {
@@ -718,19 +821,21 @@ body {
 }
 
 .community-btn:hover {
-  box-shadow: 0 0 15px rgba(0, 255, 65, 0.7);
+  box-shadow: 0 0 15px rgba(50, 178, 136, 0.7);
 }
 
 .community-btn:hover::before {
   left: 100%;
 }
 
-/* Секция "Подписка" в стиле MegaETH */
+/* Секция "Подписка" */
 .newsletter {
-  background-color: rgba(18, 18, 18, 0.7);
+  background-color: rgba(26, 26, 26, 0.7);
   padding: 60px 0;
   position: relative;
   text-align: center;
+  border-top: 2px solid var(--accent-color);
+  border-bottom: 2px solid var(--accent-color);
 }
 
 .newsletter .section-heading {
@@ -760,15 +865,16 @@ body {
   flex: 1;
   padding: 12px 15px;
   background-color: rgba(0, 0, 0, 0.3);
-  border: 1px solid var(--accent-color);
+  border: 2px solid var(--accent-color);
   color: var(--text-color);
   font-family: var(--font-mono);
   font-size: 0.9rem;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
 
 .newsletter-form input:focus {
   outline: none;
-  box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+  box-shadow: 0 0 10px rgba(50, 178, 136, 0.3);
 }
 
 .newsletter-form button {
@@ -780,18 +886,19 @@ body {
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
 }
 
 .newsletter-form button:hover {
-  background-color: rgba(0, 255, 65, 0.8);
-  box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+  background-color: rgba(50, 178, 136, 0.8);
+  box-shadow: 0 0 15px rgba(50, 178, 136, 0.5);
 }
 
-/* Футер в стиле MegaETH */
+/* Футер */
 .main-footer {
   background-color: var(--background-color);
   padding: 60px 0 30px;
-  border-top: 1px solid rgba(0, 255, 65, 0.2);
+  border-top: 2px solid var(--accent-color);
 }
 
 .footer-container {
@@ -810,6 +917,7 @@ body {
 .footer-logo img {
   height: 40px;
   margin-bottom: 15px;
+  filter: drop-shadow(0 0 5px var(--accent-color));
 }
 
 .footer-description {
@@ -831,9 +939,10 @@ body {
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.3);
-  border: 1px solid var(--accent-color);
-  border-radius: 50%;
+  border: 2px solid var(--accent-color);
+  border-radius: 0;
   transition: all 0.3s ease;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
 
 .social-link:hover {
@@ -882,6 +991,16 @@ body {
   text-decoration: none;
   font-size: 0.9rem;
   transition: all 0.3s ease;
+  position: relative;
+  padding-left: 15px;
+}
+
+.footer-nav-link a::before {
+  content: '>';
+  position: absolute;
+  left: 0;
+  color: var(--accent-color);
+  font-family: var(--font-mono);
 }
 
 .footer-nav-link a:hover {
@@ -892,26 +1011,9 @@ body {
   text-align: center;
   padding-top: 30px;
   margin-top: 30px;
-  border-top: 1px solid rgba(0, 255, 65, 0.1);
+  border-top: 1px solid rgba(50, 178, 136, 0.1);
   font-size: 0.8rem;
-  color: rgba(224, 224, 224, 0.7);
-}
-
-/* Фон для всей страницы */
-body {
-  background-color: var(--background-color);
-  color: var(--text-color);
-  font-family: var(--font-mono);
-  line-height: 1.6;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  background-image: 
-    linear-gradient(0deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
-  background-size: 20px 20px;
-  background-position: center;
-  position: relative;
+  color: rgba(223, 217, 217, 0.7);
 }
 
 /* Медиа-запросы для адаптивности */
@@ -945,8 +1047,8 @@ body {
     background-color: var(--background-color);
     flex-direction: column;
     padding: 20px 0;
-    border-top: 1px solid var(--accent-color);
-    border-bottom: 1px solid var(--accent-color);
+    border-top: 2px solid var(--accent-color);
+    border-bottom: 2px solid var(--accent-color);
   }
   
   .nav-list.active {
