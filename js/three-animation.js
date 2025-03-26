@@ -299,7 +299,7 @@ function createFallbackAnimation() {
         star.style.borderRadius = '0'; // Пиксельные звезды
         
         // Добавляем анимацию мерцания
-        star.style.animation = `starBlink ${Math.random() * 3 + 2}s infinite alternate`;
+                star.style.animation = `starBlink ${Math.random() * 3 + 2}s infinite alternate`;
         
         heroSection.appendChild(star);
     }
@@ -378,8 +378,8 @@ function animate() {
             const nosePulse = Math.sin(elapsedTime * 1.5) * 0.1 + 1;
             nose.scale.set(nosePulse, nosePulse, nosePulse);
         }
-
-                // Анимация лап (ходьба)
+        
+        // Анимация лап (ходьба)
         if (pixelRabbit.children[7] && pixelRabbit.children[8] && 
             pixelRabbit.children[9] && pixelRabbit.children[10]) {
             
