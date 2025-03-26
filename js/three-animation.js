@@ -72,8 +72,8 @@ function createPixelRabbit() {
     // Создаем группу для кролика
     pixelRabbit = new THREE.Group();
     
-    // Создаем тело кролика
-    const bodyGeometry = new THREE.BoxGeometry(1.5, 2, 1, 8, 8, 8);
+    // Создаем тело кролика - более квадратное
+    const bodyGeometry = new THREE.BoxGeometry(1.5, 1.5, 1, 8, 8, 8);
     const material = new THREE.MeshBasicMaterial({
         color: 0x32b288,
         wireframe: true,
@@ -90,6 +90,23 @@ function createPixelRabbit() {
     const head = new THREE.Mesh(headGeometry, material);
     head.position.y = 1.2;
     pixelRabbit.add(head);
+    
+    // Добавляем глаза
+    const eyeGeometry = new THREE.SphereGeometry(0.15, 12, 8);
+    const eyeMaterial = new THREE.MeshBasicMaterial({
+        color: 0x44445c,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.9
+    });
+    
+    const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+    leftEye.position.set(-0.3, 1.3, 0.6);
+    pixelRabbit.add(leftEye);
+    
+    const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+    rightEye.position.set(0.3, 1.3, 0.6);
+    pixelRabbit.add(rightEye);
     
     // Создаем уши кролика
     const earGeometry = new THREE.BoxGeometry(0.3, 1.5, 0.2, 4, 8, 2);
@@ -293,12 +310,23 @@ function animate() {
         pixelRabbit.scale.set(pulseFactor * 0.8, pulseFactor * 0.8, pulseFactor * 0.8);
         
         // Анимация ушей кролика
-        if (pixelRabbit.children[2] && pixelRabbit.children[3]) {
-            const leftEar = pixelRabbit.children[2];
-            const rightEar = pixelRabbit.children[3];
+        if (pixelRabbit.children[4] && pixelRabbit.children[5]) {
+            const leftEar = pixelRabbit.children[4];
+            const rightEar = pixelRabbit.children[5];
             
             leftEar.rotation.z = Math.PI / 12 + Math.sin(elapsedTime * 1.5) * 0.1;
             rightEar.rotation.z = -Math.PI / 12 + Math.sin(elapsedTime * 1.5) * 0.1;
+        }
+        
+        // Анимация глаз
+        if (pixelRabbit.children[2] && pixelRabbit.children[3]) {
+            const leftEye = pixelRabbit.children[2];
+            const rightEye = pixelRabbit.children[3];
+            
+            // Небольшое мигание глаз
+            const blinkFactor = Math.sin(elapsedTime * 3) > 0.95 ? 0.1 : 1;
+            leftEye.scale.y = blinkFactor;
+            rightEye.scale.y = blinkFactor;
         }
     }
     
