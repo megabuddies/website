@@ -81,16 +81,16 @@ function createPixelRabbit() {
     });
     
     const body = new THREE.Mesh(bodyGeometry, material);
-    body.position.set(0.5, 0, 0); // Сдвигаем тело вправо
+    body.position.set(0, 0, 0);
     pixelRabbit.add(body);
     
     // Создаем голову кролика
     const headGeometry = new THREE.BoxGeometry(1.2, 1.2, 1.2, 8, 8, 8);
     const head = new THREE.Mesh(headGeometry, material);
-    head.position.set(-0.8, 0.8, 0); // Размещаем голову слева от тела
+    head.position.set(-1.2, 0.5, 0); // Размещаем голову слева от тела
     pixelRabbit.add(head);
     
-    // Добавляем нос
+    // Добавляем нос - теперь спереди головы
     const noseGeometry = new THREE.SphereGeometry(0.2, 8, 8);
     const noseMaterial = new THREE.MeshBasicMaterial({
         color: 0xf7519b,
@@ -99,10 +99,10 @@ function createPixelRabbit() {
         opacity: 0.9
     });
     const nose = new THREE.Mesh(noseGeometry, noseMaterial);
-    nose.position.set(-1.4, 0.8, 0.6);
+    nose.position.set(-1.8, 0.5, 0); // Спереди головы
     pixelRabbit.add(nose);
     
-    // Добавляем глаза
+    // Добавляем глаза - теперь спереди головы
     const eyeGeometry = new THREE.SphereGeometry(0.15, 12, 8);
     const eyeMaterial = new THREE.MeshBasicMaterial({
         color: 0x44445c,
@@ -112,49 +112,51 @@ function createPixelRabbit() {
     });
     
     const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
-    leftEye.position.set(-1.1, 1, 0.5);
+    leftEye.position.set(-1.7, 0.7, 0.4); // Слева спереди головы
     pixelRabbit.add(leftEye);
     
     const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
-    rightEye.position.set(-0.5, 1, 0.5);
+    rightEye.position.set(-1.7, 0.7, -0.4); // Справа спереди головы
     pixelRabbit.add(rightEye);
     
-    // Создаем уши кролика
+    // Создаем уши кролика - естественное расположение на голове
     const earGeometry = new THREE.BoxGeometry(0.3, 1.5, 0.2, 4, 8, 2);
     
     const leftEar = new THREE.Mesh(earGeometry, material);
-    leftEar.position.set(-1, 1.8, 0);
+    leftEar.position.set(-1.2, 1.5, 0.3); // На голове слева
     leftEar.rotation.z = Math.PI / 12;
     pixelRabbit.add(leftEar);
     
     const rightEar = new THREE.Mesh(earGeometry, material);
-    rightEar.position.set(-0.6, 1.8, 0);
+    rightEar.position.set(-1.2, 1.5, -0.3); // На голове справа
     rightEar.rotation.z = -Math.PI / 12;
     pixelRabbit.add(rightEar);
     
-    // Создаем лапы кролика
+    // Создаем лапы кролика - правильное расположение
     const legGeometry = new THREE.BoxGeometry(0.4, 0.8, 0.4, 4, 6, 4);
     
+    // Передние лапы
     const frontLeftLeg = new THREE.Mesh(legGeometry, material);
-    frontLeftLeg.position.set(-0.5, -1, 0.5);
+    frontLeftLeg.position.set(-0.8, -0.8, 0.5); // Передняя левая
     pixelRabbit.add(frontLeftLeg);
     
     const frontRightLeg = new THREE.Mesh(legGeometry, material);
-    frontRightLeg.position.set(0.5, -1, 0.5);
+    frontRightLeg.position.set(-0.8, -0.8, -0.5); // Передняя правая
     pixelRabbit.add(frontRightLeg);
     
+    // Задние лапы
     const backLeftLeg = new THREE.Mesh(legGeometry, material);
-    backLeftLeg.position.set(1, -1, 0.5);
+    backLeftLeg.position.set(0.8, -0.8, 0.5); // Задняя левая
     pixelRabbit.add(backLeftLeg);
     
     const backRightLeg = new THREE.Mesh(legGeometry, material);
-    backRightLeg.position.set(1.5, -1, 0.5);
+    backRightLeg.position.set(0.8, -0.8, -0.5); // Задняя правая
     pixelRabbit.add(backRightLeg);
     
-    // Создаем хвост кролика
+    // Создаем хвост кролика - сзади по центру
     const tailGeometry = new THREE.SphereGeometry(0.3, 8, 8);
     const tail = new THREE.Mesh(tailGeometry, material);
-    tail.position.set(1.8, 0, -0.5);
+    tail.position.set(1.2, 0, 0); // Сзади по центру
     pixelRabbit.add(tail);
     
     // Добавляем свечение
@@ -320,9 +322,9 @@ function animate() {
         pixelRabbit.scale.set(pulseFactor * 0.7, pulseFactor * 0.7, pulseFactor * 0.7);
         
         // Анимация ушей кролика
-        if (pixelRabbit.children[6] && pixelRabbit.children[7]) {
-            const leftEar = pixelRabbit.children[6];
-            const rightEar = pixelRabbit.children[7];
+        if (pixelRabbit.children[5] && pixelRabbit.children[6]) {
+            const leftEar = pixelRabbit.children[5];
+            const rightEar = pixelRabbit.children[6];
             
             leftEar.rotation.z = Math.PI / 12 + Math.sin(elapsedTime * 1.5) * 0.1;
             rightEar.rotation.z = -Math.PI / 12 + Math.sin(elapsedTime * 1.5) * 0.1;
