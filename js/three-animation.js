@@ -1,6 +1,6 @@
-// Обновленная версия three-animation.js с использованием кролика как основной модели
+// Обновленная версия three-animation.js с милым кроликом
 let scene, camera, renderer;
-let particleSystem, pixelRabbit;
+let particleSystem, cuteRabbit;
 let mouseX = 0, mouseY = 0;
 let clock = new THREE.Clock();
 
@@ -35,10 +35,10 @@ function initThree() {
             directionalLight.position.set(10, 10, 10);
             scene.add(directionalLight);
             
-            // Создаем пиксельного кролика
-            createPixelRabbit();
+            // Создаем милого кролика
+            createCuteRabbit();
             
-            // Создаем систему частиц в стиле MegaETH
+            // Создаем систему частиц
             createParticleSystem();
             
             // Создаем сетку
@@ -68,15 +68,16 @@ function initThree() {
     loadingManager.itemEnd();
 }
 
-function createPixelRabbit() {
+function createCuteRabbit() {
     // Создаем группу для кролика
-    pixelRabbit = new THREE.Group();
+    cuteRabbit = new THREE.Group();
     
-    // Основные цвета
-    const mainColor = 0x32b288;
-    const earInnerColor = 0xf6ae5c;
+    // Цвета для кролика
+    const mainColor = 0xffc0cb; // Нежно-розовый
+    const secondaryColor = 0xff69b4; // Ярко-розовый
+    const detailColor = 0xffffff; // Белый
     
-    // Материалы
+    // Материалы с эффектом прозрачности
     const mainMaterial = new THREE.MeshBasicMaterial({
         color: mainColor,
         wireframe: true,
@@ -84,94 +85,126 @@ function createPixelRabbit() {
         opacity: 0.8
     });
     
-    const earInnerMaterial = new THREE.MeshBasicMaterial({
-        color: earInnerColor,
+    const secondaryMaterial = new THREE.MeshBasicMaterial({
+        color: secondaryColor,
         wireframe: true,
         transparent: true,
         opacity: 0.8
     });
     
-    // Создаем голову кролика (основной куб)
-    const headGeometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
+    const detailMaterial = new THREE.MeshBasicMaterial({
+        color: detailColor,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.9
+    });
+    
+    // Создаем голову кролика
+    const headGeometry = new THREE.SphereGeometry(1, 16, 16);
     const head = new THREE.Mesh(headGeometry, mainMaterial);
-    pixelRabbit.add(head);
+    cuteRabbit.add(head);
     
-    // Создаем левое ухо
-    const leftEarGeometry = new THREE.BoxGeometry(0.4, 1.2, 0.3);
-    const leftEar = new THREE.Mesh(leftEarGeometry, mainMaterial);
-    leftEar.position.set(-0.5, 1.3, 0);
-    pixelRabbit.add(leftEar);
+    // Создаем уши кролика
+    const earGeometry = new THREE.CylinderGeometry(0.2, 0.3, 1.5, 8);
     
-    // Создаем внутреннюю часть левого уха
-    const leftEarInnerGeometry = new THREE.BoxGeometry(0.2, 0.8, 0.1);
-    const leftEarInner = new THREE.Mesh(leftEarInnerGeometry, earInnerMaterial);
-    leftEarInner.position.set(0, 0, 0.1);
-    leftEar.add(leftEarInner);
+    // Левое ухо
+    const leftEar = new THREE.Mesh(earGeometry, secondaryMaterial);
+    leftEar.position.set(-0.5, 1.2, 0);
+    leftEar.rotation.x = -Math.PI / 8;
+    leftEar.rotation.z = -Math.PI / 12;
+    cuteRabbit.add(leftEar);
     
-    // Создаем правое ухо
-    const rightEarGeometry = new THREE.BoxGeometry(0.4, 1.2, 0.3);
-    const rightEar = new THREE.Mesh(rightEarGeometry, mainMaterial);
-    rightEar.position.set(0.5, 1.3, 0);
-    pixelRabbit.add(rightEar);
+    // Внутренняя часть левого уха
+    const innerLeftEarGeometry = new THREE.CylinderGeometry(0.1, 0.2, 1.2, 8);
+    const innerLeftEar = new THREE.Mesh(innerLeftEarGeometry, detailMaterial);
+    innerLeftEar.position.set(0, 0.1, 0);
+    leftEar.add(innerLeftEar);
     
-    // Создаем внутреннюю часть правого уха
-    const rightEarInnerGeometry = new THREE.BoxGeometry(0.2, 0.8, 0.1);
-    const rightEarInner = new THREE.Mesh(rightEarInnerGeometry, earInnerMaterial);
-    rightEarInner.position.set(0, 0, 0.1);
-    rightEar.add(rightEarInner);
+    // Правое ухо
+    const rightEar = new THREE.Mesh(earGeometry, secondaryMaterial);
+    rightEar.position.set(0.5, 1.2, 0);
+    rightEar.rotation.x = -Math.PI / 8;
+    rightEar.rotation.z = Math.PI / 12;
+    cuteRabbit.add(rightEar);
+    
+    // Внутренняя часть правого уха
+    const innerRightEarGeometry = new THREE.CylinderGeometry(0.1, 0.2, 1.2, 8);
+    const innerRightEar = new THREE.Mesh(innerRightEarGeometry, detailMaterial);
+    innerRightEar.position.set(0, 0.1, 0);
+    rightEar.add(innerRightEar);
     
     // Создаем глаза
-    const eyeGeometry = new THREE.BoxGeometry(0.2, 0.2, 0.1);
-    const leftEye = new THREE.Mesh(eyeGeometry, new THREE.MeshBasicMaterial({ color: 0x000000 }));
-    leftEye.position.set(-0.4, 0.2, 0.8);
-    pixelRabbit.add(leftEye);
+    const eyeGeometry = new THREE.SphereGeometry(0.15, 16, 16);
+    const eyeMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
     
-    const rightEye = new THREE.Mesh(eyeGeometry, new THREE.MeshBasicMaterial({ color: 0x000000 }));
-    rightEye.position.set(0.4, 0.2, 0.8);
-    pixelRabbit.add(rightEye);
+    // Левый глаз
+    const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+    leftEye.position.set(-0.4, 0.2, 0.85);
+    cuteRabbit.add(leftEye);
+    
+    // Правый глаз
+    const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+    rightEye.position.set(0.4, 0.2, 0.85);
+    cuteRabbit.add(rightEye);
+    
+    // Блики в глазах
+    const eyeHighlightGeometry = new THREE.SphereGeometry(0.05, 8, 8);
+    const eyeHighlightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    
+    const leftEyeHighlight = new THREE.Mesh(eyeHighlightGeometry, eyeHighlightMaterial);
+    leftEyeHighlight.position.set(0.05, 0.05, 0.05);
+    leftEye.add(leftEyeHighlight);
+    
+    const rightEyeHighlight = new THREE.Mesh(eyeHighlightGeometry, eyeHighlightMaterial);
+    rightEyeHighlight.position.set(0.05, 0.05, 0.05);
+    rightEye.add(rightEyeHighlight);
     
     // Создаем нос
-    const noseGeometry = new THREE.BoxGeometry(0.3, 0.3, 0.1);
-    const nose = new THREE.Mesh(noseGeometry, new THREE.MeshBasicMaterial({ color: 0x000000 }));
-    nose.position.set(0, -0.1, 0.8);
-    pixelRabbit.add(nose);
+    const noseGeometry = new THREE.SphereGeometry(0.15, 16, 16);
+    const noseMaterial = new THREE.MeshBasicMaterial({ color: secondaryColor });
+    const nose = new THREE.Mesh(noseGeometry, noseMaterial);
+    nose.position.set(0, -0.1, 0.9);
+    cuteRabbit.add(nose);
     
     // Создаем тело
-    const bodyGeometry = new THREE.BoxGeometry(1.2, 1, 1.8);
+    const bodyGeometry = new THREE.SphereGeometry(1.2, 16, 16);
     const body = new THREE.Mesh(bodyGeometry, mainMaterial);
-    body.position.set(0, -1.2, 0);
-    pixelRabbit.add(body);
+    body.position.set(0, -1.5, 0);
+    body.scale.set(1, 0.8, 1);
+    cuteRabbit.add(body);
     
     // Создаем лапы
-    const frontPawGeometry = new THREE.BoxGeometry(0.4, 0.4, 0.6);
+    const frontPawGeometry = new THREE.SphereGeometry(0.3, 8, 8);
     
-    const leftFrontPaw = new THREE.Mesh(frontPawGeometry, mainMaterial);
-    leftFrontPaw.position.set(-0.5, -1.8, 0.6);
-    pixelRabbit.add(leftFrontPaw);
+    // Передние лапы
+    const leftFrontPaw = new THREE.Mesh(frontPawGeometry, secondaryMaterial);
+    leftFrontPaw.position.set(-0.7, -2.1, 0.5);
+    leftFrontPaw.scale.set(0.8, 0.5, 0.8);
+    cuteRabbit.add(leftFrontPaw);
     
-    const rightFrontPaw = new THREE.Mesh(frontPawGeometry, mainMaterial);
-    rightFrontPaw.position.set(0.5, -1.8, 0.6);
-    pixelRabbit.add(rightFrontPaw);
+    const rightFrontPaw = new THREE.Mesh(frontPawGeometry, secondaryMaterial);
+    rightFrontPaw.position.set(0.7, -2.1, 0.5);
+    rightFrontPaw.scale.set(0.8, 0.5, 0.8);
+    cuteRabbit.add(rightFrontPaw);
     
-    // Создаем задние лапы
-    const backPawGeometry = new THREE.BoxGeometry(0.5, 0.5, 1);
+    // Задние лапы
+    const backPawGeometry = new THREE.SphereGeometry(0.4, 8, 8);
     
-    const leftBackPaw = new THREE.Mesh(backPawGeometry, mainMaterial);
-    leftBackPaw.position.set(-0.4, -1.8, -0.6);
-    pixelRabbit.add(leftBackPaw);
+    const leftBackPaw = new THREE.Mesh(backPawGeometry, secondaryMaterial);
+    leftBackPaw.position.set(-0.5, -2.2, -0.5);
+    leftBackPaw.scale.set(0.8, 0.6, 1);
+    cuteRabbit.add(leftBackPaw);
     
-    const rightBackPaw = new THREE.Mesh(backPawGeometry, mainMaterial);
-    rightBackPaw.position.set(0.4, -1.8, -0.6);
-    pixelRabbit.add(rightBackPaw);
+    const rightBackPaw = new THREE.Mesh(backPawGeometry, secondaryMaterial);
+    rightBackPaw.position.set(0.5, -2.2, -0.5);
+    rightBackPaw.scale.set(0.8, 0.6, 1);
+    cuteRabbit.add(rightBackPaw);
     
     // Создаем хвост
     const tailGeometry = new THREE.SphereGeometry(0.3, 8, 8);
-    const tail = new THREE.Mesh(tailGeometry, mainMaterial);
-    tail.position.set(0, -1.2, -1);
-    pixelRabbit.add(tail);
-    
-    // Масштабируем кролика
-    pixelRabbit.scale.set(0.8, 0.8, 0.8);
+    const tail = new THREE.Mesh(tailGeometry, detailMaterial);
+    tail.position.set(0, -1.8, -1.1);
+    cuteRabbit.add(tail);
     
     // Добавляем свечение
     const glowMaterial = new THREE.MeshBasicMaterial({
@@ -180,17 +213,18 @@ function createPixelRabbit() {
         opacity: 0.3
     });
     
-    // Создаем общую геометрию для свечения
-    const glowGeometry = new THREE.BoxGeometry(3, 4, 3);
+    const glowGeometry = new THREE.SphereGeometry(2.5, 16, 16);
     const glowMesh = new THREE.Mesh(glowGeometry, glowMaterial);
     glowMesh.scale.set(1.1, 1.1, 1.1);
-    pixelRabbit.add(glowMesh);
+    cuteRabbit.add(glowMesh);
     
-    scene.add(pixelRabbit);
+    // Масштабируем и добавляем кролика на сцену
+    cuteRabbit.scale.set(0.8, 0.8, 0.8);
+    scene.add(cuteRabbit);
 }
 
 function createParticleSystem() {
-    // Создаем систему частиц с новыми цветами
+    // Создаем систему частиц с милыми цветами
     const particleCount = 1000;
     const particles = new THREE.BufferGeometry();
     
@@ -198,9 +232,9 @@ function createParticleSystem() {
     const colors = new Float32Array(particleCount * 3);
     const sizes = new Float32Array(particleCount);
     
-    const color1 = new THREE.Color(0x32b288); // Бирюзовый
-    const color2 = new THREE.Color(0xf7519b); // Розовый
-    const color3 = new THREE.Color(0xf6ae5c); // Оранжевый
+    const color1 = new THREE.Color(0xffc0cb); // Нежно-розовый
+    const color2 = new THREE.Color(0xff69b4); // Ярко-розовый
+    const color3 = new THREE.Color(0xffffff); // Белый
     
     for (let i = 0; i < particleCount; i++) {
         // Позиции
@@ -244,10 +278,10 @@ function createParticleSystem() {
 }
 
 function createGrid() {
-    // Создаем сетку для фона с новым цветом
+    // Создаем сетку для фона
     const gridSize = 50;
     const gridDivisions = 50;
-    const gridColor = 0x32b288;
+    const gridColor = 0xff69b4;
     
     const gridHelper = new THREE.GridHelper(gridSize, gridDivisions, gridColor, gridColor);
     gridHelper.material.opacity = 0.1;
@@ -257,9 +291,9 @@ function createGrid() {
 }
 
 function createFallbackAnimation() {
-    // Создаем простую анимацию без WebGL с новыми цветами
+    // Создаем простую анимацию без WebGL
     const heroSection = document.getElementById('hero-animation');
-    heroSection.style.background = 'radial-gradient(circle at center, rgba(50, 178, 136, 0.2) 0%, transparent 70%)';
+    heroSection.style.background = 'radial-gradient(circle at center, rgba(255, 192, 203, 0.2) 0%, transparent 70%)';
     
     // Добавляем несколько "звезд"
     for (let i = 0; i < 100; i++) {
@@ -268,21 +302,21 @@ function createFallbackAnimation() {
         star.style.width = '2px';
         star.style.height = '2px';
         
-        // Используем новые цвета
+        // Используем милые цвета
         const colorChoice = Math.random();
         if (colorChoice < 0.5) {
-            star.style.backgroundColor = '#32b288'; // Бирюзовый
+            star.style.backgroundColor = '#ffc0cb'; // Нежно-розовый
         } else if (colorChoice < 0.8) {
-            star.style.backgroundColor = '#f7519b'; // Розовый
+            star.style.backgroundColor = '#ff69b4'; // Ярко-розовый
         } else {
-            star.style.backgroundColor = '#f6ae5c'; // Оранжевый
+            star.style.backgroundColor = '#ffffff'; // Белый
         }
         
         star.style.left = `${Math.random() * 100}%`;
         star.style.top = `${Math.random() * 100}%`;
         star.style.opacity = Math.random() * 0.7 + 0.3;
         star.style.boxShadow = '0 0 10px currentColor';
-        star.style.borderRadius = '0'; // Пиксельные звезды
+        star.style.borderRadius = '50%'; // Круглые звезды
         
         // Добавляем анимацию мерцания
         star.style.animation = `starBlink ${Math.random() * 3 + 2}s infinite alternate`;
@@ -300,7 +334,7 @@ function createFallbackAnimation() {
     `;
     document.head.appendChild(style);
     
-    // Добавляем пиксельного кролика в качестве фоллбэка
+    // Добавляем простого кролика в качестве фоллбэка
     const rabbitContainer = document.createElement('div');
     rabbitContainer.style.position = 'absolute';
     rabbitContainer.style.left = '50%';
@@ -309,48 +343,40 @@ function createFallbackAnimation() {
     rabbitContainer.style.width = '100px';
     rabbitContainer.style.height = '150px';
     
-    // Создаем пиксельного кролика с помощью CSS
+    // Создаем простого кролика с помощью CSS
     const rabbitHead = document.createElement('div');
     rabbitHead.style.width = '60px';
     rabbitHead.style.height = '60px';
-    rabbitHead.style.backgroundColor = '#32b288';
+    rabbitHead.style.backgroundColor = '#ffc0cb';
     rabbitHead.style.position = 'absolute';
     rabbitHead.style.left = '20px';
     rabbitHead.style.top = '30px';
-    rabbitHead.style.boxShadow = '0 0 10px #32b288';
+    rabbitHead.style.borderRadius = '50%';
+    rabbitHead.style.boxShadow = '0 0 10px #ffc0cb';
     rabbitContainer.appendChild(rabbitHead);
     
     // Уши
     const leftEar = document.createElement('div');
     leftEar.style.width = '15px';
     leftEar.style.height = '40px';
-    leftEar.style.backgroundColor = '#32b288';
+    leftEar.style.backgroundColor = '#ff69b4';
     leftEar.style.position = 'absolute';
     leftEar.style.left = '25px';
     leftEar.style.top = '-10px';
-    leftEar.style.boxShadow = '0 0 10px #32b288';
+    leftEar.style.borderRadius = '40%';
+    leftEar.style.boxShadow = '0 0 10px #ff69b4';
     rabbitContainer.appendChild(leftEar);
     
     const rightEar = document.createElement('div');
     rightEar.style.width = '15px';
     rightEar.style.height = '40px';
-    rightEar.style.backgroundColor = '#32b288';
+    rightEar.style.backgroundColor = '#ff69b4';
     rightEar.style.position = 'absolute';
     rightEar.style.left = '60px';
     rightEar.style.top = '-10px';
-    rightEar.style.boxShadow = '0 0 10px #32b288';
+    rightEar.style.borderRadius = '40%';
+    rightEar.style.boxShadow = '0 0 10px #ff69b4';
     rabbitContainer.appendChild(rightEar);
-    
-    // Тело
-    const body = document.createElement('div');
-    body.style.width = '50px';
-    body.style.height = '40px';
-    body.style.backgroundColor = '#32b288';
-    body.style.position = 'absolute';
-    body.style.left = '25px';
-    body.style.top = '90px';
-    body.style.boxShadow = '0 0 10px #32b288';
-    rabbitContainer.appendChild(body);
     
     // Анимация пульсации
     rabbitContainer.style.animation = 'rabbitPulse 2s infinite alternate';
@@ -361,7 +387,7 @@ function createFallbackAnimation() {
             100% { transform: translate(-50%, -50%) scale(1.1); }
         }
     `;
-    document.head.appendChild(pulseStyle);
+        document.head.appendChild(pulseStyle);
     
     heroSection.appendChild(rabbitContainer);
 }
@@ -382,24 +408,24 @@ function animate() {
     
     const elapsedTime = clock.getElapsedTime();
     
-    if (pixelRabbit) {
+    if (cuteRabbit) {
         // Вращаем модель кролика
-        pixelRabbit.rotation.x += 0.003;
-        pixelRabbit.rotation.y += 0.008;
+        cuteRabbit.rotation.x += 0.003;
+        cuteRabbit.rotation.y += 0.005;
         
         // Интерактивное движение в зависимости от положения курсора
-        pixelRabbit.rotation.x += (mouseY - pixelRabbit.rotation.x * 0.1) * 0.01;
-        pixelRabbit.rotation.y += (mouseX - pixelRabbit.rotation.y * 0.1) * 0.01;
+        cuteRabbit.rotation.x += (mouseY - cuteRabbit.rotation.x * 0.1) * 0.01;
+        cuteRabbit.rotation.y += (mouseX - cuteRabbit.rotation.y * 0.1) * 0.01;
         
-                // Пульсация размера
+        // Пульсация размера
         const pulseFactor = Math.sin(elapsedTime * 1.5) * 0.05 + 1;
-        pixelRabbit.scale.set(pulseFactor, pulseFactor, pulseFactor);
+        cuteRabbit.scale.set(0.8 * pulseFactor, 0.8 * pulseFactor, 0.8 * pulseFactor);
         
-        // Добавляем небольшое покачивание ушей
-        if (pixelRabbit.children) {
-            const earMovement = Math.sin(elapsedTime * 3) * 0.1;
-            pixelRabbit.children[1].rotation.z = earMovement; // левое ухо
-            pixelRabbit.children[3].rotation.z = -earMovement; // правое ухо
+        // Анимация ушей
+        if (cuteRabbit.children && cuteRabbit.children.length > 1) {
+            const earMovement = Math.sin(elapsedTime * 2) * 0.1;
+            cuteRabbit.children[1].rotation.z = -Math.PI / 12 + earMovement; // левое ухо
+            cuteRabbit.children[3].rotation.z = Math.PI / 12 - earMovement; // правое ухо
         }
     }
     
@@ -421,3 +447,4 @@ document.addEventListener('DOMContentLoaded', function() {
         createFallbackAnimation();
     }
 });
+
