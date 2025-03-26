@@ -69,11 +69,10 @@ function initThree() {
 }
 
 function createPixelRabbit() {
-    // Создаем группу для кролика
     pixelRabbit = new THREE.Group();
     
-    // Создаем тело кролика - квадратное
-    const bodyGeometry = new THREE.BoxGeometry(1.5, 1.5, 1.5, 8, 8, 8);
+    // Создаем тело кролика - прямоугольное и вытянутое
+    const bodyGeometry = new THREE.BoxGeometry(2, 1.5, 1.5, 8, 8, 8);
     const material = new THREE.MeshBasicMaterial({
         color: 0x32b288,
         wireframe: true,
@@ -82,13 +81,13 @@ function createPixelRabbit() {
     });
     
     const body = new THREE.Mesh(bodyGeometry, material);
-    body.position.y = -0.2;
+    body.position.set(0.5, 0, 0); // Сдвигаем тело вправо
     pixelRabbit.add(body);
     
     // Создаем голову кролика
     const headGeometry = new THREE.BoxGeometry(1.2, 1.2, 1.2, 8, 8, 8);
     const head = new THREE.Mesh(headGeometry, material);
-    head.position.y = 1.2;
+    head.position.set(-0.8, 0.8, 0); // Размещаем голову слева от тела
     pixelRabbit.add(head);
     
     // Добавляем нос
@@ -100,7 +99,7 @@ function createPixelRabbit() {
         opacity: 0.9
     });
     const nose = new THREE.Mesh(noseGeometry, noseMaterial);
-    nose.position.set(0, 1.2, 0.6);
+    nose.position.set(-1.4, 0.8, 0.6);
     pixelRabbit.add(nose);
     
     // Добавляем глаза
@@ -113,23 +112,23 @@ function createPixelRabbit() {
     });
     
     const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
-    leftEye.position.set(-0.3, 1.3, 0.6);
+    leftEye.position.set(-1.1, 1, 0.5);
     pixelRabbit.add(leftEye);
     
     const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
-    rightEye.position.set(0.3, 1.3, 0.6);
+    rightEye.position.set(-0.5, 1, 0.5);
     pixelRabbit.add(rightEye);
     
     // Создаем уши кролика
     const earGeometry = new THREE.BoxGeometry(0.3, 1.5, 0.2, 4, 8, 2);
     
     const leftEar = new THREE.Mesh(earGeometry, material);
-    leftEar.position.set(-0.4, 2.2, 0);
+    leftEar.position.set(-1, 1.8, 0);
     leftEar.rotation.z = Math.PI / 12;
     pixelRabbit.add(leftEar);
     
     const rightEar = new THREE.Mesh(earGeometry, material);
-    rightEar.position.set(0.4, 2.2, 0);
+    rightEar.position.set(-0.6, 1.8, 0);
     rightEar.rotation.z = -Math.PI / 12;
     pixelRabbit.add(rightEar);
     
@@ -137,25 +136,25 @@ function createPixelRabbit() {
     const legGeometry = new THREE.BoxGeometry(0.4, 0.8, 0.4, 4, 6, 4);
     
     const frontLeftLeg = new THREE.Mesh(legGeometry, material);
-    frontLeftLeg.position.set(-0.5, -1.4, 0.3);
+    frontLeftLeg.position.set(-0.5, -1, 0.5);
     pixelRabbit.add(frontLeftLeg);
     
     const frontRightLeg = new THREE.Mesh(legGeometry, material);
-    frontRightLeg.position.set(0.5, -1.4, 0.3);
+    frontRightLeg.position.set(0.5, -1, 0.5);
     pixelRabbit.add(frontRightLeg);
     
     const backLeftLeg = new THREE.Mesh(legGeometry, material);
-    backLeftLeg.position.set(-0.5, -1.4, -0.3);
+    backLeftLeg.position.set(1, -1, 0.5);
     pixelRabbit.add(backLeftLeg);
     
     const backRightLeg = new THREE.Mesh(legGeometry, material);
-    backRightLeg.position.set(0.5, -1.4, -0.3);
+    backRightLeg.position.set(1.5, -1, 0.5);
     pixelRabbit.add(backRightLeg);
     
     // Создаем хвост кролика
     const tailGeometry = new THREE.SphereGeometry(0.3, 8, 8);
     const tail = new THREE.Mesh(tailGeometry, material);
-    tail.position.set(0, -0.8, -0.8);
+    tail.position.set(1.8, 0, -0.5);
     pixelRabbit.add(tail);
     
     // Добавляем свечение
@@ -175,7 +174,7 @@ function createPixelRabbit() {
     });
     
     // Масштабируем кролика до подходящего размера
-    pixelRabbit.scale.set(0.8, 0.8, 0.8);
+    pixelRabbit.scale.set(0.7, 0.7, 0.7);
     
     scene.add(pixelRabbit);
 }
@@ -310,7 +309,6 @@ function animate() {
     
     if (pixelRabbit) {
         // Вращаем модель кролика
-        pixelRabbit.rotation.x += 0.005;
         pixelRabbit.rotation.y += 0.01;
         
         // Интерактивное движение в зависимости от положения курсора
@@ -319,12 +317,12 @@ function animate() {
         
         // Пульсация размера
         const pulseFactor = Math.sin(elapsedTime * 2) * 0.05 + 1;
-        pixelRabbit.scale.set(pulseFactor * 0.8, pulseFactor * 0.8, pulseFactor * 0.8);
+        pixelRabbit.scale.set(pulseFactor * 0.7, pulseFactor * 0.7, pulseFactor * 0.7);
         
         // Анимация ушей кролика
-        if (pixelRabbit.children[5] && pixelRabbit.children[6]) {
-            const leftEar = pixelRabbit.children[5];
-            const rightEar = pixelRabbit.children[6];
+        if (pixelRabbit.children[6] && pixelRabbit.children[7]) {
+            const leftEar = pixelRabbit.children[6];
+            const rightEar = pixelRabbit.children[7];
             
             leftEar.rotation.z = Math.PI / 12 + Math.sin(elapsedTime * 1.5) * 0.1;
             rightEar.rotation.z = -Math.PI / 12 + Math.sin(elapsedTime * 1.5) * 0.1;
