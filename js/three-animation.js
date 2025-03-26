@@ -330,20 +330,46 @@ function animate() {
             rightEar.rotation.z = -Math.PI / 12 + Math.sin(elapsedTime * 1.5) * 0.1;
         }
         
-        // Анимация глаз и носа
-        if (pixelRabbit.children[2] && pixelRabbit.children[3] && pixelRabbit.children[4]) {
-            const nose = pixelRabbit.children[2];
+        // Анимация глаз (эффект моргания)
+        if (pixelRabbit.children[3] && pixelRabbit.children[4]) {
             const leftEye = pixelRabbit.children[3];
             const rightEye = pixelRabbit.children[4];
             
-            // Небольшое мигание глаз
+            // Моргание каждые 3 секунды
             const blinkFactor = Math.sin(elapsedTime * 3) > 0.95 ? 0.1 : 1;
             leftEye.scale.y = blinkFactor;
             rightEye.scale.y = blinkFactor;
+        }
+        
+        // Анимация носа
+        if (pixelRabbit.children[2]) {
+            const nose = pixelRabbit.children[2];
             
             // Небольшая пульсация носа
             const nosePulse = Math.sin(elapsedTime * 1.5) * 0.1 + 1;
             nose.scale.set(nosePulse, nosePulse, nosePulse);
+        }
+        
+        // Анимация лап (ходьба)
+        if (pixelRabbit.children[7] && pixelRabbit.children[8] && 
+            pixelRabbit.children[9] && pixelRabbit.children[10]) {
+            
+            const frontLeftLeg = pixelRabbit.children[7];
+            const frontRightLeg = pixelRabbit.children[8];
+            const backLeftLeg = pixelRabbit.children[9];
+            const backRightLeg = pixelRabbit.children[10];
+            
+            // Создаем эффект ходьбы, двигая лапы вверх-вниз
+            frontLeftLeg.position.y = -0.8 + Math.sin(elapsedTime * 3) * 0.2;
+            frontRightLeg.position.y = -0.8 + Math.sin(elapsedTime * 3 + Math.PI) * 0.2;
+            backLeftLeg.position.y = -0.8 + Math.sin(elapsedTime * 3 + Math.PI) * 0.2;
+            backRightLeg.position.y = -0.8 + Math.sin(elapsedTime * 3) * 0.2;
+            
+            // Добавляем небольшое вращение для более естественного движения
+            frontLeftLeg.rotation.x = Math.sin(elapsedTime * 3) * 0.3;
+            frontRightLeg.rotation.x = Math.sin(elapsedTime * 3 + Math.PI) * 0.3;
+            backLeftLeg.rotation.x = Math.sin(elapsedTime * 3 + Math.PI) * 0.3;
+            backRightLeg.rotation.x = Math.sin(elapsedTime * 3) * 0.3;
         }
     }
     
@@ -365,3 +391,4 @@ document.addEventListener('DOMContentLoaded', function() {
         createFallbackAnimation();
     }
 });
+
