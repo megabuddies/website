@@ -1,4 +1,4 @@
-// Обновленная версия three-animation.js
+// Обновленная версия three-animation.js с использованием новых цветов
 let scene, camera, renderer;
 let particleSystem, pixelBuddy;
 let mouseX = 0, mouseY = 0;
@@ -72,9 +72,9 @@ function createPixelBuddy() {
     // Создаем пиксельную геометрию для Buddy
     const geometry = new THREE.BoxGeometry(2, 2, 0.2, 8, 8, 1);
     
-    // Создаем базовый материал вместо шейдерного материала
+    // Создаем базовый материал с новыми цветами
     const material = new THREE.MeshBasicMaterial({
-        color: 0x00ff41,
+        color: 0x32b288,
         wireframe: true,
         transparent: true,
         opacity: 0.8
@@ -83,9 +83,9 @@ function createPixelBuddy() {
     pixelBuddy = new THREE.Mesh(geometry, material);
     scene.add(pixelBuddy);
     
-    // Добавляем свечение
+    // Добавляем свечение с новым цветом
     const glowMaterial = new THREE.MeshBasicMaterial({
-        color: 0x00ff41,
+        color: 0x32b288,
         transparent: true,
         opacity: 0.3
     });
@@ -96,7 +96,7 @@ function createPixelBuddy() {
 }
 
 function createParticleSystem() {
-    // Создаем систему частиц в стиле MegaETH
+    // Создаем систему частиц с новыми цветами
     const particleCount = 1000;
     const particles = new THREE.BufferGeometry();
     
@@ -104,8 +104,9 @@ function createParticleSystem() {
     const colors = new Float32Array(particleCount * 3);
     const sizes = new Float32Array(particleCount);
     
-    const color1 = new THREE.Color(0x00ff41); // Зеленый
-    const color2 = new THREE.Color(0xff3e9a); // Розовый
+    const color1 = new THREE.Color(0x32b288); // Бирюзовый
+    const color2 = new THREE.Color(0xf7519b); // Розовый
+    const color3 = new THREE.Color(0xf6ae5c); // Оранжевый
     
     for (let i = 0; i < particleCount; i++) {
         // Позиции
@@ -115,7 +116,15 @@ function createParticleSystem() {
         
         // Цвета
         const colorChoice = Math.random();
-        let color = colorChoice < 0.7 ? color1 : color2;
+        let color;
+        
+        if (colorChoice < 0.5) {
+            color = color1;
+        } else if (colorChoice < 0.8) {
+            color = color2;
+        } else {
+            color = color3;
+        }
         
         colors[i * 3] = color.r;
         colors[i * 3 + 1] = color.g;
@@ -141,10 +150,10 @@ function createParticleSystem() {
 }
 
 function createGrid() {
-    // Создаем сетку для фона
+    // Создаем сетку для фона с новым цветом
     const gridSize = 50;
     const gridDivisions = 50;
-    const gridColor = 0x00ff41;
+    const gridColor = 0x32b288;
     
     const gridHelper = new THREE.GridHelper(gridSize, gridDivisions, gridColor, gridColor);
     gridHelper.material.opacity = 0.1;
@@ -154,9 +163,9 @@ function createGrid() {
 }
 
 function createFallbackAnimation() {
-    // Создаем простую анимацию без WebGL
+    // Создаем простую анимацию без WebGL с новыми цветами
     const heroSection = document.getElementById('hero-animation');
-    heroSection.style.background = 'radial-gradient(circle at center, rgba(0, 255, 65, 0.2) 0%, transparent 70%)';
+    heroSection.style.background = 'radial-gradient(circle at center, rgba(50, 178, 136, 0.2) 0%, transparent 70%)';
     
     // Добавляем несколько "звезд"
     for (let i = 0; i < 100; i++) {
@@ -164,12 +173,22 @@ function createFallbackAnimation() {
         star.style.position = 'absolute';
         star.style.width = '2px';
         star.style.height = '2px';
-        star.style.backgroundColor = Math.random() > 0.7 ? '#ff3e9a' : '#00ff41';
+        
+        // Используем новые цвета
+        const colorChoice = Math.random();
+        if (colorChoice < 0.5) {
+            star.style.backgroundColor = '#32b288'; // Бирюзовый
+        } else if (colorChoice < 0.8) {
+            star.style.backgroundColor = '#f7519b'; // Розовый
+        } else {
+            star.style.backgroundColor = '#f6ae5c'; // Оранжевый
+        }
+        
         star.style.left = `${Math.random() * 100}%`;
         star.style.top = `${Math.random() * 100}%`;
         star.style.opacity = Math.random() * 0.7 + 0.3;
         star.style.boxShadow = '0 0 10px currentColor';
-        star.style.borderRadius = '50%';
+        star.style.borderRadius = '0'; // Пиксельные звезды
         
         // Добавляем анимацию мерцания
         star.style.animation = `starBlink ${Math.random() * 3 + 2}s infinite alternate`;
