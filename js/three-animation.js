@@ -135,22 +135,35 @@ function createPixelRabbit() {
     // Создаем лапы кролика - правильное расположение
     const legGeometry = new THREE.BoxGeometry(0.4, 0.8, 0.4, 4, 6, 4);
     
+    // Создаем специальный материал для лап, который всегда будет видим
+    const legMaterial = new THREE.MeshBasicMaterial({
+        color: 0x32b288,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.8,
+        depthTest: false // Отключаем проверку глубины для лап
+    });
+    
     // Передние лапы
-    const frontLeftLeg = new THREE.Mesh(legGeometry, material);
+    const frontLeftLeg = new THREE.Mesh(legGeometry, legMaterial);
     frontLeftLeg.position.set(-0.8, -0.8, 0.5); // Передняя левая
+    frontLeftLeg.renderOrder = 1; // Устанавливаем высокий приоритет рендеринга
     pixelRabbit.add(frontLeftLeg);
     
-    const frontRightLeg = new THREE.Mesh(legGeometry, material);
+    const frontRightLeg = new THREE.Mesh(legGeometry, legMaterial);
     frontRightLeg.position.set(-0.8, -0.8, -0.5); // Передняя правая
+    frontRightLeg.renderOrder = 1;
     pixelRabbit.add(frontRightLeg);
     
     // Задние лапы
-    const backLeftLeg = new THREE.Mesh(legGeometry, material);
+    const backLeftLeg = new THREE.Mesh(legGeometry, legMaterial);
     backLeftLeg.position.set(0.8, -0.8, 0.5); // Задняя левая
+    backLeftLeg.renderOrder = 1;
     pixelRabbit.add(backLeftLeg);
     
-    const backRightLeg = new THREE.Mesh(legGeometry, material);
+    const backRightLeg = new THREE.Mesh(legGeometry, legMaterial);
     backRightLeg.position.set(0.8, -0.8, -0.5); // Задняя правая
+    backRightLeg.renderOrder = 1;
     pixelRabbit.add(backRightLeg);
     
     // Создаем хвост кролика - сзади по центру
@@ -168,10 +181,31 @@ function createPixelRabbit() {
     
     // Создаем копию каждой части для свечения
     pixelRabbit.children.forEach(part => {
-        const glowMesh = new THREE.Mesh(part.geometry.clone(), glowMaterial);
-        glowMesh.position.copy(part.position);
-        glowMesh.rotation.copy(part.rotation);
+        // Если это не лапы (так как для них уже установлены особые настройки)
+        if (part !== frontLeftLeg && part !== frontRightLeg && 
+            part !== backLeftLeg && part !== backRightLeg) {
+            const glowMesh = new THREE.Mesh(part.geometry.clone(), glowMaterial);
+            glowMesh.position.copy(part.position);
+            glowMesh.rotation.copy(part.rotation);
+            glowMesh.scale.set(1.1, 1.1, 1.1);
+            pixelRabbit.add(glowMesh);
+        }
+    });
+    
+    // Добавляем свечение для лап отдельно с тем же материалом
+    const legGlowMaterial = new THREE.MeshBasicMaterial({
+        color: 0x32b288,
+        transparent: true,
+        opacity: 0.3,
+        depthTest: false
+    });
+    
+    [frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg].forEach(leg => {
+        const glowMesh = new THREE.Mesh(leg.geometry.clone(), legGlowMaterial);
+        glowMesh.position.copy(leg.position);
+        glowMesh.rotation.copy(leg.rotation);
         glowMesh.scale.set(1.1, 1.1, 1.1);
+        glowMesh.renderOrder = 0; // Рендерим свечение до самих лап
         pixelRabbit.add(glowMesh);
     });
     
