@@ -3,41 +3,35 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentCategory = 'all';
     let globalAnimationId = null;
     
-    // Функция для загрузки изображений для каждой категории
-    function loadImagesForCategory(category) {
-        // Если уже выбрана эта категория, ничего не делаем
-        if (category === currentCategory) return;
+    // Инициализация всех контейнеров при загрузке страницы
+    function initializeAllContainers() {
+        // Устанавливаем фиксированную высоту для всех контейнеров
+        const fixedHeight = 450; // Фиксированная высота для всех контейнеров
         
-        currentCategory = category;
-        
-        // Прекращаем глобальную анимацию, если она запущена
-        if (globalAnimationId) {
-            cancelAnimationFrame(globalAnimationId);
-            globalAnimationId = null;
-        }
-        
-        // Получаем все grid-контейнеры
-        const allContainers = document.querySelectorAll('.nft-grid');
-        
-        // Показываем только активный grid-контейнер
-        const container = document.querySelector(`.nft-grid[data-category="${category}"]`);
-        if (!container) return;
-        
-        // Сохраняем текущую высоту контейнера перед модификациями
-        // чтобы избежать "прыжков" при переключении категорий
-        const currentHeight = container.offsetHeight > 0 ? container.offsetHeight : 400;
+        // Применяем стили ко всем контейнерам
         document.querySelectorAll('.nft-grid').forEach(grid => {
-            grid.style.height = `${currentHeight}px`;
+            grid.style.minHeight = `${fixedHeight}px`;
+            grid.style.height = `${fixedHeight}px`;
+            grid.style.display = 'none';
+            grid.style.opacity = '0';
         });
         
-        // Сначала подготавливаем контейнер, но не показываем
-        container.style.opacity = '0';
-        container.style.display = 'flex';
-        
+        // Предварительно загружаем данные для всех категорий
+        categories.forEach(category => {
+            const container = document.querySelector(`.nft-grid[data-category="${category}"]`);
+            if (!container) return;
+            
+            // Заполняем все контейнеры карточками, но не показываем их
+            prepareContainerWithCards(container, category);
+        });
+    }
+    
+    // Функция для подготовки контейнера карточками
+    function prepareContainerWithCards(container, category) {
         // Очищаем контейнер перед добавлением новых изображений
         container.innerHTML = '';
         
-        // Добавляем минимум 15 изображений для каждой категории
+        // Добавляем минимум 15 изображений для категории
         for (let i = 1; i <= 15; i++) {
             const imgIndex = i > 10 ? i % 10 + 1 : i; // Если у нас меньше 15 изображений, циклически повторяем
             
@@ -61,24 +55,59 @@ document.addEventListener('DOMContentLoaded', function() {
             
             container.appendChild(nftCard);
         }
+    }
+    
+    // Функция для загрузки изображений для каждой категории
+    function loadImagesForCategory(category) {
+        // Если уже выбрана эта категория, ничего не делаем
+        if (category === currentCategory) return;
         
-        // Настраиваем автоматическую прокрутку и плавно показываем контейнер
-        setupAutoScroll(container);
+        // Обновляем текущую категорию
+        currentCategory = category;
         
-        // Плавно скрываем все остальные контейнеры
+        // Прекращаем глобальную анимацию, если она запущена
+        if (globalAnimationId) {
+            cancelAnimationFrame(globalAnimationId);
+            globalAnimationId = null;
+        }
+        
+        // Получаем все grid-контейнеры
+        const allContainers = document.querySelectorAll('.nft-grid');
+        
+        // Получаем контейнер для текущей категории
+        const container = document.querySelector(`.nft-grid[data-category="${category}"]`);
+        if (!container) return;
+        
+        // Плавно скрываем все контейнеры
         allContainers.forEach(grid => {
-            if (grid !== container) {
-                grid.style.opacity = '0';
-                setTimeout(() => {
-                    grid.style.display = 'none';
-                }, 300);
-            }
+            grid.style.opacity = '0';
         });
         
-        // Плавно показываем текущий контейнер
+        // Ждем окончания анимации прозрачности
         setTimeout(() => {
-            container.style.opacity = '1';
-        }, 50);
+            // Скрываем все контейнеры, кроме текущего
+            allContainers.forEach(grid => {
+                if (grid !== container) {
+                    grid.style.display = 'none';
+                }
+            });
+            
+            // Обновляем текущий контейнер
+            if (container.children.length === 0) {
+                prepareContainerWithCards(container, category);
+            }
+            
+            // Настраиваем автоматическую прокрутку
+            setupAutoScroll(container);
+            
+            // Показываем текущий контейнер
+            container.style.display = 'flex';
+            
+            // Добавляем небольшую задержку перед показом для более плавного перехода
+            setTimeout(() => {
+                container.style.opacity = '1';
+            }, 50);
+        }, 300); // Ждем 300мс для завершения анимации скрытия
     }
     
     // Функция для получения названия NFT
@@ -164,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Супер-плавная анимация с использованием requestAnimationFrame
         let position = 0;
-        const speed = 0.8; // Увеличиваем скорость с 0.2 до 0.8 пикселей за кадр
+        const speed = 0.8; // Скорость прокрутки в пикселях за кадр
         
         // Функция для анимации с использованием requestAnimationFrame
         function animate() {
@@ -188,6 +217,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Запускаем анимацию
         globalAnimationId = requestAnimationFrame(animate);
     }
+    
+    // Инициализируем все контейнеры при загрузке страницы
+    initializeAllContainers();
     
     // Загружаем изображения для активной категории при загрузке страницы
     const activeCategory = document.querySelector('.filter-btn.active').getAttribute('data-filter') || 'all';

@@ -605,20 +605,22 @@ body {
 }
 
 .nft-grid {
-  display: flex;
+  display: none;
   padding: 20px 0;
-  transition: opacity 0.5s ease, height 0.3s ease;
-  opacity: 1;
+  transition: opacity 0.5s ease;
+  opacity: 0;
   position: relative;
   width: 100%;
   overflow: hidden;
-  min-height: 400px;
+  height: 450px;
+  min-height: 450px;
 }
 
 .slider-wrapper {
   width: 100%;
   overflow: hidden;
   position: relative;
+  height: 100%;
 }
 
 .slider-track {
@@ -627,6 +629,7 @@ body {
   transition: transform 0.001s linear;
   will-change: transform;
   transform: translateZ(0);
+  height: 100%;
 }
 
 .nft-card {
