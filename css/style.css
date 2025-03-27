@@ -292,6 +292,7 @@ body {
   border-image: linear-gradient(45deg, var(--accent-color), var(--secondary-color)) 1;
   padding: 20px;
   background-color: rgba(26, 26, 26, 0.7);
+  transform: translateZ(0);
 }
 
 .glitch-container {
@@ -444,6 +445,7 @@ body {
   transition: all 0.3s ease;
   border: 2px solid var(--accent-color);
   clip-path: polygon(0 0, 100% 0, 100% 90%, 90% 100%, 0 100%);
+  transform: translateZ(0);
 }
 
 .about-item::before {
@@ -594,19 +596,48 @@ body {
   clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
 }
 
-.filter-btn:hover {
+.filter-btn:hover, .filter-btn.active {
   background-color: rgba(50, 178, 136, 0.1);
   box-shadow: 0 0 10px rgba(50, 178, 136, 0.5);
 }
 
+.filter-btn.active {
+  border-color: var(--secondary-color);
+  color: var(--secondary-color);
+}
+
 .nft-grid {
+  display: none;
+  padding: 20px 0;
+  transition: opacity 0.5s ease;
+  opacity: 0;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  height: 450px;
+  min-height: 450px;
+}
+
+.slider-wrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+}
+
+.slider-track {
   display: flex;
   gap: 25px;
-  overflow-x: hidden;
-  padding: 20px 0;
-  scroll-behavior: smooth;
-  transition: opacity 0.3s ease;
-  opacity: 1;
+  backface-visibility: hidden;
+}
+
+@keyframes slideAnimation {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-2750px);
+  }
 }
 
 .nft-card {
@@ -619,6 +650,7 @@ body {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
   clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
+  contain: content;
 }
 
 .nft-card:hover {
@@ -627,12 +659,27 @@ body {
   border-color: var(--secondary-color);
 }
 
-.nft-image {
+.nft-image-container {
   width: 100%;
   height: 300px;
-  object-fit: cover;
+  overflow: hidden;
   border-bottom: 2px solid var(--accent-color);
-  image-rendering: pixelated;
+  position: relative;
+}
+
+.nft-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.3s ease;
+  image-rendering: auto;
+  loading: lazy;
+  will-change: transform;
+}
+
+.nft-card:hover .nft-image {
+  transform: scale(1.05);
 }
 
 .nft-info {
@@ -692,6 +739,7 @@ body {
   display: flex;
   margin-bottom: 40px;
   position: relative;
+  transform: translateZ(0);
 }
 
 .roadmap-icon {
@@ -770,6 +818,7 @@ body {
   transition: all 0.3s ease;
   border: 2px solid var(--accent-color);
   clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
+  transform: translateZ(0);
 }
 
 .twitter-feed:hover, .discord-community:hover {
