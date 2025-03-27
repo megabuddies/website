@@ -625,10 +625,61 @@ body {
   height: 100%;
 }
 
+/* Создаем пиксельные края для слайдера без использования SVG */
+.slider-wrapper::before, 
+.slider-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 40px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.slider-wrapper::before {
+  left: 0;
+  /* Создаем базовый пиксельный узор */
+  background-image: 
+    /* Пиксельный узор в шахматном порядке */
+    linear-gradient(45deg, var(--background-color) 25%, transparent 25%), 
+    linear-gradient(-45deg, var(--background-color) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--background-color) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--background-color) 75%);
+  
+  /* Устанавливаем размер пикселей */
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+  
+  /* Накладываем градиент прозрачности с помощью маски */
+  -webkit-mask-image: linear-gradient(to right, var(--background-color), transparent);
+  mask-image: linear-gradient(to right, var(--background-color), transparent);
+}
+
+.slider-wrapper::after {
+  right: 0;
+  /* Создаем базовый пиксельный узор */
+  background-image: 
+    /* Пиксельный узор в шахматном порядке */
+    linear-gradient(45deg, var(--background-color) 25%, transparent 25%), 
+    linear-gradient(-45deg, var(--background-color) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--background-color) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--background-color) 75%);
+  
+  /* Устанавливаем размер пикселей */
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+  
+  /* Накладываем градиент прозрачности с помощью маски */
+  -webkit-mask-image: linear-gradient(to left, var(--background-color), transparent);
+  mask-image: linear-gradient(to left, var(--background-color), transparent);
+}
+
 .slider-track {
   display: flex;
   gap: 25px;
   backface-visibility: hidden;
+  height: 100%;
 }
 
 @keyframes slideAnimation {
@@ -643,6 +694,7 @@ body {
 .nft-card {
   flex: 0 0 auto;
   width: 250px;
+  height: 430px;
   background: rgba(26, 26, 26, 0.8);
   border: 2px solid var(--accent-color);
   border-radius: 0;
@@ -651,6 +703,8 @@ body {
   cursor: pointer;
   clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
   contain: content;
+  display: flex;
+  flex-direction: column;
 }
 
 .nft-card:hover {
@@ -662,6 +716,7 @@ body {
 .nft-image-container {
   width: 100%;
   height: 300px;
+  min-height: 300px;
   overflow: hidden;
   border-bottom: 2px solid var(--accent-color);
   position: relative;
@@ -684,6 +739,10 @@ body {
 
 .nft-info {
   padding: 15px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .nft-name {
@@ -703,6 +762,12 @@ body {
   font-size: 0.9rem;
   color: var(--text-color);
   margin: 0;
+}
+
+/* Удаляем пиксельные декоративные элементы на углах слайдера */
+/* Этот код можно удалить полностью */
+.pixel-decoration {
+  display: none;
 }
 
 /* Секция "Дорожная карта" */
