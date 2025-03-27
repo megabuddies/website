@@ -3,6 +3,7 @@ let scene, camera, renderer;
 let particleSystem, pixelRabbit;
 let mouseX = 0, mouseY = 0;
 let clock = new THREE.Clock();
+let leftEarPivot, rightEarPivot;
 
 function initThree() {
     const loadingManager = new THREE.LoadingManager();
@@ -103,17 +104,29 @@ function createPixelRabbit() {
     rightEye.renderOrder = 2;
     pixelRabbit.add(rightEye);
     
+    // Создаем контейнеры для ушей
+    leftEarPivot = new THREE.Group();
+    rightEarPivot = new THREE.Group();
+    
+    // Позиционируем контейнеры в местах крепления ушей к голове
+    leftEarPivot.position.set(-1.2, 1.1, 0.3);  // точка крепления к голове
+    rightEarPivot.position.set(-1.2, 1.1, -0.3);
+    
     const earGeometry = new THREE.BoxGeometry(0.3, 1.5, 0.2, 4, 8, 2);
     
     const leftEar = new THREE.Mesh(earGeometry, material);
-    leftEar.position.set(-1.2, 1.5, 0.3);
-    leftEar.rotation.z = Math.PI / 12;
-    pixelRabbit.add(leftEar);
+    leftEar.position.set(0, 0.75, 0);  // половина высоты уха
+    leftEarPivot.rotation.z = Math.PI / 12;
+    leftEarPivot.add(leftEar);
     
     const rightEar = new THREE.Mesh(earGeometry, material);
-    rightEar.position.set(-1.2, 1.5, -0.3);
-    rightEar.rotation.z = -Math.PI / 12;
-    pixelRabbit.add(rightEar);
+    rightEar.position.set(0, 0.75, 0);  // половина высоты уха
+    rightEarPivot.rotation.z = -Math.PI / 12;
+    rightEarPivot.add(rightEar);
+    
+    // Добавляем контейнеры ушей к кролику
+    pixelRabbit.add(leftEarPivot);
+    pixelRabbit.add(rightEarPivot);
     
     const legGeometry = new THREE.BoxGeometry(0.4, 0.8, 0.4, 4, 6, 4);
     const legMaterial = new THREE.MeshBasicMaterial({
@@ -281,12 +294,10 @@ function animate() {
         const pulseFactor = Math.sin(elapsedTime * 2) * 0.05 + 1;
         pixelRabbit.scale.set(pulseFactor * 0.7, pulseFactor * 0.7, pulseFactor * 0.7);
         
-        if (pixelRabbit.children[5] && pixelRabbit.children[6]) {
-            const leftEar = pixelRabbit.children[5];
-            const rightEar = pixelRabbit.children[6];
-            
-            leftEar.rotation.z = Math.PI / 12 + Math.sin(elapsedTime * 1.5) * 0.1;
-            rightEar.rotation.z = -Math.PI / 12 + Math.sin(elapsedTime * 1.5) * 0.1;
+        // Анимируем уши через контейнеры
+        if (leftEarPivot && rightEarPivot) {
+            leftEarPivot.rotation.z = Math.PI / 12 + Math.sin(elapsedTime * 1.5) * 0.1;
+            rightEarPivot.rotation.z = -Math.PI / 12 + Math.sin(elapsedTime * 1.5) * 0.1;
         }
         
         if (pixelRabbit.children[3] && pixelRabbit.children[4]) {
@@ -305,6 +316,7 @@ function animate() {
             nose.scale.set(nosePulse, nosePulse, nosePulse);
         }
         
+        // Обновляем индексы ног, так как мы изменили структуру объектов
         if (pixelRabbit.children[7] && pixelRabbit.children[8] && 
             pixelRabbit.children[9] && pixelRabbit.children[10]) {
             
