@@ -632,7 +632,7 @@ body {
   position: absolute;
   top: 0;
   height: 100%;
-  width: 70px;
+  width: 50px;
   z-index: 2;
   pointer-events: none;
 }
@@ -640,21 +640,19 @@ body {
 .slider-wrapper::before {
   left: 0;
   background: 
-    linear-gradient(to right, var(--background-color) 70%, rgba(26, 26, 26, 0.3) 85%, transparent 100%),
-    repeating-conic-gradient(var(--background-color) 0% 25%, transparent 0% 50%) 
-    50% / 10px 10px;
-  border-right: none;
-  opacity: 0.9;
+    linear-gradient(to right, var(--background-color) 80%, rgba(26, 26, 26, 0.9) 90%, transparent 100%),
+    repeating-conic-gradient(var(--background-color) 0% 25%, rgba(26, 26, 26, 0.95) 0% 50%) 
+    50% / 8px 8px;
+  opacity: 1;
 }
 
 .slider-wrapper::after {
   right: 0;
   background: 
-    linear-gradient(to left, var(--background-color) 70%, rgba(26, 26, 26, 0.3) 85%, transparent 100%),
-    repeating-conic-gradient(var(--background-color) 0% 25%, transparent 0% 50%) 
-    50% / 10px 10px;
-  border-left: none;
-  opacity: 0.9;
+    linear-gradient(to left, var(--background-color) 80%, rgba(26, 26, 26, 0.9) 90%, transparent 100%),
+    repeating-conic-gradient(var(--background-color) 0% 25%, rgba(26, 26, 26, 0.95) 0% 50%) 
+    50% / 8px 8px;
+  opacity: 1;
 }
 
 .slider-track {
