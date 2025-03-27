@@ -128,7 +128,7 @@ function createPixelRabbit() {
     pixelRabbit.add(leftEarPivot);
     pixelRabbit.add(rightEarPivot);
     
-    const legGeometry = new THREE.BoxGeometry(0.4, 0.8, 0.4, 4, 6, 4);
+    const legGeometry = new THREE.BoxGeometry(0.4, 0.6, 0.4, 4, 6, 4);
     const legMaterial = new THREE.MeshBasicMaterial({
         color: 0x32b288,
         wireframe: true,
@@ -138,22 +138,22 @@ function createPixelRabbit() {
     });
     
     const frontLeftLeg = new THREE.Mesh(legGeometry, legMaterial);
-    frontLeftLeg.position.set(-0.8, -0.8, 0.5);
+    frontLeftLeg.position.set(-0.8, -0.95, 0.5);
     frontLeftLeg.renderOrder = 1;
     pixelRabbit.add(frontLeftLeg);
     
     const frontRightLeg = new THREE.Mesh(legGeometry, legMaterial);
-    frontRightLeg.position.set(-0.8, -0.8, -0.5);
+    frontRightLeg.position.set(-0.8, -0.95, -0.5);
     frontRightLeg.renderOrder = 1;
     pixelRabbit.add(frontRightLeg);
     
     const backLeftLeg = new THREE.Mesh(legGeometry, legMaterial);
-    backLeftLeg.position.set(0.8, -0.8, 0.5);
+    backLeftLeg.position.set(0.8, -0.95, 0.5);
     backLeftLeg.renderOrder = 1;
     pixelRabbit.add(backLeftLeg);
     
     const backRightLeg = new THREE.Mesh(legGeometry, legMaterial);
-    backRightLeg.position.set(0.8, -0.8, -0.5);
+    backRightLeg.position.set(0.8, -0.95, -0.5);
     backRightLeg.renderOrder = 1;
     pixelRabbit.add(backRightLeg);
     
@@ -296,12 +296,11 @@ function animate() {
         
         // Анимируем уши через контейнеры
         if (leftEarPivot && rightEarPivot) {
-        // Используем разную частоту и фазовый сдвиг для каждого уха
+            // Используем разную частоту и фазовый сдвиг для каждого уха
             leftEarPivot.rotation.z = Math.PI / 12 + Math.sin(elapsedTime * 1.3) * 0.12;
             rightEarPivot.rotation.z = -Math.PI / 12 + Math.sin(elapsedTime * 1.7 + Math.PI/3) * 0.09;
         }
 
-        
         if (pixelRabbit.children[3] && pixelRabbit.children[4]) {
             const leftEye = pixelRabbit.children[3];
             const rightEye = pixelRabbit.children[4];
@@ -327,10 +326,10 @@ function animate() {
             const backLeftLeg = pixelRabbit.children[9];
             const backRightLeg = pixelRabbit.children[10];
             
-            frontLeftLeg.position.y = -0.8 + Math.sin(elapsedTime * 1.5) * 0.2;
-            frontRightLeg.position.y = -0.8 + Math.sin(elapsedTime * 1.5 + Math.PI) * 0.2;
-            backLeftLeg.position.y = -0.8 + Math.sin(elapsedTime * 1.5 + Math.PI) * 0.2;
-            backRightLeg.position.y = -0.8 + Math.sin(elapsedTime * 1.5) * 0.2;
+            frontLeftLeg.position.y = -0.95 + Math.sin(elapsedTime * 1.5) * 0.1;
+            frontRightLeg.position.y = -0.95 + Math.sin(elapsedTime * 1.5 + Math.PI) * 0.1;
+            backLeftLeg.position.y = -0.95 + Math.sin(elapsedTime * 1.5 + Math.PI) * 0.1;
+            backRightLeg.position.y = -0.95 + Math.sin(elapsedTime * 1.5) * 0.1;
             
             // Добавляем небольшое вращение для более естественного движения
             frontLeftLeg.rotation.x = Math.sin(elapsedTime * 1.5) * 0.3;
