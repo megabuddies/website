@@ -632,47 +632,103 @@ body {
   position: absolute;
   top: 0;
   height: 100%;
-  width: 40px;
+  width: 60px;
   z-index: 2;
   pointer-events: none;
 }
 
 .slider-wrapper::before {
   left: 0;
-  /* Создаем базовый пиксельный узор */
-  background-image: 
-    /* Пиксельный узор в шахматном порядке */
-    linear-gradient(45deg, var(--background-color) 25%, transparent 25%), 
+  background: 
+    /* Крупные пиксели (ближе к контенту) */
+    linear-gradient(45deg, var(--background-color) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--background-color) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--background-color) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--background-color) 75%),
+    
+    /* Средние пиксели */
+    linear-gradient(45deg, var(--background-color) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--background-color) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--background-color) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--background-color) 75%),
+    
+    /* Мелкие пиксели (ближе к краю) */
+    linear-gradient(45deg, var(--background-color) 25%, transparent 25%),
     linear-gradient(-45deg, var(--background-color) 25%, transparent 25%),
     linear-gradient(45deg, transparent 75%, var(--background-color) 75%),
     linear-gradient(-45deg, transparent 75%, var(--background-color) 75%);
   
-  /* Устанавливаем размер пикселей */
-  background-size: 8px 8px;
-  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+  background-size: 
+    16px 16px, /* Размер крупных пикселей */
+    16px 16px,
+    16px 16px,
+    16px 16px,
+    
+    8px 8px, /* Размер средних пикселей */
+    8px 8px,
+    8px 8px,
+    8px 8px,
+    
+    4px 4px, /* Размер мелких пикселей */
+    4px 4px,
+    4px 4px,
+    4px 4px;
   
-  /* Накладываем градиент прозрачности с помощью маски */
-  -webkit-mask-image: linear-gradient(to right, var(--background-color), transparent);
-  mask-image: linear-gradient(to right, var(--background-color), transparent);
+  background-position:
+    0 0, 0 8px, 8px -8px, -8px 0px, /* Позиции для крупных пикселей */
+    20px 0, 20px 4px, 24px -4px, 16px 0px, /* Позиции для средних пикселей */
+    40px 0, 40px 2px, 42px -2px, 38px 0px; /* Позиции для мелких пикселей */
+  
+  /* Маска для плавного перехода от непрозрачного к прозрачному */
+  -webkit-mask-image: linear-gradient(to right, var(--background-color) 20%, rgba(26, 26, 26, 0.6) 50%, transparent 100%);
+  mask-image: linear-gradient(to right, var(--background-color) 20%, rgba(26, 26, 26, 0.6) 50%, transparent 100%);
 }
 
 .slider-wrapper::after {
   right: 0;
-  /* Создаем базовый пиксельный узор */
-  background-image: 
-    /* Пиксельный узор в шахматном порядке */
-    linear-gradient(45deg, var(--background-color) 25%, transparent 25%), 
+  background: 
+    /* Крупные пиксели (ближе к контенту) */
+    linear-gradient(45deg, var(--background-color) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--background-color) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--background-color) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--background-color) 75%),
+    
+    /* Средние пиксели */
+    linear-gradient(45deg, var(--background-color) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--background-color) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--background-color) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--background-color) 75%),
+    
+    /* Мелкие пиксели (ближе к краю) */
+    linear-gradient(45deg, var(--background-color) 25%, transparent 25%),
     linear-gradient(-45deg, var(--background-color) 25%, transparent 25%),
     linear-gradient(45deg, transparent 75%, var(--background-color) 75%),
     linear-gradient(-45deg, transparent 75%, var(--background-color) 75%);
   
-  /* Устанавливаем размер пикселей */
-  background-size: 8px 8px;
-  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+  background-size: 
+    16px 16px, /* Размер крупных пикселей */
+    16px 16px,
+    16px 16px,
+    16px 16px,
+    
+    8px 8px, /* Размер средних пикселей */
+    8px 8px,
+    8px 8px,
+    8px 8px,
+    
+    4px 4px, /* Размер мелких пикселей */
+    4px 4px,
+    4px 4px,
+    4px 4px;
   
-  /* Накладываем градиент прозрачности с помощью маски */
-  -webkit-mask-image: linear-gradient(to left, var(--background-color), transparent);
-  mask-image: linear-gradient(to left, var(--background-color), transparent);
+  background-position:
+    20px 0, 20px 8px, 28px -8px, 12px 0px, /* Позиции для крупных пикселей */
+    40px 0, 40px 4px, 44px -4px, 36px 0px, /* Позиции для средних пикселей */
+    0 0, 0 2px, 2px -2px, -2px 0px; /* Позиции для мелких пикселей */
+  
+  /* Маска для плавного перехода от непрозрачного к прозрачному */
+  -webkit-mask-image: linear-gradient(to left, var(--background-color) 20%, rgba(26, 26, 26, 0.6) 50%, transparent 100%);
+  mask-image: linear-gradient(to left, var(--background-color) 20%, rgba(26, 26, 26, 0.6) 50%, transparent 100%);
 }
 
 .slider-track {
