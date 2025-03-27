@@ -192,23 +192,6 @@ function createPixelRabbit() {
         }
     });
     
-    // Добавляем свечение для лап отдельно с тем же материалом
-    const legGlowMaterial = new THREE.MeshBasicMaterial({
-        color: 0x32b288,
-        transparent: true,
-        opacity: 0.3,
-        depthTest: false
-    });
-    
-    [frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg].forEach(leg => {
-        const glowMesh = new THREE.Mesh(leg.geometry.clone(), legGlowMaterial);
-        glowMesh.position.copy(leg.position);
-        glowMesh.rotation.copy(leg.rotation);
-        glowMesh.scale.set(1.1, 1.1, 1.1);
-        glowMesh.renderOrder = 0; // Рендерим свечение до самих лап
-        pixelRabbit.add(glowMesh);
-    });
-    
     // Масштабируем кролика до подходящего размера
     pixelRabbit.scale.set(0.7, 0.7, 0.7);
     
@@ -356,18 +339,18 @@ function animate() {
         pixelRabbit.scale.set(pulseFactor * 0.7, pulseFactor * 0.7, pulseFactor * 0.7);
         
         // Анимация ушей кролика
-        if (pixelRabbit.children[5] && pixelRabbit.children[6]) {
-            const leftEar = pixelRabbit.children[5];
-            const rightEar = pixelRabbit.children[6];
+        if (pixelRabbit.children && pixelRabbit.children) {
+            const leftEar = pixelRabbit.children;
+            const rightEar = pixelRabbit.children;
             
             leftEar.rotation.z = Math.PI / 12 + Math.sin(elapsedTime * 1.5) * 0.1;
             rightEar.rotation.z = -Math.PI / 12 + Math.sin(elapsedTime * 1.5) * 0.1;
         }
         
         // Анимация глаз (эффект моргания)
-        if (pixelRabbit.children[3] && pixelRabbit.children[4]) {
-            const leftEye = pixelRabbit.children[3];
-            const rightEye = pixelRabbit.children[4];
+        if (pixelRabbit.children && pixelRabbit.children) {
+            const leftEye = pixelRabbit.children;
+            const rightEye = pixelRabbit.children;
             
             // Моргание каждые 3 секунды
             const blinkFactor = Math.sin(elapsedTime * 3) > 0.95 ? 0.1 : 1;
@@ -376,8 +359,8 @@ function animate() {
         }
         
         // Анимация носа
-        if (pixelRabbit.children[2]) {
-            const nose = pixelRabbit.children[2];
+        if (pixelRabbit.children) {
+            const nose = pixelRabbit.children;
             
             // Небольшая пульсация носа
             const nosePulse = Math.sin(elapsedTime * 1.5) * 0.1 + 1;
@@ -385,13 +368,13 @@ function animate() {
         }
         
         // Анимация лап (ходьба)
-        if (pixelRabbit.children[7] && pixelRabbit.children[8] && 
-            pixelRabbit.children[9] && pixelRabbit.children[10]) {
+        if (pixelRabbit.children && pixelRabbit.children && 
+            pixelRabbit.children && pixelRabbit.children) {
             
-            const frontLeftLeg = pixelRabbit.children[7];
-            const frontRightLeg = pixelRabbit.children[8];
-            const backLeftLeg = pixelRabbit.children[9];
-            const backRightLeg = pixelRabbit.children[10];
+            const frontLeftLeg = pixelRabbit.children;
+            const frontRightLeg = pixelRabbit.children;
+            const backLeftLeg = pixelRabbit.children;
+            const backRightLeg = pixelRabbit.children;
             
             // Создаем эффект ходьбы, двигая лапы вверх-вниз
             frontLeftLeg.position.y = -0.8 + Math.sin(elapsedTime * 3) * 0.2;
