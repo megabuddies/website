@@ -104,27 +104,24 @@ function createPixelRabbit() {
     rightEye.renderOrder = 2;
     pixelRabbit.add(rightEye);
     
-    // Создаем контейнеры для ушей
     leftEarPivot = new THREE.Group();
     rightEarPivot = new THREE.Group();
     
-    // Позиционируем контейнеры в местах крепления ушей к голове
-    leftEarPivot.position.set(-1.2, 1.1, 0.3);  // точка крепления к голове
+    leftEarPivot.position.set(-1.2, 1.1, 0.3);
     rightEarPivot.position.set(-1.2, 1.1, -0.3);
     
     const earGeometry = new THREE.BoxGeometry(0.3, 1.5, 0.2, 4, 8, 2);
     
     const leftEar = new THREE.Mesh(earGeometry, material);
-    leftEar.position.set(0, 0.75, 0);  // половина высоты уха
+    leftEar.position.set(0, 0.75, 0);
     leftEarPivot.rotation.z = Math.PI / 12;
     leftEarPivot.add(leftEar);
     
     const rightEar = new THREE.Mesh(earGeometry, material);
-    rightEar.position.set(0, 0.75, 0);  // половина высоты уха
+    rightEar.position.set(0, 0.75, 0);
     rightEarPivot.rotation.z = -Math.PI / 12;
     rightEarPivot.add(rightEar);
     
-    // Добавляем контейнеры ушей к кролику
     pixelRabbit.add(leftEarPivot);
     pixelRabbit.add(rightEarPivot);
     
@@ -294,10 +291,13 @@ function animate() {
         const pulseFactor = Math.sin(elapsedTime * 2) * 0.05 + 1;
         pixelRabbit.scale.set(pulseFactor * 0.7, pulseFactor * 0.7, pulseFactor * 0.7);
         
-        // Анимируем уши через контейнеры
+        // Анимируем уши через контейнеры с независимым движением
         if (leftEarPivot && rightEarPivot) {
-            leftEarPivot.rotation.z = Math.PI / 12 + Math.sin(elapsedTime * 1.5) * 0.1;
-            rightEarPivot.rotation.z = -Math.PI / 12 + Math.sin(elapsedTime * 1.5) * 0.1;
+            // Для левого уха - своя частота и амплитуда
+            leftEarPivot.rotation.z = Math.PI / 12 + Math.sin(elapsedTime * 1.2) * 0.12;
+            
+            // Для правого уха - другая частота, амплитуда и фазовый сдвиг
+            rightEarPivot.rotation.z = -Math.PI / 12 + Math.sin(elapsedTime * 1.8 + Math.PI/3) * 0.09;
         }
         
         if (pixelRabbit.children[3] && pixelRabbit.children[4]) {
@@ -346,13 +346,3 @@ function animate() {
     
     renderer.render(scene, camera);
 }
-
-// Инициализация Three.js при загрузке страницы
-document.addEventListener('DOMContentLoaded', function() {
-    try {
-        initThree();
-    } catch (error) {
-        console.error("Ошибка инициализации Three.js:", error);
-        createFallbackAnimation();
-    }
-});
