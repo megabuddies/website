@@ -632,7 +632,7 @@ body {
   position: absolute;
   top: 0;
   height: 100%;
-  width: 50px;
+  width: 40px;
   z-index: 2;
   pointer-events: none;
 }
@@ -640,41 +640,31 @@ body {
 .slider-wrapper::before {
   left: 0;
   background-image: 
-    repeating-linear-gradient(to right,
-      transparent 0px, transparent 2px,
-      rgba(26, 26, 26, 0.5) 2px, rgba(26, 26, 26, 0.5) 4px,
-      transparent 4px, transparent 6px,
-      rgba(26, 26, 26, 0.5) 6px, rgba(26, 26, 26, 0.5) 8px,
-      transparent 8px, transparent 10px,
-      rgba(26, 26, 26, 0.5) 10px, rgba(26, 26, 26, 0.5) 12px,
-      transparent 12px, transparent 14px,
-      rgba(26, 26, 26, 0.5) 14px, rgba(26, 26, 26, 0.5) 16px,
-      transparent 16px, transparent 18px,
-      rgba(26, 26, 26, 0.5) 18px, rgba(26, 26, 26, 0.5) 20px);
-  background-size: 20px 100%;
-  background-repeat: repeat-x;
-  mask-image: linear-gradient(to right, black 5%, transparent);
-  -webkit-mask-image: linear-gradient(to right, black 5%, transparent);
+    linear-gradient(0deg, 
+      var(--background-color) 4px, transparent 4px, 
+      transparent 8px, var(--background-color) 8px),
+    linear-gradient(90deg, 
+      var(--background-color) 4px, transparent 4px, 
+      transparent 8px, var(--background-color) 8px);
+  background-size: 8px 8px;
+  background-blend-mode: normal;
+  -webkit-mask-image: linear-gradient(to right, var(--background-color) 0%, transparent 100%);
+  mask-image: linear-gradient(to right, var(--background-color) 0%, transparent 100%);
 }
 
 .slider-wrapper::after {
   right: 0;
   background-image: 
-    repeating-linear-gradient(to left,
-      transparent 0px, transparent 2px,
-      rgba(26, 26, 26, 0.5) 2px, rgba(26, 26, 26, 0.5) 4px,
-      transparent 4px, transparent 6px,
-      rgba(26, 26, 26, 0.5) 6px, rgba(26, 26, 26, 0.5) 8px,
-      transparent 8px, transparent 10px,
-      rgba(26, 26, 26, 0.5) 10px, rgba(26, 26, 26, 0.5) 12px,
-      transparent 12px, transparent 14px,
-      rgba(26, 26, 26, 0.5) 14px, rgba(26, 26, 26, 0.5) 16px,
-      transparent 16px, transparent 18px,
-      rgba(26, 26, 26, 0.5) 18px, rgba(26, 26, 26, 0.5) 20px);
-  background-size: 20px 100%;
-  background-repeat: repeat-x;
-  mask-image: linear-gradient(to left, black 5%, transparent);
-  -webkit-mask-image: linear-gradient(to left, black 5%, transparent);
+    linear-gradient(0deg, 
+      var(--background-color) 4px, transparent 4px, 
+      transparent 8px, var(--background-color) 8px),
+    linear-gradient(90deg, 
+      var(--background-color) 4px, transparent 4px, 
+      transparent 8px, var(--background-color) 8px);
+  background-size: 8px 8px;
+  background-blend-mode: normal;
+  -webkit-mask-image: linear-gradient(to left, var(--background-color) 0%, transparent 100%);
+  mask-image: linear-gradient(to left, var(--background-color) 0%, transparent 100%);
 }
 
 .slider-track {
