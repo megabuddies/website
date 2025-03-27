@@ -128,7 +128,8 @@ function createPixelRabbit() {
     pixelRabbit.add(leftEarPivot);
     pixelRabbit.add(rightEarPivot);
     
-    const legGeometry = new THREE.BoxGeometry(0.4, 0.8, 0.4, 4, 6, 4);
+    // Уменьшенный размер лап (изменение геометрии)
+    const legGeometry = new THREE.BoxGeometry(0.3, 0.6, 0.3, 4, 6, 4);
     const legMaterial = new THREE.MeshBasicMaterial({
         color: 0x32b288,
         wireframe: true,
@@ -327,16 +328,17 @@ function animate() {
             const backLeftLeg = pixelRabbit.children[9];
             const backRightLeg = pixelRabbit.children[10];
             
-            frontLeftLeg.position.y = -0.8 + Math.sin(elapsedTime * 1.5) * 0.2;
-            frontRightLeg.position.y = -0.8 + Math.sin(elapsedTime * 1.5 + Math.PI) * 0.2;
-            backLeftLeg.position.y = -0.8 + Math.sin(elapsedTime * 1.5 + Math.PI) * 0.2;
-            backRightLeg.position.y = -0.8 + Math.sin(elapsedTime * 1.5) * 0.2;
+            // Уменьшенная амплитуда вертикального движения
+            frontLeftLeg.position.y = -0.8 + Math.sin(elapsedTime * 1.5) * 0.1;
+            frontRightLeg.position.y = -0.8 + Math.sin(elapsedTime * 1.5 + Math.PI) * 0.1;
+            backLeftLeg.position.y = -0.8 + Math.sin(elapsedTime * 1.5 + Math.PI) * 0.1;
+            backRightLeg.position.y = -0.8 + Math.sin(elapsedTime * 1.5) * 0.1;
             
-            // Добавляем небольшое вращение для более естественного движения
-            frontLeftLeg.rotation.x = Math.sin(elapsedTime * 1.5) * 0.3;
-            frontRightLeg.rotation.x = Math.sin(elapsedTime * 1.5 + Math.PI) * 0.3;
-            backLeftLeg.rotation.x = Math.sin(elapsedTime * 1.5 + Math.PI) * 0.3;
-            backRightLeg.rotation.x = Math.sin(elapsedTime * 1.5) * 0.3;
+            // Уменьшенная амплитуда вращения
+            frontLeftLeg.rotation.x = Math.sin(elapsedTime * 1.5) * 0.15;
+            frontRightLeg.rotation.x = Math.sin(elapsedTime * 1.5 + Math.PI) * 0.15;
+            backLeftLeg.rotation.x = Math.sin(elapsedTime * 1.5 + Math.PI) * 0.15;
+            backRightLeg.rotation.x = Math.sin(elapsedTime * 1.5) * 0.15;
         }
     }
     
