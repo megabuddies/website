@@ -313,16 +313,16 @@ function animate() {
             const backLeftLeg = pixelRabbit.children[9];
             const backRightLeg = pixelRabbit.children[10];
             
-            frontLeftLeg.position.y = -0.8 + Math.sin(elapsedTime * 3) * 0.2;
-            frontRightLeg.position.y = -0.8 + Math.sin(elapsedTime * 3 + Math.PI) * 0.2;
-            backLeftLeg.position.y = -0.8 + Math.sin(elapsedTime * 3 + Math.PI) * 0.2;
-            backRightLeg.position.y = -0.8 + Math.sin(elapsedTime * 3) * 0.2;
+            frontLeftLeg.position.y = -0.8 + Math.sin(elapsedTime * 1.5) * 0.2;
+            frontRightLeg.position.y = -0.8 + Math.sin(elapsedTime * 1.5 + Math.PI) * 0.2;
+            backLeftLeg.position.y = -0.8 + Math.sin(elapsedTime * 1.5 + Math.PI) * 0.2;
+            backRightLeg.position.y = -0.8 + Math.sin(elapsedTime * 1.5) * 0.2;
             
             // Добавляем небольшое вращение для более естественного движения
-            frontLeftLeg.rotation.x = Math.sin(elapsedTime * 3) * 0.3;
-            frontRightLeg.rotation.x = Math.sin(elapsedTime * 3 + Math.PI) * 0.3;
-            backLeftLeg.rotation.x = Math.sin(elapsedTime * 3 + Math.PI) * 0.3;
-            backRightLeg.rotation.x = Math.sin(elapsedTime * 3) * 0.3;
+            frontLeftLeg.rotation.x = Math.sin(elapsedTime * 1.5) * 0.3;
+            frontRightLeg.rotation.x = Math.sin(elapsedTime * 1.5 + Math.PI) * 0.3;
+            backLeftLeg.rotation.x = Math.sin(elapsedTime * 1.5 + Math.PI) * 0.3;
+            backRightLeg.rotation.x = Math.sin(elapsedTime * 1.5) * 0.3;
         }
     }
     
@@ -344,4 +344,3 @@ document.addEventListener('DOMContentLoaded', function() {
         createFallbackAnimation();
     }
 });
-
