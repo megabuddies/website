@@ -639,32 +639,40 @@ body {
 
 .slider-wrapper::before {
   left: 0;
+  /* Создаем базовый пиксельный узор */
   background-image: 
-    linear-gradient(0deg, 
-      var(--background-color) 4px, transparent 4px, 
-      transparent 8px, var(--background-color) 8px),
-    linear-gradient(90deg, 
-      var(--background-color) 4px, transparent 4px, 
-      transparent 8px, var(--background-color) 8px);
+    /* Пиксельный узор в шахматном порядке */
+    linear-gradient(45deg, var(--background-color) 25%, transparent 25%), 
+    linear-gradient(-45deg, var(--background-color) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--background-color) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--background-color) 75%);
+  
+  /* Устанавливаем размер пикселей */
   background-size: 8px 8px;
-  background-blend-mode: normal;
-  -webkit-mask-image: linear-gradient(to right, var(--background-color) 0%, transparent 100%);
-  mask-image: linear-gradient(to right, var(--background-color) 0%, transparent 100%);
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+  
+  /* Накладываем градиент прозрачности с помощью маски */
+  -webkit-mask-image: linear-gradient(to right, var(--background-color), transparent);
+  mask-image: linear-gradient(to right, var(--background-color), transparent);
 }
 
 .slider-wrapper::after {
   right: 0;
+  /* Создаем базовый пиксельный узор */
   background-image: 
-    linear-gradient(0deg, 
-      var(--background-color) 4px, transparent 4px, 
-      transparent 8px, var(--background-color) 8px),
-    linear-gradient(90deg, 
-      var(--background-color) 4px, transparent 4px, 
-      transparent 8px, var(--background-color) 8px);
+    /* Пиксельный узор в шахматном порядке */
+    linear-gradient(45deg, var(--background-color) 25%, transparent 25%), 
+    linear-gradient(-45deg, var(--background-color) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--background-color) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--background-color) 75%);
+  
+  /* Устанавливаем размер пикселей */
   background-size: 8px 8px;
-  background-blend-mode: normal;
-  -webkit-mask-image: linear-gradient(to left, var(--background-color) 0%, transparent 100%);
-  mask-image: linear-gradient(to left, var(--background-color) 0%, transparent 100%);
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+  
+  /* Накладываем градиент прозрачности с помощью маски */
+  -webkit-mask-image: linear-gradient(to left, var(--background-color), transparent);
+  mask-image: linear-gradient(to left, var(--background-color), transparent);
 }
 
 .slider-track {
