@@ -296,9 +296,11 @@ function animate() {
         
         // Анимируем уши через контейнеры
         if (leftEarPivot && rightEarPivot) {
-            leftEarPivot.rotation.z = Math.PI / 12 + Math.sin(elapsedTime * 1.5) * 0.1;
-            rightEarPivot.rotation.z = -Math.PI / 12 + Math.sin(elapsedTime * 1.5) * 0.1;
+        // Используем разную частоту и фазовый сдвиг для каждого уха
+            leftEarPivot.rotation.z = Math.PI / 12 + Math.sin(elapsedTime * 1.3) * 0.12;
+            rightEarPivot.rotation.z = -Math.PI / 12 + Math.sin(elapsedTime * 1.7 + Math.PI/3) * 0.09;
         }
+
         
         if (pixelRabbit.children[3] && pixelRabbit.children[4]) {
             const leftEye = pixelRabbit.children[3];
