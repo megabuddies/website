@@ -632,6 +632,20 @@ body {
   height: 100%;
 }
 
+/* Добавляем CSS-анимацию для слайдера вместо JavaScript */
+.slider-track.auto-scroll-animation {
+  animation: slideAnimation 30s linear infinite;
+}
+
+@keyframes slideAnimation {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-1 * var(--slide-distance)));
+  }
+}
+
 .nft-card {
   flex: 0 0 auto;
   width: 250px;
@@ -639,9 +653,12 @@ body {
   border: 2px solid var(--accent-color);
   border-radius: 0;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   cursor: pointer;
   clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
+  /* Оптимизация для GPU-рендеринга */
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .nft-card:hover {
