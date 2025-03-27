@@ -5,18 +5,14 @@ let mouseX = 0, mouseY = 0;
 let clock = new THREE.Clock();
 
 function initThree() {
-    // Предварительная загрузка ресурсов
     const loadingManager = new THREE.LoadingManager();
     loadingManager.onLoad = function() {
         try {
-            // Создаем сцену
             scene = new THREE.Scene();
             
-            // Настраиваем камеру
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             camera.position.z = 5;
             
-            // Настраиваем рендерер с эффектом пост-обработки
             renderer = new THREE.WebGLRenderer({ 
                 alpha: true, 
                 antialias: true,
@@ -27,7 +23,6 @@ function initThree() {
             renderer.domElement.classList.add('fullscreen-bg');
             document.body.appendChild(renderer.domElement);
             
-            // Добавляем освещение
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
             scene.add(ambientLight);
             
@@ -35,22 +30,13 @@ function initThree() {
             directionalLight.position.set(10, 10, 10);
             scene.add(directionalLight);
             
-            // Создаем пиксельного кролика
             createPixelRabbit();
-            
-            // Создаем систему частиц в стиле MegaETH
             createParticleSystem();
-            
-            // Создаем сетку
             createGrid();
             
-            // Отслеживание движения мыши для интерактивности
             document.addEventListener('mousemove', onDocumentMouseMove);
-            
-            // Обработка изменения размера окна
             window.addEventListener('resize', onWindowResize);
             
-            // Запускаем анимацию
             animate();
         } catch (error) {
             console.error("Ошибка инициализации Three.js:", error);
@@ -63,7 +49,6 @@ function initThree() {
         createFallbackAnimation();
     };
     
-    // Загружаем необходимые ресурсы
     loadingManager.itemStart();
     loadingManager.itemEnd();
 }
@@ -71,9 +56,8 @@ function initThree() {
 function createPixelRabbit() {
     pixelRabbit = new THREE.Group();
     
-    // Создаем тело кролика - прямоугольное и вытянутое
     const bodyGeometry = new THREE.BoxGeometry(2, 1.5, 1.5, 8, 8, 8);
-    const material = new THREE.MeshStandardMaterial({
+    const material = new THREE.MeshBasicMaterial({
         color: 0x32b288,
         wireframe: true,
         transparent: true,
@@ -84,15 +68,13 @@ function createPixelRabbit() {
     body.position.set(0, 0, 0);
     pixelRabbit.add(body);
     
-    // Создаем голову кролика
     const headGeometry = new THREE.BoxGeometry(1.2, 1.2, 1.2, 8, 8, 8);
     const head = new THREE.Mesh(headGeometry, material);
     head.position.set(-1.2, 0.5, 0);
     pixelRabbit.add(head);
     
-    // Добавляем нос
     const noseGeometry = new THREE.SphereGeometry(0.2, 8, 8);
-    const noseMaterial = new THREE.MeshStandardMaterial({
+    const noseMaterial = new THREE.MeshBasicMaterial({
         color: 0xf7519b,
         wireframe: true,
         transparent: true,
@@ -102,26 +84,25 @@ function createPixelRabbit() {
     nose.position.set(-1.8, 0.5, 0);
     pixelRabbit.add(nose);
     
-    // Добавляем глаза
     const eyeGeometry = new THREE.SphereGeometry(0.15, 12, 8);
-    const eyeMaterial = new THREE.MeshStandardMaterial({
+    const eyeMaterial = new THREE.MeshBasicMaterial({
         color: 0x44445c,
         wireframe: true,
         transparent: true,
-        opacity: 0.9
+        opacity: 0.9,
+        depthWrite: false
     });
     
     const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
     leftEye.position.set(-1.7, 0.7, 0.4);
-    leftEye.name = "leftEye";
+    leftEye.renderOrder = 2;
     pixelRabbit.add(leftEye);
     
     const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
     rightEye.position.set(-1.7, 0.7, -0.4);
-    rightEye.name = "rightEye";
+    rightEye.renderOrder = 2;
     pixelRabbit.add(rightEye);
     
-    // Создаем уши кролика
     const earGeometry = new THREE.BoxGeometry(0.3, 1.5, 0.2, 4, 8, 2);
     
     const leftEar = new THREE.Mesh(earGeometry, material);
@@ -134,10 +115,8 @@ function createPixelRabbit() {
     rightEar.rotation.z = -Math.PI / 12;
     pixelRabbit.add(rightEar);
     
-    // Создаем лапы кролика
     const legGeometry = new THREE.BoxGeometry(0.4, 0.8, 0.4, 4, 6, 4);
-    
-    const legMaterial = new THREE.MeshStandardMaterial({
+    const legMaterial = new THREE.MeshBasicMaterial({
         color: 0x32b288,
         wireframe: true,
         transparent: true,
@@ -165,45 +144,10 @@ function createPixelRabbit() {
     backRightLeg.renderOrder = 1;
     pixelRabbit.add(backRightLeg);
     
-    // Создаем хвост кролика
     const tailGeometry = new THREE.SphereGeometry(0.3, 8, 8);
     const tail = new THREE.Mesh(tailGeometry, material);
     tail.position.set(1.2, 0, 0);
     pixelRabbit.add(tail);
-    
-    // Добавляем свечение
-    const glowMaterial = new THREE.MeshBasicMaterial({
-        color: 0x32b288,
-        transparent: true,
-        opacity: 0.3
-    });
-    
-    pixelRabbit.children.forEach(part => {
-        if (part !== frontLeftLeg && part !== frontRightLeg && 
-            part !== backLeftLeg && part !== backRightLeg) {
-            const glowMesh = new THREE.Mesh(part.geometry.clone(), glowMaterial);
-            glowMesh.position.copy(part.position);
-            glowMesh.rotation.copy(part.rotation);
-            glowMesh.scale.set(1.1, 1.1, 1.1);
-            pixelRabbit.add(glowMesh);
-        }
-    });
-    
-    const legGlowMaterial = new THREE.MeshBasicMaterial({
-        color: 0x32b288,
-        transparent: true,
-        opacity: 0.3,
-        depthTest: false
-    });
-    
-    [frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg].forEach(leg => {
-        const glowMesh = new THREE.Mesh(leg.geometry.clone(), legGlowMaterial);
-        glowMesh.position.copy(leg.position);
-        glowMesh.rotation.copy(leg.rotation);
-        glowMesh.scale.set(1.1, 1.1, 1.1);
-        glowMesh.renderOrder = 0;
-        pixelRabbit.add(glowMesh);
-    });
     
     pixelRabbit.scale.set(0.7, 0.7, 0.7);
     
@@ -337,7 +281,6 @@ function animate() {
         const pulseFactor = Math.sin(elapsedTime * 2) * 0.05 + 1;
         pixelRabbit.scale.set(pulseFactor * 0.7, pulseFactor * 0.7, pulseFactor * 0.7);
         
-        // Анимация ушей кролика
         if (pixelRabbit.children[5] && pixelRabbit.children[6]) {
             const leftEar = pixelRabbit.children[5];
             const rightEar = pixelRabbit.children[6];
@@ -346,27 +289,22 @@ function animate() {
             rightEar.rotation.z = -Math.PI / 12 + Math.sin(elapsedTime * 1.5) * 0.1;
         }
         
-        // Анимация глаз (эффект моргания)
-        const leftEye = pixelRabbit.getObjectByName("leftEye");
-        const rightEye = pixelRabbit.getObjectByName("rightEye");
-        
-        if (leftEye && rightEye) {
-            // Моргание каждые 3 секунды
-            const blinkFactor = Math.sin(elapsedTime * 3) > 0.95 ? 0.1 : 1;
-            leftEye.scale.y = blinkFactor;
-            rightEye.scale.y = blinkFactor;
+        if (pixelRabbit.children[3] && pixelRabbit.children[4]) {
+            const leftEye = pixelRabbit.children[3];
+            const rightEye = pixelRabbit.children[4];
+            
+            const blinkFactor = Math.sin(elapsedTime * 3) > 0.95 ? 0.2 : 1;
+            leftEye.scale.set(1, blinkFactor, 1);
+            rightEye.scale.set(1, blinkFactor, 1);
         }
         
-        // Анимация носа
         if (pixelRabbit.children[2]) {
             const nose = pixelRabbit.children[2];
             
-            // Небольшая пульсация носа
             const nosePulse = Math.sin(elapsedTime * 1.5) * 0.1 + 1;
             nose.scale.set(nosePulse, nosePulse, nosePulse);
         }
         
-        // Анимация лап (ходьба)
         if (pixelRabbit.children[7] && pixelRabbit.children[8] && 
             pixelRabbit.children[9] && pixelRabbit.children[10]) {
             
@@ -375,7 +313,6 @@ function animate() {
             const backLeftLeg = pixelRabbit.children[9];
             const backRightLeg = pixelRabbit.children[10];
             
-            // Создаем эффект ходьбы, двигая лапы вверх-вниз
             frontLeftLeg.position.y = -0.8 + Math.sin(elapsedTime * 3) * 0.2;
             frontRightLeg.position.y = -0.8 + Math.sin(elapsedTime * 3 + Math.PI) * 0.2;
             backLeftLeg.position.y = -0.8 + Math.sin(elapsedTime * 3 + Math.PI) * 0.2;
@@ -389,7 +326,7 @@ function animate() {
         }
     }
     
-        // Вращаем систему частиц
+    // Вращаем систему частиц
     if (particleSystem) {
         particleSystem.rotation.x += 0.0005;
         particleSystem.rotation.y += 0.0008;
