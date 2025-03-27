@@ -632,7 +632,7 @@ body {
   position: absolute;
   top: 0;
   height: 100%;
-  width: 40px;
+  width: 50px;
   z-index: 2;
   pointer-events: none;
 }
@@ -640,28 +640,36 @@ body {
 .slider-wrapper::before {
   left: 0;
   background-image: 
-    linear-gradient(to right, var(--background-color), transparent),
-    linear-gradient(to right, 
-      var(--background-color) 8px, transparent 8px,
-      transparent 16px, var(--background-color) 16px,
-      var(--background-color) 24px, transparent 24px,
-      transparent 32px, var(--background-color) 32px);
-  background-size: cover, 40px 8px;
-  background-repeat: no-repeat, repeat;
+    linear-gradient(to right, var(--background-color) 70%, transparent 100%),
+    repeating-linear-gradient(to bottom,
+      transparent 0px, transparent 8px,
+      rgba(26, 26, 26, 0.8) 8px, rgba(26, 26, 26, 0.8) 16px),
+    repeating-linear-gradient(to right,
+      var(--background-color) 0px, var(--background-color) 8px,
+      transparent 8px, transparent 16px,
+      var(--background-color) 16px, var(--background-color) 24px,
+      transparent 24px, transparent 32px,
+      var(--background-color) 32px, var(--background-color) 40px,
+      transparent 40px, transparent 48px);
+  background-size: 100% 100%, 100% 16px, 100% 100%;
   opacity: 1;
 }
 
 .slider-wrapper::after {
   right: 0;
   background-image: 
-    linear-gradient(to left, var(--background-color), transparent),
-    linear-gradient(to left, 
-      var(--background-color) 8px, transparent 8px,
-      transparent 16px, var(--background-color) 16px,
-      var(--background-color) 24px, transparent 24px,
-      transparent 32px, var(--background-color) 32px);
-  background-size: cover, 40px 8px;
-  background-repeat: no-repeat, repeat;
+    linear-gradient(to left, var(--background-color) 70%, transparent 100%),
+    repeating-linear-gradient(to bottom,
+      transparent 0px, transparent 8px,
+      rgba(26, 26, 26, 0.8) 8px, rgba(26, 26, 26, 0.8) 16px),
+    repeating-linear-gradient(to left,
+      var(--background-color) 0px, var(--background-color) 8px,
+      transparent 8px, transparent 16px,
+      var(--background-color) 16px, var(--background-color) 24px,
+      transparent 24px, transparent 32px,
+      var(--background-color) 32px, var(--background-color) 40px,
+      transparent 40px, transparent 48px);
+  background-size: 100% 100%, 100% 16px, 100% 100%;
   opacity: 1;
 }
 
