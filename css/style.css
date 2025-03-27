@@ -573,18 +573,11 @@ body {
 }
 
 /* Секция "Коллекция" */
-#collection {
-  position: relative;
-  overflow: hidden;
-}
-
 .collection-filters {
   display: flex;
   justify-content: center;
   gap: 15px;
   margin-bottom: 30px;
-  position: relative;
-  z-index: 10;
 }
 
 .filter-btn {
@@ -611,23 +604,15 @@ body {
   color: var(--secondary-color);
 }
 
-.nft-grid-container {
-  position: relative;
-  min-height: 450px;
-  margin-bottom: 30px;
-}
-
 .nft-grid {
   display: flex;
   padding: 20px 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.5s ease, height 0.3s ease;
   opacity: 1;
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100%;
   overflow: hidden;
-  min-height: 450px;
+  min-height: 400px;
 }
 
 .slider-wrapper {

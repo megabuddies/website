@@ -5,7 +5,16 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Функция для загрузки изображений для каждой категории
     function loadImagesForCategory(category) {
+        // Если уже выбрана эта категория, ничего не делаем
+        if (category === currentCategory) return;
+        
         currentCategory = category;
+        
+        // Прекращаем глобальную анимацию, если она запущена
+        if (globalAnimationId) {
+            cancelAnimationFrame(globalAnimationId);
+            globalAnimationId = null;
+        }
         
         // Получаем все grid-контейнеры
         const allContainers = document.querySelectorAll('.nft-grid');
@@ -14,13 +23,16 @@ document.addEventListener('DOMContentLoaded', function() {
         const container = document.querySelector(`.nft-grid[data-category="${category}"]`);
         if (!container) return;
         
+        // Сохраняем текущую высоту контейнера перед модификациями
+        // чтобы избежать "прыжков" при переключении категорий
+        const currentHeight = container.offsetHeight > 0 ? container.offsetHeight : 400;
+        document.querySelectorAll('.nft-grid').forEach(grid => {
+            grid.style.height = `${currentHeight}px`;
+        });
+        
         // Сначала подготавливаем контейнер, но не показываем
         container.style.opacity = '0';
         container.style.display = 'flex';
-        container.style.position = 'absolute';
-        container.style.top = '0';
-        container.style.left = '0';
-        container.style.width = '100%';
         
         // Очищаем контейнер перед добавлением новых изображений
         container.innerHTML = '';
@@ -57,17 +69,13 @@ document.addEventListener('DOMContentLoaded', function() {
         allContainers.forEach(grid => {
             if (grid !== container) {
                 grid.style.opacity = '0';
-                grid.style.zIndex = '1';
                 setTimeout(() => {
                     grid.style.display = 'none';
                 }, 300);
             }
         });
         
-        // Устанавливаем z-index чтобы текущая категория была поверх других
-        container.style.zIndex = '2';
-        
-        // Плавно показываем текущий контейнер после короткой паузы
+        // Плавно показываем текущий контейнер
         setTimeout(() => {
             container.style.opacity = '1';
         }, 50);
@@ -156,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Супер-плавная анимация с использованием requestAnimationFrame
         let position = 0;
-        const speed = 0.8; // пикселей за кадр (увеличено для более быстрой прокрутки)
+        const speed = 0.8; // Увеличиваем скорость с 0.2 до 0.8 пикселей за кадр
         
         // Функция для анимации с использованием requestAnimationFrame
         function animate() {
