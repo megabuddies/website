@@ -607,6 +607,19 @@ body {
   scroll-behavior: smooth;
   transition: opacity 0.3s ease;
   opacity: 1;
+  position: relative;
+  width: 100%;
+}
+
+.slider-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.slider-track {
+  display: flex;
+  gap: 25px;
 }
 
 .nft-card {
