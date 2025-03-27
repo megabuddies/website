@@ -639,16 +639,22 @@ body {
 
 .slider-wrapper::before {
   left: 0;
-  background: linear-gradient(to right, var(--background-color) 70%, rgba(26, 26, 26, 0.5) 85%, transparent 100%);
-  border-right: 2px dashed var(--accent-color);
-  opacity: 0.8;
+  background: 
+    linear-gradient(to right, var(--background-color) 70%, rgba(26, 26, 26, 0.3) 85%, transparent 100%),
+    repeating-conic-gradient(var(--background-color) 0% 25%, transparent 0% 50%) 
+    50% / 10px 10px;
+  border-right: none;
+  opacity: 0.9;
 }
 
 .slider-wrapper::after {
   right: 0;
-  background: linear-gradient(to left, var(--background-color) 70%, rgba(26, 26, 26, 0.5) 85%, transparent 100%);
-  border-left: 2px dashed var(--accent-color);
-  opacity: 0.8;
+  background: 
+    linear-gradient(to left, var(--background-color) 70%, rgba(26, 26, 26, 0.3) 85%, transparent 100%),
+    repeating-conic-gradient(var(--background-color) 0% 25%, transparent 0% 50%) 
+    50% / 10px 10px;
+  border-left: none;
+  opacity: 0.9;
 }
 
 .slider-track {
