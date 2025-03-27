@@ -632,103 +632,81 @@ body {
   position: absolute;
   top: 0;
   height: 100%;
-  width: 60px;
+  width: 50px;
   z-index: 2;
   pointer-events: none;
 }
 
 .slider-wrapper::before {
   left: 0;
+  /* Создаем эффект растворения с переходом от крупных к мелким пикселям */
   background: 
-    /* Крупные пиксели (ближе к контенту) */
-    linear-gradient(45deg, var(--background-color) 25%, transparent 25%),
-    linear-gradient(-45deg, var(--background-color) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, var(--background-color) 75%),
-    linear-gradient(-45deg, transparent 75%, var(--background-color) 75%),
-    
-    /* Средние пиксели */
-    linear-gradient(45deg, var(--background-color) 25%, transparent 25%),
-    linear-gradient(-45deg, var(--background-color) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, var(--background-color) 75%),
-    linear-gradient(-45deg, transparent 75%, var(--background-color) 75%),
-    
-    /* Мелкие пиксели (ближе к краю) */
-    linear-gradient(45deg, var(--background-color) 25%, transparent 25%),
-    linear-gradient(-45deg, var(--background-color) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, var(--background-color) 75%),
-    linear-gradient(-45deg, transparent 75%, var(--background-color) 75%);
+    /* Крупные пиксели в начале (ближе к краю) */
+    repeating-conic-gradient(
+      var(--background-color) 0%, var(--background-color) 25%, 
+      transparent 0%, transparent 50%
+    ) 0 0 / 12px 12px,
+    /* Средние пиксели в середине */
+    repeating-conic-gradient(
+      var(--background-color) 0%, var(--background-color) 25%, 
+      transparent 0%, transparent 50%
+    ) 12px 0 / 8px 8px,
+    /* Мелкие пиксели в конце (дальше от края) */
+    repeating-conic-gradient(
+      var(--background-color) 0%, var(--background-color) 25%, 
+      transparent 0%, transparent 50%
+    ) 20px 0 / 4px 4px,
+    /* Очень мелкие пиксели на границе растворения */
+    repeating-conic-gradient(
+      var(--background-color) 0%, var(--background-color) 25%, 
+      transparent 0%, transparent 50%
+    ) 24px 0 / 2px 2px;
   
-  background-size: 
-    16px 16px, /* Размер крупных пикселей */
-    16px 16px,
-    16px 16px,
-    16px 16px,
-    
-    8px 8px, /* Размер средних пикселей */
-    8px 8px,
-    8px 8px,
-    8px 8px,
-    
-    4px 4px, /* Размер мелких пикселей */
-    4px 4px,
-    4px 4px,
-    4px 4px;
-  
-  background-position:
-    0 0, 0 8px, 8px -8px, -8px 0px, /* Позиции для крупных пикселей */
-    20px 0, 20px 4px, 24px -4px, 16px 0px, /* Позиции для средних пикселей */
-    40px 0, 40px 2px, 42px -2px, 38px 0px; /* Позиции для мелких пикселей */
-  
-  /* Маска для плавного перехода от непрозрачного к прозрачному */
-  -webkit-mask-image: linear-gradient(to right, var(--background-color) 20%, rgba(26, 26, 26, 0.6) 50%, transparent 100%);
-  mask-image: linear-gradient(to right, var(--background-color) 20%, rgba(26, 26, 26, 0.6) 50%, transparent 100%);
+  /* Накладываем градиент прозрачности от края к центру */
+  -webkit-mask-image: linear-gradient(to right, 
+    var(--background-color) 0%, 
+    var(--background-color) 50%, 
+    transparent 100%);
+  mask-image: linear-gradient(to right, 
+    var(--background-color) 0%, 
+    var(--background-color) 50%, 
+    transparent 100%);
 }
 
 .slider-wrapper::after {
   right: 0;
+  /* Создаем эффект растворения с переходом от крупных к мелким пикселям */
   background: 
-    /* Крупные пиксели (ближе к контенту) */
-    linear-gradient(45deg, var(--background-color) 25%, transparent 25%),
-    linear-gradient(-45deg, var(--background-color) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, var(--background-color) 75%),
-    linear-gradient(-45deg, transparent 75%, var(--background-color) 75%),
-    
-    /* Средние пиксели */
-    linear-gradient(45deg, var(--background-color) 25%, transparent 25%),
-    linear-gradient(-45deg, var(--background-color) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, var(--background-color) 75%),
-    linear-gradient(-45deg, transparent 75%, var(--background-color) 75%),
-    
-    /* Мелкие пиксели (ближе к краю) */
-    linear-gradient(45deg, var(--background-color) 25%, transparent 25%),
-    linear-gradient(-45deg, var(--background-color) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, var(--background-color) 75%),
-    linear-gradient(-45deg, transparent 75%, var(--background-color) 75%);
+    /* Крупные пиксели в начале (ближе к краю) */
+    repeating-conic-gradient(
+      var(--background-color) 0%, var(--background-color) 25%, 
+      transparent 0%, transparent 50%
+    ) calc(100% - 12px) 0 / 12px 12px,
+    /* Средние пиксели в середине */
+    repeating-conic-gradient(
+      var(--background-color) 0%, var(--background-color) 25%, 
+      transparent 0%, transparent 50%
+    ) calc(100% - 20px) 0 / 8px 8px,
+    /* Мелкие пиксели в конце (дальше от края) */
+    repeating-conic-gradient(
+      var(--background-color) 0%, var(--background-color) 25%, 
+      transparent 0%, transparent 50%
+    ) calc(100% - 24px) 0 / 4px 4px,
+    /* Очень мелкие пиксели на границе растворения */
+    repeating-conic-gradient(
+      var(--background-color) 0%, var(--background-color) 25%, 
+      transparent 0%, transparent 50%
+    ) calc(100% - 26px) 0 / 2px 2px;
   
-  background-size: 
-    16px 16px, /* Размер крупных пикселей */
-    16px 16px,
-    16px 16px,
-    16px 16px,
-    
-    8px 8px, /* Размер средних пикселей */
-    8px 8px,
-    8px 8px,
-    8px 8px,
-    
-    4px 4px, /* Размер мелких пикселей */
-    4px 4px,
-    4px 4px,
-    4px 4px;
-  
-  background-position:
-    20px 0, 20px 8px, 28px -8px, 12px 0px, /* Позиции для крупных пикселей */
-    40px 0, 40px 4px, 44px -4px, 36px 0px, /* Позиции для средних пикселей */
-    0 0, 0 2px, 2px -2px, -2px 0px; /* Позиции для мелких пикселей */
-  
-  /* Маска для плавного перехода от непрозрачного к прозрачному */
-  -webkit-mask-image: linear-gradient(to left, var(--background-color) 20%, rgba(26, 26, 26, 0.6) 50%, transparent 100%);
-  mask-image: linear-gradient(to left, var(--background-color) 20%, rgba(26, 26, 26, 0.6) 50%, transparent 100%);
+  /* Накладываем градиент прозрачности от края к центру */
+  -webkit-mask-image: linear-gradient(to left, 
+    var(--background-color) 0%, 
+    var(--background-color) 50%, 
+    transparent 100%);
+  mask-image: linear-gradient(to left, 
+    var(--background-color) 0%, 
+    var(--background-color) 50%, 
+    transparent 100%);
 }
 
 .slider-track {
