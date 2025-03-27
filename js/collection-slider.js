@@ -88,78 +88,63 @@ document.addEventListener('DOMContentLoaded', function() {
         const cards = container.querySelectorAll('.nft-card');
         if (cards.length === 0) return;
         
-        // Создаем обертку для слайдшоу
+        // Создаем обертку для слайдшоу с фиксированной шириной
         const sliderWrapper = document.createElement('div');
         sliderWrapper.className = 'slider-wrapper';
-        sliderWrapper.style.display = 'flex';
         sliderWrapper.style.width = '100%';
         sliderWrapper.style.overflow = 'hidden';
+        sliderWrapper.style.position = 'relative';
         
-        // Создаем ленту слайдера, которая будет прокручиваться
+        // Создаем ленту слайдера, которая будет анимироваться
         const sliderTrack = document.createElement('div');
         sliderTrack.className = 'slider-track';
         sliderTrack.style.display = 'flex';
-        sliderTrack.style.transitionProperty = 'transform';
-        sliderTrack.style.willChange = 'transform';
+        sliderTrack.style.position = 'relative';
+        sliderTrack.style.width = '10000px'; // Большое значение для размещения всех карточек
         
-        // Клонируем элементы из контейнера в ленту слайдера
-        Array.from(cards).forEach(card => {
-            sliderTrack.appendChild(card.cloneNode(true));
-        });
-        
-        // Добавляем дублирующие элементы для бесконечной прокрутки
-        Array.from(cards).forEach(card => {
-            sliderTrack.appendChild(card.cloneNode(true));
-        });
+        // Клонируем элементы в ленту слайдера (дублируем для непрерывной прокрутки)
+        for (let i = 0; i < 3; i++) { // Создаем три полных набора карточек для бесконечной прокрутки
+            Array.from(cards).forEach(card => {
+                sliderTrack.appendChild(card.cloneNode(true));
+            });
+        }
         
         // Очищаем контейнер и добавляем нашу структуру
         container.innerHTML = '';
         sliderWrapper.appendChild(sliderTrack);
         container.appendChild(sliderWrapper);
         
-        // Устанавливаем размер ленты слайдера
+        // Получаем ширину одной карточки и отступа
         const cardWidth = cards[0].offsetWidth;
-        const totalCards = sliderTrack.children.length;
         const gapWidth = 25; // отступ между карточками
-        const trackWidth = (cardWidth + gapWidth) * totalCards;
-        sliderTrack.style.width = trackWidth + 'px';
+        const slideWidth = cardWidth + gapWidth;
+        const totalWidth = slideWidth * cards.length;
         
-        // Настраиваем стиль для правильного отображения
-        container.style.overflow = 'hidden';
+        // Устанавливаем начальную позицию 
+        sliderTrack.style.transform = 'translateX(0)';
         
-        // Переменные для анимации
-        let animationFrame;
-        const speed = 1.5; // скорость прокрутки пикселей за кадр
-        
-        // Основная функция анимации слайдера
-        function animateSlider() {
-            // Получаем текущую позицию прокрутки
-            const currentScroll = container.scrollLeft;
+        // Функция для бесконечной прокрутки с CSS анимацией
+        function startContinuousScroll() {
+            // Устанавливаем CSS анимацию
+            sliderTrack.style.transition = 'transform 0s linear';
+            sliderTrack.style.transform = 'translateX(0)';
             
-            // Вычисляем новую позицию прокрутки
-            let newScroll = currentScroll + speed;
-            
-            // Проверяем, достигли ли мы половины дубликатов
-            const halfwayPoint = (cardWidth + gapWidth) * (cards.length);
-            
-            // Если мы достигли половины точки (где начинаются дубликаты),
-            // перебрасываем в начало без анимации
-            if (newScroll >= halfwayPoint) {
-                newScroll = 0;
-            }
-            
-            // Применяем новую позицию прокрутки
-            container.scrollLeft = newScroll;
-            
-            // Продолжаем анимацию
-            animationFrame = requestAnimationFrame(animateSlider);
+            // Небольшая задержка для установки начальной позиции
+            setTimeout(() => {
+                // Установка плавной анимации
+                sliderTrack.style.transition = 'transform 60s linear infinite';
+                sliderTrack.style.transform = `translateX(-${totalWidth * 2}px)`;
+            }, 10);
         }
         
-        // Запускаем анимацию сразу
-        animationFrame = requestAnimationFrame(animateSlider);
+        // Запускаем непрерывную прокрутку
+        startContinuousScroll();
         
-        // Сохраняем ID анимации в dataset контейнера для возможной остановки в будущем
-        container.dataset.animationFrame = animationFrame;
+        // Обработчик для отслеживания завершения анимации и перезапуска
+        sliderTrack.addEventListener('transitionend', function() {
+            // Сбрасываем позицию без анимации и запускаем снова
+            startContinuousScroll();
+        });
     }
     
     // Загружаем изображения для активной категории при загрузке страницы
@@ -182,12 +167,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // Скрываем все grid-контейнеры с анимацией
             document.querySelectorAll('.nft-grid').forEach(grid => {
                 grid.style.opacity = '0';
-                
-                // Останавливаем текущую анимацию если она есть
-                if (grid.dataset.animationFrame) {
-                    cancelAnimationFrame(Number(grid.dataset.animationFrame));
-                }
-                
                 setTimeout(() => {
                     grid.style.display = 'none';
                 }, 300);

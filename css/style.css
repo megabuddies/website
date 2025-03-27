@@ -599,16 +599,19 @@ body {
   box-shadow: 0 0 10px rgba(50, 178, 136, 0.5);
 }
 
+.filter-btn.active {
+  background-color: rgba(50, 178, 136, 0.3);
+  box-shadow: 0 0 10px rgba(50, 178, 136, 0.7);
+}
+
 .nft-grid {
   display: flex;
-  gap: 25px;
-  overflow-x: hidden;
   padding: 20px 0;
-  scroll-behavior: smooth;
   transition: opacity 0.3s ease;
   opacity: 1;
   position: relative;
   width: 100%;
+  overflow: hidden;
 }
 
 .slider-wrapper {
@@ -620,6 +623,8 @@ body {
 .slider-track {
   display: flex;
   gap: 25px;
+  will-change: transform;
+  transform: translateX(0);
 }
 
 .nft-card {
@@ -632,6 +637,7 @@ body {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
   clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
+  margin-right: 25px;
 }
 
 .nft-card:hover {
