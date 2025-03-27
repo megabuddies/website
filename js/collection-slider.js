@@ -88,63 +88,78 @@ document.addEventListener('DOMContentLoaded', function() {
         const cards = container.querySelectorAll('.nft-card');
         if (cards.length === 0) return;
         
-        // Создаем обертку для слайдшоу с фиксированной шириной
+        // Очищаем контейнер
+        container.innerHTML = '';
+        
+        // Создаем обертку для слайдера
         const sliderWrapper = document.createElement('div');
         sliderWrapper.className = 'slider-wrapper';
-        sliderWrapper.style.width = '100%';
-        sliderWrapper.style.overflow = 'hidden';
-        sliderWrapper.style.position = 'relative';
         
-        // Создаем ленту слайдера, которая будет анимироваться
+        // Создаем ленту слайдера
         const sliderTrack = document.createElement('div');
         sliderTrack.className = 'slider-track';
-        sliderTrack.style.display = 'flex';
-        sliderTrack.style.position = 'relative';
-        sliderTrack.style.width = '10000px'; // Большое значение для размещения всех карточек
         
-        // Клонируем элементы в ленту слайдера (дублируем для непрерывной прокрутки)
-        for (let i = 0; i < 3; i++) { // Создаем три полных набора карточек для бесконечной прокрутки
-            Array.from(cards).forEach(card => {
-                sliderTrack.appendChild(card.cloneNode(true));
-            });
-        }
+        // Добавляем карточки в ленту слайдера
+        Array.from(cards).forEach(card => {
+            sliderTrack.appendChild(card.cloneNode(true));
+        });
         
-        // Очищаем контейнер и добавляем нашу структуру
-        container.innerHTML = '';
+        // Добавляем дублирующие карточки для бесконечной прокрутки
+        Array.from(cards).forEach(card => {
+            sliderTrack.appendChild(card.cloneNode(true));
+        });
+        
+        // Вставляем ленту в обертку, а обертку в контейнер
         sliderWrapper.appendChild(sliderTrack);
         container.appendChild(sliderWrapper);
         
-        // Получаем ширину одной карточки и отступа
-        const cardWidth = cards[0].offsetWidth;
-        const gapWidth = 25; // отступ между карточками
-        const slideWidth = cardWidth + gapWidth;
-        const totalWidth = slideWidth * cards.length;
+        // Получаем размер одной карточки и расстояние между ними
+        const cardWidth = 250; // Ширина карточки в px из CSS
+        const gap = 25; // Расстояние между карточками в px из CSS
         
-        // Устанавливаем начальную позицию 
-        sliderTrack.style.transform = 'translateX(0)';
+        // Установка скорости анимации
+        const speed = 50; // миллисекунды задержки между кадрами
+        const step = 1; // пикселей за шаг (больше = быстрее)
         
-        // Функция для бесконечной прокрутки с CSS анимацией
-        function startContinuousScroll() {
-            // Устанавливаем CSS анимацию
-            sliderTrack.style.transition = 'transform 0s linear';
-            sliderTrack.style.transform = 'translateX(0)';
-            
-            // Небольшая задержка для установки начальной позиции
-            setTimeout(() => {
-                // Установка плавной анимации
-                sliderTrack.style.transition = 'transform 60s linear infinite';
-                sliderTrack.style.transform = `translateX(-${totalWidth * 2}px)`;
-            }, 10);
+        // Переменные для анимации
+        let position = 0;
+        let animationId = null;
+        
+        // Функция для обновления позиции слайдера
+        function updateSliderPosition() {
+            sliderTrack.style.transform = `translateX(${-position}px)`;
         }
         
-        // Запускаем непрерывную прокрутку
-        startContinuousScroll();
+        // Функция для автоматической прокрутки
+        function autoScroll() {
+            // Увеличиваем позицию на шаг
+            position += step;
+            
+            // Вычисляем точку перезапуска (конец первого набора карточек)
+            const resetPoint = cards.length * (cardWidth + gap);
+            
+            // Если достигли конца первого набора, перезапускаем с начала
+            if (position >= resetPoint) {
+                position = 0;
+            }
+            
+            // Обновляем позицию слайдера
+            updateSliderPosition();
+            
+            // Продолжаем анимацию
+            animationId = setTimeout(autoScroll, speed);
+        }
         
-        // Обработчик для отслеживания завершения анимации и перезапуска
-        sliderTrack.addEventListener('transitionend', function() {
-            // Сбрасываем позицию без анимации и запускаем снова
-            startContinuousScroll();
-        });
+        // Останавливаем предыдущую анимацию, если была
+        if (container.dataset.animationId) {
+            clearTimeout(parseInt(container.dataset.animationId));
+        }
+        
+        // Запускаем автоматическую прокрутку
+        animationId = setTimeout(autoScroll, speed);
+        
+        // Сохраняем ID анимации для возможной остановки
+        container.dataset.animationId = animationId;
     }
     
     // Загружаем изображения для активной категории при загрузке страницы
@@ -160,13 +175,20 @@ document.addEventListener('DOMContentLoaded', function() {
             // Добавляем класс active текущей кнопке
             this.classList.add('active');
             
-            // Добавляем плавное появление для выбранной категории
+            // Получаем категорию и целевой грид
             const category = this.getAttribute('data-filter');
             const targetGrid = document.querySelector(`.nft-grid[data-category="${category}"]`);
             
-            // Скрываем все grid-контейнеры с анимацией
+            // Скрываем все grid-контейнеры и останавливаем анимации
             document.querySelectorAll('.nft-grid').forEach(grid => {
                 grid.style.opacity = '0';
+                
+                // Останавливаем анимацию, если она запущена
+                if (grid.dataset.animationId) {
+                    clearTimeout(parseInt(grid.dataset.animationId));
+                    delete grid.dataset.animationId;
+                }
+                
                 setTimeout(() => {
                     grid.style.display = 'none';
                 }, 300);
