@@ -1,20 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     const categories = ['all', 'common', 'rare', 'legendary'];
-    let currentAnimationFrameId = null; // Store the current animation frame ID globally
-    
-    // Function to clean up any existing animations
-    function cleanupAnimations() {
-        if (currentAnimationFrameId) {
-            cancelAnimationFrame(currentAnimationFrameId);
-            currentAnimationFrameId = null;
-        }
-    }
     
     // Функция для загрузки изображений для каждой категории
     function loadImagesForCategory(category) {
-        // Clean up any existing animations first
-        cleanupAnimations();
-        
         // Скрываем все grid-контейнеры
         document.querySelectorAll('.nft-grid').forEach(grid => {
             grid.style.display = 'none';
@@ -37,7 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
             nftCard.className = 'nft-card';
             nftCard.setAttribute('data-rarity', category === 'all' ? ['common', 'rare', 'legendary'][Math.floor(Math.random() * 3)] : category);
             
-            const imgPath = `images/nft${imgIndex}_${category === 'all' ? ['common', 'rare', 'legendary'][Math.floor(Math.random() * 3)] : category}.jpg`;
+            // Используем nft1.jpg для всех изображений в категории КОЛЛЕКЦИЯ
+            const imgPath = 'images/nft1.jpg';
             
             nftCard.innerHTML = `
                 <img src="${imgPath}" alt="Mega Buddy #${imgIndex}" class="nft-image">
@@ -95,22 +84,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Функция для настройки автоматической прокрутки
     function setupAutoScroll(container) {
-        // Проверка существования контейнера
-        if (!container) return;
-        
         // Очищаем предыдущие обработчики событий
         container.removeEventListener('mouseenter', pauseScroll);
         container.removeEventListener('mouseleave', resumeScroll);
         
-        // Clean up any existing animations first
-        cleanupAnimations();
-        
         // Клонируем элементы для бесконечной прокрутки
         const cards = container.querySelectorAll('.nft-card');
-        
-        // Проверка, есть ли карточки
-        if (!cards || cards.length === 0) return;
-        
         const originalCards = Array.from(cards);
         
         // Очищаем контейнер
@@ -127,15 +106,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         let scrollPosition = 0;
-        let scrollSpeed = 1; // Уменьшаем скорость для более плавной прокрутки
+        let scrollSpeed = 1; // Скорость прокрутки
         let isScrolling = true;
+        let animationFrameId = null;
         
         // Функция для паузы прокрутки
         function pauseScroll() {
             isScrolling = false;
-            if (currentAnimationFrameId) {
-                cancelAnimationFrame(currentAnimationFrameId);
-                currentAnimationFrameId = null;
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
             }
         }
         
@@ -154,13 +134,12 @@ document.addEventListener('DOMContentLoaded', function() {
             scrollPosition += scrollSpeed;
             
             // Если дошли до конца, плавно перемещаемся в начало
-            const totalWidth = (cards[0].offsetWidth + 25) * originalCards.length;
-            if (scrollPosition >= totalWidth) {
+            if (scrollPosition >= (originalCards[0].offsetWidth + 25) * originalCards.length) {
                 scrollPosition = 0;
             }
             
             container.scrollLeft = scrollPosition;
-            currentAnimationFrameId = requestAnimationFrame(animate);
+            animationFrameId = requestAnimationFrame(animate);
         }
         
         // Добавляем обработчики событий для паузы при наведении
@@ -168,9 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
         container.addEventListener('mouseleave', resumeScroll);
         
         // Запускаем анимацию
-        animate();
-        
-        console.log("Auto-scroll animation setup complete for", category);
+        animate(); // Это важно - нужно запустить анимацию сразу
     }
     
     // Загружаем изображения для активной категории при загрузке страницы

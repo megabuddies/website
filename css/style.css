@@ -602,18 +602,11 @@ body {
 .nft-grid {
   display: flex;
   gap: 25px;
-  overflow-x: auto;
+  overflow-x: hidden;
   padding: 20px 0;
   scroll-behavior: smooth;
   transition: opacity 0.3s ease;
   opacity: 1;
-  /* Hide scrollbar but keep functionality */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
-}
-
-.nft-grid::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
 }
 
 .nft-card {
