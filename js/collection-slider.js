@@ -25,11 +25,13 @@ document.addEventListener('DOMContentLoaded', function() {
             nftCard.className = 'nft-card';
             nftCard.setAttribute('data-rarity', category === 'all' ? ['common', 'rare', 'legendary'][Math.floor(Math.random() * 3)] : category);
             
-            // Используем nft1.jpg для всех изображений в категории КОЛЛЕКЦИЯ
+            // Используем одинаковое изображение nft1.jpg для всех карточек во всех категориях
             const imgPath = 'images/nft1.jpg';
             
             nftCard.innerHTML = `
-                <img src="${imgPath}" alt="Mega Buddy #${imgIndex}" class="nft-image">
+                <div class="nft-image-container">
+                    <img src="${imgPath}" alt="Mega Buddy #${imgIndex}" class="nft-image">
+                </div>
                 <div class="nft-info">
                     <h3 class="nft-name">${getNftName(category, imgIndex)}</h3>
                     <p class="nft-rarity">${getRarityText(category === 'all' ? nftCard.getAttribute('data-rarity') : category)}</p>
@@ -118,8 +120,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const gap = 25; // Расстояние между карточками в px из CSS
         
         // Установка скорости анимации
-        const speed = 50; // миллисекунды задержки между кадрами
-        const step = 1; // пикселей за шаг (больше = быстрее)
+        const speed = 20; // миллисекунды задержки между кадрами (меньше = плавнее)
+        const step = 0.5; // пикселей за шаг (меньше = плавнее)
         
         // Переменные для анимации
         let position = 0;
