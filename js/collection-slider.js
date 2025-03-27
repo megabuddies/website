@@ -17,6 +17,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Сначала подготавливаем контейнер, но не показываем
         container.style.opacity = '0';
         container.style.display = 'flex';
+        container.style.position = 'absolute';
+        container.style.top = '0';
+        container.style.left = '0';
+        container.style.width = '100%';
         
         // Очищаем контейнер перед добавлением новых изображений
         container.innerHTML = '';
@@ -53,13 +57,17 @@ document.addEventListener('DOMContentLoaded', function() {
         allContainers.forEach(grid => {
             if (grid !== container) {
                 grid.style.opacity = '0';
+                grid.style.zIndex = '1';
                 setTimeout(() => {
                     grid.style.display = 'none';
                 }, 300);
             }
         });
         
-        // Плавно показываем текущий контейнер
+        // Устанавливаем z-index чтобы текущая категория была поверх других
+        container.style.zIndex = '2';
+        
+        // Плавно показываем текущий контейнер после короткой паузы
         setTimeout(() => {
             container.style.opacity = '1';
         }, 50);
@@ -148,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Супер-плавная анимация с использованием requestAnimationFrame
         let position = 0;
-        const speed = 0.2; // пикселей за кадр (очень маленькое значение для сверхплавности)
+        const speed = 0.8; // пикселей за кадр (увеличено для более быстрой прокрутки)
         
         // Функция для анимации с использованием requestAnimationFrame
         function animate() {
