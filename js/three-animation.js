@@ -138,22 +138,22 @@ function createPixelRabbit() {
     });
     
     const frontLeftLeg = new THREE.Mesh(legGeometry, legMaterial);
-    frontLeftLeg.position.set(-0.8, -0.7, 0.5);
+    frontLeftLeg.position.set(-0.8, -1.05, 0.5);
     frontLeftLeg.renderOrder = 1;
     pixelRabbit.add(frontLeftLeg);
     
     const frontRightLeg = new THREE.Mesh(legGeometry, legMaterial);
-    frontRightLeg.position.set(-0.8, -0.7, -0.5);
+    frontRightLeg.position.set(-0.8, -1.05, -0.5);
     frontRightLeg.renderOrder = 1;
     pixelRabbit.add(frontRightLeg);
     
     const backLeftLeg = new THREE.Mesh(legGeometry, legMaterial);
-    backLeftLeg.position.set(0.8, -0.7, 0.5);
+    backLeftLeg.position.set(0.8, -1.05, 0.5);
     backLeftLeg.renderOrder = 1;
     pixelRabbit.add(backLeftLeg);
     
     const backRightLeg = new THREE.Mesh(legGeometry, legMaterial);
-    backRightLeg.position.set(0.8, -0.7, -0.5);
+    backRightLeg.position.set(0.8, -1.05, -0.5);
     backRightLeg.renderOrder = 1;
     pixelRabbit.add(backRightLeg);
     
@@ -327,10 +327,10 @@ function animate() {
             const backLeftLeg = pixelRabbit.children[9];
             const backRightLeg = pixelRabbit.children[10];
             
-            frontLeftLeg.position.y = -0.7 + Math.sin(elapsedTime * 1.5) * 0.1;
-            frontRightLeg.position.y = -0.7 + Math.sin(elapsedTime * 1.5 + Math.PI) * 0.1;
-            backLeftLeg.position.y = -0.7 + Math.sin(elapsedTime * 1.5 + Math.PI) * 0.1;
-            backRightLeg.position.y = -0.7 + Math.sin(elapsedTime * 1.5) * 0.1;
+            frontLeftLeg.position.y = -1.05 + Math.sin(elapsedTime * 1.5) * 0.1;
+            frontRightLeg.position.y = -1.05 + Math.sin(elapsedTime * 1.5 + Math.PI) * 0.1;
+            backLeftLeg.position.y = -1.05 + Math.sin(elapsedTime * 1.5 + Math.PI) * 0.1;
+            backRightLeg.position.y = -1.05 + Math.sin(elapsedTime * 1.5) * 0.1;
             
             // Добавляем небольшое вращение для более естественного движения
             frontLeftLeg.rotation.x = Math.sin(elapsedTime * 1.5) * 0.3;
