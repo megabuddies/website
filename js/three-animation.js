@@ -20,7 +20,8 @@ function initThree() {
             renderer = new THREE.WebGLRenderer({ 
                 alpha: true, 
                 antialias: true,
-                powerPreference: "high-performance"
+                powerPreference: "high-performance",
+                logarithmicDepthBuffer: true
             });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -77,7 +78,9 @@ function createPixelRabbit() {
         color: 0x32b288,
         wireframe: true,
         transparent: true,
-        opacity: 0.8
+        opacity: 0.8,
+        depthTest: true,
+        depthWrite: true
     });
     
     const body = new THREE.Mesh(bodyGeometry, material);
@@ -87,7 +90,7 @@ function createPixelRabbit() {
     // Создаем голову кролика
     const headGeometry = new THREE.BoxGeometry(1.2, 1.2, 1.2, 8, 8, 8);
     const head = new THREE.Mesh(headGeometry, material);
-    head.position.set(-1.3, 0.5, 0); // Отодвигаем голову от тела
+    head.position.set(-1.2, 0.5, 0); // Размещаем голову слева от тела
     pixelRabbit.add(head);
     
     // Добавляем нос - теперь спереди головы
@@ -99,80 +102,74 @@ function createPixelRabbit() {
         opacity: 0.9
     });
     const nose = new THREE.Mesh(noseGeometry, noseMaterial);
-    nose.position.set(-1.8, 0.5, 0); // Спереди головы
+    nose.position.set(-1.85, 0.5, 0); // Выдвигаем вперед
     pixelRabbit.add(nose);
     
-    // Добавляем глаза - теперь спереди головы с улучшенной видимостью
-    const eyeGeometry = new THREE.SphereGeometry(0.25, 12, 8); // Увеличенный размер
+    // Добавляем глаза - улучшенная версия
+    const eyeGeometry = new THREE.SphereGeometry(0.2, 12, 8);
     const eyeMaterial = new THREE.MeshBasicMaterial({
-        color: 0x000000, // Черный цвет для контраста
-        wireframe: false, // Сплошная заливка вместо каркаса
+        color: 0x44445c,
+        wireframe: false,
+        transparent: true,
+        opacity: 1.0
+    });
+    
+    const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+    leftEye.position.set(-1.75, 0.7, 0.4);
+    pixelRabbit.add(leftEye);
+    
+    const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+    rightEye.position.set(-1.75, 0.7, -0.4);
+    pixelRabbit.add(rightEye);
+    
+    // Добавляем блик на глаза
+    const highlightGeometry = new THREE.SphereGeometry(0.05, 8, 8);
+    const highlightMaterial = new THREE.MeshBasicMaterial({
+        color: 0xffffff,
         transparent: true,
         opacity: 0.9
     });
     
-    const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
-    leftEye.position.set(-1.8, 0.7, 0.4); // Смещаем вперед для лучшей видимости
-    pixelRabbit.add(leftEye);
+    const leftHighlight = new THREE.Mesh(highlightGeometry, highlightMaterial);
+    leftHighlight.position.set(-1.85, 0.75, 0.35);
+    pixelRabbit.add(leftHighlight);
     
-    const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
-    rightEye.position.set(-1.8, 0.7, -0.4); // Смещаем вперед для лучшей видимости
-    pixelRabbit.add(rightEye);
-    
-    // Добавляем белки глаз для контраста
-    const eyeWhiteGeometry = new THREE.SphereGeometry(0.15, 12, 8);
-    const eyeWhiteMaterial = new THREE.MeshBasicMaterial({
-        color: 0xffffff,
-        wireframe: false,
-        transparent: true,
-        opacity: 0.95
-    });
-
-    const leftEyeWhite = new THREE.Mesh(eyeWhiteGeometry, eyeWhiteMaterial);
-    leftEyeWhite.position.set(-1.82, 0.72, 0.4);
-    pixelRabbit.add(leftEyeWhite);
-
-    const rightEyeWhite = new THREE.Mesh(eyeWhiteGeometry, eyeWhiteMaterial);
-    rightEyeWhite.position.set(-1.82, 0.72, -0.4);
-    pixelRabbit.add(rightEyeWhite);
-    
-    // Добавляем точечный источник света для подсветки глаз
-    const eyeLight = new THREE.PointLight(0xffffff, 0.5);
-    eyeLight.position.set(-2.5, 0.7, 0);
-    pixelRabbit.add(eyeLight);
+    const rightHighlight = new THREE.Mesh(highlightGeometry, highlightMaterial);
+    rightHighlight.position.set(-1.85, 0.75, -0.35);
+    pixelRabbit.add(rightHighlight);
     
     // Создаем уши кролика - естественное расположение на голове
     const earGeometry = new THREE.BoxGeometry(0.3, 1.5, 0.2, 4, 8, 2);
     
     const leftEar = new THREE.Mesh(earGeometry, material);
-    leftEar.position.set(-1.2, 1.7, 0.4); // Поднимаем и раздвигаем уши
+    leftEar.position.set(-1.2, 1.5, 0.3); // На голове слева
     leftEar.rotation.z = Math.PI / 12;
     pixelRabbit.add(leftEar);
     
     const rightEar = new THREE.Mesh(earGeometry, material);
-    rightEar.position.set(-1.2, 1.7, -0.4); // Поднимаем и раздвигаем уши
+    rightEar.position.set(-1.2, 1.5, -0.3); // На голове справа
     rightEar.rotation.z = -Math.PI / 12;
     pixelRabbit.add(rightEar);
     
-    // Создаем лапы кролика - правильное расположение
+    // Создаем лапы кролика - исправленное расположение
     const legGeometry = new THREE.BoxGeometry(0.4, 0.8, 0.4, 4, 6, 4);
     
     // Передние лапы
     const frontLeftLeg = new THREE.Mesh(legGeometry, material);
-    frontLeftLeg.position.set(-0.8, -0.8, 0.6); // Раздвигаем лапы в стороны
+    frontLeftLeg.position.set(-0.8, -0.8, 0.6); // Увеличиваем отступ по Z
     pixelRabbit.add(frontLeftLeg);
     
     const frontRightLeg = new THREE.Mesh(legGeometry, material);
-    frontRightLeg.position.set(-0.8, -0.8, -0.6); // Раздвигаем лапы в стороны
+    frontRightLeg.position.set(-0.8, -0.8, -0.6); // Увеличиваем отступ по Z
     pixelRabbit.add(frontRightLeg);
     
     // Задние лапы
     const backLeftLeg = new THREE.Mesh(legGeometry, material);
-    backLeftLeg.position.set(0.8, -0.8, 0.6); // Раздвигаем лапы в стороны
+    backLeftLeg.position.set(0.8, -0.8, 0.6); // Увеличиваем отступ по Z
     pixelRabbit.add(backLeftLeg);
     
     const backRightLeg = new THREE.Mesh(legGeometry, material);
-    backRightLeg.position.set(0.8, -0.8, -0.6); // Раздвигаем лапы в стороны
+    backRightLeg.position.set(0.8, -0.8, -0.6); // Увеличиваем отступ по Z
     pixelRabbit.add(backRightLeg);
     
     // Создаем хвост кролика - сзади по центру
@@ -190,11 +187,14 @@ function createPixelRabbit() {
     
     // Создаем копию каждой части для свечения
     pixelRabbit.children.forEach(part => {
-        const glowMesh = new THREE.Mesh(part.geometry.clone(), glowMaterial);
-        glowMesh.position.copy(part.position);
-        glowMesh.rotation.copy(part.rotation);
-        glowMesh.scale.set(1.1, 1.1, 1.1);
-        pixelRabbit.add(glowMesh);
+        if (part.geometry && part !== leftEye && part !== rightEye && 
+            part !== leftHighlight && part !== rightHighlight) {
+            const glowMesh = new THREE.Mesh(part.geometry.clone(), glowMaterial);
+            glowMesh.position.copy(part.position);
+            glowMesh.rotation.copy(part.rotation);
+            glowMesh.scale.set(1.1, 1.1, 1.1);
+            pixelRabbit.add(glowMesh);
+        }
     });
     
     // Масштабируем кролика до подходящего размера
@@ -299,7 +299,7 @@ function createFallbackAnimation() {
         star.style.borderRadius = '0'; // Пиксельные звезды
         
         // Добавляем анимацию мерцания
-                star.style.animation = `starBlink ${Math.random() * 3 + 2}s infinite alternate`;
+        star.style.animation = `starBlink ${Math.random() * 3 + 2}s infinite alternate`;
         
         heroSection.appendChild(star);
     }
@@ -329,9 +329,6 @@ function onWindowResize() {
 function animate() {
     requestAnimationFrame(animate);
     
-    // Очистка буфера для предотвращения графического выделения
-    renderer.clear();
-    
     const elapsedTime = clock.getElapsedTime();
     
     if (pixelRabbit) {
@@ -353,10 +350,6 @@ function animate() {
             
             leftEar.rotation.z = Math.PI / 12 + Math.sin(elapsedTime * 1.5) * 0.1;
             rightEar.rotation.z = -Math.PI / 12 + Math.sin(elapsedTime * 1.5) * 0.1;
-            
-            // Очистка буфера после каждого кадра
-            leftEar.geometry.attributes.position.needsUpdate = true;
-            rightEar.geometry.attributes.position.needsUpdate = true;
         }
         
         // Анимация глаз (эффект моргания)
@@ -389,32 +382,16 @@ function animate() {
             const backRightLeg = pixelRabbit.children[10];
             
             // Создаем эффект ходьбы, двигая лапы вверх-вниз
-            frontLeftLeg.position.y = -0.8 + Math.sin(elapsedTime * 3) * 0.2;
-            frontRightLeg.position.y = -0.8 + Math.sin(elapsedTime * 3 + Math.PI) * 0.2;
-            backLeftLeg.position.y = -0.8 + Math.sin(elapsedTime * 3 + Math.PI) * 0.2;
-            backRightLeg.position.y = -0.8 + Math.sin(elapsedTime * 3) * 0.2;
+            frontLeftLeg.position.y = -0.8 + Math.sin(elapsedTime * 3) * 0.15; // Уменьшаем амплитуду
+            frontRightLeg.position.y = -0.8 + Math.sin(elapsedTime * 3 + Math.PI) * 0.15;
+            backLeftLeg.position.y = -0.8 + Math.sin(elapsedTime * 3 + Math.PI) * 0.15;
+            backRightLeg.position.y = -0.8 + Math.sin(elapsedTime * 3) * 0.15;
             
             // Добавляем небольшое вращение для более естественного движения
             frontLeftLeg.rotation.x = Math.sin(elapsedTime * 3) * 0.3;
             frontRightLeg.rotation.x = Math.sin(elapsedTime * 3 + Math.PI) * 0.3;
             backLeftLeg.rotation.x = Math.sin(elapsedTime * 3 + Math.PI) * 0.3;
             backRightLeg.rotation.x = Math.sin(elapsedTime * 3) * 0.3;
-            
-            // Очистка буфера после каждого кадра
-            frontLeftLeg.geometry.attributes.position.needsUpdate = true;
-            frontRightLeg.geometry.attributes.position.needsUpdate = true;
-            backLeftLeg.geometry.attributes.position.needsUpdate = true;
-            backRightLeg.geometry.attributes.position.needsUpdate = true;
-            
-            // Предотвращение пересечений при анимации
-            const minLegDistance = 0.4; // Минимальное расстояние между лапами
-            
-            // Проверка и корректировка позиций лап
-            if (frontLeftLeg.position.distanceTo(frontRightLeg.position) < minLegDistance) {
-                // Корректировка позиций
-                frontLeftLeg.position.z += 0.05;
-                frontRightLeg.position.z -= 0.05;
-            }
         }
     }
     
