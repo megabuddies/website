@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Загружаем только текущую активную категорию
         const activeCategory = document.querySelector('.filter-btn.active').getAttribute('data-filter') || 'all';
-        loadImagesForCategory(activeCategory);
+        loadImagesForCategory(activeCategory, true); // Передаем флаг initialLoad = true
     }
     
     // Функция для подготовки контейнера карточками
@@ -101,9 +101,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Функция для загрузки изображений для каждой категории
-    function loadImagesForCategory(category) {
+    function loadImagesForCategory(category, initialLoad = false) {
         // Если уже выбрана эта категория, ничего не делаем
-        if (category === currentCategory) return;
+        if (category === currentCategory && !initialLoad) return;
         
         // Обновляем текущую категорию
         currentCategory = category;
@@ -121,6 +121,26 @@ document.addEventListener('DOMContentLoaded', function() {
         const container = document.querySelector(`.nft-grid[data-category="${category}"]`);
         if (!container) return;
         
+        // Если это первая загрузка, сразу показываем контейнер без анимации
+        if (initialLoad) {
+            // Скрываем все контейнеры, кроме текущего
+            allContainers.forEach(grid => {
+                if (grid !== container) {
+                    grid.style.display = 'none';
+                    grid.style.opacity = '0';
+                }
+            });
+            
+            // Подготавливаем контейнер, если он еще не инициализирован
+            prepareContainerWithCards(container, category);
+            
+            // Сразу показываем текущий контейнер без задержки
+            container.style.display = 'flex';
+            container.style.opacity = '1';
+            return;
+        }
+        
+        // Обычное переключение с анимацией
         // Плавно скрываем все контейнеры
         allContainers.forEach(grid => {
             grid.style.opacity = '0';

@@ -623,12 +623,43 @@ body {
   overflow: hidden;
   position: relative;
   height: 100%;
+  mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-image: linear-gradient(to bottom, var(--accent-color), transparent) 1;
+}
+
+.slider-wrapper::before, 
+.slider-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.slider-wrapper::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(26, 26, 26, 0.9), transparent);
+  mask-image: url('data:image/svg+xml;utf8,<svg width="50" height="450" xmlns="http://www.w3.org/2000/svg"><pattern id="pixel" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="5" height="5" fill="black"/><rect x="5" y="5" width="5" height="5" fill="black"/></pattern><rect width="50" height="450" fill="url(%23pixel)"/></svg>');
+  -webkit-mask-image: url('data:image/svg+xml;utf8,<svg width="50" height="450" xmlns="http://www.w3.org/2000/svg"><pattern id="pixel" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="5" height="5" fill="black"/><rect x="5" y="5" width="5" height="5" fill="black"/></pattern><rect width="50" height="450" fill="url(%23pixel)"/></svg>');
+}
+
+.slider-wrapper::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(26, 26, 26, 0.9), transparent);
+  mask-image: url('data:image/svg+xml;utf8,<svg width="50" height="450" xmlns="http://www.w3.org/2000/svg"><pattern id="pixel" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="5" height="5" fill="black"/><rect x="5" y="5" width="5" height="5" fill="black"/></pattern><rect width="50" height="450" fill="url(%23pixel)"/></svg>');
+  -webkit-mask-image: url('data:image/svg+xml;utf8,<svg width="50" height="450" xmlns="http://www.w3.org/2000/svg"><pattern id="pixel" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="5" height="5" fill="black"/><rect x="5" y="5" width="5" height="5" fill="black"/></pattern><rect width="50" height="450" fill="url(%23pixel)"/></svg>');
 }
 
 .slider-track {
   display: flex;
   gap: 25px;
   backface-visibility: hidden;
+  height: 100%;
 }
 
 @keyframes slideAnimation {
@@ -643,6 +674,7 @@ body {
 .nft-card {
   flex: 0 0 auto;
   width: 250px;
+  height: 430px;
   background: rgba(26, 26, 26, 0.8);
   border: 2px solid var(--accent-color);
   border-radius: 0;
@@ -651,6 +683,8 @@ body {
   cursor: pointer;
   clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
   contain: content;
+  display: flex;
+  flex-direction: column;
 }
 
 .nft-card:hover {
@@ -662,6 +696,7 @@ body {
 .nft-image-container {
   width: 100%;
   height: 300px;
+  min-height: 300px;
   overflow: hidden;
   border-bottom: 2px solid var(--accent-color);
   position: relative;
@@ -684,6 +719,10 @@ body {
 
 .nft-info {
   padding: 15px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .nft-name {
@@ -703,6 +742,44 @@ body {
   font-size: 0.9rem;
   color: var(--text-color);
   margin: 0;
+}
+
+/* Пиксельные декоративные элементы на краях слайдера */
+.collection-container {
+  position: relative;
+}
+
+.pixel-decoration {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: var(--accent-color);
+  opacity: 0.7;
+  z-index: 3;
+}
+
+.pixel-decoration.top-left {
+  top: 0;
+  left: 0;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+.pixel-decoration.top-right {
+  top: 0;
+  right: 0;
+  clip-path: polygon(100% 0, 0 0, 100% 100%);
+}
+
+.pixel-decoration.bottom-left {
+  bottom: 0;
+  left: 0;
+  clip-path: polygon(0 100%, 100% 100%, 0 0);
+}
+
+.pixel-decoration.bottom-right {
+  bottom: 0;
+  right: 0;
+  clip-path: polygon(100% 100%, 0 100%, 100% 0);
 }
 
 /* Секция "Дорожная карта" */
