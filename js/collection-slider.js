@@ -1,17 +1,21 @@
 document.addEventListener('DOMContentLoaded', function() {
     const categories = ['all', 'common', 'rare', 'legendary'];
+    let currentCategory = 'all';
+    let globalAnimationId = null;
     
     // Функция для загрузки изображений для каждой категории
     function loadImagesForCategory(category) {
-        // Скрываем все grid-контейнеры
-        document.querySelectorAll('.nft-grid').forEach(grid => {
-            grid.style.display = 'none';
-        });
+        currentCategory = category;
+        
+        // Получаем все grid-контейнеры
+        const allContainers = document.querySelectorAll('.nft-grid');
         
         // Показываем только активный grid-контейнер
         const container = document.querySelector(`.nft-grid[data-category="${category}"]`);
         if (!container) return;
         
+        // Сначала подготавливаем контейнер, но не показываем
+        container.style.opacity = '0';
         container.style.display = 'flex';
         
         // Очищаем контейнер перед добавлением новых изображений
@@ -42,8 +46,23 @@ document.addEventListener('DOMContentLoaded', function() {
             container.appendChild(nftCard);
         }
         
-        // Настраиваем автоматическую прокрутку
+        // Настраиваем автоматическую прокрутку и плавно показываем контейнер
         setupAutoScroll(container);
+        
+        // Плавно скрываем все остальные контейнеры
+        allContainers.forEach(grid => {
+            if (grid !== container) {
+                grid.style.opacity = '0';
+                setTimeout(() => {
+                    grid.style.display = 'none';
+                }, 300);
+            }
+        });
+        
+        // Плавно показываем текущий контейнер
+        setTimeout(() => {
+            container.style.opacity = '1';
+        }, 50);
     }
     
     // Функция для получения названия NFT
@@ -86,6 +105,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Функция для настройки автоматической прокрутки
     function setupAutoScroll(container) {
+        // Прекращаем глобальную анимацию, если она запущена
+        if (globalAnimationId) {
+            cancelAnimationFrame(globalAnimationId);
+            globalAnimationId = null;
+        }
+        
         // Получаем карточки
         const cards = container.querySelectorAll('.nft-card');
         if (cards.length === 0) return;
@@ -106,10 +131,12 @@ document.addEventListener('DOMContentLoaded', function() {
             sliderTrack.appendChild(card.cloneNode(true));
         });
         
-        // Добавляем дублирующие карточки для бесконечной прокрутки
-        Array.from(cards).forEach(card => {
-            sliderTrack.appendChild(card.cloneNode(true));
-        });
+        // Добавляем дублирующие карточки для бесконечной прокрутки (трижды для гарантии)
+        for (let i = 0; i < 3; i++) {
+            Array.from(cards).forEach(card => {
+                sliderTrack.appendChild(card.cloneNode(true));
+            });
+        }
         
         // Вставляем ленту в обертку, а обертку в контейнер
         sliderWrapper.appendChild(sliderTrack);
@@ -119,23 +146,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const cardWidth = 250; // Ширина карточки в px из CSS
         const gap = 25; // Расстояние между карточками в px из CSS
         
-        // Установка скорости анимации
-        const speed = 20; // миллисекунды задержки между кадрами (меньше = плавнее)
-        const step = 0.5; // пикселей за шаг (меньше = плавнее)
-        
-        // Переменные для анимации
+        // Супер-плавная анимация с использованием requestAnimationFrame
         let position = 0;
-        let animationId = null;
+        const speed = 0.2; // пикселей за кадр (очень маленькое значение для сверхплавности)
         
-        // Функция для обновления позиции слайдера
-        function updateSliderPosition() {
-            sliderTrack.style.transform = `translateX(${-position}px)`;
-        }
-        
-        // Функция для автоматической прокрутки
-        function autoScroll() {
-            // Увеличиваем позицию на шаг
-            position += step;
+        // Функция для анимации с использованием requestAnimationFrame
+        function animate() {
+            position += speed;
             
             // Вычисляем точку перезапуска (конец первого набора карточек)
             const resetPoint = cards.length * (cardWidth + gap);
@@ -145,23 +162,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 position = 0;
             }
             
-            // Обновляем позицию слайдера
-            updateSliderPosition();
+            // Обновляем позицию слайдера с использованием transform вместо scrollLeft для более плавной анимации
+            sliderTrack.style.transform = `translateX(${-position}px)`;
             
             // Продолжаем анимацию
-            animationId = setTimeout(autoScroll, speed);
+            globalAnimationId = requestAnimationFrame(animate);
         }
         
-        // Останавливаем предыдущую анимацию, если была
-        if (container.dataset.animationId) {
-            clearTimeout(parseInt(container.dataset.animationId));
-        }
-        
-        // Запускаем автоматическую прокрутку
-        animationId = setTimeout(autoScroll, speed);
-        
-        // Сохраняем ID анимации для возможной остановки
-        container.dataset.animationId = animationId;
+        // Запускаем анимацию
+        globalAnimationId = requestAnimationFrame(animate);
     }
     
     // Загружаем изображения для активной категории при загрузке страницы
@@ -171,41 +180,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // Обрабатываем клики по кнопкам фильтра
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', function() {
+            const newCategory = this.getAttribute('data-filter');
+            
+            // Если уже выбрана эта категория, ничего не делаем
+            if (newCategory === currentCategory) return;
+            
             // Удаляем класс active у всех кнопок
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             
             // Добавляем класс active текущей кнопке
             this.classList.add('active');
             
-            // Получаем категорию и целевой грид
-            const category = this.getAttribute('data-filter');
-            const targetGrid = document.querySelector(`.nft-grid[data-category="${category}"]`);
-            
-            // Скрываем все grid-контейнеры и останавливаем анимации
-            document.querySelectorAll('.nft-grid').forEach(grid => {
-                grid.style.opacity = '0';
-                
-                // Останавливаем анимацию, если она запущена
-                if (grid.dataset.animationId) {
-                    clearTimeout(parseInt(grid.dataset.animationId));
-                    delete grid.dataset.animationId;
-                }
-                
-                setTimeout(() => {
-                    grid.style.display = 'none';
-                }, 300);
-            });
-            
-            // Показываем выбранную категорию с анимацией
-            setTimeout(() => {
-                targetGrid.style.display = 'flex';
-                setTimeout(() => {
-                    targetGrid.style.opacity = '1';
-                }, 50);
-            }, 300);
-            
             // Загружаем изображения для выбранной категории
-            loadImagesForCategory(category);
+            loadImagesForCategory(newCategory);
         });
     });
 });
