@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Эффект печатающегося текста для терминала
-    function typeWriter(element, text, speed = 50) {
+    function typeWriter(element, text, speed = 30) {
         let i = 0;
         element.innerHTML = '';
         
@@ -63,23 +63,55 @@ document.addEventListener('DOMContentLoaded', function() {
         type();
     }
     
-    // Применяем эффект печатающегося текста к элементам с классом terminal-text
-    document.querySelectorAll('.terminal-text').forEach(element => {
-        const originalText = element.textContent;
+    // Оптимизированная загрузка эффекта печатающегося текста
+    const observerOptions = { 
+        threshold: 0.2,    // Снижаем порог видимости для более раннего начала анимации
+        rootMargin: '0px 0px 100px 0px'  // Увеличиваем область активации, чтобы анимация начиналась раньше
+    };
+
+    // Предварительная загрузка контента манифеста
+    const terminalTexts = document.querySelectorAll('.terminal-text');
+    terminalTexts.forEach(element => {
+        // Сохраняем оригинальный текст в data-атрибуте для последующего использования
+        element.setAttribute('data-original-text', element.textContent);
         element.textContent = '';
-        
-        // Создаем наблюдатель для запуска анимации при появлении элемента в видимой области
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    typeWriter(element, originalText);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-        
-        observer.observe(element);
     });
+
+    // Создаем наблюдатель для запуска анимации с оптимизированными параметрами
+    const terminalObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const element = entry.target;
+                const originalText = element.getAttribute('data-original-text');
+                typeWriter(element, originalText);
+                terminalObserver.unobserve(element);
+            }
+        });
+    }, observerOptions);
+
+    // Наблюдаем за каждым терминальным текстом
+    terminalTexts.forEach(element => {
+        terminalObserver.observe(element);
+    });
+    
+    // Наблюдаем за секцией манифеста для предварительной загрузки
+    const manifestoSection = document.getElementById('manifesto');
+    if (manifestoSection) {
+        const preloadObserver = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                // Секция скоро станет видимой, активируем предзагрузку
+                terminalTexts.forEach(element => {
+                    // Заблаговременно начинаем наблюдение
+                    terminalObserver.observe(element);
+                });
+                preloadObserver.disconnect();
+            }
+        }, { 
+            rootMargin: '200px 0px 0px 0px'  // Начинаем загрузку когда до секции 200px
+        });
+        
+        preloadObserver.observe(manifestoSection);
+    }
     
     // Добавление случайных глюков к тексту
     function addRandomGlitches() {
