@@ -632,127 +632,73 @@ body {
   position: absolute;
   top: 0;
   height: 100%;
-  width: 65px;
+  width: 60px;
   z-index: 2;
   pointer-events: none;
 }
 
 .slider-wrapper::before {
   left: 0;
-  background-image: 
-    /* Уровень 1: Крупные пиксели 20px */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 50%, 
-      transparent 50%, transparent 100%
-    ),
-    /* Уровень 2: Пиксели 16px */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 50%, 
-      transparent 50%, transparent 100%
-    ),
-    /* Уровень 3: Пиксели 12px */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 50%, 
-      transparent 50%, transparent 100%
-    ),
-    /* Уровень 4: Пиксели 8px */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 50%, 
-      transparent 50%, transparent 100%
-    ),
-    /* Уровень 5: Пиксели 4px */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 50%, 
-      transparent 50%, transparent 100%
-    ),
-    /* Уровень 6: Мельчайшие пиксели 2px */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 50%, 
-      transparent 50%, transparent 100%
-    );
-  background-position:
-    0 0,            /* Уровень 1 */
-    20px 0,         /* Уровень 2 */
-    36px 0,         /* Уровень 3 */
-    48px 0,         /* Уровень 4 */
-    56px 0,         /* Уровень 5 */
-    60px 0;         /* Уровень 6 */
-  background-size:
-    20px 20px,      /* Уровень 1 */
-    16px 16px,      /* Уровень 2 */
-    12px 12px,      /* Уровень 3 */
-    8px 8px,        /* Уровень 4 */
-    4px 4px,        /* Уровень 5 */
-    2px 2px;        /* Уровень 6 */
-  background-repeat: repeat-y;
+  background: 
+    /* Создаем пиксельную сетку с постепенным градиентом */
+    linear-gradient(to right, 
+      var(--background-color) 0%, rgba(30, 30, 30, 0.95) 10%, 
+      rgba(40, 40, 40, 0.85) 20%, rgba(50, 50, 50, 0.75) 30%, 
+      rgba(60, 60, 60, 0.65) 40%, rgba(70, 70, 70, 0.55) 50%, 
+      rgba(80, 80, 80, 0.45) 60%, rgba(90, 90, 90, 0.35) 70%, 
+      rgba(100, 100, 100, 0.25) 80%, rgba(110, 110, 110, 0.15) 90%, 
+      transparent 100%);
   
-  -webkit-mask-image: linear-gradient(to right, 
-    var(--background-color) 0%, 
-    var(--background-color) 75%, 
-    transparent 100%);
-  mask-image: linear-gradient(to right, 
-    var(--background-color) 0%, 
-    var(--background-color) 75%, 
-    transparent 100%);
+  /* Накладываем пиксельную структуру поверх градиента */
+  -webkit-mask-image: 
+    repeating-linear-gradient(to right, 
+      #000 0px, #000 4px, 
+      transparent 4px, transparent 8px),
+    repeating-linear-gradient(to bottom, 
+      #000 0px, #000 4px, 
+      transparent 4px, transparent 8px);
+  -webkit-mask-composite: source-in;
+  
+  mask-image: 
+    repeating-linear-gradient(to right, 
+      #000 0px, #000 4px, 
+      transparent 4px, transparent 8px),
+    repeating-linear-gradient(to bottom, 
+      #000 0px, #000 4px, 
+      transparent 4px, transparent 8px);
+  mask-composite: intersect;
 }
 
 .slider-wrapper::after {
   right: 0;
-  background-image: 
-    /* Уровень 6: Мельчайшие пиксели 2px */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 50%, 
-      transparent 50%, transparent 100%
-    ),
-    /* Уровень 5: Пиксели 4px */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 50%, 
-      transparent 50%, transparent 100%
-    ),
-    /* Уровень 4: Пиксели 8px */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 50%, 
-      transparent 50%, transparent 100%
-    ),
-    /* Уровень 3: Пиксели 12px */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 50%, 
-      transparent 50%, transparent 100%
-    ),
-    /* Уровень 2: Пиксели 16px */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 50%, 
-      transparent 50%, transparent 100%
-    ),
-    /* Уровень 1: Крупные пиксели 20px */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 50%, 
-      transparent 50%, transparent 100%
-    );
-  background-position:
-    right 0,        /* Уровень 6 */
-    right 2px,      /* Уровень 5 */
-    right 6px,      /* Уровень 4 */
-    right 14px,     /* Уровень 3 */
-    right 26px,     /* Уровень 2 */
-    right 42px;     /* Уровень 1 */
-  background-size:
-    2px 2px,        /* Уровень 6 */
-    4px 4px,        /* Уровень 5 */
-    8px 8px,        /* Уровень 4 */
-    12px 12px,      /* Уровень 3 */
-    16px 16px,      /* Уровень 2 */
-    20px 20px;      /* Уровень 1 */
-  background-repeat: repeat-y;
+  background: 
+    /* Создаем пиксельную сетку с постепенным градиентом */
+    linear-gradient(to left, 
+      var(--background-color) 0%, rgba(30, 30, 30, 0.95) 10%, 
+      rgba(40, 40, 40, 0.85) 20%, rgba(50, 50, 50, 0.75) 30%, 
+      rgba(60, 60, 60, 0.65) 40%, rgba(70, 70, 70, 0.55) 50%, 
+      rgba(80, 80, 80, 0.45) 60%, rgba(90, 90, 90, 0.35) 70%, 
+      rgba(100, 100, 100, 0.25) 80%, rgba(110, 110, 110, 0.15) 90%, 
+      transparent 100%);
   
-  -webkit-mask-image: linear-gradient(to left, 
-    var(--background-color) 0%, 
-    var(--background-color) 75%, 
-    transparent 100%);
-  mask-image: linear-gradient(to left, 
-    var(--background-color) 0%, 
-    var(--background-color) 75%, 
-    transparent 100%);
+  /* Накладываем пиксельную структуру поверх градиента */
+  -webkit-mask-image: 
+    repeating-linear-gradient(to left, 
+      #000 0px, #000 4px, 
+      transparent 4px, transparent 8px),
+    repeating-linear-gradient(to bottom, 
+      #000 0px, #000 4px, 
+      transparent 4px, transparent 8px);
+  -webkit-mask-composite: source-in;
+  
+  mask-image: 
+    repeating-linear-gradient(to left, 
+      #000 0px, #000 4px, 
+      transparent 4px, transparent 8px),
+    repeating-linear-gradient(to bottom, 
+      #000 0px, #000 4px, 
+      transparent 4px, transparent 8px);
+  mask-composite: intersect;
 }
 
 .slider-track {
