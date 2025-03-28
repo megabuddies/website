@@ -632,81 +632,73 @@ body {
   position: absolute;
   top: 0;
   height: 100%;
-  width: 50px;
+  width: 60px;
   z-index: 2;
   pointer-events: none;
 }
 
 .slider-wrapper::before {
   left: 0;
-  /* Создаем эффект растворения с переходом от крупных к мелким пикселям */
   background: 
-    /* Крупные пиксели в начале (ближе к краю) */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 25%, 
-      transparent 0%, transparent 50%
-    ) 0 0 / 12px 12px,
-    /* Средние пиксели в середине */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 25%, 
-      transparent 0%, transparent 50%
-    ) 12px 0 / 8px 8px,
-    /* Мелкие пиксели в конце (дальше от края) */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 25%, 
-      transparent 0%, transparent 50%
-    ) 20px 0 / 4px 4px,
-    /* Очень мелкие пиксели на границе растворения */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 25%, 
-      transparent 0%, transparent 50%
-    ) 24px 0 / 2px 2px;
+    /* Создаем пиксельную сетку с постепенным градиентом */
+    linear-gradient(to right, 
+      var(--background-color) 0%, rgba(30, 30, 30, 0.95) 10%, 
+      rgba(40, 40, 40, 0.85) 20%, rgba(50, 50, 50, 0.75) 30%, 
+      rgba(60, 60, 60, 0.65) 40%, rgba(70, 70, 70, 0.55) 50%, 
+      rgba(80, 80, 80, 0.45) 60%, rgba(90, 90, 90, 0.35) 70%, 
+      rgba(100, 100, 100, 0.25) 80%, rgba(110, 110, 110, 0.15) 90%, 
+      transparent 100%);
   
-  /* Накладываем градиент прозрачности от края к центру */
-  -webkit-mask-image: linear-gradient(to right, 
-    var(--background-color) 0%, 
-    var(--background-color) 50%, 
-    transparent 100%);
-  mask-image: linear-gradient(to right, 
-    var(--background-color) 0%, 
-    var(--background-color) 50%, 
-    transparent 100%);
+  /* Накладываем пиксельную структуру поверх градиента */
+  -webkit-mask-image: 
+    repeating-linear-gradient(to right, 
+      #000 0px, #000 4px, 
+      transparent 4px, transparent 8px),
+    repeating-linear-gradient(to bottom, 
+      #000 0px, #000 4px, 
+      transparent 4px, transparent 8px);
+  -webkit-mask-composite: source-in;
+  
+  mask-image: 
+    repeating-linear-gradient(to right, 
+      #000 0px, #000 4px, 
+      transparent 4px, transparent 8px),
+    repeating-linear-gradient(to bottom, 
+      #000 0px, #000 4px, 
+      transparent 4px, transparent 8px);
+  mask-composite: intersect;
 }
 
 .slider-wrapper::after {
   right: 0;
-  /* Создаем эффект растворения с переходом от крупных к мелким пикселям */
   background: 
-    /* Крупные пиксели в начале (ближе к краю) */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 25%, 
-      transparent 0%, transparent 50%
-    ) calc(100% - 12px) 0 / 12px 12px,
-    /* Средние пиксели в середине */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 25%, 
-      transparent 0%, transparent 50%
-    ) calc(100% - 20px) 0 / 8px 8px,
-    /* Мелкие пиксели в конце (дальше от края) */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 25%, 
-      transparent 0%, transparent 50%
-    ) calc(100% - 24px) 0 / 4px 4px,
-    /* Очень мелкие пиксели на границе растворения */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 25%, 
-      transparent 0%, transparent 50%
-    ) calc(100% - 26px) 0 / 2px 2px;
+    /* Создаем пиксельную сетку с постепенным градиентом */
+    linear-gradient(to left, 
+      var(--background-color) 0%, rgba(30, 30, 30, 0.95) 10%, 
+      rgba(40, 40, 40, 0.85) 20%, rgba(50, 50, 50, 0.75) 30%, 
+      rgba(60, 60, 60, 0.65) 40%, rgba(70, 70, 70, 0.55) 50%, 
+      rgba(80, 80, 80, 0.45) 60%, rgba(90, 90, 90, 0.35) 70%, 
+      rgba(100, 100, 100, 0.25) 80%, rgba(110, 110, 110, 0.15) 90%, 
+      transparent 100%);
   
-  /* Накладываем градиент прозрачности от края к центру */
-  -webkit-mask-image: linear-gradient(to left, 
-    var(--background-color) 0%, 
-    var(--background-color) 50%, 
-    transparent 100%);
-  mask-image: linear-gradient(to left, 
-    var(--background-color) 0%, 
-    var(--background-color) 50%, 
-    transparent 100%);
+  /* Накладываем пиксельную структуру поверх градиента */
+  -webkit-mask-image: 
+    repeating-linear-gradient(to left, 
+      #000 0px, #000 4px, 
+      transparent 4px, transparent 8px),
+    repeating-linear-gradient(to bottom, 
+      #000 0px, #000 4px, 
+      transparent 4px, transparent 8px);
+  -webkit-mask-composite: source-in;
+  
+  mask-image: 
+    repeating-linear-gradient(to left, 
+      #000 0px, #000 4px, 
+      transparent 4px, transparent 8px),
+    repeating-linear-gradient(to bottom, 
+      #000 0px, #000 4px, 
+      transparent 4px, transparent 8px);
+  mask-composite: intersect;
 }
 
 .slider-track {
