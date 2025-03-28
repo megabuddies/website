@@ -203,11 +203,22 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (aboutSection) {
                 window.scrollTo({
-                    top: aboutSection.offsetTop - 100,
+                    top: aboutSection.offsetTop - 80,
                     behavior: 'smooth'
                 });
             }
         });
+        
+        // Добавляем пульсирующий эффект для привлечения внимания
+        const scrollArrow = document.querySelector('.scroll-arrow');
+        if (scrollArrow) {
+            setInterval(function() {
+                scrollArrow.classList.add('pulse');
+                setTimeout(function() {
+                    scrollArrow.classList.remove('pulse');
+                }, 800);
+            }, 2000);
+        }
     }
     
     // Добавляем эффект для статистических показателей
@@ -228,15 +239,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (heroContent) {
         document.addEventListener('mousemove', function(e) {
-            const xPos = (e.clientX / window.innerWidth - 0.5) * 20;
-            const yPos = (e.clientY / window.innerHeight - 0.5) * 10;
+            const xPos = (e.clientX / window.innerWidth - 0.5) * 10;
+            const yPos = (e.clientY / window.innerHeight - 0.5) * 5;
             
-            heroContent.style.transform = `perspective(1000px) rotateX(${-yPos * 0.2}deg) rotateY(${xPos * 0.2}deg)`;
-        });
-        
-        // Возвращаем к исходному положению при выходе
-        heroContent.addEventListener('mouseleave', function() {
-            this.style.transform = 'perspective(1000px) rotateX(2deg)';
+            heroContent.style.transform = `translate(${xPos * 0.5}px, ${yPos * 0.5}px)`;
         });
     }
     
@@ -293,5 +299,18 @@ document.addEventListener('DOMContentLoaded', function() {
         
         observer.observe(heroStatsSection);
     }
+
+    // Анимация кнопок при наведении
+    const buttons = document.querySelectorAll('.neon-button');
+    
+    buttons.forEach(button => {
+        button.addEventListener('mouseover', function() {
+            this.classList.add('neon-pulse');
+        });
+        
+        button.addEventListener('mouseout', function() {
+            this.classList.remove('neon-pulse');
+        });
+    });
 });
 
