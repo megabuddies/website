@@ -632,100 +632,126 @@ body {
   position: absolute;
   top: 0;
   height: 100%;
-  width: 60px;
+  width: 65px;
   z-index: 2;
   pointer-events: none;
 }
 
 .slider-wrapper::before {
   left: 0;
-  background: 
-    /* Зона 1: Самые крупные пиксели (16px) */
+  background-image: 
+    /* Уровень 1: Крупные пиксели 20px */
     repeating-conic-gradient(
       var(--background-color) 0%, var(--background-color) 50%, 
       transparent 50%, transparent 100%
-    ) 0 0 / 16px 16px,
-    
-    /* Зона 2: Крупные пиксели (12px) */
+    ),
+    /* Уровень 2: Пиксели 16px */
     repeating-conic-gradient(
       var(--background-color) 0%, var(--background-color) 50%, 
       transparent 50%, transparent 100%
-    ) 16px 0 / 12px 12px,
-    
-    /* Зона 3: Средние пиксели (8px) */
+    ),
+    /* Уровень 3: Пиксели 12px */
     repeating-conic-gradient(
       var(--background-color) 0%, var(--background-color) 50%, 
       transparent 50%, transparent 100%
-    ) 28px 0 / 8px 8px,
-    
-    /* Зона 4: Мелкие пиксели (4px) */
+    ),
+    /* Уровень 4: Пиксели 8px */
     repeating-conic-gradient(
       var(--background-color) 0%, var(--background-color) 50%, 
       transparent 50%, transparent 100%
-    ) 36px 0 / 4px 4px,
-    
-    /* Зона 5: Самые мелкие пиксели (2px) */
+    ),
+    /* Уровень 5: Пиксели 4px */
     repeating-conic-gradient(
       var(--background-color) 0%, var(--background-color) 50%, 
       transparent 50%, transparent 100%
-    ) 40px 0 / 2px 2px;
-  
+    ),
+    /* Уровень 6: Мельчайшие пиксели 2px */
+    repeating-conic-gradient(
+      var(--background-color) 0%, var(--background-color) 50%, 
+      transparent 50%, transparent 100%
+    );
+  background-position:
+    0 0,            /* Уровень 1 */
+    20px 0,         /* Уровень 2 */
+    36px 0,         /* Уровень 3 */
+    48px 0,         /* Уровень 4 */
+    56px 0,         /* Уровень 5 */
+    60px 0;         /* Уровень 6 */
+  background-size:
+    20px 20px,      /* Уровень 1 */
+    16px 16px,      /* Уровень 2 */
+    12px 12px,      /* Уровень 3 */
+    8px 8px,        /* Уровень 4 */
+    4px 4px,        /* Уровень 5 */
+    2px 2px;        /* Уровень 6 */
   background-repeat: repeat-y;
   
-  /* Накладываем градиент прозрачности для плавного растворения пикселей */
   -webkit-mask-image: linear-gradient(to right, 
     var(--background-color) 0%, 
-    var(--background-color) 60%, 
+    var(--background-color) 75%, 
     transparent 100%);
   mask-image: linear-gradient(to right, 
     var(--background-color) 0%, 
-    var(--background-color) 60%, 
+    var(--background-color) 75%, 
     transparent 100%);
 }
 
 .slider-wrapper::after {
   right: 0;
-  background: 
-    /* Зона 5: Самые мелкие пиксели (2px) */
+  background-image: 
+    /* Уровень 6: Мельчайшие пиксели 2px */
     repeating-conic-gradient(
       var(--background-color) 0%, var(--background-color) 50%, 
       transparent 50%, transparent 100%
-    ) right 0 / 2px 2px,
-    
-    /* Зона 4: Мелкие пиксели (4px) */
+    ),
+    /* Уровень 5: Пиксели 4px */
     repeating-conic-gradient(
       var(--background-color) 0%, var(--background-color) 50%, 
       transparent 50%, transparent 100%
-    ) right 2px / 4px 4px,
-    
-    /* Зона 3: Средние пиксели (8px) */
+    ),
+    /* Уровень 4: Пиксели 8px */
     repeating-conic-gradient(
       var(--background-color) 0%, var(--background-color) 50%, 
       transparent 50%, transparent 100%
-    ) right 6px / 8px 8px,
-    
-    /* Зона 2: Крупные пиксели (12px) */
+    ),
+    /* Уровень 3: Пиксели 12px */
     repeating-conic-gradient(
       var(--background-color) 0%, var(--background-color) 50%, 
       transparent 50%, transparent 100%
-    ) right 14px / 12px 12px,
-    
-    /* Зона 1: Самые крупные пиксели (16px) */
+    ),
+    /* Уровень 2: Пиксели 16px */
     repeating-conic-gradient(
       var(--background-color) 0%, var(--background-color) 50%, 
       transparent 50%, transparent 100%
-    ) right 26px / 16px 16px;
-  
+    ),
+    /* Уровень 1: Крупные пиксели 20px */
+    repeating-conic-gradient(
+      var(--background-color) 0%, var(--background-color) 50%, 
+      transparent 50%, transparent 100%
+    );
+  background-position:
+    right 0,        /* Уровень 6 */
+    right 2px,      /* Уровень 5 */
+    right 6px,      /* Уровень 4 */
+    right 14px,     /* Уровень 3 */
+    right 26px,     /* Уровень 2 */
+    right 42px;     /* Уровень 1 */
+  background-size:
+    2px 2px,        /* Уровень 6 */
+    4px 4px,        /* Уровень 5 */
+    8px 8px,        /* Уровень 4 */
+    12px 12px,      /* Уровень 3 */
+    16px 16px,      /* Уровень 2 */
+    20px 20px;      /* Уровень 1 */
   background-repeat: repeat-y;
   
-  /* Накладываем градиент прозрачности для плавного растворения пикселей */
   -webkit-mask-image: linear-gradient(to left, 
     var(--background-color) 0%, 
-    var(--background-color) 60%, 
+    var(--background-color) 75%, 
     transparent 100%);
   mask-image: linear-gradient(to left, 
     var(--background-color) 0%, 
-    var(--background-color) 60%, 
+    var(--background-color) 75%, 
     transparent 100%);
 }
 
