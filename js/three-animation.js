@@ -59,7 +59,7 @@ function createPixelRabbit() {
     
     const bodyGeometry = new THREE.BoxGeometry(2, 1.5, 1.5, 8, 8, 8);
     const material = new THREE.MeshBasicMaterial({
-        color: 0x32b288,
+        color: 0xffffff,
         wireframe: true,
         transparent: true,
         opacity: 0.8
@@ -76,7 +76,7 @@ function createPixelRabbit() {
     
     const noseGeometry = new THREE.SphereGeometry(0.2, 8, 8);
     const noseMaterial = new THREE.MeshBasicMaterial({
-        color: 0xf7519b,
+        color: 0xffffff,
         wireframe: true,
         transparent: true,
         opacity: 0.9
@@ -87,7 +87,7 @@ function createPixelRabbit() {
     
     const eyeGeometry = new THREE.SphereGeometry(0.15, 12, 8);
     const eyeMaterial = new THREE.MeshBasicMaterial({
-        color: 0x44445c,
+        color: 0xffffff,
         wireframe: true,
         transparent: true,
         opacity: 0.9,
@@ -130,7 +130,7 @@ function createPixelRabbit() {
     
     const legGeometry = new THREE.BoxGeometry(0.4, 0.6, 0.4, 4, 6, 4);
     const legMaterial = new THREE.MeshBasicMaterial({
-        color: 0x32b288,
+        color: 0xffffff,
         wireframe: true,
         transparent: true,
         opacity: 0.8,
