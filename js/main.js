@@ -242,7 +242,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const xPos = (e.clientX / window.innerWidth - 0.5) * 10;
             const yPos = (e.clientY / window.innerHeight - 0.5) * 5;
             
-            heroContent.style.transform = `translate(${xPos * 0.5}px, ${yPos * 0.5}px)`;
+            // Без задней плитки делаем менее явный эффект параллакса
+            heroContent.style.transform = `translate(${xPos * 0.3}px, ${yPos * 0.3}px)`;
+            
+            // Добавляем эффект движения 3D модели при движении мыши
+            const heroAnimation = document.getElementById('hero-animation');
+            if (heroAnimation) {
+                heroAnimation.style.transform = `translate(${-xPos * 0.1}px, ${-yPos * 0.1}px)`;
+            }
         });
     }
     

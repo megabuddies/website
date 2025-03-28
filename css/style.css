@@ -295,12 +295,12 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
-  background-color: rgba(18, 18, 24, 0.6);
-  backdrop-filter: blur(5px);
+  background-color: transparent;
+  backdrop-filter: none;
   padding: 1.8rem;
-  border: 1px solid var(--accent-color);
-  box-shadow: 0 0 15px rgba(146, 147, 151, 0.3);
-  border-radius: 5px;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
 }
 
 .hero-header {
@@ -314,7 +314,8 @@ body {
   text-transform: uppercase;
   letter-spacing: 5px;
   color: var(--accent-color);
-  text-shadow: 0 0 10px rgba(146, 147, 151, 0.8),
+  text-shadow: 0 0 15px rgba(18, 18, 24, 0.9), 
+               0 0 10px rgba(146, 147, 151, 0.8),
                0 0 20px rgba(146, 147, 151, 0.5),
                0 0 30px rgba(146, 147, 151, 0.3);
   animation: titlePulse 4s infinite alternate;
@@ -349,6 +350,8 @@ body {
   opacity: 0.85;
   position: relative;
   display: inline-block;
+  text-shadow: 0 0 10px rgba(18, 18, 24, 0.9),
+               0 0 5px rgba(19, 145, 255, 0.7);
 }
 
 .hero-text {
@@ -361,6 +364,8 @@ body {
   line-height: 1.5;
   color: var(--text-color);
   margin-bottom: 0.5rem;
+  text-shadow: 0 0 10px rgba(18, 18, 24, 0.9),
+               0 0 5px rgba(223, 217, 217, 0.5);
 }
 
 .hero-buttons {
@@ -429,7 +434,7 @@ body {
 
 .scroll-indicator {
   position: absolute;
-  bottom: 2rem;
+  bottom: 5rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
