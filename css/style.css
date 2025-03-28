@@ -1,14 +1,14 @@
 :root {
   --background-color: #1a1a1a;
-  --text-color: #dfd9d9;
-  --accent-color: #32b288;
-  --secondary-color: #f7519b;
-  --tertiary-color: #f6ae5c;
-  --dark-accent: #497a4b;
-  --light-accent: #70aec7;
-  --bright-accent: #ff0090;
-  --muted-accent: #4ea3a0;
-  --danger-color: #ef5435;
+  --text-color: #bbb9b9;
+  --accent-color: #5555FF;
+  --secondary-color: #0f0fd5;
+  --tertiary-color: #1391ff;
+  --dark-accent: #7087e3;
+  --light-accent: #1391ff;
+  --bright-accent: #5555FF;
+  --muted-accent: #7087e3;
+  --danger-color: #929397;
   --terminal-bg: #222222;
   --glow-intensity: 0.8;
   --font-mono: 'VT323', 'Courier New', monospace;
@@ -24,8 +24,8 @@ body {
   padding: 0;
   overflow-x: hidden;
   background-image: 
-    linear-gradient(0deg, rgba(50, 178, 136, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(50, 178, 136, 0.05) 1px, transparent 1px);
+    linear-gradient(0deg, rgba(85, 85, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(85, 85, 255, 0.05) 1px, transparent 1px);
   background-size: 20px 20px;
   background-position: center;
   position: relative;
@@ -214,13 +214,13 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(50, 178, 136, 0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(85, 85, 255, 0.4), transparent);
   transition: 0.5s;
 }
 
 .wallet-btn:hover {
-  background-color: rgba(50, 178, 136, 0.1);
-  box-shadow: 0 0 10px rgba(50, 178, 136, 0.5);
+  background-color: rgba(85, 85, 255, 0.1);
+  box-shadow: 0 0 10px rgba(85, 85, 255, 0.5);
 }
 
 .wallet-btn:hover::before {
@@ -228,13 +228,13 @@ body {
 }
 
 .wallet-btn.connecting {
-  background-color: rgba(50, 178, 136, 0.2);
+  background-color: rgba(85, 85, 255, 0.2);
   animation: glitch 0.3s infinite alternate;
 }
 
 .wallet-btn.connected {
-  background-color: rgba(50, 178, 136, 0.2);
-  box-shadow: 0 0 15px rgba(50, 178, 136, 0.7);
+  background-color: rgba(85, 85, 255, 0.2);
+  box-shadow: 0 0 15px rgba(85, 85, 255, 0.7);
 }
 
 @keyframes glitch {
@@ -343,19 +343,20 @@ body {
 }
 
 .btn-primary {
-  background-color: var(--accent-color);
-  color: var(--background-color);
-  border: none;
-  padding: 12px 24px;
+  background-color: transparent;
+  color: var(--accent-color);
+  border: 2px solid var(--accent-color);
+  padding: 12px 25px;
   font-family: var(--font-mono);
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1px;
   position: relative;
   overflow: hidden;
+  display: inline-block;
   text-decoration: none;
+  text-transform: uppercase;
+  margin-right: 15px;
   clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
 }
 
@@ -366,7 +367,7 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(85, 85, 255, 0.4), transparent);
   transition: 0.5s;
 }
 
@@ -380,18 +381,18 @@ body {
 
 .btn-secondary {
   background-color: transparent;
-  color: var(--accent-color);
-  border: 2px solid var(--accent-color);
-  padding: 12px 24px;
+  color: var(--text-color);
+  border: 2px solid var(--text-color);
+  padding: 12px 25px;
   font-family: var(--font-mono);
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1px;
   position: relative;
   overflow: hidden;
+  display: inline-block;
   text-decoration: none;
+  text-transform: uppercase;
   clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
 }
 
@@ -402,17 +403,14 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(50, 178, 136, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(146, 147, 151, 0.4), transparent);
   transition: 0.5s;
 }
 
 .btn-secondary:hover {
-  background-color: rgba(50, 178, 136, 0.1);
-  box-shadow: 0 0 10px rgba(50, 178, 136, 0.5);
-}
-
-.btn-secondary:hover::before {
-  left: 100%;
+  background-color: rgba(85, 85, 255, 0.1);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
 }
 
 #hero-animation {
@@ -455,9 +453,14 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, transparent, rgba(50, 178, 136, 0.1), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.5s ease;
+  background: linear-gradient(45deg, 
+    transparent, 
+    rgba(85, 85, 255, 0.05), 
+    transparent, 
+    rgba(19, 145, 255, 0.05), 
+    transparent);
+  z-index: -1;
+  transition: all 0.3s ease;
 }
 
 .about-item:hover {
@@ -482,11 +485,12 @@ body {
 .about-item h3::after {
   content: '';
   position: absolute;
-  bottom: -5px;
+  bottom: 0;
   left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+  width: 50px;
+  height: 3px;
+  background-color: var(--accent-color);
+  transition: width 0.3s ease;
 }
 
 /* Секция "Манифест" */
@@ -502,27 +506,15 @@ body {
 }
 
 .terminal-container {
-  background: var(--terminal-bg);
-  border-radius: 0;
-  padding: 30px;
-  margin-top: 30px;
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-  transition: all 0.3s ease;
-  position: relative;
-  z-index: 1;
-  font-family: var(--font-mono);
+  background-color: var(--terminal-bg);
+  border-radius: 5px;
   overflow: hidden;
-  box-shadow: 0 0 15px rgba(50, 178, 136, 0.3);
-  border: 2px solid var(--accent-color);
-  clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
-}
-
-.terminal-container:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(50, 178, 136, 0.4);
-  border-color: var(--secondary-color);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  margin: 30px 0;
+  transform: perspective(1000px) rotateX(5deg);
+  transition: all 0.3s ease;
+  border: 1px solid var(--dark-accent);
+  position: relative;
 }
 
 .terminal-container::before {
@@ -532,14 +524,14 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, transparent, rgba(50, 178, 136, 0.1), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.5s ease;
-  z-index: -1;
-}
-
-.terminal-container:hover::before {
-  transform: translateX(100%);
+  background: linear-gradient(45deg, 
+    transparent, 
+    rgba(85, 85, 255, 0.05), 
+    transparent, 
+    rgba(19, 145, 255, 0.05), 
+    transparent);
+  z-index: 1;
+  pointer-events: none;
 }
 
 .terminal-header {
@@ -645,22 +637,22 @@ body {
 }
 
 .filter-btn {
-  background: transparent;
-  border: 2px solid var(--accent-color);
-  color: var(--accent-color);
+  background-color: transparent;
+  color: var(--text-color);
+  border: 2px solid var(--text-color);
   padding: 8px 16px;
   font-family: var(--font-mono);
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
+  margin: 0 5px 10px;
+  clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
 }
 
 .filter-btn:hover, .filter-btn.active {
-  background-color: rgba(50, 178, 136, 0.1);
-  box-shadow: 0 0 10px rgba(50, 178, 136, 0.5);
+  background-color: rgba(85, 85, 255, 0.1);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
 }
 
 .filter-btn.active {
@@ -754,24 +746,22 @@ body {
 }
 
 .nft-card {
-  flex: 0 0 auto;
-  width: 250px;
-  height: 430px;
-  background: rgba(26, 26, 26, 0.8);
-  border: 2px solid var(--accent-color);
-  border-radius: 0;
+  background-color: rgba(26, 26, 26, 0.8);
+  border-radius: 5px;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  margin: 15px;
+  transition: all 0.3s ease;
+  position: relative;
+  border: 1px solid var(--accent-color);
   cursor: pointer;
-  clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
-  contain: content;
-  display: flex;
-  flex-direction: column;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .nft-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(50, 178, 136, 0.3);
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(85, 85, 255, 0.2);
   border-color: var(--secondary-color);
 }
 
@@ -851,15 +841,16 @@ body {
 .roadmap-timeline::after {
   content: '';
   position: absolute;
+  top: 0;
   bottom: 0;
   left: 50%;
+  width: 4px;
+  background: linear-gradient(to bottom, 
+    var(--accent-color), 
+    var(--secondary-color), 
+    var(--dark-accent));
   transform: translateX(-50%);
-  width: 20px;
-  height: 20px;
-  background-color: var(--accent-color);
-  border-radius: 0;
-  box-shadow: 0 0 10px rgba(50, 178, 136, 0.5);
-  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  z-index: -1;
 }
 
 .roadmap-item {
@@ -875,18 +866,20 @@ body {
 }
 
 .roadmap-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 0;
-  background: var(--terminal-bg);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: var(--background-color);
+  border: 4px solid var(--accent-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 20px;
-  border: 2px solid var(--accent-color);
-  z-index: 2;
-  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  position: absolute;
+  top: 0;
+  color: var(--accent-color);
   transition: all 0.3s ease;
+  z-index: 2;
+  box-shadow: 0 0 15px rgba(85, 85, 255, 0.5);
 }
 
 .roadmap-item:hover .roadmap-icon {
@@ -920,13 +913,13 @@ body {
 .roadmap-content::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(45deg, transparent, rgba(50, 178, 136, 0.1), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.5s ease;
+  top: 20px;
+  width: 20px;
+  height: 20px;
+  background-color: var(--accent-color);
+  transform: rotate(45deg);
+  z-index: -1;
+  transition: all 0.3s ease;
 }
 
 .roadmap-item:hover .roadmap-content {
@@ -961,18 +954,18 @@ body {
 }
 
 .roadmap-status.completed {
-  background-color: rgba(50, 178, 136, 0.2);
+  background-color: rgba(85, 85, 255, 0.2);
   color: var(--accent-color);
 }
 
 .roadmap-status.in-progress {
-  background-color: rgba(246, 174, 92, 0.2);
-  color: var(--tertiary-color);
+  background-color: rgba(112, 135, 227, 0.2);
+  color: var(--dark-accent);
 }
 
 .roadmap-status.planned {
-  background-color: rgba(247, 81, 155, 0.2);
-  color: var(--secondary-color);
+  background-color: rgba(146, 147, 151, 0.2);
+  color: var(--text-color);
 }
 
 .roadmap-item:hover .roadmap-status {
@@ -1019,20 +1012,19 @@ body {
 
 /* Унифицированный стиль для кнопок сообщества */
 .community-btn {
-  display: inline-block;
-  background: linear-gradient(45deg, var(--accent-color), var(--secondary-color));
-  color: var(--background-color);
-  font-family: var(--font-mono);
+  background-color: transparent;
+  color: var(--text-color);
+  border: 2px solid var(--text-color);
   padding: 10px 20px;
-  border: none;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
   cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 1px;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  display: inline-block;
   text-decoration: none;
-  margin-top: 15px;
+  margin-top: 20px;
   clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
 }
 
@@ -1043,7 +1035,7 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(85, 85, 255, 0.4), transparent);
   transition: 0.5s;
 }
 
@@ -1105,26 +1097,27 @@ body {
 }
 
 .newsletter-form button {
-  padding: 12px 20px;
   background-color: var(--accent-color);
-  color: var(--background-color);
+  color: #ffffff;
   border: none;
+  padding: 12px 25px;
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
   clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
 }
 
 .newsletter-form button:hover {
-  background-color: rgba(50, 178, 136, 0.8);
-  box-shadow: 0 0 15px rgba(50, 178, 136, 0.5);
+  background-color: var(--secondary-color);
+  box-shadow: 0 0 10px rgba(85, 85, 255, 0.5);
+  transform: translateY(-2px);
 }
 
 /* Футер */
 .main-footer {
-  background-color: var(--background-color);
-  padding: 60px 0 30px;
+  background-color: rgba(26, 26, 26, 0.95);
+  padding: 50px 0 20px;
   border-top: 2px solid var(--accent-color);
 }
 
@@ -1165,15 +1158,18 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.3);
   border: 2px solid var(--accent-color);
-  border-radius: 0;
+  color: var(--accent-color);
+  margin: 0 5px;
   transition: all 0.3s ease;
-  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  position: relative;
+  overflow: hidden;
+  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
 }
 
 .social-link:hover {
   background-color: var(--accent-color);
+  color: var(--background-color);
 }
 
 .social-link i {
@@ -1227,20 +1223,23 @@ body {
   position: absolute;
   left: 0;
   color: var(--accent-color);
-  font-family: var(--font-mono);
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateX(-10px);
 }
 
 .footer-nav-link a:hover {
   color: var(--accent-color);
+  padding-left: 15px;
 }
 
 .footer-bottom {
-  text-align: center;
-  padding-top: 30px;
   margin-top: 30px;
-  border-top: 1px solid rgba(50, 178, 136, 0.1);
-  font-size: 0.8rem;
-  color: rgba(223, 217, 217, 0.7);
+  padding-top: 20px;
+  border-top: 1px solid rgba(112, 135, 227, 0.2);
+  text-align: center;
+  font-size: 0.9rem;
+  color: #585858;
 }
 
 /* Медиа-запросы для адаптивности */
