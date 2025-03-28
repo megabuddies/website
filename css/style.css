@@ -641,63 +641,36 @@ body {
   left: 0;
   background: 
     /* Зона 1: Самые крупные пиксели (16px) */
-    repeating-linear-gradient(to right,
-      var(--background-color) 0px, var(--background-color) 16px,
-      transparent 16px, transparent 32px
-    ),
-    repeating-linear-gradient(to bottom,
-      var(--background-color) 0px, var(--background-color) 16px,
-      transparent 16px, transparent 32px
-    ),
+    repeating-conic-gradient(
+      var(--background-color) 0%, var(--background-color) 50%, 
+      transparent 50%, transparent 100%
+    ) 0 0 / 16px 16px,
     
     /* Зона 2: Крупные пиксели (12px) */
-    repeating-linear-gradient(to right,
-      var(--background-color) 0px, var(--background-color) 12px,
-      transparent 12px, transparent 24px
-    ) 32px 0,
-    repeating-linear-gradient(to bottom,
-      var(--background-color) 0px, var(--background-color) 12px,
-      transparent 12px, transparent 24px
-    ) 32px 0,
+    repeating-conic-gradient(
+      var(--background-color) 0%, var(--background-color) 50%, 
+      transparent 50%, transparent 100%
+    ) 16px 0 / 12px 12px,
     
     /* Зона 3: Средние пиксели (8px) */
-    repeating-linear-gradient(to right,
-      var(--background-color) 0px, var(--background-color) 8px,
-      transparent 8px, transparent 16px
-    ) 56px 0,
-    repeating-linear-gradient(to bottom,
-      var(--background-color) 0px, var(--background-color) 8px,
-      transparent 8px, transparent 16px
-    ) 56px 0,
+    repeating-conic-gradient(
+      var(--background-color) 0%, var(--background-color) 50%, 
+      transparent 50%, transparent 100%
+    ) 28px 0 / 8px 8px,
     
     /* Зона 4: Мелкие пиксели (4px) */
-    repeating-linear-gradient(to right,
-      var(--background-color) 0px, var(--background-color) 4px,
-      transparent 4px, transparent 8px
-    ) 72px 0,
-    repeating-linear-gradient(to bottom,
-      var(--background-color) 0px, var(--background-color) 4px,
-      transparent 4px, transparent 8px
-    ) 72px 0,
+    repeating-conic-gradient(
+      var(--background-color) 0%, var(--background-color) 50%, 
+      transparent 50%, transparent 100%
+    ) 36px 0 / 4px 4px,
     
     /* Зона 5: Самые мелкие пиксели (2px) */
-    repeating-linear-gradient(to right,
-      var(--background-color) 0px, var(--background-color) 2px,
-      transparent 2px, transparent 4px
-    ) 80px 0,
-    repeating-linear-gradient(to bottom,
-      var(--background-color) 0px, var(--background-color) 2px,
-      transparent 2px, transparent 4px
-    ) 80px 0;
+    repeating-conic-gradient(
+      var(--background-color) 0%, var(--background-color) 50%, 
+      transparent 50%, transparent 100%
+    ) 40px 0 / 2px 2px;
   
-  background-size: 
-    32px 100%, 32px 100%,     /* Зона 1 */
-    24px 100%, 24px 100%,     /* Зона 2 */
-    16px 100%, 16px 100%,     /* Зона 3 */
-    8px 100%, 8px 100%,       /* Зона 4 */
-    4px 100%, 4px 100%;       /* Зона 5 */
-  
-  background-repeat: no-repeat;
+  background-repeat: repeat-y;
   
   /* Накладываем градиент прозрачности для плавного растворения пикселей */
   -webkit-mask-image: linear-gradient(to right, 
@@ -713,64 +686,37 @@ body {
 .slider-wrapper::after {
   right: 0;
   background: 
-    /* Зона 1: Самые крупные пиксели (16px) */
-    repeating-linear-gradient(to left,
-      var(--background-color) 0px, var(--background-color) 16px,
-      transparent 16px, transparent 32px
-    ),
-    repeating-linear-gradient(to bottom,
-      var(--background-color) 0px, var(--background-color) 16px,
-      transparent 16px, transparent 32px
-    ),
-    
-    /* Зона 2: Крупные пиксели (12px) */
-    repeating-linear-gradient(to left,
-      var(--background-color) 0px, var(--background-color) 12px,
-      transparent 12px, transparent 24px
-    ) 32px 0,
-    repeating-linear-gradient(to bottom,
-      var(--background-color) 0px, var(--background-color) 12px,
-      transparent 12px, transparent 24px
-    ) 32px 0,
-    
-    /* Зона 3: Средние пиксели (8px) */
-    repeating-linear-gradient(to left,
-      var(--background-color) 0px, var(--background-color) 8px,
-      transparent 8px, transparent 16px
-    ) 56px 0,
-    repeating-linear-gradient(to bottom,
-      var(--background-color) 0px, var(--background-color) 8px,
-      transparent 8px, transparent 16px
-    ) 56px 0,
+    /* Зона 5: Самые мелкие пиксели (2px) */
+    repeating-conic-gradient(
+      var(--background-color) 0%, var(--background-color) 50%, 
+      transparent 50%, transparent 100%
+    ) right 0 / 2px 2px,
     
     /* Зона 4: Мелкие пиксели (4px) */
-    repeating-linear-gradient(to left,
-      var(--background-color) 0px, var(--background-color) 4px,
-      transparent 4px, transparent 8px
-    ) 72px 0,
-    repeating-linear-gradient(to bottom,
-      var(--background-color) 0px, var(--background-color) 4px,
-      transparent 4px, transparent 8px
-    ) 72px 0,
+    repeating-conic-gradient(
+      var(--background-color) 0%, var(--background-color) 50%, 
+      transparent 50%, transparent 100%
+    ) right 2px / 4px 4px,
     
-    /* Зона 5: Самые мелкие пиксели (2px) */
-    repeating-linear-gradient(to left,
-      var(--background-color) 0px, var(--background-color) 2px,
-      transparent 2px, transparent 4px
-    ) 80px 0,
-    repeating-linear-gradient(to bottom,
-      var(--background-color) 0px, var(--background-color) 2px,
-      transparent 2px, transparent 4px
-    ) 80px 0;
+    /* Зона 3: Средние пиксели (8px) */
+    repeating-conic-gradient(
+      var(--background-color) 0%, var(--background-color) 50%, 
+      transparent 50%, transparent 100%
+    ) right 6px / 8px 8px,
+    
+    /* Зона 2: Крупные пиксели (12px) */
+    repeating-conic-gradient(
+      var(--background-color) 0%, var(--background-color) 50%, 
+      transparent 50%, transparent 100%
+    ) right 14px / 12px 12px,
+    
+    /* Зона 1: Самые крупные пиксели (16px) */
+    repeating-conic-gradient(
+      var(--background-color) 0%, var(--background-color) 50%, 
+      transparent 50%, transparent 100%
+    ) right 26px / 16px 16px;
   
-  background-size: 
-    32px 100%, 32px 100%,     /* Зона 1 */
-    24px 100%, 24px 100%,     /* Зона 2 */
-    16px 100%, 16px 100%,     /* Зона 3 */
-    8px 100%, 8px 100%,       /* Зона 4 */
-    4px 100%, 4px 100%;       /* Зона 5 */
-  
-  background-repeat: no-repeat;
+  background-repeat: repeat-y;
   
   /* Накладываем градиент прозрачности для плавного растворения пикселей */
   -webkit-mask-image: linear-gradient(to left, 
