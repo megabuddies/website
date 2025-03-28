@@ -106,9 +106,9 @@ body {
   border-bottom: 2px solid var(--accent-color);
 }
 
-.header-scrolled {
+.main-header.scrolled {
   background: rgba(26, 26, 26, 0.95);
-  box-shadow: 0 5px 15px rgba(50, 178, 136, 0.3);
+  box-shadow: 0 5px 15px rgba(146, 147, 151, 0.3);
 }
 
 .header-container {
@@ -371,7 +371,7 @@ body {
 }
 
 .btn-primary:hover {
-  box-shadow: 0 0 15px rgba(50, 178, 136, 0.7);
+  box-shadow: 0 0 15px rgba(146, 147, 151, 0.7);
 }
 
 .btn-primary:hover::before {
@@ -402,13 +402,13 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(50, 178, 136, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(146, 147, 151, 0.2), transparent);
   transition: 0.5s;
 }
 
 .btn-secondary:hover {
-  background-color: rgba(50, 178, 136, 0.1);
-  box-shadow: 0 0 10px rgba(50, 178, 136, 0.5);
+  background-color: rgba(146, 147, 151, 0.1);
+  box-shadow: 0 0 10px rgba(146, 147, 151, 0.5);
 }
 
 .btn-secondary:hover::before {
@@ -767,12 +767,31 @@ body {
   contain: content;
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+.nft-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(19, 145, 255, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .nft-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 5px 15px rgba(146, 147, 151, 0.3);
   border-color: var(--secondary-color);
+}
+
+.nft-card:hover::before {
+  transform: translateX(100%);
 }
 
 .nft-image-container {
@@ -858,7 +877,7 @@ body {
   height: 20px;
   background-color: var(--accent-color);
   border-radius: 0;
-  box-shadow: 0 0 10px rgba(50, 178, 136, 0.5);
+  box-shadow: 0 0 10px rgba(146, 147, 151, 0.5);
   clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
 
@@ -924,14 +943,14 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, transparent, rgba(50, 178, 136, 0.1), transparent);
+  background: linear-gradient(45deg, transparent, rgba(146, 147, 151, 0.1), transparent);
   transform: translateX(-100%);
   transition: transform 0.5s ease;
 }
 
 .roadmap-item:hover .roadmap-content {
   border-color: var(--secondary-color);
-  box-shadow: 0 5px 15px rgba(50, 178, 136, 0.2);
+  box-shadow: 0 5px 15px rgba(146, 147, 151, 0.2);
 }
 
 .roadmap-item:hover .roadmap-content::before {
@@ -971,7 +990,7 @@ body {
 }
 
 .roadmap-status.planned {
-  background-color: rgba(247, 81, 155, 0.2);
+  background-color: rgba(19, 145, 255, 0.2);
   color: var(--secondary-color);
 }
 
@@ -990,13 +1009,12 @@ body {
   background: rgba(34, 34, 40, 0.8);
   padding: 30px;
   border-radius: 0;
-  margin-bottom: 30px;
-  opacity: 1;
-  transform: translateX(0);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
   transition: all 0.3s ease;
   border: 2px solid var(--accent-color);
   clip-path: polygon(0 0, 100% 0, 100% 90%, 90% 100%, 0 100%);
-  transform: translateZ(0);
 }
 
 .twitter-feed::before, .discord-community::before {
@@ -1016,6 +1034,10 @@ body {
   transform: translateY(-5px);
   box-shadow: 0 5px 15px rgba(146, 147, 151, 0.2);
   border-color: var(--secondary-color);
+}
+
+.twitter-feed:hover::before, .discord-community:hover::before {
+  transform: translateX(100%);
 }
 
 .community-heading {
@@ -1062,7 +1084,7 @@ body {
 }
 
 .community-btn:hover {
-  box-shadow: 0 0 15px rgba(50, 178, 136, 0.7);
+  box-shadow: 0 0 10px rgba(146, 147, 151, 0.5);
 }
 
 .community-btn:hover::before {
@@ -1102,6 +1124,25 @@ body {
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.newsletter-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(146, 147, 151, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+  z-index: -1;
+}
+
+.newsletter-content:hover::before {
+  transform: translateX(100%);
 }
 
 .newsletter-form {
@@ -1140,8 +1181,7 @@ body {
 }
 
 .newsletter-form button:hover {
-  background-color: rgba(50, 178, 136, 0.8);
-  box-shadow: 0 0 15px rgba(50, 178, 136, 0.5);
+  background: linear-gradient(90deg, transparent, rgba(19, 145, 255, 0.2), transparent);
 }
 
 /* Футер */
@@ -1254,7 +1294,7 @@ body {
 }
 
 .footer-nav-link a:hover {
-  color: var(--accent-color);
+  box-shadow: 0 0 15px rgba(146, 147, 151, 0.7);
 }
 
 .footer-bottom {
@@ -1352,4 +1392,82 @@ body {
   .section-heading {
     font-size: 1.8rem;
   }
+}
+
+.mobile-menu.active .mobile-menu-link:hover {
+  background: linear-gradient(90deg, transparent, rgba(19, 145, 255, 0.2), transparent);
+}
+
+.mobile-menu.active .mobile-menu-link {
+  box-shadow: 0 0 15px rgba(146, 147, 151, 0.7);
+}
+
+.hero-badge:hover {
+  background-color: rgba(146, 147, 151, 0.1);
+  box-shadow: 0 0 10px rgba(146, 147, 151, 0.5);
+}
+
+.twitter-feed::before, .discord-community::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(146, 147, 151, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+  z-index: -1;
+}
+
+.twitter-feed:hover, .discord-community:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(146, 147, 151, 0.2);
+  border-color: var(--secondary-color);
+}
+
+.newsletter-form button:hover {
+  background: linear-gradient(90deg, transparent, rgba(19, 145, 255, 0.2), transparent);
+}
+
+.footer-nav-link a:hover {
+  box-shadow: 0 0 15px rgba(146, 147, 151, 0.7);
+}
+
+.modal-bg.active .modal-content {
+  background-color: rgba(146, 147, 151, 0.8);
+  box-shadow: 0 0 15px rgba(146, 147, 151, 0.5);
+}
+
+.roadmap-content.neon-glow {
+  background: rgba(34, 34, 40, 0.8);
+  padding: 30px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 2px solid var(--accent-color);
+  clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
+}
+
+.roadmap-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(146, 147, 151, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+  z-index: -1;
+}
+
+.roadmap-content:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(146, 147, 151, 0.2);
+  border-color: var(--secondary-color);
+}
+
+.roadmap-content:hover::before {
+  transform: translateX(100%);
 }
