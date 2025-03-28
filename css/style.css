@@ -631,7 +631,7 @@ body {
   content: '';
   position: absolute;
   top: 0;
-  height: 430px;
+  height: 435px;
   width: 60px;
   z-index: 2;
   pointer-events: none;
