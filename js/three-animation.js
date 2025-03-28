@@ -176,7 +176,7 @@ function createParticleSystem() {
     const sizes = new Float32Array(particleCount);
     
     const color1 = new THREE.Color(0x929397); // Gray
-    const color2 = new THREE.Color(0x5555FF); // Blue
+    const color2 = new THREE.Color(0x1391ff); // Blue
     const color3 = new THREE.Color(0x1391ff); // Light Blue
     
     for (let i = 0; i < particleCount; i++) {
@@ -243,7 +243,7 @@ function createFallbackAnimation() {
         if (colorChoice < 0.5) {
             star.style.backgroundColor = '#929397';
         } else if (colorChoice < 0.8) {
-            star.style.backgroundColor = '#5555FF';
+            star.style.backgroundColor = '#1391ff';
         } else {
             star.style.backgroundColor = '#1391ff';
         }
