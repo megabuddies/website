@@ -509,7 +509,7 @@ body {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: all 0.3s ease;
   position: relative;
   z-index: 1;
   font-family: var(--font-mono);
@@ -519,6 +519,29 @@ body {
   clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
 }
 
+.terminal-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(50, 178, 136, 0.4);
+  border-color: var(--secondary-color);
+}
+
+.terminal-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(50, 178, 136, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+  z-index: -1;
+}
+
+.terminal-container:hover::before {
+  transform: translateX(100%);
+}
+
 .terminal-header {
   display: flex;
   justify-content: space-between;
@@ -526,12 +549,22 @@ body {
   margin-bottom: 15px;
   border-bottom: 1px solid rgba(50, 178, 136, 0.3);
   padding-bottom: 10px;
+  transition: all 0.3s ease;
+}
+
+.terminal-container:hover .terminal-header {
+  border-bottom: 1px solid var(--secondary-color);
 }
 
 .terminal-title {
   color: var(--accent-color);
   font-size: 1rem;
   margin: 0;
+  transition: all 0.3s ease;
+}
+
+.terminal-container:hover .terminal-title {
+  color: var(--secondary-color);
 }
 
 .terminal-buttons {
@@ -544,6 +577,11 @@ body {
   height: 12px;
   border-radius: 0;
   clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
+  transition: all 0.3s ease;
+}
+
+.terminal-container:hover .terminal-button {
+  transform: scale(1.1);
 }
 
 .terminal-button.red {
@@ -558,6 +596,10 @@ body {
   background-color: var(--accent-color);
 }
 
+.terminal-container:hover .terminal-button.green {
+  background-color: var(--secondary-color);
+}
+
 .terminal-content {
   line-height: 1.6;
 }
@@ -567,11 +609,22 @@ body {
   color: var(--text-color);
   position: relative;
   margin-bottom: 8px;
+  transition: transform 0.2s ease;
+}
+
+.terminal-text:hover {
+  transform: translateX(5px);
+  color: #ffffff;
 }
 
 .terminal-prompt {
   color: var(--accent-color);
   margin-right: 10px;
+  transition: all 0.3s ease;
+}
+
+.terminal-text:hover .terminal-prompt {
+  color: var(--secondary-color);
 }
 
 /* Секция "Коллекция" */
@@ -580,6 +633,15 @@ body {
   justify-content: center;
   gap: 15px;
   margin-bottom: 30px;
+}
+
+.collection-subtitle {
+  text-align: center;
+  font-size: 1rem;
+  color: var(--text-color);
+  margin-top: -20px;
+  margin-bottom: 25px;
+  opacity: 0.8;
 }
 
 .filter-btn {
