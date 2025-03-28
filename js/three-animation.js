@@ -76,7 +76,7 @@ function createPixelRabbit() {
     
     const noseGeometry = new THREE.SphereGeometry(0.2, 8, 8);
     const noseMaterial = new THREE.MeshBasicMaterial({
-        color: 0xf7519b,
+        color: 0x1391ff,
         wireframe: true,
         transparent: true,
         opacity: 0.9

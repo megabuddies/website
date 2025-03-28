@@ -1,8 +1,8 @@
 :root {
-  --background-color: #1a1a1a;
+  --background-color: #121218;
   --text-color: #dfd9d9;
   --accent-color: #929397;
-  --secondary-color: #5555FF;
+  --secondary-color: #1391ff;
   --tertiary-color: #1391ff;
   --dark-accent: #585858;
   --light-accent: #7087e3;
@@ -65,7 +65,7 @@ body {
   margin-bottom: 10px;
   text-transform: uppercase;
   letter-spacing: 2px;
-  text-shadow: 0 0 10px rgba(50, 178, 136, 0.5);
+  text-shadow: 0 0 10px rgba(146, 147, 151, 0.5);
 }
 
 .section-line {
@@ -214,13 +214,13 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(50, 178, 136, 0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(146, 147, 151, 0.4), transparent);
   transition: 0.5s;
 }
 
 .wallet-btn:hover {
-  background-color: rgba(50, 178, 136, 0.1);
-  box-shadow: 0 0 10px rgba(50, 178, 136, 0.5);
+  background-color: rgba(146, 147, 151, 0.1);
+  box-shadow: 0 5px 15px rgba(146, 147, 151, 0.3);
 }
 
 .wallet-btn:hover::before {
@@ -228,13 +228,13 @@ body {
 }
 
 .wallet-btn.connecting {
-  background-color: rgba(50, 178, 136, 0.2);
+  background-color: rgba(146, 147, 151, 0.2);
   animation: glitch 0.3s infinite alternate;
 }
 
 .wallet-btn.connected {
-  background-color: rgba(50, 178, 136, 0.2);
-  box-shadow: 0 0 15px rgba(50, 178, 136, 0.7);
+  background-color: rgba(146, 147, 151, 0.2);
+  box-shadow: 0 0 15px rgba(146, 147, 151, 0.7);
 }
 
 @keyframes glitch {
@@ -280,7 +280,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at center, rgba(50, 178, 136, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle at center, rgba(146, 147, 151, 0.1) 0%, transparent 70%);
   z-index: 1;
 }
 
@@ -310,13 +310,13 @@ body {
   font-size: 0.8rem;
   padding: 5px 10px;
   transform: rotate(15deg);
-  animation: badgePulse 2s infinite alternate;
+  animation: pulse 2s infinite alternate;
   clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
 }
 
-@keyframes badgePulse {
-  from { box-shadow: 0 0 5px rgba(247, 81, 155, 0.7); }
-  to { box-shadow: 0 0 15px rgba(247, 81, 155, 1); }
+@keyframes pulse {
+  from { box-shadow: 0 0 5px rgba(19, 145, 255, 0.7); }
+  to { box-shadow: 0 0 15px rgba(19, 145, 255, 1); }
 }
 
 .hero-title {
@@ -326,7 +326,7 @@ body {
   color: var(--accent-color);
   text-transform: uppercase;
   line-height: 1.2;
-  text-shadow: 0 0 10px rgba(50, 178, 136, 0.5);
+  text-shadow: 0 0 10px rgba(146, 147, 151, 0.5);
 }
 
 .hero-subtitle {
@@ -455,14 +455,14 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, transparent, rgba(50, 178, 136, 0.1), transparent);
+  background: linear-gradient(45deg, transparent, rgba(146, 147, 151, 0.1), transparent);
   transform: translateX(-100%);
   transition: transform 0.5s ease;
 }
 
 .about-item:hover {
   transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(50, 178, 136, 0.2);
+  box-shadow: 0 5px 15px rgba(146, 147, 151, 0.2);
   border-color: var(--secondary-color);
 }
 
@@ -514,14 +514,14 @@ body {
   z-index: 1;
   font-family: var(--font-mono);
   overflow: hidden;
-  box-shadow: 0 0 15px rgba(50, 178, 136, 0.3);
+  box-shadow: 0 0 15px rgba(146, 147, 151, 0.3);
   border: 2px solid var(--accent-color);
   clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
 }
 
 .terminal-container:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(50, 178, 136, 0.4);
+  box-shadow: 0 8px 20px rgba(146, 147, 151, 0.4);
   border-color: var(--secondary-color);
 }
 
@@ -532,7 +532,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, transparent, rgba(50, 178, 136, 0.1), transparent);
+  background: linear-gradient(45deg, transparent, rgba(146, 147, 151, 0.1), transparent);
   transform: translateX(-100%);
   transition: transform 0.5s ease;
   z-index: -1;
@@ -547,7 +547,7 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
-  border-bottom: 1px solid rgba(50, 178, 136, 0.3);
+  border-bottom: 1px solid rgba(146, 147, 151, 0.3);
   padding-bottom: 10px;
   transition: all 0.3s ease;
 }
@@ -659,8 +659,8 @@ body {
 }
 
 .filter-btn:hover, .filter-btn.active {
-  background-color: rgba(50, 178, 136, 0.1);
-  box-shadow: 0 0 10px rgba(50, 178, 136, 0.5);
+  background-color: rgba(146, 147, 151, 0.1);
+  box-shadow: 0 0 10px rgba(146, 147, 151, 0.5);
 }
 
 .filter-btn.active {
@@ -771,7 +771,7 @@ body {
 
 .nft-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(50, 178, 136, 0.3);
+  box-shadow: 0 5px 15px rgba(146, 147, 151, 0.3);
   border-color: var(--secondary-color);
 }
 
@@ -961,12 +961,12 @@ body {
 }
 
 .roadmap-status.completed {
-  background-color: rgba(50, 178, 136, 0.2);
+  background-color: rgba(146, 147, 151, 0.2);
   color: var(--accent-color);
 }
 
 .roadmap-status.in-progress {
-  background-color: rgba(246, 174, 92, 0.2);
+  background-color: rgba(19, 145, 255, 0.2);
   color: var(--tertiary-color);
 }
 
@@ -987,7 +987,7 @@ body {
 }
 
 .twitter-feed, .discord-community {
-  background: rgba(26, 26, 26, 0.8);
+  background: rgba(34, 34, 40, 0.8);
   padding: 30px;
   border-radius: 0;
   margin-bottom: 30px;
@@ -995,13 +995,27 @@ body {
   transform: translateX(0);
   transition: all 0.3s ease;
   border: 2px solid var(--accent-color);
-  clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 90%, 90% 100%, 0 100%);
   transform: translateZ(0);
 }
 
+.twitter-feed::before, .discord-community::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(146, 147, 151, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+  z-index: -1;
+}
+
 .twitter-feed:hover, .discord-community:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(146, 147, 151, 0.2);
   border-color: var(--secondary-color);
-  box-shadow: 0 0 15px rgba(50, 178, 136, 0.3);
 }
 
 .community-heading {
@@ -1077,9 +1091,17 @@ body {
 }
 
 .newsletter-content {
-  max-width: 600px;
-  margin: 0 auto;
+  background: rgba(34, 34, 40, 0.8);
+  padding: 30px;
+  border-radius: 0;
   text-align: center;
+  margin-top: 30px;
+  clip-path: polygon(0 0, 100% 0, 100% 90%, 90% 100%, 0 100%);
+  border: 2px solid var(--accent-color);
+  box-shadow: 0 0 15px rgba(146, 147, 151, 0.3);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .newsletter-form {
@@ -1101,7 +1123,8 @@ body {
 
 .newsletter-form input:focus {
   outline: none;
-  box-shadow: 0 0 10px rgba(50, 178, 136, 0.3);
+  box-shadow: 0 0 15px rgba(146, 147, 151, 0.7);
+  border-color: var(--secondary-color);
 }
 
 .newsletter-form button {
@@ -1238,7 +1261,7 @@ body {
   text-align: center;
   padding-top: 30px;
   margin-top: 30px;
-  border-top: 1px solid rgba(50, 178, 136, 0.1);
+  border-top: 1px solid rgba(146, 147, 151, 0.1);
   font-size: 0.8rem;
   color: rgba(223, 217, 217, 0.7);
 }
