@@ -639,8 +639,8 @@ body {
   text-align: center;
   font-size: 1rem;
   color: var(--text-color);
-  margin-top: -20px;
-  margin-bottom: 25px;
+  margin-top: 5px;
+  margin-bottom: 15px;
   opacity: 0.8;
 }
 
