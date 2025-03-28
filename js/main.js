@@ -193,5 +193,100 @@ document.addEventListener('DOMContentLoaded', function() {
     animatedElements.forEach(element => {
         observer.observe(element);
     });
+
+    // Анимация счетчиков
+    const counters = document.querySelectorAll('.counter');
+    
+    function animateCounters() {
+        counters.forEach(counter => {
+            const target = parseInt(counter.textContent.replace(/,/g, ''));
+            let current = 0;
+            const increment = Math.ceil(target / 100);
+            const duration = 2000; // 2 секунды
+            const step = Math.ceil(duration / (target / increment));
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current > target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                counter.textContent = current.toLocaleString();
+            }, step);
+        });
+    }
+    
+    // Добавляем glitch-эффект при наведении
+    const glitchElement = document.querySelector('.glitch-effect');
+    if (glitchElement) {
+        glitchElement.addEventListener('mouseenter', function() {
+            this.classList.add('active-glitch');
+        });
+        
+        glitchElement.addEventListener('mouseleave', function() {
+            this.classList.remove('active-glitch');
+        });
+    }
+    
+    // Анимация при скролле
+    function checkScroll() {
+        const scrollPosition = window.scrollY;
+        const heroHeight = document.querySelector('.hero').offsetHeight;
+        const header = document.querySelector('.main-header');
+        
+        if (scrollPosition > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+        
+        // Запускаем анимацию счетчиков, когда пользователь доскроллил до них
+        if (scrollPosition > heroHeight * 0.5) {
+            animateCounters();
+            // Удаляем обработчик, чтобы анимация запустилась только один раз
+            window.removeEventListener('scroll', checkScroll);
+        }
+    }
+    
+    window.addEventListener('scroll', checkScroll);
+    
+    // Запускаем анимацию сразу, если пользователь уже проскроллил страницу
+    if (window.scrollY > document.querySelector('.hero').offsetHeight * 0.5) {
+        animateCounters();
+    }
+    
+    // Добавляем эффект параллакса для 3D модели
+    document.addEventListener('mousemove', function(e) {
+        const pixelRabbitElement = document.getElementById('hero-animation');
+        if (!pixelRabbitElement) return;
+        
+        const xAxis = (window.innerWidth / 2 - e.pageX) / 50;
+        const yAxis = (window.innerHeight / 2 - e.pageY) / 50;
+        
+        // Сообщаем позицию мыши для анимации 3D модели через глобальные переменные
+        if (typeof window.mouseX !== 'undefined' && typeof window.mouseY !== 'undefined') {
+            window.mouseX = e.clientX - window.innerWidth / 2;
+            window.mouseY = e.clientY - window.innerHeight / 2;
+        }
+    });
+    
+    // Добавляем плавный скролл для навигации
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (!target) return;
+            
+            window.scrollTo({
+                top: target.offsetTop - 100,
+                behavior: 'smooth'
+            });
+        });
+    });
+    
+    // Инициализация Three.js анимации, если функция существует
+    if (typeof initThree === 'function') {
+        initThree();
+    }
 });
 
