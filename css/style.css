@@ -631,7 +631,7 @@ body {
   content: '';
   position: absolute;
   top: 0;
-  height: 430px; /* Ограничиваем высоту по размеру карточки */
+  height: 430px;
   width: 60px;
   z-index: 2;
   pointer-events: none;
