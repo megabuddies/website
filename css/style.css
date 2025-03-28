@@ -290,7 +290,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
+  gap: 0;
   margin-bottom: 2rem;
   white-space: nowrap;
   padding: 0 2rem;
@@ -303,7 +303,7 @@ body {
   position: relative;
   z-index: 2;
   opacity: 0.9;
-  margin: 0 2rem;
+  margin: 0 4rem;
   flex-shrink: 0;
 }
 
@@ -325,7 +325,6 @@ body {
   animation: titlePulse 4s infinite alternate;
   min-width: 200px;
   text-align: center;
-  flex: 1;
 }
 
 @keyframes titlePulse {
@@ -449,7 +448,7 @@ body {
   opacity: 0.8;
   transition: all 0.3s ease;
   cursor: pointer;
-  animation: scrollPulse 2s ease-in-out infinite;
+  animation: scrollPulse 4s ease-in-out infinite;
 }
 
 @keyframes scrollPulse {
@@ -505,7 +504,7 @@ body {
 @media (max-width: 768px) {
   .hero-title-container {
     flex-direction: row;
-    gap: 1rem;
+    gap: 0;
     flex-wrap: wrap;
     justify-content: center;
     padding: 0 1rem;
@@ -514,7 +513,7 @@ body {
   #hero-animation {
     width: 150px;
     height: 150px;
-    margin: 0 1rem;
+    margin: 0 2rem;
   }
   
   .hero-title {
