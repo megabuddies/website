@@ -293,15 +293,16 @@ body {
   gap: 2rem;
   margin-bottom: 2rem;
   white-space: nowrap;
+  padding: 0 2rem;
 }
 
 #hero-animation {
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   position: relative;
   z-index: 2;
   opacity: 0.9;
-  margin: 0 1rem;
+  margin: 0 2rem;
 }
 
 .hero-header {
@@ -320,6 +321,8 @@ body {
                0 0 20px rgba(146, 147, 151, 0.5),
                0 0 30px rgba(146, 147, 151, 0.3);
   animation: titlePulse 4s infinite alternate;
+  min-width: 200px;
+  text-align: center;
 }
 
 @keyframes titlePulse {
@@ -479,12 +482,16 @@ body {
 
 @keyframes fadeInUp {
   0% {
-    opacity: 0;
-    transform: translate(-50%, 10px);
+    opacity: 0.3;
+    transform: translateX(-50%) translateY(10px);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateX(-50%) translateY(0);
   }
   100% {
-    opacity: 0.8;
-    transform: translate(-50%, 0);
+    opacity: 0.3;
+    transform: translateX(-50%) translateY(10px);
   }
 }
 
@@ -499,16 +506,18 @@ body {
     gap: 1rem;
     flex-wrap: wrap;
     justify-content: center;
+    padding: 0 1rem;
   }
   
   #hero-animation {
-    width: 120px;
-    height: 120px;
-    margin: 0 0.5rem;
+    width: 150px;
+    height: 150px;
+    margin: 0 1rem;
   }
   
   .hero-title {
     font-size: clamp(2rem, 5vw, 3rem);
+    min-width: 150px;
   }
   
   .hero-buttons {
