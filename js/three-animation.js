@@ -59,7 +59,7 @@ function createPixelRabbit() {
     
     const bodyGeometry = new THREE.BoxGeometry(2, 1.5, 1.5, 8, 8, 8);
     const material = new THREE.MeshBasicMaterial({
-        color: 0x32b288,
+        color: 0xffffff,
         wireframe: true,
         transparent: true,
         opacity: 0.8
@@ -76,7 +76,7 @@ function createPixelRabbit() {
     
     const noseGeometry = new THREE.SphereGeometry(0.2, 8, 8);
     const noseMaterial = new THREE.MeshBasicMaterial({
-        color: 0xf7519b,
+        color: 0xfeccea,
         wireframe: true,
         transparent: true,
         opacity: 0.9
@@ -130,7 +130,7 @@ function createPixelRabbit() {
     
     const legGeometry = new THREE.BoxGeometry(0.4, 0.6, 0.4, 4, 6, 4);
     const legMaterial = new THREE.MeshBasicMaterial({
-        color: 0x32b288,
+        color: 0xffffff,
         wireframe: true,
         transparent: true,
         opacity: 0.8,
@@ -175,9 +175,9 @@ function createParticleSystem() {
     const colors = new Float32Array(particleCount * 3);
     const sizes = new Float32Array(particleCount);
     
-    const color1 = new THREE.Color(0x32b288);
-    const color2 = new THREE.Color(0xf7519b);
-    const color3 = new THREE.Color(0xf6ae5c);
+    const color1 = new THREE.Color(0x929397); // Gray
+    const color2 = new THREE.Color(0x5555FF); // Blue
+    const color3 = new THREE.Color(0x1391ff); // Light Blue
     
     for (let i = 0; i < particleCount; i++) {
         positions[i * 3] = (Math.random() - 0.5) * 30;
@@ -220,7 +220,7 @@ function createParticleSystem() {
 function createGrid() {
     const gridSize = 50;
     const gridDivisions = 50;
-    const gridColor = 0x32b288;
+    const gridColor = 0x929397; // Change grid color to gray
     
     const gridHelper = new THREE.GridHelper(gridSize, gridDivisions, gridColor, gridColor);
     gridHelper.material.opacity = 0.1;
@@ -231,7 +231,7 @@ function createGrid() {
 
 function createFallbackAnimation() {
     const heroSection = document.getElementById('hero-animation');
-    heroSection.style.background = 'radial-gradient(circle at center, rgba(50, 178, 136, 0.2) 0%, transparent 70%)';
+    heroSection.style.background = 'radial-gradient(circle at center, rgba(146, 147, 151, 0.2) 0%, transparent 70%)';
     
     for (let i = 0; i < 100; i++) {
         const star = document.createElement('div');
@@ -241,11 +241,11 @@ function createFallbackAnimation() {
         
         const colorChoice = Math.random();
         if (colorChoice < 0.5) {
-            star.style.backgroundColor = '#32b288';
+            star.style.backgroundColor = '#929397';
         } else if (colorChoice < 0.8) {
-            star.style.backgroundColor = '#f7519b';
+            star.style.backgroundColor = '#5555FF';
         } else {
-            star.style.backgroundColor = '#f6ae5c';
+            star.style.backgroundColor = '#1391ff';
         }
         
         star.style.left = `${Math.random() * 100}%`;

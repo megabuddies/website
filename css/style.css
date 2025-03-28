@@ -1,13 +1,13 @@
 :root {
-  --background-color: #1a1a1a;
+  --background-color: #121218;
   --text-color: #dfd9d9;
-  --accent-color: #32b288;
-  --secondary-color: #f7519b;
-  --tertiary-color: #f6ae5c;
-  --dark-accent: #497a4b;
-  --light-accent: #70aec7;
-  --bright-accent: #ff0090;
-  --muted-accent: #4ea3a0;
+  --accent-color: #929397;
+  --secondary-color: #1391ff;
+  --tertiary-color: #1391ff;
+  --dark-accent: #585858;
+  --light-accent: #7087e3;
+  --bright-accent: #0f0fd5;
+  --muted-accent: #bbb9b9;
   --danger-color: #ef5435;
   --terminal-bg: #222222;
   --glow-intensity: 0.8;
@@ -24,8 +24,8 @@ body {
   padding: 0;
   overflow-x: hidden;
   background-image: 
-    linear-gradient(0deg, rgba(50, 178, 136, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(50, 178, 136, 0.05) 1px, transparent 1px);
+    linear-gradient(0deg, rgba(146, 147, 151, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(146, 147, 151, 0.05) 1px, transparent 1px);
   background-size: 20px 20px;
   background-position: center;
   position: relative;
@@ -65,7 +65,7 @@ body {
   margin-bottom: 10px;
   text-transform: uppercase;
   letter-spacing: 2px;
-  text-shadow: 0 0 10px rgba(50, 178, 136, 0.5);
+  text-shadow: 0 0 10px rgba(146, 147, 151, 0.5);
 }
 
 .section-line {
@@ -214,13 +214,13 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(50, 178, 136, 0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(146, 147, 151, 0.4), transparent);
   transition: 0.5s;
 }
 
 .wallet-btn:hover {
-  background-color: rgba(50, 178, 136, 0.1);
-  box-shadow: 0 0 10px rgba(50, 178, 136, 0.5);
+  background-color: rgba(146, 147, 151, 0.1);
+  box-shadow: 0 5px 15px rgba(146, 147, 151, 0.3);
 }
 
 .wallet-btn:hover::before {
@@ -228,13 +228,13 @@ body {
 }
 
 .wallet-btn.connecting {
-  background-color: rgba(50, 178, 136, 0.2);
+  background-color: rgba(146, 147, 151, 0.2);
   animation: glitch 0.3s infinite alternate;
 }
 
 .wallet-btn.connected {
-  background-color: rgba(50, 178, 136, 0.2);
-  box-shadow: 0 0 15px rgba(50, 178, 136, 0.7);
+  background-color: rgba(146, 147, 151, 0.2);
+  box-shadow: 0 0 15px rgba(146, 147, 151, 0.7);
 }
 
 @keyframes glitch {
@@ -280,7 +280,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at center, rgba(50, 178, 136, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle at center, rgba(146, 147, 151, 0.1) 0%, transparent 70%);
   z-index: 1;
 }
 
@@ -310,13 +310,13 @@ body {
   font-size: 0.8rem;
   padding: 5px 10px;
   transform: rotate(15deg);
-  animation: badgePulse 2s infinite alternate;
+  animation: pulse 2s infinite alternate;
   clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
 }
 
-@keyframes badgePulse {
-  from { box-shadow: 0 0 5px rgba(247, 81, 155, 0.7); }
-  to { box-shadow: 0 0 15px rgba(247, 81, 155, 1); }
+@keyframes pulse {
+  from { box-shadow: 0 0 5px rgba(19, 145, 255, 0.7); }
+  to { box-shadow: 0 0 15px rgba(19, 145, 255, 1); }
 }
 
 .hero-title {
@@ -326,7 +326,7 @@ body {
   color: var(--accent-color);
   text-transform: uppercase;
   line-height: 1.2;
-  text-shadow: 0 0 10px rgba(50, 178, 136, 0.5);
+  text-shadow: 0 0 10px rgba(146, 147, 151, 0.5);
 }
 
 .hero-subtitle {
@@ -455,14 +455,14 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, transparent, rgba(50, 178, 136, 0.1), transparent);
+  background: linear-gradient(45deg, transparent, rgba(146, 147, 151, 0.1), transparent);
   transform: translateX(-100%);
   transition: transform 0.5s ease;
 }
 
 .about-item:hover {
   transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(50, 178, 136, 0.2);
+  box-shadow: 0 5px 15px rgba(146, 147, 151, 0.2);
   border-color: var(--secondary-color);
 }
 
@@ -509,14 +509,37 @@ body {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: all 0.3s ease;
   position: relative;
   z-index: 1;
   font-family: var(--font-mono);
   overflow: hidden;
-  box-shadow: 0 0 15px rgba(50, 178, 136, 0.3);
+  box-shadow: 0 0 15px rgba(146, 147, 151, 0.3);
   border: 2px solid var(--accent-color);
   clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
+}
+
+.terminal-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(146, 147, 151, 0.4);
+  border-color: var(--secondary-color);
+}
+
+.terminal-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(146, 147, 151, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+  z-index: -1;
+}
+
+.terminal-container:hover::before {
+  transform: translateX(100%);
 }
 
 .terminal-header {
@@ -524,14 +547,24 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
-  border-bottom: 1px solid rgba(50, 178, 136, 0.3);
+  border-bottom: 1px solid rgba(146, 147, 151, 0.3);
   padding-bottom: 10px;
+  transition: all 0.3s ease;
+}
+
+.terminal-container:hover .terminal-header {
+  border-bottom: 1px solid var(--secondary-color);
 }
 
 .terminal-title {
   color: var(--accent-color);
   font-size: 1rem;
   margin: 0;
+  transition: all 0.3s ease;
+}
+
+.terminal-container:hover .terminal-title {
+  color: var(--secondary-color);
 }
 
 .terminal-buttons {
@@ -544,6 +577,11 @@ body {
   height: 12px;
   border-radius: 0;
   clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
+  transition: all 0.3s ease;
+}
+
+.terminal-container:hover .terminal-button {
+  transform: scale(1.1);
 }
 
 .terminal-button.red {
@@ -558,6 +596,10 @@ body {
   background-color: var(--accent-color);
 }
 
+.terminal-container:hover .terminal-button.green {
+  background-color: var(--secondary-color);
+}
+
 .terminal-content {
   line-height: 1.6;
 }
@@ -567,11 +609,22 @@ body {
   color: var(--text-color);
   position: relative;
   margin-bottom: 8px;
+  transition: transform 0.2s ease;
+}
+
+.terminal-text:hover {
+  transform: translateX(5px);
+  color: #ffffff;
 }
 
 .terminal-prompt {
   color: var(--accent-color);
   margin-right: 10px;
+  transition: all 0.3s ease;
+}
+
+.terminal-text:hover .terminal-prompt {
+  color: var(--secondary-color);
 }
 
 /* Секция "Коллекция" */
@@ -580,6 +633,15 @@ body {
   justify-content: center;
   gap: 15px;
   margin-bottom: 30px;
+}
+
+.collection-subtitle {
+  text-align: center;
+  font-size: 1rem;
+  color: var(--text-color);
+  margin-top: 5px;
+  margin-bottom: 15px;
+  opacity: 0.8;
 }
 
 .filter-btn {
@@ -597,8 +659,8 @@ body {
 }
 
 .filter-btn:hover, .filter-btn.active {
-  background-color: rgba(50, 178, 136, 0.1);
-  box-shadow: 0 0 10px rgba(50, 178, 136, 0.5);
+  background-color: rgba(146, 147, 151, 0.1);
+  box-shadow: 0 0 10px rgba(146, 147, 151, 0.5);
 }
 
 .filter-btn.active {
@@ -631,74 +693,48 @@ body {
   content: '';
   position: absolute;
   top: 0;
-  height: 434px;
-  width: 60px;
+  height: 100%;
+  width: 40px;
   z-index: 2;
   pointer-events: none;
 }
 
 .slider-wrapper::before {
   left: 0;
-  background: 
-    /* Создаем пиксельную сетку с постепенным градиентом */
-    linear-gradient(to right, 
-      var(--background-color) 0%, rgba(30, 30, 30, 0.95) 10%, 
-      rgba(40, 40, 40, 0.85) 20%, rgba(50, 50, 50, 0.75) 30%, 
-      rgba(60, 60, 60, 0.65) 40%, rgba(70, 70, 70, 0.55) 50%, 
-      rgba(80, 80, 80, 0.45) 60%, rgba(90, 90, 90, 0.35) 70%, 
-      rgba(100, 100, 100, 0.25) 80%, rgba(110, 110, 110, 0.15) 90%, 
-      transparent 100%);
+  /* Создаем базовый пиксельный узор */
+  background-image: 
+    /* Пиксельный узор в шахматном порядке */
+    linear-gradient(45deg, var(--background-color) 25%, transparent 25%), 
+    linear-gradient(-45deg, var(--background-color) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--background-color) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--background-color) 75%);
   
-  /* Накладываем пиксельную структуру поверх градиента */
-  -webkit-mask-image: 
-    repeating-linear-gradient(to right, 
-      #000 0px, #000 6px, 
-      transparent 6px, transparent 12px),
-    repeating-linear-gradient(to bottom, 
-      #000 0px, #000 6px, 
-      transparent 6px, transparent 12px);
-  -webkit-mask-composite: source-in;
+  /* Устанавливаем размер пикселей */
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
   
-  mask-image: 
-    repeating-linear-gradient(to right, 
-      #000 0px, #000 6px, 
-      transparent 6px, transparent 12px),
-    repeating-linear-gradient(to bottom, 
-      #000 0px, #000 6px, 
-      transparent 6px, transparent 12px);
-  mask-composite: intersect;
+  /* Накладываем градиент прозрачности с помощью маски */
+  -webkit-mask-image: linear-gradient(to right, var(--background-color), transparent);
+  mask-image: linear-gradient(to right, var(--background-color), transparent);
 }
 
 .slider-wrapper::after {
   right: 0;
-  background: 
-    /* Создаем пиксельную сетку с постепенным градиентом */
-    linear-gradient(to left, 
-      var(--background-color) 0%, rgba(30, 30, 30, 0.95) 10%, 
-      rgba(40, 40, 40, 0.85) 20%, rgba(50, 50, 50, 0.75) 30%, 
-      rgba(60, 60, 60, 0.65) 40%, rgba(70, 70, 70, 0.55) 50%, 
-      rgba(80, 80, 80, 0.45) 60%, rgba(90, 90, 90, 0.35) 70%, 
-      rgba(100, 100, 100, 0.25) 80%, rgba(110, 110, 110, 0.15) 90%, 
-      transparent 100%);
+  /* Создаем базовый пиксельный узор */
+  background-image: 
+    /* Пиксельный узор в шахматном порядке */
+    linear-gradient(45deg, var(--background-color) 25%, transparent 25%), 
+    linear-gradient(-45deg, var(--background-color) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--background-color) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--background-color) 75%);
   
-  /* Накладываем пиксельную структуру поверх градиента */
-  -webkit-mask-image: 
-    repeating-linear-gradient(to left, 
-      #000 0px, #000 6px, 
-      transparent 6px, transparent 12px),
-    repeating-linear-gradient(to bottom, 
-      #000 0px, #000 6px, 
-      transparent 6px, transparent 12px);
-  -webkit-mask-composite: source-in;
+  /* Устанавливаем размер пикселей */
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
   
-  mask-image: 
-    repeating-linear-gradient(to left, 
-      #000 0px, #000 6px, 
-      transparent 6px, transparent 12px),
-    repeating-linear-gradient(to bottom, 
-      #000 0px, #000 6px, 
-      transparent 6px, transparent 12px);
-  mask-composite: intersect;
+  /* Накладываем градиент прозрачности с помощью маски */
+  -webkit-mask-image: linear-gradient(to left, var(--background-color), transparent);
+  mask-image: linear-gradient(to left, var(--background-color), transparent);
 }
 
 .slider-track {
@@ -735,7 +771,7 @@ body {
 
 .nft-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(50, 178, 136, 0.3);
+  box-shadow: 0 5px 15px rgba(146, 147, 151, 0.3);
   border-color: var(--secondary-color);
 }
 
@@ -831,6 +867,11 @@ body {
   margin-bottom: 40px;
   position: relative;
   transform: translateZ(0);
+  transition: all 0.3s ease;
+}
+
+.roadmap-item:hover {
+  transform: translateX(10px);
 }
 
 .roadmap-icon {
@@ -845,11 +886,23 @@ body {
   border: 2px solid var(--accent-color);
   z-index: 2;
   clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  transition: all 0.3s ease;
+}
+
+.roadmap-item:hover .roadmap-icon {
+  transform: rotate(45deg);
+  border-color: var(--secondary-color);
 }
 
 .roadmap-icon i {
   font-size: 24px;
   color: var(--accent-color);
+  transition: all 0.3s ease;
+}
+
+.roadmap-item:hover .roadmap-icon i {
+  color: var(--secondary-color);
+  transform: rotate(-45deg);
 }
 
 .roadmap-content {
@@ -859,6 +912,30 @@ body {
   background: rgba(26, 26, 26, 0.7);
   border: 2px solid var(--accent-color);
   clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.roadmap-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(50, 178, 136, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+.roadmap-item:hover .roadmap-content {
+  border-color: var(--secondary-color);
+  box-shadow: 0 5px 15px rgba(50, 178, 136, 0.2);
+}
+
+.roadmap-item:hover .roadmap-content::before {
+  transform: translateX(100%);
 }
 
 .roadmap-date {
@@ -866,6 +943,11 @@ body {
   font-size: 1.2rem;
   color: var(--accent-color);
   margin-bottom: 10px;
+  transition: all 0.3s ease;
+}
+
+.roadmap-item:hover .roadmap-date {
+  color: var(--secondary-color);
 }
 
 .roadmap-status {
@@ -875,21 +957,26 @@ body {
   font-size: 0.8rem;
   margin-top: 10px;
   clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
+  transition: all 0.3s ease;
 }
 
 .roadmap-status.completed {
-  background-color: rgba(50, 178, 136, 0.2);
+  background-color: rgba(146, 147, 151, 0.2);
   color: var(--accent-color);
 }
 
 .roadmap-status.in-progress {
-  background-color: rgba(246, 174, 92, 0.2);
+  background-color: rgba(19, 145, 255, 0.2);
   color: var(--tertiary-color);
 }
 
 .roadmap-status.planned {
   background-color: rgba(247, 81, 155, 0.2);
   color: var(--secondary-color);
+}
+
+.roadmap-item:hover .roadmap-status {
+  transform: scale(1.05);
 }
 
 /* Секция "Сообщество" */
@@ -900,7 +987,7 @@ body {
 }
 
 .twitter-feed, .discord-community {
-  background: rgba(26, 26, 26, 0.8);
+  background: rgba(34, 34, 40, 0.8);
   padding: 30px;
   border-radius: 0;
   margin-bottom: 30px;
@@ -908,13 +995,27 @@ body {
   transform: translateX(0);
   transition: all 0.3s ease;
   border: 2px solid var(--accent-color);
-  clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 90%, 90% 100%, 0 100%);
   transform: translateZ(0);
 }
 
+.twitter-feed::before, .discord-community::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(146, 147, 151, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+  z-index: -1;
+}
+
 .twitter-feed:hover, .discord-community:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(146, 147, 151, 0.2);
   border-color: var(--secondary-color);
-  box-shadow: 0 0 15px rgba(50, 178, 136, 0.3);
 }
 
 .community-heading {
@@ -990,9 +1091,17 @@ body {
 }
 
 .newsletter-content {
-  max-width: 600px;
-  margin: 0 auto;
+  background: rgba(34, 34, 40, 0.8);
+  padding: 30px;
+  border-radius: 0;
   text-align: center;
+  margin-top: 30px;
+  clip-path: polygon(0 0, 100% 0, 100% 90%, 90% 100%, 0 100%);
+  border: 2px solid var(--accent-color);
+  box-shadow: 0 0 15px rgba(146, 147, 151, 0.3);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .newsletter-form {
@@ -1014,7 +1123,8 @@ body {
 
 .newsletter-form input:focus {
   outline: none;
-  box-shadow: 0 0 10px rgba(50, 178, 136, 0.3);
+  box-shadow: 0 0 15px rgba(146, 147, 151, 0.7);
+  border-color: var(--secondary-color);
 }
 
 .newsletter-form button {
@@ -1151,7 +1261,7 @@ body {
   text-align: center;
   padding-top: 30px;
   margin-top: 30px;
-  border-top: 1px solid rgba(50, 178, 136, 0.1);
+  border-top: 1px solid rgba(146, 147, 151, 0.1);
   font-size: 0.8rem;
   color: rgba(223, 217, 217, 0.7);
 }
