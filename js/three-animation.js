@@ -175,9 +175,9 @@ function createParticleSystem() {
     const colors = new Float32Array(particleCount * 3);
     const sizes = new Float32Array(particleCount);
     
-    const color1 = new THREE.Color(0x32b288);
-    const color2 = new THREE.Color(0xf7519b);
-    const color3 = new THREE.Color(0xf6ae5c);
+    const color1 = new THREE.Color(0x5555FF);
+    const color2 = new THREE.Color(0x0f0fd5);
+    const color3 = new THREE.Color(0x1391ff);
     
     for (let i = 0; i < particleCount; i++) {
         positions[i * 3] = (Math.random() - 0.5) * 30;
@@ -220,7 +220,7 @@ function createParticleSystem() {
 function createGrid() {
     const gridSize = 50;
     const gridDivisions = 50;
-    const gridColor = 0x32b288;
+    const gridColor = 0x5555FF;
     
     const gridHelper = new THREE.GridHelper(gridSize, gridDivisions, gridColor, gridColor);
     gridHelper.material.opacity = 0.1;
@@ -231,7 +231,7 @@ function createGrid() {
 
 function createFallbackAnimation() {
     const heroSection = document.getElementById('hero-animation');
-    heroSection.style.background = 'radial-gradient(circle at center, rgba(50, 178, 136, 0.2) 0%, transparent 70%)';
+    heroSection.style.background = 'radial-gradient(circle at center, rgba(85, 85, 255, 0.2) 0%, transparent 70%)';
     
     for (let i = 0; i < 100; i++) {
         const star = document.createElement('div');
@@ -241,11 +241,11 @@ function createFallbackAnimation() {
         
         const colorChoice = Math.random();
         if (colorChoice < 0.5) {
-            star.style.backgroundColor = '#32b288';
+            star.style.backgroundColor = '#5555FF';
         } else if (colorChoice < 0.8) {
-            star.style.backgroundColor = '#f7519b';
+            star.style.backgroundColor = '#0f0fd5';
         } else {
-            star.style.backgroundColor = '#f6ae5c';
+            star.style.backgroundColor = '#1391ff';
         }
         
         star.style.left = `${Math.random() * 100}%`;
