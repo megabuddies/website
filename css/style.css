@@ -632,80 +632,154 @@ body {
   position: absolute;
   top: 0;
   height: 100%;
-  width: 50px;
+  width: 60px;
   z-index: 2;
   pointer-events: none;
 }
 
 .slider-wrapper::before {
   left: 0;
-  /* Создаем эффект растворения с переходом от крупных к мелким пикселям */
   background: 
-    /* Крупные пиксели в начале (ближе к краю) */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 25%, 
-      transparent 0%, transparent 50%
-    ) 0 0 / 12px 12px,
-    /* Средние пиксели в середине */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 25%, 
-      transparent 0%, transparent 50%
-    ) 12px 0 / 8px 8px,
-    /* Мелкие пиксели в конце (дальше от края) */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 25%, 
-      transparent 0%, transparent 50%
-    ) 20px 0 / 4px 4px,
-    /* Очень мелкие пиксели на границе растворения */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 25%, 
-      transparent 0%, transparent 50%
-    ) 24px 0 / 2px 2px;
+    /* Зона 1: Самые крупные пиксели (16px) */
+    repeating-linear-gradient(to right,
+      var(--background-color) 0px, var(--background-color) 16px,
+      transparent 16px, transparent 32px
+    ),
+    repeating-linear-gradient(to bottom,
+      var(--background-color) 0px, var(--background-color) 16px,
+      transparent 16px, transparent 32px
+    ),
+    
+    /* Зона 2: Крупные пиксели (12px) */
+    repeating-linear-gradient(to right,
+      var(--background-color) 0px, var(--background-color) 12px,
+      transparent 12px, transparent 24px
+    ) 32px 0,
+    repeating-linear-gradient(to bottom,
+      var(--background-color) 0px, var(--background-color) 12px,
+      transparent 12px, transparent 24px
+    ) 32px 0,
+    
+    /* Зона 3: Средние пиксели (8px) */
+    repeating-linear-gradient(to right,
+      var(--background-color) 0px, var(--background-color) 8px,
+      transparent 8px, transparent 16px
+    ) 56px 0,
+    repeating-linear-gradient(to bottom,
+      var(--background-color) 0px, var(--background-color) 8px,
+      transparent 8px, transparent 16px
+    ) 56px 0,
+    
+    /* Зона 4: Мелкие пиксели (4px) */
+    repeating-linear-gradient(to right,
+      var(--background-color) 0px, var(--background-color) 4px,
+      transparent 4px, transparent 8px
+    ) 72px 0,
+    repeating-linear-gradient(to bottom,
+      var(--background-color) 0px, var(--background-color) 4px,
+      transparent 4px, transparent 8px
+    ) 72px 0,
+    
+    /* Зона 5: Самые мелкие пиксели (2px) */
+    repeating-linear-gradient(to right,
+      var(--background-color) 0px, var(--background-color) 2px,
+      transparent 2px, transparent 4px
+    ) 80px 0,
+    repeating-linear-gradient(to bottom,
+      var(--background-color) 0px, var(--background-color) 2px,
+      transparent 2px, transparent 4px
+    ) 80px 0;
   
-  /* Накладываем градиент прозрачности от края к центру */
+  background-size: 
+    32px 100%, 32px 100%,     /* Зона 1 */
+    24px 100%, 24px 100%,     /* Зона 2 */
+    16px 100%, 16px 100%,     /* Зона 3 */
+    8px 100%, 8px 100%,       /* Зона 4 */
+    4px 100%, 4px 100%;       /* Зона 5 */
+  
+  background-repeat: no-repeat;
+  
+  /* Накладываем градиент прозрачности для плавного растворения пикселей */
   -webkit-mask-image: linear-gradient(to right, 
     var(--background-color) 0%, 
-    var(--background-color) 50%, 
+    var(--background-color) 60%, 
     transparent 100%);
   mask-image: linear-gradient(to right, 
     var(--background-color) 0%, 
-    var(--background-color) 50%, 
+    var(--background-color) 60%, 
     transparent 100%);
 }
 
 .slider-wrapper::after {
   right: 0;
-  /* Создаем эффект растворения с переходом от крупных к мелким пикселям */
   background: 
-    /* Крупные пиксели в начале (ближе к краю) */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 25%, 
-      transparent 0%, transparent 50%
-    ) calc(100% - 12px) 0 / 12px 12px,
-    /* Средние пиксели в середине */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 25%, 
-      transparent 0%, transparent 50%
-    ) calc(100% - 20px) 0 / 8px 8px,
-    /* Мелкие пиксели в конце (дальше от края) */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 25%, 
-      transparent 0%, transparent 50%
-    ) calc(100% - 24px) 0 / 4px 4px,
-    /* Очень мелкие пиксели на границе растворения */
-    repeating-conic-gradient(
-      var(--background-color) 0%, var(--background-color) 25%, 
-      transparent 0%, transparent 50%
-    ) calc(100% - 26px) 0 / 2px 2px;
+    /* Зона 1: Самые крупные пиксели (16px) */
+    repeating-linear-gradient(to left,
+      var(--background-color) 0px, var(--background-color) 16px,
+      transparent 16px, transparent 32px
+    ),
+    repeating-linear-gradient(to bottom,
+      var(--background-color) 0px, var(--background-color) 16px,
+      transparent 16px, transparent 32px
+    ),
+    
+    /* Зона 2: Крупные пиксели (12px) */
+    repeating-linear-gradient(to left,
+      var(--background-color) 0px, var(--background-color) 12px,
+      transparent 12px, transparent 24px
+    ) 32px 0,
+    repeating-linear-gradient(to bottom,
+      var(--background-color) 0px, var(--background-color) 12px,
+      transparent 12px, transparent 24px
+    ) 32px 0,
+    
+    /* Зона 3: Средние пиксели (8px) */
+    repeating-linear-gradient(to left,
+      var(--background-color) 0px, var(--background-color) 8px,
+      transparent 8px, transparent 16px
+    ) 56px 0,
+    repeating-linear-gradient(to bottom,
+      var(--background-color) 0px, var(--background-color) 8px,
+      transparent 8px, transparent 16px
+    ) 56px 0,
+    
+    /* Зона 4: Мелкие пиксели (4px) */
+    repeating-linear-gradient(to left,
+      var(--background-color) 0px, var(--background-color) 4px,
+      transparent 4px, transparent 8px
+    ) 72px 0,
+    repeating-linear-gradient(to bottom,
+      var(--background-color) 0px, var(--background-color) 4px,
+      transparent 4px, transparent 8px
+    ) 72px 0,
+    
+    /* Зона 5: Самые мелкие пиксели (2px) */
+    repeating-linear-gradient(to left,
+      var(--background-color) 0px, var(--background-color) 2px,
+      transparent 2px, transparent 4px
+    ) 80px 0,
+    repeating-linear-gradient(to bottom,
+      var(--background-color) 0px, var(--background-color) 2px,
+      transparent 2px, transparent 4px
+    ) 80px 0;
   
-  /* Накладываем градиент прозрачности от края к центру */
+  background-size: 
+    32px 100%, 32px 100%,     /* Зона 1 */
+    24px 100%, 24px 100%,     /* Зона 2 */
+    16px 100%, 16px 100%,     /* Зона 3 */
+    8px 100%, 8px 100%,       /* Зона 4 */
+    4px 100%, 4px 100%;       /* Зона 5 */
+  
+  background-repeat: no-repeat;
+  
+  /* Накладываем градиент прозрачности для плавного растворения пикселей */
   -webkit-mask-image: linear-gradient(to left, 
     var(--background-color) 0%, 
-    var(--background-color) 50%, 
+    var(--background-color) 60%, 
     transparent 100%);
   mask-image: linear-gradient(to left, 
     var(--background-color) 0%, 
-    var(--background-color) 50%, 
+    var(--background-color) 60%, 
     transparent 100%);
 }
 
