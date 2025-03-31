@@ -209,46 +209,46 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Синхронизированная анимация стрелки - светится только при движении вниз
+        // Улучшенная синхронизированная анимация стрелки
         const scrollArrow = document.querySelector('.scroll-arrow');
         if (scrollArrow) {
-            // Сначала убираем подсветку
+            // Начальное состояние - без подсветки
             scrollArrow.classList.remove('pulse');
             
-            // Создаем анимацию с четкой синхронизацией
-            gsap.timeline({repeat: -1})
-                // Движение вниз с подсветкой
-                .to(scrollIndicator, {
-                    y: 8,
-                    duration: 0.8,
-                    onStart: function() {
-                        // Включаем подсветку в начале движения вниз
+            // Создаем единую анимацию с точной синхронизацией
+            const tl = gsap.timeline({
+                repeat: -1,
+                onUpdate: function() {
+                    // Определяем, движется ли объект вниз, основываясь на прогрессе анимации
+                    const progress = tl.progress();
+                    // Первая половина анимации (0-0.5) - движение вниз
+                    // Вторая половина (0.5-1.0) - движение вверх с паузой
+                    if (progress < 0.5) {
+                        // Включаем подсветку только при движении вниз
                         scrollArrow.classList.add('pulse');
-                    },
-                    onComplete: function() {
-                        // Фиксируем, что подсветка должна быть включена
-                        if (!scrollArrow.classList.contains('pulse')) {
-                            scrollArrow.classList.add('pulse');
-                        }
-                    }
-                })
-                // Движение вверх без подсветки
-                .to(scrollIndicator, {
-                    y: 0,
-                    duration: 0.8,
-                    onStart: function() {
-                        // Выключаем подсветку в начале движения вверх
+                    } else {
+                        // Убираем подсветку при движении вверх
                         scrollArrow.classList.remove('pulse');
-                    },
-                    onComplete: function() {
-                        // Фиксируем, что подсветка должна быть выключена
-                        if (scrollArrow.classList.contains('pulse')) {
-                            scrollArrow.classList.remove('pulse');
-                        }
                     }
-                })
-                // Пауза между циклами
-                .to({}, {duration: 0.4});
+                }
+            });
+            
+            // Добавляем движение вниз
+            tl.to(scrollIndicator, {
+                y: 8,
+                duration: 0.8,
+                ease: "power1.inOut"
+            });
+            
+            // Добавляем движение вверх
+            tl.to(scrollIndicator, {
+                y: 0,
+                duration: 0.8,
+                ease: "power1.inOut"
+            });
+            
+            // Добавляем паузу между циклами
+            tl.to({}, {duration: 0.4});
         }
     }
     
