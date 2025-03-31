@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Страница не найдена | Mega Buddies</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/neon.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="scan-line"></div>
+    
+    <div class="error-page">
+        <div class="error-container">
+            <h1 class="error-code neon-text glitch-effect" data-text="404">404</h1>
+            <h2 class="error-title terminal-effect">ФАЙЛ НЕ НАЙДЕН</h2>
+            <p class="error-message">Похоже, что запрашиваемая страница была перемещена или удалена, или вы ввели неправильный URL.</p>
+            <a href="/" class="btn-primary neon-button">ВЕРНУТЬСЯ НА ГЛАВНУЮ</a>
+        </div>
+    </div>
+    
+    <script>
+        // Добавляем глюк-эффект для 404
+        function glitchEffect() {
+            const errorCode = document.querySelector('.error-code');
+            if (Math.random() > 0.9) {
+                errorCode.style.transform = `translate(${Math.random() * 10 - 5}px, ${Math.random() * 10 - 5}px)`;
+                setTimeout(() => {
+                    errorCode.style.transform = 'translate(0, 0)';
+                }, 100);
+            }
+            requestAnimationFrame(glitchEffect);
+        }
+        
+        glitchEffect();
+    </script>
+</body>
+</html>
