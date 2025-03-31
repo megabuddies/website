@@ -209,51 +209,32 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Заменяем предыдущую анимацию на новую, которая светится только при движении вниз
+        // Упрощенная синхронизированная анимация стрелки
         const scrollArrow = document.querySelector('.scroll-arrow');
         if (scrollArrow) {
-            let isMovingDown = false;
-            let animationInProgress = false;
+            // Создаем единую синхронизированную анимацию
+            let timeline = gsap.timeline({repeat: -1, yoyo: false});
             
-            // Начальное состояние - не подсвечивать стрелку
-            scrollArrow.classList.remove('pulse');
+            // Анимация вниз (с подсветкой)
+            timeline.to(scrollIndicator, {
+                y: 8, 
+                duration: 0.8,
+                onStart: function() {
+                    scrollArrow.classList.add('pulse');
+                }
+            });
             
-            const animateDown = function() {
-                if (animationInProgress) return;
-                
-                animationInProgress = true;
-                isMovingDown = true;
-                
-                // Подсвечиваем стрелку только при движении вниз
-                scrollArrow.classList.add('pulse');
-                
-                gsap.to(scrollIndicator, {
-                    y: 8,
-                    duration: 0.8,
-                    onComplete: function() {
-                        isMovingDown = false;
-                        animateUp();
-                    }
-                });
-            };
+            // Анимация вверх (без подсветки)
+            timeline.to(scrollIndicator, {
+                y: 0, 
+                duration: 0.8,
+                onStart: function() {
+                    scrollArrow.classList.remove('pulse');
+                }
+            });
             
-            const animateUp = function() {
-                // Убираем подсветку при движении вверх
-                scrollArrow.classList.remove('pulse');
-                
-                gsap.to(scrollIndicator, {
-                    y: 0,
-                    duration: 0.8,
-                    onComplete: function() {
-                        animationInProgress = false;
-                        // Небольшая пауза перед следующей анимацией
-                        setTimeout(animateDown, 400);
-                    }
-                });
-            };
-            
-            // Запускаем анимацию
-            animateDown();
+            // Пауза между циклами
+            timeline.to({}, {duration: 0.4});
         }
     }
     

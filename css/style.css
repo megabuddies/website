@@ -303,7 +303,6 @@ body {
   position: relative;
   z-index: 2;
   opacity: 0.9;
-  margin: 0 40px;
   flex-shrink: 0;
 }
 
@@ -324,7 +323,7 @@ body {
                0 0 30px rgba(146, 147, 151, 0.3);
   animation: titlePulse 4s infinite alternate;
   text-align: center;
-  width: auto;
+  width: 250px;
   padding: 0;
 }
 
@@ -745,7 +744,7 @@ body {
 
 .collection-header {
   text-align: left;
-  margin-bottom: 5px;
+  margin-bottom: 0;
 }
 
 .collection-subtitle {
