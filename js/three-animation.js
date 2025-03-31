@@ -9,20 +9,34 @@ function initThree() {
     const loadingManager = new THREE.LoadingManager();
     loadingManager.onLoad = function() {
         try {
+            // Находим контейнер для 3D модели
+            const heroAnimation = document.getElementById('hero-animation');
+            if (!heroAnimation) {
+                console.error("Не найден элемент #hero-animation");
+                return;
+            }
+            
+            // Используем размеры контейнера вместо всего окна
+            const width = heroAnimation.offsetWidth;
+            const height = 200; // Фиксированная высота
+            
             scene = new THREE.Scene();
             
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
             camera.position.z = 5;
+            camera.position.y = -0.5; // Смещаем камеру вверх, чтобы модель была выше
             
             renderer = new THREE.WebGLRenderer({ 
                 alpha: true, 
                 antialias: true,
                 powerPreference: "high-performance"
             });
-            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setSize(width, height);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            renderer.domElement.classList.add('fullscreen-bg');
-            document.body.appendChild(renderer.domElement);
+            
+            // Очищаем контейнер и добавляем в него рендерер
+            heroAnimation.innerHTML = '';
+            heroAnimation.appendChild(renderer.domElement);
             
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
             scene.add(ambientLight);
@@ -275,9 +289,15 @@ function onDocumentMouseMove(event) {
 }
 
 function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    const heroAnimation = document.getElementById('hero-animation');
+    if (heroAnimation && renderer) {
+        const width = heroAnimation.offsetWidth;
+        const height = 200; // Фиксированная высота
+        
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+    }
 }
 
 function animate() {

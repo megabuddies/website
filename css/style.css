@@ -304,8 +304,9 @@ body {
   position: relative;
   z-index: 2;
   opacity: 0.9;
-  margin: -120px 0 60px 0;
+  margin: -200px 0 20px 0;
   flex-shrink: 0;
+  overflow: hidden;
 }
 
 .hero-header {
@@ -514,7 +515,7 @@ body {
   #hero-animation {
     width: 150px;
     height: 150px;
-    margin: -90px 0 40px 0;
+    margin: -150px 0 20px 0;
   }
   
   .hero-title {
