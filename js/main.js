@@ -219,35 +219,38 @@ document.addEventListener('DOMContentLoaded', function() {
             const tl = gsap.timeline({
                 repeat: -1,
                 onUpdate: function() {
-                    // Определяем, движется ли объект вниз, основываясь на прогрессе анимации
+                    // Определяем фазу анимации: 0-0.5 движение вниз, 0.5-1.0 движение вверх
                     const progress = tl.progress();
-                    // Первая половина анимации (0-0.5) - движение вниз
-                    // Вторая половина (0.5-1.0) - движение вверх с паузой
-                    if (progress < 0.5) {
-                        // Включаем подсветку только при движении вниз
+                    
+                    // Инвертируем условие: подсвечиваем при движении вниз (первая часть анимации)
+                    if (progress < 0.25) {
+                        // В начале движения вниз
+                        scrollArrow.classList.add('pulse');
+                    } else if (progress >= 0.25 && progress < 0.5) {
+                        // Продолжаем движение вниз
                         scrollArrow.classList.add('pulse');
                     } else {
-                        // Убираем подсветку при движении вверх
+                        // При движении вверх (вторая половина цикла)
                         scrollArrow.classList.remove('pulse');
                     }
                 }
             });
             
-            // Добавляем движение вниз
+            // Сначала движение вниз (с подсветкой)
             tl.to(scrollIndicator, {
                 y: 8,
                 duration: 0.8,
                 ease: "power1.inOut"
             });
             
-            // Добавляем движение вверх
+            // Затем движение вверх (без подсветки)
             tl.to(scrollIndicator, {
                 y: 0,
                 duration: 0.8,
                 ease: "power1.inOut"
             });
             
-            // Добавляем паузу между циклами
+            // Пауза между циклами
             tl.to({}, {duration: 0.4});
         }
     }
