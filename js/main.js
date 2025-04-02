@@ -34,24 +34,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const targetId = this.getAttribute('href').substring(1);
             const targetSection = document.getElementById(targetId);
             
-            // Специальное решение для roadmap из-за проблем с карусельным разделом перед ним
+            // Исправлено: простое, но эффективное решение для раздела roadmap
             if (targetId === 'roadmap') {
-                // Более радикальное решение - используем элемент внутри roadmap
-                const roadmapHeading = targetSection.querySelector('.section-heading');
-                if (roadmapHeading) {
-                    setTimeout(() => {
-                        window.scrollTo({
-                            top: roadmapHeading.offsetTop - 150,
-                            behavior: 'smooth'
-                        });
-                    }, 100);
-                } else {
-                    // Больший отступ для roadmap, если заголовок не найден
-                    window.scrollTo({
-                        top: targetSection.offsetTop - 300,
-                        behavior: 'smooth'
-                    });
-                }
+                // Прокручиваем немного выше, чем сам раздел
+                const yOffset = -160; 
+                const y = targetSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                
+                window.scrollTo({
+                    top: y,
+                    behavior: 'smooth'
+                });
             } else {
                 // Стандартное поведение для других разделов
                 window.scrollTo({
@@ -78,10 +70,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const sectionHeight = section.offsetHeight;
             const sectionId = section.getAttribute('id');
             
-            // Специальная логика для roadmap раздела
+            // Специальная логика для roadmap раздела с улучшенным определением
             if (sectionId === 'roadmap') {
-                // Проверяем, находимся ли мы в середине roadmap секции
-                if (scrollPosition >= sectionTop - 100 && scrollPosition < sectionTop + sectionHeight) {
+                // Активируем раздел дорожной карты чуть раньше для лучшего UX
+                if (scrollPosition >= sectionTop - 200 && scrollPosition < sectionTop + sectionHeight) {
                     document.querySelectorAll('.nav-item').forEach(item => {
                         item.classList.remove('active');
                     });
