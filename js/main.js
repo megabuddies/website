@@ -34,23 +34,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const targetId = this.getAttribute('href').substring(1);
             const targetSection = document.getElementById(targetId);
             
-            // Исправлено: простое, но эффективное решение для раздела roadmap
-            if (targetId === 'roadmap') {
-                // Прокручиваем немного выше, чем сам раздел
-                const yOffset = -160; 
-                const y = targetSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
-                
-                window.scrollTo({
-                    top: y,
-                    behavior: 'smooth'
-                });
-            } else {
-                // Стандартное поведение для других разделов
-                window.scrollTo({
-                    top: targetSection.offsetTop - 100,
-                    behavior: 'smooth'
-                });
-            }
+            // Одинаковое поведение для всех разделов, включая roadmap
+            window.scrollTo({
+                top: targetSection.offsetTop - 100, // Стандартный отступ для всех разделов
+                behavior: 'smooth'
+            });
             
             // Закрываем мобильное меню при клике на ссылку
             if (mainNav.classList.contains('active')) {
@@ -60,31 +48,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Более точная функция активации пунктов меню при скролле
+    // Обновленная функция активации пунктов меню при скролле - активация происходит раньше
     function setActiveNavItem() {
         const sections = document.querySelectorAll('section[id]');
-        const scrollPosition = window.scrollY + 150;
+        const scrollPosition = window.scrollY + 300; // Увеличиваем это значение, чтобы активация происходила раньше
         
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
             const sectionHeight = section.offsetHeight;
             const sectionId = section.getAttribute('id');
             
-            // Специальная логика для roadmap раздела с улучшенным определением
-            if (sectionId === 'roadmap') {
-                // Активируем раздел дорожной карты чуть раньше для лучшего UX
-                if (scrollPosition >= sectionTop - 200 && scrollPosition < sectionTop + sectionHeight) {
-                    document.querySelectorAll('.nav-item').forEach(item => {
-                        item.classList.remove('active');
-                    });
-                    
-                    const activeLink = document.querySelector(`.nav-item a[href="#${sectionId}"]`);
-                    if (activeLink) {
-                        activeLink.parentElement.classList.add('active');
-                    }
-                }
-            } else if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                // Стандартная логика для других разделов
+            // Активируем следующий раздел, когда 60-70% текущего раздела прокручено
+            // Используем одинаковую логику для всех разделов, включая roadmap
+            const earlyActivationPoint = sectionTop - (sectionHeight * 0.4); // Активация примерно на 60% прокрутки предыдущего раздела
+            
+            if (scrollPosition >= earlyActivationPoint && scrollPosition < (sectionTop + sectionHeight)) {
                 document.querySelectorAll('.nav-item').forEach(item => {
                     item.classList.remove('active');
                 });
