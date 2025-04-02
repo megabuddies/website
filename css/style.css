@@ -113,9 +113,10 @@ body {
 
 .header-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   padding: 0 30px;
+  gap: 20px;
 }
 
 .logo {
@@ -126,6 +127,7 @@ body {
   display: flex;
   align-items: center;
   letter-spacing: 3px;
+  margin-right: 50px;
 }
 
 .logo img {
@@ -136,6 +138,7 @@ body {
 
 .main-nav {
   display: flex;
+  margin-right: auto;
 }
 
 .nav-list {
@@ -146,8 +149,12 @@ body {
 }
 
 .nav-item {
-  margin: 0 15px;
+  margin: 0 10px;
   position: relative;
+}
+
+.nav-item:first-child {
+  margin-left: 0;
 }
 
 .nav-item::after {
@@ -170,10 +177,17 @@ body {
   font-family: var(--font-mono);
   color: var(--text-color);
   text-decoration: none;
-  font-size: 1rem;
-  padding: 5px 0;
+  font-size: 0.9rem;
+  padding: 8px 12px;
   position: relative;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  background: rgba(146, 147, 151, 0.1);
+  border: 1px solid transparent;
+  border-radius: 0;
+  display: inline-block;
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .nav-link::after {
@@ -189,6 +203,10 @@ body {
 
 .nav-link:hover {
   color: var(--accent-color);
+  background: rgba(146, 147, 151, 0.2);
+  border-color: var(--accent-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(146, 147, 151, 0.3);
 }
 
 .nav-link:hover::after {
