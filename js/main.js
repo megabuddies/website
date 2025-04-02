@@ -34,16 +34,31 @@ document.addEventListener('DOMContentLoaded', function() {
             const targetId = this.getAttribute('href').substring(1);
             const targetSection = document.getElementById(targetId);
             
-            // Дополнительный отступ для раздела "roadmap", чтобы исправить проблему с навигацией
-            let offsetAdjustment = 100;
+            // Специальное решение для roadmap из-за проблем с карусельным разделом перед ним
             if (targetId === 'roadmap') {
-                offsetAdjustment = 200; // Увеличиваем отступ для roadmap
+                // Более радикальное решение - используем элемент внутри roadmap
+                const roadmapHeading = targetSection.querySelector('.section-heading');
+                if (roadmapHeading) {
+                    setTimeout(() => {
+                        window.scrollTo({
+                            top: roadmapHeading.offsetTop - 150,
+                            behavior: 'smooth'
+                        });
+                    }, 100);
+                } else {
+                    // Больший отступ для roadmap, если заголовок не найден
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 300,
+                        behavior: 'smooth'
+                    });
+                }
+            } else {
+                // Стандартное поведение для других разделов
+                window.scrollTo({
+                    top: targetSection.offsetTop - 100,
+                    behavior: 'smooth'
+                });
             }
-            
-            window.scrollTo({
-                top: targetSection.offsetTop - offsetAdjustment,
-                behavior: 'smooth'
-            });
             
             // Закрываем мобильное меню при клике на ссылку
             if (mainNav.classList.contains('active')) {
@@ -53,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Активация пунктов меню при скролле
+    // Более точная функция активации пунктов меню при скролле
     function setActiveNavItem() {
         const sections = document.querySelectorAll('section[id]');
         const scrollPosition = window.scrollY + 150;
@@ -63,13 +78,25 @@ document.addEventListener('DOMContentLoaded', function() {
             const sectionHeight = section.offsetHeight;
             const sectionId = section.getAttribute('id');
             
-            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                // Удаляем активный класс со всех пунктов меню
+            // Специальная логика для roadmap раздела
+            if (sectionId === 'roadmap') {
+                // Проверяем, находимся ли мы в середине roadmap секции
+                if (scrollPosition >= sectionTop - 100 && scrollPosition < sectionTop + sectionHeight) {
+                    document.querySelectorAll('.nav-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    
+                    const activeLink = document.querySelector(`.nav-item a[href="#${sectionId}"]`);
+                    if (activeLink) {
+                        activeLink.parentElement.classList.add('active');
+                    }
+                }
+            } else if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                // Стандартная логика для других разделов
                 document.querySelectorAll('.nav-item').forEach(item => {
                     item.classList.remove('active');
                 });
                 
-                // Добавляем активный класс к соответствующему пункту меню
                 const activeLink = document.querySelector(`.nav-item a[href="#${sectionId}"]`);
                 if (activeLink) {
                     activeLink.parentElement.classList.add('active');
