@@ -48,21 +48,37 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Обновленная функция активации пунктов меню при скролле - активация происходит раньше
+    // Обновленная функция активации пунктов меню при скролле - активация при прокрутке 70% раздела
     function setActiveNavItem() {
         const sections = document.querySelectorAll('section[id]');
-        const scrollPosition = window.scrollY + 300; // Увеличиваем это значение, чтобы активация происходила раньше
+        const scrollPosition = window.scrollY + 150; // Уменьшаем это значение для более точной активации
         
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
             const sectionHeight = section.offsetHeight;
             const sectionId = section.getAttribute('id');
             
-            // Активируем следующий раздел, когда 60-70% текущего раздела прокручено
-            // Используем одинаковую логику для всех разделов, включая roadmap
-            const earlyActivationPoint = sectionTop - (sectionHeight * 0.4); // Активация примерно на 60% прокрутки предыдущего раздела
+            // Активируем следующий раздел, когда прокручено 70% текущего раздела (остается 30%)
+            // Точка, когда пользователь прокрутил 70% текущего раздела
+            const activationThreshold = sectionTop + (sectionHeight * 0.7);
             
-            if (scrollPosition >= earlyActivationPoint && scrollPosition < (sectionTop + sectionHeight)) {
+            // Проверяем, находимся ли мы после точки активации, но до конца текущего раздела
+            if (scrollPosition >= activationThreshold && scrollPosition < (sectionTop + sectionHeight)) {
+                // Если мы в последних 30% раздела, активируем следующую кнопку
+                const nextSection = section.nextElementSibling;
+                if (nextSection && nextSection.id) {
+                    document.querySelectorAll('.nav-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    
+                    const activeLink = document.querySelector(`.nav-item a[href="#${nextSection.id}"]`);
+                    if (activeLink) {
+                        activeLink.parentElement.classList.add('active');
+                    }
+                }
+            } 
+            // Если мы не в последних 30% раздела, активируем текущую кнопку
+            else if (scrollPosition >= sectionTop && scrollPosition < activationThreshold) {
                 document.querySelectorAll('.nav-item').forEach(item => {
                     item.classList.remove('active');
                 });
