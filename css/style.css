@@ -115,6 +115,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 30px;
 }
 
 .logo {
@@ -129,13 +130,13 @@ body {
 
 .logo img {
   height: 48px;
-  margin-right: 12px;
+  margin-right: 30px;
   filter: drop-shadow(0 0 5px var(--accent-color));
 }
 
 .main-nav {
   display: flex;
-  margin-left: -500px;
+  margin-left: -520px;
 }
 
 .nav-list {
