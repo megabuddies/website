@@ -119,22 +119,23 @@ body {
 
 .logo {
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   color: var(--accent-color);
   text-decoration: none;
   display: flex;
   align-items: center;
+  letter-spacing: 2px;
 }
 
 .logo img {
-  height: 40px;
-  margin-right: 10px;
+  height: 48px;
+  margin-right: 12px;
   filter: drop-shadow(0 0 5px var(--accent-color));
 }
 
 .main-nav {
   display: flex;
-  margin-left: -450px;
+  margin-left: -500px;
 }
 
 .nav-list {
