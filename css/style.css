@@ -113,16 +113,9 @@ body {
 
 .header-container {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding: 0 30px;
-  max-width: 1200px;
-  margin: 0 auto;
-  justify-content: space-between;
-}
-
-.logo-section {
-  display: flex;
-  align-items: center;
 }
 
 .logo {
@@ -143,9 +136,8 @@ body {
 
 .main-nav {
   display: flex;
-  justify-content: center;
-  flex: 1;
-  margin: 0 30px;
+  position: relative;
+  margin-left: auto;
 }
 
 .nav-list {
@@ -563,16 +555,937 @@ body {
 }
 
 @media (max-width: 768px) {
+  .hero-title-container {
+    flex-direction: row;
+    gap: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0 1rem;
+  }
+  
+  #hero-animation {
+    width: 150px;
+    height: 150px;
+    margin: 0 2rem;
+  }
+  
+  .hero-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    min-width: 150px;
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-description {
+    font-size: 0.9rem;
+  }
+}
+
+/* Секция "О проекте" */
+.about-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.about-item {
+  background: rgba(26, 26, 26, 0.8);
+  padding: 30px;
+  border-radius: 0;
+  margin-bottom: 30px;
+  position: relative;
+  overflow: hidden;
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.3s ease;
+  border: 2px solid var(--accent-color);
+  clip-path: polygon(0 0, 100% 0, 100% 90%, 90% 100%, 0 100%);
+  transform: translateZ(0);
+}
+
+.about-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(146, 147, 151, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+.about-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(146, 147, 151, 0.2);
+  border-color: var(--secondary-color);
+}
+
+.about-item:hover::before {
+  transform: translateX(100%);
+}
+
+.about-item h3 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: var(--accent-color);
+  position: relative;
+  display: inline-block;
+}
+
+.about-item h3::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+}
+
+/* Секция "Манифест" */
+#manifesto::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(to bottom, transparent, var(--background-color));
+  z-index: 2;
+}
+
+.terminal-container {
+  background: var(--terminal-bg);
+  border-radius: 0;
+  padding: 30px;
+  margin-top: 30px;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-mono);
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(146, 147, 151, 0.3);
+  border: 2px solid var(--accent-color);
+  clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
+}
+
+.terminal-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(146, 147, 151, 0.4);
+  border-color: var(--secondary-color);
+}
+
+.terminal-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(146, 147, 151, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+  z-index: -1;
+}
+
+.terminal-container:hover::before {
+  transform: translateX(100%);
+}
+
+.terminal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid rgba(146, 147, 151, 0.3);
+  padding-bottom: 10px;
+  transition: all 0.3s ease;
+}
+
+.terminal-container:hover .terminal-header {
+  border-bottom: 1px solid var(--secondary-color);
+}
+
+.terminal-title {
+  color: var(--accent-color);
+  font-size: 1rem;
+  margin: 0;
+  transition: all 0.3s ease;
+}
+
+.terminal-container:hover .terminal-title {
+  color: var(--secondary-color);
+}
+
+.terminal-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.terminal-button {
+  width: 12px;
+  height: 12px;
+  border-radius: 0;
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
+  transition: all 0.3s ease;
+}
+
+.terminal-container:hover .terminal-button {
+  transform: scale(1.1);
+}
+
+.terminal-button.red {
+  background-color: var(--danger-color);
+}
+
+.terminal-button.yellow {
+  background-color: var(--tertiary-color);
+}
+
+.terminal-button.green {
+  background-color: var(--accent-color);
+}
+
+.terminal-container:hover .terminal-button.green {
+  background-color: var(--secondary-color);
+}
+
+.terminal-content {
+  line-height: 1.6;
+}
+
+.terminal-text {
+  margin: 0;
+  color: var(--text-color);
+  position: relative;
+  margin-bottom: 8px;
+  transition: transform 0.2s ease;
+}
+
+.terminal-text:hover {
+  transform: translateX(5px);
+  color: #ffffff;
+}
+
+.terminal-prompt {
+  color: var(--accent-color);
+  margin-right: 10px;
+  transition: all 0.3s ease;
+}
+
+.terminal-text:hover .terminal-prompt {
+  color: var(--secondary-color);
+}
+
+/* Секция "Коллекция" */
+.collection-filters {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.collection-subtitle {
+  text-align: center;
+  font-size: 1rem;
+  color: var(--text-color);
+  margin-top: 5px;
+  margin-bottom: 15px;
+  opacity: 0.8;
+}
+
+.filter-btn {
+  background: transparent;
+  border: 2px solid var(--accent-color);
+  color: var(--accent-color);
+  padding: 8px 16px;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
+}
+
+.filter-btn:hover, .filter-btn.active {
+  background-color: rgba(146, 147, 151, 0.1);
+  box-shadow: 0 0 10px rgba(146, 147, 151, 0.5);
+}
+
+.filter-btn.active {
+  border-color: var(--secondary-color);
+  color: var(--secondary-color);
+}
+
+.nft-grid {
+  display: none;
+  padding: 20px 0;
+  transition: opacity 0.5s ease;
+  opacity: 0;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  height: 450px;
+  min-height: 450px;
+}
+
+.slider-wrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+}
+
+/* Создаем пиксельные края для слайдера без использования SVG */
+.slider-wrapper::before, 
+.slider-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 40px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.slider-wrapper::before {
+  left: 0;
+  /* Создаем базовый пиксельный узор */
+  background-image: 
+    /* Пиксельный узор в шахматном порядке */
+    linear-gradient(45deg, var(--background-color) 25%, transparent 25%), 
+    linear-gradient(-45deg, var(--background-color) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--background-color) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--background-color) 75%);
+  
+  /* Устанавливаем размер пикселей */
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+  
+  /* Накладываем градиент прозрачности с помощью маски */
+  -webkit-mask-image: linear-gradient(to right, var(--background-color), transparent);
+  mask-image: linear-gradient(to right, var(--background-color), transparent);
+}
+
+.slider-wrapper::after {
+  right: 0;
+  /* Создаем базовый пиксельный узор */
+  background-image: 
+    /* Пиксельный узор в шахматном порядке */
+    linear-gradient(45deg, var(--background-color) 25%, transparent 25%), 
+    linear-gradient(-45deg, var(--background-color) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--background-color) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--background-color) 75%);
+  
+  /* Устанавливаем размер пикселей */
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+  
+  /* Накладываем градиент прозрачности с помощью маски */
+  -webkit-mask-image: linear-gradient(to left, var(--background-color), transparent);
+  mask-image: linear-gradient(to left, var(--background-color), transparent);
+}
+
+.slider-track {
+  display: flex;
+  gap: 25px;
+  backface-visibility: hidden;
+  height: 100%;
+}
+
+@keyframes slideAnimation {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-2750px);
+  }
+}
+
+.nft-card {
+  flex: 0 0 auto;
+  width: 250px;
+  height: 430px;
+  background: rgba(26, 26, 26, 0.8);
+  border: 2px solid var(--accent-color);
+  border-radius: 0;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
+  contain: content;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.nft-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(19, 145, 255, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.nft-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(146, 147, 151, 0.3);
+  border-color: var(--secondary-color);
+}
+
+.nft-card:hover::before {
+  transform: translateX(100%);
+}
+
+.nft-image-container {
+  width: 100%;
+  height: 300px;
+  min-height: 300px;
+  overflow: hidden;
+  border-bottom: 2px solid var(--accent-color);
+  position: relative;
+}
+
+.nft-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.3s ease;
+  image-rendering: auto;
+  loading: lazy;
+  will-change: transform;
+}
+
+.nft-card:hover .nft-image {
+  transform: scale(1.05);
+}
+
+.nft-info {
+  padding: 15px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.nft-name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--accent-color);
+  margin: 0 0 10px 0;
+}
+
+.nft-rarity {
+  font-size: 0.9rem;
+  color: var(--secondary-color);
+  margin: 0 0 5px 0;
+}
+
+.nft-price {
+  font-size: 0.9rem;
+  color: var(--text-color);
+  margin: 0;
+}
+
+/* Удаляем пиксельные декоративные элементы на углах слайдера */
+/* Этот код можно удалить полностью */
+.pixel-decoration {
+  display: none;
+}
+
+/* Секция "Дорожная карта" */
+.roadmap-container {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.roadmap-timeline {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 30px;
+  width: 2px;
+  background-color: var(--accent-color);
+}
+
+.roadmap-timeline::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 20px;
+  background-color: var(--accent-color);
+  border-radius: 0;
+  box-shadow: 0 0 10px rgba(146, 147, 151, 0.5);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.roadmap-item {
+  display: flex;
+  margin-bottom: 40px;
+  position: relative;
+  transform: translateZ(0);
+  transition: all 0.3s ease;
+}
+
+.roadmap-item:hover {
+  transform: translateX(10px);
+}
+
+.roadmap-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 0;
+  background: var(--terminal-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  border: 2px solid var(--accent-color);
+  z-index: 2;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  transition: all 0.3s ease;
+}
+
+.roadmap-item:hover .roadmap-icon {
+  transform: rotate(45deg);
+  border-color: var(--secondary-color);
+}
+
+.roadmap-icon i {
+  font-size: 24px;
+  color: var(--accent-color);
+  transition: all 0.3s ease;
+}
+
+.roadmap-item:hover .roadmap-icon i {
+  color: var(--secondary-color);
+  transform: rotate(-45deg);
+}
+
+.roadmap-content {
+  flex: 1;
+  padding: 20px;
+  border-radius: 0;
+  background: rgba(26, 26, 26, 0.7);
+  border: 2px solid var(--accent-color);
+  clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.roadmap-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(146, 147, 151, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+.roadmap-item:hover .roadmap-content {
+  border-color: var(--secondary-color);
+  box-shadow: 0 5px 15px rgba(146, 147, 151, 0.2);
+}
+
+.roadmap-item:hover .roadmap-content::before {
+  transform: translateX(100%);
+}
+
+.roadmap-date {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--accent-color);
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+}
+
+.roadmap-item:hover .roadmap-date {
+  color: var(--secondary-color);
+}
+
+.roadmap-status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 0;
+  font-size: 0.8rem;
+  margin-top: 10px;
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
+  transition: all 0.3s ease;
+}
+
+.roadmap-status.completed {
+  background-color: rgba(146, 147, 151, 0.2);
+  color: var(--accent-color);
+}
+
+.roadmap-status.in-progress {
+  background-color: rgba(19, 145, 255, 0.2);
+  color: var(--tertiary-color);
+}
+
+.roadmap-status.planned {
+  background-color: rgba(19, 145, 255, 0.2);
+  color: var(--secondary-color);
+}
+
+.roadmap-item:hover .roadmap-status {
+  transform: scale(1.05);
+}
+
+/* Секция "Сообщество" */
+.community-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.twitter-feed, .discord-community {
+  background: rgba(34, 34, 40, 0.8);
+  padding: 30px;
+  border-radius: 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 2px solid var(--accent-color);
+  clip-path: polygon(0 0, 100% 0, 100% 90%, 90% 100%, 0 100%);
+}
+
+.twitter-feed::before, .discord-community::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(146, 147, 151, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+  z-index: -1;
+}
+
+.twitter-feed:hover, .discord-community:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(146, 147, 151, 0.2);
+  border-color: var(--secondary-color);
+}
+
+.twitter-feed:hover::before, .discord-community:hover::before {
+  transform: translateX(100%);
+}
+
+.community-heading {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--accent-color);
+  margin-bottom: 15px;
+}
+
+.social-icon {
+  font-size: 2rem;
+  color: var(--accent-color);
+  margin-right: 10px;
+}
+
+/* Унифицированный стиль для кнопок сообщества */
+.community-btn {
+  display: inline-block;
+  background: linear-gradient(45deg, var(--accent-color), var(--secondary-color));
+  color: var(--background-color);
+  font-family: var(--font-mono);
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  margin-top: 15px;
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
+}
+
+.community-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
+}
+
+.community-btn:hover {
+  box-shadow: 0 0 10px rgba(146, 147, 151, 0.5);
+}
+
+.community-btn:hover::before {
+  left: 100%;
+}
+
+/* Секция "Подписка" */
+.newsletter {
+  background-color: rgba(26, 26, 26, 0.7);
+  padding: 60px 0;
+  position: relative;
+  text-align: center;
+  border-top: 2px solid var(--accent-color);
+  border-bottom: 2px solid var(--accent-color);
+}
+
+.newsletter .section-heading {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.newsletter .section-line {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.newsletter-content {
+  background: rgba(34, 34, 40, 0.8);
+  padding: 30px;
+  border-radius: 0;
+  text-align: center;
+  margin-top: 30px;
+  clip-path: polygon(0 0, 100% 0, 100% 90%, 90% 100%, 0 100%);
+  border: 2px solid var(--accent-color);
+  box-shadow: 0 0 15px rgba(146, 147, 151, 0.3);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.newsletter-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(146, 147, 151, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+  z-index: -1;
+}
+
+.newsletter-content:hover::before {
+  transform: translateX(100%);
+}
+
+.newsletter-form {
+  display: flex;
+  margin-top: 30px;
+  justify-content: center;
+}
+
+.newsletter-form input {
+  flex: 1;
+  padding: 12px 15px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--accent-color);
+  color: var(--text-color);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.newsletter-form input:focus {
+  outline: none;
+  box-shadow: 0 0 15px rgba(146, 147, 151, 0.7);
+  border-color: var(--secondary-color);
+}
+
+.newsletter-form button {
+  padding: 12px 20px;
+  background-color: var(--accent-color);
+  color: var(--background-color);
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
+}
+
+.newsletter-form button:hover {
+  background: linear-gradient(90deg, transparent, rgba(19, 145, 255, 0.2), transparent);
+}
+
+/* Футер */
+.main-footer {
+  background-color: var(--background-color);
+  padding: 60px 0 30px;
+  border-top: 2px solid var(--accent-color);
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.footer-logo {
+  margin-bottom: 30px;
+}
+
+.footer-logo img {
+  height: 40px;
+  margin-bottom: 15px;
+  filter: drop-shadow(0 0 5px var(--accent-color));
+}
+
+.footer-description {
+  max-width: 300px;
+  font-size: 0.9rem;
+  color: var(--text-color);
+  margin-bottom: 20px;
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+}
+
+.social-link {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--accent-color);
+  border-radius: 0;
+  transition: all 0.3s ease;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.social-link:hover {
+  background-color: var(--accent-color);
+}
+
+.social-link i {
+  color: var(--text-color);
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.social-link:hover i {
+  color: var(--background-color);
+}
+
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.footer-nav-section {
+  min-width: 150px;
+}
+
+.footer-nav-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--accent-color);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.footer-nav-links {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-nav-link {
+  margin-bottom: 10px;
+}
+
+.footer-nav-link a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  position: relative;
+  padding-left: 15px;
+}
+
+.footer-nav-link a::before {
+  content: '>';
+  position: absolute;
+  left: 0;
+  color: var(--accent-color);
+  font-family: var(--font-mono);
+}
+
+.footer-nav-link a:hover {
+  box-shadow: 0 0 15px rgba(146, 147, 151, 0.7);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 30px;
+  margin-top: 30px;
+  border-top: 1px solid rgba(146, 147, 151, 0.1);
+  font-size: 0.8rem;
+  color: rgba(223, 217, 217, 0.7);
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 1200px) {
+  .container {
+    width: 95%;
+  }
+}
+
+@media (max-width: 992px) {
+  .about-content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .roadmap-container {
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 768px) {
   .main-header {
     padding: 15px;
-  }
-  
-  .header-container {
-    flex-wrap: wrap;
-  }
-  
-  .main-nav {
-    margin: 0;
   }
   
   .nav-list {
@@ -717,21 +1630,4 @@ body {
 
 .roadmap-content:hover::before {
   transform: translateX(100%);
-}
-
-/* Медиа-запросы для адаптивности */
-@media (max-width: 1200px) {
-  .container {
-    width: 95%;
-  }
-}
-
-@media (max-width: 992px) {
-  .about-content {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .roadmap-container {
-    padding: 0 20px;
-  }
 }
