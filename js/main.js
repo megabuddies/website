@@ -47,6 +47,35 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Активация пунктов меню при скролле
+    function setActiveNavItem() {
+        const sections = document.querySelectorAll('section[id]');
+        const scrollPosition = window.scrollY + 150;
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            const sectionId = section.getAttribute('id');
+            
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                // Удаляем активный класс со всех пунктов меню
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Добавляем активный класс к соответствующему пункту меню
+                const activeLink = document.querySelector(`.nav-item a[href="#${sectionId}"]`);
+                if (activeLink) {
+                    activeLink.parentElement.classList.add('active');
+                }
+            }
+        });
+    }
+    
+    // Вызываем функцию при загрузке и скролле
+    setActiveNavItem();
+    window.addEventListener('scroll', setActiveNavItem);
+    
     // Эффект печатающегося текста для терминала
     function typeWriter(element, text, speed = 50) {
         let i = 0;
