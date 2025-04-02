@@ -34,8 +34,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const targetId = this.getAttribute('href').substring(1);
             const targetSection = document.getElementById(targetId);
             
+            // Дополнительный отступ для раздела "roadmap", чтобы исправить проблему с навигацией
+            let offsetAdjustment = 100;
+            if (targetId === 'roadmap') {
+                offsetAdjustment = 200; // Увеличиваем отступ для roadmap
+            }
+            
             window.scrollTo({
-                top: targetSection.offsetTop - 100,
+                top: targetSection.offsetTop - offsetAdjustment,
                 behavior: 'smooth'
             });
             

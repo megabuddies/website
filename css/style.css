@@ -115,7 +115,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 30px;
 }
 
 .logo {
@@ -135,7 +134,7 @@ body {
 
 .main-nav {
   display: flex;
-  margin-left: -100px;
+  margin-left: -300px;
 }
 
 .nav-list {
@@ -177,10 +176,11 @@ body {
   letter-spacing: 1px;
   display: inline-block;
   text-shadow: 0 0 5px rgba(146, 147, 151, 0.5);
-  border: 1px solid transparent;
+  border: 1px solid var(--accent-color);
   border-radius: 2px;
-  background: transparent;
+  background: rgba(146, 147, 151, 0.05);
   overflow: hidden;
+  box-shadow: 0 0 3px rgba(146, 147, 151, 0.2);
 }
 
 .nav-link:hover {
