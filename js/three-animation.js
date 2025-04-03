@@ -206,7 +206,13 @@ function createPixelRabbit() {
     // Scale down the whole rabbit
     rabbitGroup.scale.set(1.2, 1.2, 1.2);
     
-    return rabbitGroup;
+    // Устанавливаем глобальную переменную pixelRabbit
+    pixelRabbit = rabbitGroup;
+    
+    // Добавляем кролика в сцену
+    scene.add(pixelRabbit);
+    
+    return pixelRabbit;
 }
 
 function createParticleSystem() {
@@ -348,8 +354,8 @@ function animate() {
     const time = Date.now() * 0.001;
     
     // Rotate the background particles
-    backgroundParticles.rotation.x = time * 0.0008;
-    backgroundParticles.rotation.y = time * 0.001;
+    particleSystem.rotation.x = time * 0.0008;
+    particleSystem.rotation.y = time * 0.001;
 
     // Pulse the rabbit to make it more dynamic
     if (pixelRabbit) {
