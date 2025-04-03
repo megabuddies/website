@@ -95,7 +95,7 @@ function initModelInContainer() {
     
     // Камера для 3D модели с соотношением сторон контейнера
     camera = new THREE.PerspectiveCamera(75, containerWidth / containerHeight, 0.1, 1000);
-    camera.position.z = 5;
+    camera.position.z = 7; // Увеличиваем расстояние, чтобы модель была визуально меньше
     
     // Рендерер для 3D модели в контейнере
     renderer = new THREE.WebGLRenderer({ 
@@ -242,7 +242,7 @@ function createPixelRabbit() {
     pixelRabbit.add(tail);
     
     // Уменьшаем масштаб модели кролика на 15% (с 1.6 до 1.36)
-    pixelRabbit.scale.set(1.36, 1.36, 1.36);
+    pixelRabbit.scale.set(1.2, 1.2, 1.2);
     
     scene.add(pixelRabbit);
 }
@@ -402,7 +402,7 @@ function animate() {
         
         // Пульсация с учетом уменьшенного размера модели
         const pulseFactor = Math.sin(elapsedTime * 2) * 0.05 + 1;
-        pixelRabbit.scale.set(pulseFactor * 1.36, pulseFactor * 1.36, pulseFactor * 1.36);
+        pixelRabbit.scale.set(pulseFactor * 1.2, pulseFactor * 1.2, pulseFactor * 1.2);
         
         // Анимируем уши через контейнеры
         if (leftEarPivot && rightEarPivot) {
