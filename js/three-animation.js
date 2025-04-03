@@ -5,31 +5,67 @@ let particleSystem, pixelRabbit;
 let mouseX = 0, mouseY = 0;
 let clock = new THREE.Clock();
 let leftEarPivot, rightEarPivot;
-let threeJsInitialized = false;
+let resourcesLoaded = false;
+let animationPaused = false;
 
 function initThree() {
-    if (threeJsInitialized) return; // Предотвращаем повторную инициализацию
-    threeJsInitialized = true;
-    
-    console.log('Запуск инициализации Three.js');
-    
+    // Сразу инициализируем фон для быстрого отображения
     try {
-        // Инициализация фона на весь экран
         initFullscreenBackground();
-        
-        // Инициализация 3D модели в контейнере
-        initModelInContainer();
-        
-        document.addEventListener('mousemove', onDocumentMouseMove);
-        window.addEventListener('resize', onWindowResize);
-        
-        // Запускаем анимацию
-        animate();
-        
-        console.log('Three.js успешно инициализирован');
     } catch (error) {
-        console.error("Ошибка инициализации Three.js:", error);
-        createFallbackAnimation();
+        console.error("Ошибка инициализации фона Three.js:", error);
+    }
+    
+    // Загружаем 3D модель с задержкой, чтобы приоритет был у загрузки страницы
+    setTimeout(() => {
+        // Создаем менеджер загрузки для трекинга загрузки ресурсов
+        const loadingManager = new THREE.LoadingManager();
+        
+        loadingManager.onLoad = function() {
+            try {
+                // Инициализация 3D модели в контейнере
+                // (фон уже загружен ранее)
+                initModelInContainer();
+                
+                document.addEventListener('mousemove', onDocumentMouseMove);
+                window.addEventListener('resize', onWindowResize);
+                
+                // Добавляем слушатели видимости страницы для оптимизации производительности
+                document.addEventListener('visibilitychange', handleVisibilityChange);
+                
+                resourcesLoaded = true;
+            } catch (error) {
+                console.error("Ошибка инициализации модели Three.js:", error);
+                createFallbackAnimation();
+            }
+        };
+        
+        loadingManager.onError = function(url) {
+            console.error("Ошибка загрузки ресурса:", url);
+            createFallbackAnimation();
+        };
+        
+        // Имитируем загрузку ресурсов (или здесь можно добавить реальную загрузку)
+        loadingManager.itemStart("model");
+        
+        // Асинхронная загрузка 3D модели
+        setTimeout(() => {
+            loadingManager.itemEnd("model");
+        }, 500);
+    }, 1500);  // Задержка в 1.5 секунды для приоритизации загрузки страницы
+    
+    // Запускаем анимацию сразу (для фона)
+    animate();
+}
+
+// Обработчик видимости страницы для экономии ресурсов
+function handleVisibilityChange() {
+    if (document.hidden) {
+        // Если страница не видна, приостанавливаем анимацию
+        animationPaused = true;
+    } else {
+        // Если страница становится видна, возобновляем анимацию
+        animationPaused = false;
     }
 }
 
@@ -55,7 +91,6 @@ function initFullscreenBackground() {
     if (!backgroundElement) {
         backgroundElement = document.createElement('div');
         backgroundElement.id = 'background-animation';
-        backgroundElement.classList.add('fullscreen-bg');
         document.body.appendChild(backgroundElement);
     }
     
@@ -89,8 +124,8 @@ function initModelInContainer() {
     }
     
     // Получаем размеры контейнера
-    const containerWidth = heroAnimationContainer.offsetWidth || 300;
-    const containerHeight = heroAnimationContainer.offsetHeight || 300;
+    const containerWidth = heroAnimationContainer.offsetWidth;
+    const containerHeight = heroAnimationContainer.offsetHeight;
     
     // Камера для 3D модели с соотношением сторон контейнера
     camera = new THREE.PerspectiveCamera(75, containerWidth / containerHeight, 0.1, 1000);
@@ -380,6 +415,9 @@ function onWindowResize() {
 function animate() {
     requestAnimationFrame(animate);
     
+    // Если анимация приостановлена, пропускаем отрисовку для экономии ресурсов
+    if (animationPaused) return;
+    
     const elapsedTime = clock.getElapsedTime();
     
     // Анимация фона - увеличиваем скорость вращения
@@ -392,8 +430,13 @@ function animate() {
         particleSystem.rotation.y += (mouseX * 0.0001);
     }
     
-    // Анимация 3D модели
-    if (pixelRabbit) {
+    // Рендеринг фона (всегда отображаем фон, даже если модель не загружена)
+    if (backgroundRenderer && backgroundScene && backgroundCamera) {
+        backgroundRenderer.render(backgroundScene, backgroundCamera);
+    }
+    
+    // Анимация 3D модели только после полной загрузки ресурсов
+    if (pixelRabbit && resourcesLoaded) {
         pixelRabbit.rotation.y += 0.01;
         
         pixelRabbit.rotation.x += (mouseY - pixelRabbit.rotation.x * 0.1) * 0.02;
@@ -446,39 +489,20 @@ function animate() {
             backLeftLeg.rotation.x = Math.sin(elapsedTime * 1.5 + Math.PI) * 0.3;
             backRightLeg.rotation.x = Math.sin(elapsedTime * 1.5) * 0.3;
         }
-    }
-    
-    // Рендеринг фона
-    if (backgroundRenderer && backgroundScene && backgroundCamera) {
-        backgroundRenderer.render(backgroundScene, backgroundCamera);
-    }
-    
-    // Рендеринг 3D модели
-    if (renderer && scene && camera) {
-    renderer.render(scene, camera);
+        
+        // Рендеринг 3D модели, только если все ресурсы загружены
+        if (renderer && scene && camera) {
+            renderer.render(scene, camera);
+        }
     }
 }
 
-// Инициализируем Three.js сразу при загрузке DOM
+// Инициализация Three.js при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM загружен, запускаем инициализацию Three.js');
-    
-    // Запускаем инициализацию с небольшой задержкой
-    setTimeout(initThree, 100);
-    
-    // Слушаем событие от прелоадера для принудительной инициализации
-    document.addEventListener('initThreeJs', function() {
-        console.log('Получено событие initThreeJs от прелоадера');
+    try {
         initThree();
-    });
-    
-    // Слушаем событие завершения прелоадера для повторной проверки инициализации
-    document.addEventListener('preloaderFinished', function() {
-        console.log('Прелоадер завершен, проверяем инициализацию Three.js');
-        // Если по какой-то причине Three.js не инициализирован, пробуем еще раз
-        if (!threeJsInitialized) {
-            console.warn('После закрытия прелоадера Three.js не инициализирован, пробуем еще раз');
-            initThree();
-        }
-    });
+    } catch (error) {
+        console.error("Ошибка инициализации Three.js:", error);
+        createFallbackAnimation();
+    }
 });

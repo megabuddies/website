@@ -1,3 +1,117 @@
+/* Стили для прелоадера */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+    visibility: visible;
+}
+
+#preloader.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+#preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.preloader-content {
+    text-align: center;
+    width: 300px;
+}
+
+.preloader-content .logo {
+    margin-bottom: 30px;
+    font-size: 36px;
+    font-family: 'Press Start 2P', cursive;
+    text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+    animation: pulse 1.5s infinite;
+}
+
+.loading-bar {
+    width: 100%;
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    margin: 20px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.loading-bar .progress {
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #ff00ff, #00ffff);
+    border-radius: 3px;
+    transition: width 0.3s ease-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: progress-animation 2s ease-out infinite;
+}
+
+.loading-text {
+    font-family: 'VT323', monospace;
+    color: #fff;
+    font-size: 24px;
+    letter-spacing: 2px;
+}
+
+.loading-text .dots {
+    animation: dots 1.5s infinite;
+    display: inline-block;
+    width: 24px;
+    text-align: left;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.6;
+    }
+}
+
+@keyframes progress-animation {
+    0% {
+        width: 0;
+        background-position: 0 0;
+    }
+    50% {
+        width: 70%;
+    }
+    100% {
+        width: 95%;
+        background-position: 100% 0;
+    }
+}
+
+@keyframes dots {
+    0%, 20% {
+        content: ".";
+    }
+    40% {
+        content: "..";
+    }
+    60%, 100% {
+        content: "...";
+    }
+}
+
 :root {
   --background-color: #121218;
   --text-color: #dfd9d9;
@@ -1631,48 +1745,4 @@ body {
 .hero-title.buddies {
   margin-left: 300px; /* Базовый отступ, который JavaScript может уточнить */
   transition: margin 0.3s ease;
-}
-
-/* Анимация для слайдера коллекции */
-@keyframes slideAnimation {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-/* Для слабых устройств выключаем некоторые тяжелые эффекты */
-@media (prefers-reduced-motion: reduce) {
-    .slider-track {
-        animation-duration: 120s !important;
-    }
-    
-    .neon-text, .neon-button, .neon-glow, .neon-pulse {
-        animation-duration: 8s !important;
-    }
-    
-    #background-animation, #star-field, #hero-animation {
-        opacity: 0.5;
-    }
-    
-    .scan-line {
-        display: none;
-    }
-}
-
-/* Оптимизация для мобильных устройств */
-@media (max-width: 768px) {
-    .slider-track {
-        animation-duration: 60s !important;
-    }
-    
-    .nft-card {
-        width: 200px;
-    }
-    
-    #background-animation, #star-field {
-        opacity: 0.6;
-    }
 }

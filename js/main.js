@@ -1,6 +1,66 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Удаляем создание статического звездного фона
-    // createStarfieldBackground();
+    // Получаем элемент прелоадера
+    const preloader = document.getElementById('preloader');
+    const progressBar = document.querySelector('#preloader .progress');
+    let loadingProgress = 0;
+    
+    // Функция для обновления прогресса загрузки
+    function updateProgress(progress) {
+        loadingProgress = progress;
+        progressBar.style.width = `${Math.min(loadingProgress, 95)}%`;
+    }
+    
+    // Начальное значение прогресса
+    updateProgress(5);
+    
+    // Отслеживаем прогресс загрузки ресурсов
+    const resourcesTotal = document.images.length + document.scripts.length + document.styleSheets.length;
+    let resourcesLoaded = 0;
+    
+    // Функция для увеличения счетчика загруженных ресурсов
+    function incrementResourcesLoaded() {
+        resourcesLoaded++;
+        const percentLoaded = Math.min(90, Math.floor((resourcesLoaded / resourcesTotal) * 90));
+        updateProgress(percentLoaded);
+    }
+    
+    // Обработчики загрузки изображений
+    Array.from(document.images).forEach(img => {
+        if (img.complete) {
+            incrementResourcesLoaded();
+        } else {
+            img.addEventListener('load', incrementResourcesLoaded);
+            img.addEventListener('error', incrementResourcesLoaded);
+        }
+    });
+    
+    // Для скриптов и стилей используем интервал, симулирующий загрузку
+    const progressInterval = setInterval(() => {
+        if (loadingProgress < 90) {
+            updateProgress(loadingProgress + 2);
+        } else {
+            clearInterval(progressInterval);
+        }
+    }, 200);
+    
+    // Скрываем прелоадер после начальной загрузки и показываем контент
+    window.addEventListener('load', function() {
+        // Добавляем небольшую задержку перед скрытием прелоадера для завершения анимации
+        setTimeout(() => {
+            updateProgress(100);
+            
+            setTimeout(() => {
+                preloader.classList.remove('active');
+                preloader.classList.add('hidden');
+                
+                // Разрешаем скролл после скрытия прелоадера
+                document.body.style.overflow = 'auto';
+            }, 500);
+        }, 1000);
+    });
+    
+    // Запрещаем скролл пока прелоадер активен
+    document.body.style.overflow = 'hidden';
     
     // Добавляем сканирующую линию для эффекта старого монитора
     const scanLine = document.createElement('div');

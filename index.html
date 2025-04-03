@@ -6,15 +6,23 @@
     <title>Mega Buddies - Революция в мире NFT на MegaETH</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/neon.css">
-    <link rel="stylesheet" href="css/preloader.css">
-    <link rel="stylesheet" href="css/lazy-loading.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <!-- Прелоадер должен быть загружен первым для быстрого отображения -->
-    <script src="js/preloader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
+    <div id="preloader" class="active">
+        <div class="preloader-content">
+            <div class="logo neon-text">MEGA BUDDIES</div>
+            <div class="loading-bar">
+                <div class="progress"></div>
+            </div>
+            <div class="loading-text">ЗАГРУЗКА<span class="dots">...</span></div>
+        </div>
+    </div>
     <div class="scan-line"></div>
     <div id="background-animation" class="fullscreen-bg"></div>
     <div id="star-field" class="fullscreen-bg"></div>
@@ -303,16 +311,9 @@
         </div>
     </footer>
     
-    <!-- Основные скрипты -->
     <script src="js/main.js"></script>
     <script src="js/three-animation.js"></script>
     <script src="js/collection-slider.js"></script>
     <script src="js/scroll-animations.js"></script>
-    
-    <!-- Библиотеки и вспомогательные скрипты -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="js/lazy-load.js"></script>
 </body>
 </html>

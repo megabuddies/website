@@ -4,6 +4,17 @@ document.addEventListener('DOMContentLoaded', function() {
     let globalAnimationId = null;
     const initializedCategories = new Set(); // Отслеживаем, какие категории уже инициализированы
     
+    // Отложенная инициализация контейнеров
+    function deferredInitialization() {
+        // Проверяем, загружена ли страница полностью
+        if (document.readyState === 'complete') {
+            initializeContainers();
+        } else {
+            // Если страница еще загружается, откладываем инициализацию
+            setTimeout(deferredInitialization, 1000);
+        }
+    }
+    
     // Инициализация контейнеров при загрузке страницы
     function initializeContainers() {
         // Устанавливаем фиксированную высоту для всех контейнеров
@@ -19,18 +30,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Загружаем только текущую активную категорию
         const activeCategory = document.querySelector('.filter-btn.active').getAttribute('data-filter') || 'all';
-        
-        // Проверяем, завершил ли прелоадер свою работу
-        if (document.querySelector('.preloader')) {
-            // Если прелоадер ещё активен, ждем событие его завершения
-            document.addEventListener('preloaderFinished', () => {
-                loadImagesForCategory(activeCategory, true);
-            });
-        } else {
-            // Если прелоадера нет или он уже скрыт, загружаем сразу
-            loadImagesForCategory(activeCategory, true);
-        }
+        loadImagesForCategory(activeCategory, true); // Передаем флаг initialLoad = true
     }
+    
+    // Вызываем отложенную инициализацию вместо прямого вызова
+    deferredInitialization();
     
     // Функция для подготовки контейнера карточками
     function prepareContainerWithCards(container, category) {
@@ -61,11 +65,9 @@ document.addEventListener('DOMContentLoaded', function() {
             nftCard.className = 'nft-card';
             nftCard.setAttribute('data-rarity', category === 'all' ? ['common', 'rare', 'legendary'][Math.floor(Math.random() * 3)] : category);
             
-            // Создаем HTML для карточки с ленивой загрузкой изображений
             nftCard.innerHTML = `
-                <div class="nft-image-container lazy-container">
-                    <div class="image-placeholder"></div>
-                    <img data-src="${imgPath}" alt="Mega Buddy #${i}" class="nft-image">
+                <div class="nft-image-container">
+                    <img src="${imgPath}" alt="Mega Buddy #${i}" class="nft-image">
                 </div>
                 <div class="nft-info">
                     <h3 class="nft-name">${getNftName(category, i)}</h3>
@@ -83,11 +85,9 @@ document.addEventListener('DOMContentLoaded', function() {
             nftCard.className = 'nft-card';
             nftCard.setAttribute('data-rarity', category === 'all' ? ['common', 'rare', 'legendary'][Math.floor(Math.random() * 3)] : category);
             
-            // Создаем HTML для карточки с ленивой загрузкой изображений
             nftCard.innerHTML = `
-                <div class="nft-image-container lazy-container">
-                    <div class="image-placeholder"></div>
-                    <img data-src="${imgPath}" alt="Mega Buddy #${i}" class="nft-image">
+                <div class="nft-image-container">
+                    <img src="${imgPath}" alt="Mega Buddy #${i}" class="nft-image">
                 </div>
                 <div class="nft-info">
                     <h3 class="nft-name">${getNftName(category, i)}</h3>
@@ -112,22 +112,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Запускаем анимацию для этого контейнера
         setupSliderAnimation(sliderTrack);
-        
-        // Инициируем проверку на наличие изображений для ленивой загрузки
-        triggerLazyLoad();
-    }
-    
-    // Функция для запуска ленивой загрузки изображений в контейнере
-    function triggerLazyLoad() {
-        // Создаем кастомное событие для оповещения LazyLoader
-        const event = new CustomEvent('checkLazyImages');
-        document.dispatchEvent(event);
-        
-        // Дополнительно проверяем наличие LazyLoader и запускаем его вручную если нужно
-        const lazyImages = document.querySelectorAll('img[data-src]');
-        if (lazyImages.length > 0 && window.LazyLoader) {
-            window.LazyLoader.checkImages();
-        }
     }
     
     // Функция для загрузки изображений для каждой категории
@@ -254,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
             sliderTrack.style.animation = `slideAnimation ${totalWidth/50}s linear infinite`;
         }, 10);
         
-        // Останавливаем анимацию при выходе со страницы для экономии ресурсов
+        // Остановка анимации при выходе со страницы для экономии ресурсов
         document.addEventListener('visibilitychange', function() {
             if (document.hidden) {
                 sliderTrack.style.animationPlayState = 'paused';
@@ -264,8 +248,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Инициализируем контейнеры при загрузке страницы
-    initializeContainers();
+    // Не инициализируем контейнеры напрямую здесь, так как используем deferredInitialization
+    // initializeContainers();
     
     // Обрабатываем клики по кнопкам фильтра
     document.querySelectorAll('.filter-btn').forEach(btn => {
