@@ -887,9 +887,6 @@ body {
   height: 100%;
 }
 
-/* Создаем пиксельные края для слайдера без использования SVG */
-/* Removed both ::before and ::after pseudo-elements */
-
 .slider-track {
   display: flex;
   gap: 25px;
