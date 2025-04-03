@@ -1,5 +1,7 @@
-[33mcommit f287c3f5926bd97dcca915288c2e19443638ce0b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mv0colour1[m[33m)[m
+[33mcommit 7c36d01f0d223d94ed664f3ddbee1fc28d22e377[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mv0colour1[m[33m)[m
 Author: Mega Buddies <megabuddies@example.com>
-Date:   Thu Apr 3 05:45:56 2025 +0200
+Date:   Thu Apr 3 10:54:42 2025 +0200
 
-    Fixed text spacing between MEGA and BUDDIES without affecting 3D model
+    Remove left pixelated edge effect from carousel
+
+M	css/style.css
