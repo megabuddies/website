@@ -5,22 +5,8 @@ let particleSystem, pixelRabbit;
 let mouseX = 0, mouseY = 0;
 let clock = new THREE.Clock();
 let leftEarPivot, rightEarPivot;
-let isLowPerformanceMode = false;
-let animationFrameId = null;
-let isVisible = true;
-
-function detectLowPerformanceDevice() {
-    // Проверка производительности устройства
-    const gpu = navigator.gpu;
-    const lowCPU = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
-    const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    return lowCPU || isMobile || !gpu;
-}
 
 function initThree() {
-    // Определяем, работаем ли на слабом устройстве
-    isLowPerformanceMode = detectLowPerformanceDevice();
-    
     const loadingManager = new THREE.LoadingManager();
     loadingManager.onLoad = function() {
         try {
@@ -32,12 +18,6 @@ function initThree() {
             
             document.addEventListener('mousemove', onDocumentMouseMove);
             window.addEventListener('resize', onWindowResize);
-            
-            // Обработчик видимости страницы
-            document.addEventListener('visibilitychange', handleVisibilityChange);
-            
-            // Используем IntersectionObserver для определения видимости анимации
-            observeAnimationContainers();
             
             animate();
         } catch (error) {
@@ -66,14 +46,11 @@ function initFullscreenBackground() {
     // Рендерер для фона на весь экран
     backgroundRenderer = new THREE.WebGLRenderer({ 
         alpha: true, 
-        antialias: isLowPerformanceMode ? false : true,
+        antialias: true,
         powerPreference: "high-performance"
     });
     backgroundRenderer.setSize(window.innerWidth, window.innerHeight);
-    
-    // На слабых устройствах устанавливаем более низкое соотношение пикселей
-    const pixelRatio = isLowPerformanceMode ? 1 : Math.min(window.devicePixelRatio, 2);
-    backgroundRenderer.setPixelRatio(pixelRatio);
+    backgroundRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     
     // Находим элемент заднего фона или создаем новый
     let backgroundElement = document.getElementById('background-animation');
@@ -123,14 +100,11 @@ function initModelInContainer() {
     // Рендерер для 3D модели в контейнере
     renderer = new THREE.WebGLRenderer({ 
         alpha: true, 
-        antialias: isLowPerformanceMode ? false : true,
+        antialias: true,
         powerPreference: "high-performance"
     });
     renderer.setSize(containerWidth, containerHeight);
-    
-    // На слабых устройствах устанавливаем более низкое соотношение пикселей
-    const pixelRatio = isLowPerformanceMode ? 1 : Math.min(window.devicePixelRatio, 2);
-    renderer.setPixelRatio(pixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     
     // Очищаем существующее содержимое
     while (heroAnimationContainer.firstChild) {
@@ -162,10 +136,7 @@ function initModelInContainer() {
 function createPixelRabbit() {
     pixelRabbit = new THREE.Group();
     
-    // Уменьшаем детализацию для слабых устройств
-    const segmentCount = isLowPerformanceMode ? 4 : 8;
-    
-    const bodyGeometry = new THREE.BoxGeometry(2, 1.5, 1.5, segmentCount, segmentCount, segmentCount);
+    const bodyGeometry = new THREE.BoxGeometry(2, 1.5, 1.5, 8, 8, 8);
     const material = new THREE.MeshBasicMaterial({
         color: 0xffffff,
         wireframe: true,
@@ -177,12 +148,12 @@ function createPixelRabbit() {
     body.position.set(0, 0, 0);
     pixelRabbit.add(body);
     
-    const headGeometry = new THREE.BoxGeometry(1.2, 1.2, 1.2, segmentCount, segmentCount, segmentCount);
+    const headGeometry = new THREE.BoxGeometry(1.2, 1.2, 1.2, 8, 8, 8);
     const head = new THREE.Mesh(headGeometry, material);
     head.position.set(-1.2, 0.5, 0);
     pixelRabbit.add(head);
     
-    const noseGeometry = new THREE.SphereGeometry(0.2, segmentCount, segmentCount);
+    const noseGeometry = new THREE.SphereGeometry(0.2, 8, 8);
     const noseMaterial = new THREE.MeshBasicMaterial({
         color: 0xfeccea,
         wireframe: true,
@@ -193,7 +164,7 @@ function createPixelRabbit() {
     nose.position.set(-1.8, 0.5, 0);
     pixelRabbit.add(nose);
     
-    const eyeGeometry = new THREE.SphereGeometry(0.15, segmentCount + 4, segmentCount);
+    const eyeGeometry = new THREE.SphereGeometry(0.15, 12, 8);
     const eyeMaterial = new THREE.MeshBasicMaterial({
         color: 0x44445c,
         wireframe: true,
@@ -220,7 +191,7 @@ function createPixelRabbit() {
     leftEarPivot.position.set(-1.2, 1.1, 0.3);  // точка крепления к голове
     rightEarPivot.position.set(-1.2, 1.1, -0.3);
     
-    const earGeometry = new THREE.BoxGeometry(0.3, 1.5, 0.2, 4, segmentCount, 2);
+    const earGeometry = new THREE.BoxGeometry(0.3, 1.5, 0.2, 4, 8, 2);
     
     const leftEar = new THREE.Mesh(earGeometry, material);
     leftEar.position.set(0, 0.75, 0);  // половина высоты уха
@@ -265,7 +236,7 @@ function createPixelRabbit() {
     backRightLeg.renderOrder = 1;
     pixelRabbit.add(backRightLeg);
     
-    const tailGeometry = new THREE.SphereGeometry(0.3, segmentCount, segmentCount);
+    const tailGeometry = new THREE.SphereGeometry(0.3, 8, 8);
     const tail = new THREE.Mesh(tailGeometry, material);
     tail.position.set(1.2, 0, 0);
     pixelRabbit.add(tail);
@@ -277,8 +248,7 @@ function createPixelRabbit() {
 }
 
 function createParticleSystem() {
-    // Уменьшаем количество частиц для слабых устройств
-    const particleCount = isLowPerformanceMode ? 750 : 1500; 
+    const particleCount = 1500; // Увеличиваем количество частиц для фона
     const particles = new THREE.BufferGeometry();
     
     const positions = new Float32Array(particleCount * 3);
@@ -330,9 +300,8 @@ function createParticleSystem() {
 }
 
 function createGrid() {
-    // Уменьшаем детализацию сетки для слабых устройств
-    const gridSize = 80;
-    const gridDivisions = isLowPerformanceMode ? 40 : 80;
+    const gridSize = 80;  // Увеличиваем размер сетки
+    const gridDivisions = 80;
     const gridColor = 0x929397; // Change grid color to gray
     
     const gridHelper = new THREE.GridHelper(gridSize, gridDivisions, gridColor, gridColor);
@@ -348,10 +317,7 @@ function createFallbackAnimation() {
     const heroSection = document.getElementById('hero-animation');
     heroSection.style.background = 'radial-gradient(circle at center, rgba(146, 147, 151, 0.2) 0%, transparent 70%)';
     
-    // Уменьшаем количество элементов для слабых устройств
-    const starsCount = isLowPerformanceMode ? 50 : 100;
-    
-    for (let i = 0; i < starsCount; i++) {
+    for (let i = 0; i < 100; i++) {
         const star = document.createElement('div');
         star.style.position = 'absolute';
         star.style.width = '2px';
@@ -407,70 +373,24 @@ function onWindowResize() {
         const containerWidth = heroAnimationContainer.offsetWidth;
         const containerHeight = heroAnimationContainer.offsetHeight;
         camera.aspect = containerWidth / containerHeight;
-        camera.updateProjectionMatrix();
+    camera.updateProjectionMatrix();
         renderer.setSize(containerWidth, containerHeight);
     }
 }
 
-function handleVisibilityChange() {
-    isVisible = !document.hidden;
-    
-    if (!isVisible && animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-        animationFrameId = null;
-    } else if (isVisible && !animationFrameId) {
-        animate();
-    }
-}
-
-function observeAnimationContainers() {
-    if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries) => {
-            // Если хотя бы один из контейнеров виден, считаем анимацию видимой
-            isVisible = entries.some(entry => entry.isIntersecting) && !document.hidden;
-            
-            if (!isVisible && animationFrameId) {
-                cancelAnimationFrame(animationFrameId);
-                animationFrameId = null;
-            } else if (isVisible && !animationFrameId) {
-                animate();
-            }
-        }, { threshold: 0.1 });
-        
-        // Наблюдаем за двумя контейнерами анимации
-        const heroSection = document.getElementById('hero-animation');
-        const backgroundElement = document.getElementById('background-animation');
-        
-        if (heroSection) observer.observe(heroSection);
-        if (backgroundElement) observer.observe(backgroundElement);
-    }
-}
-
 function animate() {
-    if (!isVisible) return;
-    
-    animationFrameId = requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
     
     const elapsedTime = clock.getElapsedTime();
     
-    // Определяем частоту обновления анимации
-    const frameDivisor = isLowPerformanceMode ? 2 : 1;
-    
-    // Снижаем частоту обновления для слабых устройств
-    if (isLowPerformanceMode && Math.round(elapsedTime * 60) % frameDivisor !== 0) {
-        return;
-    }
-    
-    // Анимация фона - уменьшаем скорость вращения для слабых устройств
+    // Анимация фона - увеличиваем скорость вращения
     if (particleSystem) {
-        const rotationSpeed = isLowPerformanceMode ? 0.5 : 1;
-        particleSystem.rotation.x += 0.0008 * rotationSpeed;
-        particleSystem.rotation.y += 0.001 * rotationSpeed;
+        particleSystem.rotation.x += 0.0008;
+        particleSystem.rotation.y += 0.001;
         
-        // Добавляем реакцию на движение мыши для фона с учетом производительности
-        const mouseMultiplier = isLowPerformanceMode ? 0.5 : 1;
-        particleSystem.rotation.x += (mouseY * 0.0001 * mouseMultiplier);
-        particleSystem.rotation.y += (mouseX * 0.0001 * mouseMultiplier);
+        // Добавляем реакцию на движение мыши для фона
+        particleSystem.rotation.x += (mouseY * 0.0001);
+        particleSystem.rotation.y += (mouseX * 0.0001);
     }
     
     // Анимация 3D модели
@@ -536,7 +456,7 @@ function animate() {
     
     // Рендеринг 3D модели
     if (renderer && scene && camera) {
-        renderer.render(scene, camera);
+    renderer.render(scene, camera);
     }
 }
 

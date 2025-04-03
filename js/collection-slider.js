@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentCategory = 'all';
     let globalAnimationId = null;
     const initializedCategories = new Set(); // Отслеживаем, какие категории уже инициализированы
-    const imageCache = {}; // Кэш для изображений
     
     // Инициализация контейнеров при загрузке страницы
     function initializeContainers() {
@@ -20,24 +19,17 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Загружаем только текущую активную категорию
         const activeCategory = document.querySelector('.filter-btn.active').getAttribute('data-filter') || 'all';
-        loadImagesForCategory(activeCategory, true); // Передаем флаг initialLoad = true
-    }
-    
-    // Функция для предварительной загрузки изображения
-    function preloadImage(src) {
-        if (imageCache[src]) {
-            return imageCache[src];
-        }
         
-        return new Promise((resolve, reject) => {
-            const img = new Image();
-            img.onload = () => {
-                imageCache[src] = img;
-                resolve(img);
-            };
-            img.onerror = reject;
-            img.src = src;
-        });
+        // Проверяем, завершил ли прелоадер свою работу
+        if (document.querySelector('.preloader')) {
+            // Если прелоадер ещё активен, ждем событие его завершения
+            document.addEventListener('preloaderFinished', () => {
+                loadImagesForCategory(activeCategory, true);
+            });
+        } else {
+            // Если прелоадера нет или он уже скрыт, загружаем сразу
+            loadImagesForCategory(activeCategory, true);
+        }
     }
     
     // Функция для подготовки контейнера карточками
@@ -51,9 +43,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Оптимизировано: добавляем только необходимое количество изображений (максимум 10)
         const cardsCount = 10;
         const imgPath = 'images/nft1.jpg';
-        
-        // Предварительно загружаем изображение
-        preloadImage(imgPath);
         
         // Создаем фрагмент для оптимизации DOM-операций
         const fragment = document.createDocumentFragment();
@@ -72,9 +61,11 @@ document.addEventListener('DOMContentLoaded', function() {
             nftCard.className = 'nft-card';
             nftCard.setAttribute('data-rarity', category === 'all' ? ['common', 'rare', 'legendary'][Math.floor(Math.random() * 3)] : category);
             
+            // Создаем HTML для карточки с ленивой загрузкой изображений
             nftCard.innerHTML = `
-                <div class="nft-image-container">
-                    <img src="${imgPath}" alt="Mega Buddy #${i}" class="nft-image" loading="lazy" decoding="async">
+                <div class="nft-image-container lazy-container">
+                    <div class="image-placeholder"></div>
+                    <img data-src="${imgPath}" alt="Mega Buddy #${i}" class="nft-image">
                 </div>
                 <div class="nft-info">
                     <h3 class="nft-name">${getNftName(category, i)}</h3>
@@ -92,9 +83,11 @@ document.addEventListener('DOMContentLoaded', function() {
             nftCard.className = 'nft-card';
             nftCard.setAttribute('data-rarity', category === 'all' ? ['common', 'rare', 'legendary'][Math.floor(Math.random() * 3)] : category);
             
+            // Создаем HTML для карточки с ленивой загрузкой изображений
             nftCard.innerHTML = `
-                <div class="nft-image-container">
-                    <img src="${imgPath}" alt="Mega Buddy #${i}" class="nft-image" loading="lazy" decoding="async">
+                <div class="nft-image-container lazy-container">
+                    <div class="image-placeholder"></div>
+                    <img data-src="${imgPath}" alt="Mega Buddy #${i}" class="nft-image">
                 </div>
                 <div class="nft-info">
                     <h3 class="nft-name">${getNftName(category, i)}</h3>
@@ -119,6 +112,22 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Запускаем анимацию для этого контейнера
         setupSliderAnimation(sliderTrack);
+        
+        // Инициируем проверку на наличие изображений для ленивой загрузки
+        triggerLazyLoad();
+    }
+    
+    // Функция для запуска ленивой загрузки изображений в контейнере
+    function triggerLazyLoad() {
+        // Создаем кастомное событие для оповещения LazyLoader
+        const event = new CustomEvent('checkLazyImages');
+        document.dispatchEvent(event);
+        
+        // Дополнительно проверяем наличие LazyLoader и запускаем его вручную если нужно
+        const lazyImages = document.querySelectorAll('img[data-src]');
+        if (lazyImages.length > 0 && window.LazyLoader) {
+            window.LazyLoader.checkImages();
+        }
     }
     
     // Функция для загрузки изображений для каждой категории
@@ -142,12 +151,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const container = document.querySelector(`.nft-grid[data-category="${category}"]`);
         if (!container) return;
         
-        // Предварительно загружаем изображения для следующей категории
-        if (!initializedCategories.has(category)) {
-            // Если категория еще не инициализирована, предварительно загружаем изображение
-            preloadImage('images/nft1.jpg');
-        }
-        
         // Если это первая загрузка, сразу показываем контейнер без анимации
         if (initialLoad) {
             // Скрываем все контейнеры, кроме текущего
@@ -164,21 +167,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // Сразу показываем текущий контейнер без задержки
             container.style.display = 'flex';
             container.style.opacity = '1';
-            
-            // Предварительно загружаем остальные категории в фоновом режиме
-            setTimeout(() => {
-                categories.forEach(cat => {
-                    if (cat !== category && !initializedCategories.has(cat)) {
-                        const catContainer = document.querySelector(`.nft-grid[data-category="${cat}"]`);
-                        if (catContainer) {
-                            prepareContainerWithCards(catContainer, cat);
-                            catContainer.style.display = 'none';
-                            catContainer.style.opacity = '0';
-                        }
-                    }
-                });
-            }, 1000);
-            
             return;
         }
         
@@ -250,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Оптимизированная функция анимации слайдера
     function setupSliderAnimation(sliderTrack) {
-        // Переключаемся на CSS анимацию для более эффективной анимации
+        // Используем CSS анимацию для более эффективной анимации
         const cardWidth = 250; // Ширина карточки в px из CSS
         const gap = 25; // Расстояние между карточками в px из CSS
         const totalWidth = 10 * (cardWidth + gap); // Ширина всех карточек
@@ -266,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function() {
             sliderTrack.style.animation = `slideAnimation ${totalWidth/50}s linear infinite`;
         }, 10);
         
-        // Остановка анимации при выходе со страницы для экономии ресурсов
+        // Останавливаем анимацию при выходе со страницы для экономии ресурсов
         document.addEventListener('visibilitychange', function() {
             if (document.hidden) {
                 sliderTrack.style.animationPlayState = 'paused';
@@ -274,21 +262,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 sliderTrack.style.animationPlayState = 'running';
             }
         });
-        
-        // Останавливаем анимацию когда слайдер не виден
-        if ('IntersectionObserver' in window) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        sliderTrack.style.animationPlayState = 'running';
-                    } else {
-                        sliderTrack.style.animationPlayState = 'paused';
-                    }
-                });
-            }, { threshold: 0.1 });
-            
-            observer.observe(sliderTrack);
-        }
     }
     
     // Инициализируем контейнеры при загрузке страницы
