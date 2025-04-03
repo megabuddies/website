@@ -286,8 +286,7 @@ function animate() {
     const elapsedTime = clock.getElapsedTime();
     
     if (pixelRabbit) {
-        // Ensure the model is centered for equal distance from center to both text elements
-        pixelRabbit.position.x = 0; // Explicitly center the model
+        // Don't explicitly modify position.x, let the original positioning work
         
         pixelRabbit.rotation.y += 0.01;
         

@@ -368,29 +368,45 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Ensure equal spacing from 3D model center to MEGA and BUDDIES
+    // Adjust spacing between MEGA and BUDDIES for equal distance from 3D model center
     function adjustTextSpacing() {
         const heroAnimation = document.getElementById('hero-animation');
         const megaTitle = document.querySelector('.hero-title.mega');
         const buddiesTitle = document.querySelector('.hero-title.buddies');
         
         if (heroAnimation && megaTitle && buddiesTitle) {
-            // Get the width of the MEGA text
-            const megaWidth = megaTitle.offsetWidth;
+            // Reset any existing margins to get accurate measurements
+            megaTitle.style.marginRight = '0';
+            buddiesTitle.style.marginLeft = '0';
             
-            // Set equal distance from center of animation to end of MEGA and start of BUDDIES
-            // This ensures the requested symmetry
-            const heroAnimationWidth = heroAnimation.offsetWidth;
-            const distanceFromCenter = megaWidth / 2;
+            // Force reflow to get accurate measurements
+            void megaTitle.offsetWidth;
             
-            // Apply the adjustments
-            megaTitle.style.marginRight = `${distanceFromCenter}px`;
-            buddiesTitle.style.marginLeft = `${distanceFromCenter}px`;
+            // Calculate the appropriate spacing:
+            // We want the distance from center of 3D model to end of MEGA
+            // to be the same as distance from center to start of BUDDIES
+            
+            // Get actual MEGA text width
+            const megaWidth = megaTitle.getBoundingClientRect().width;
+            const buddiesWidth = buddiesTitle.getBoundingClientRect().width;
+            
+            // Calculate the distance needed for MEGA
+            const megaRightMargin = 0; // Start with zero margin
+            
+            // Apply margins - keep the default margins from CSS
+            // Just add small adjustments as needed
+            megaTitle.style.marginRight = '0';
+            buddiesTitle.style.marginLeft = `${megaWidth}px`;
+            
+            console.log(`Applied spacing: MEGA right = 0, BUDDIES left = ${megaWidth}px`);
         }
     }
     
-    // Call the function after the page loads and whenever window is resized
+    // Call the function after important page events
     window.addEventListener('load', adjustTextSpacing);
     window.addEventListener('resize', adjustTextSpacing);
+    
+    // Add a small delay to ensure font loading is complete
+    setTimeout(adjustTextSpacing, 500);
 });
 
