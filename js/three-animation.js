@@ -134,117 +134,79 @@ function initModelInContainer() {
 }
 
 function createPixelRabbit() {
-    pixelRabbit = new THREE.Group();
-    
-    const bodyGeometry = new THREE.BoxGeometry(2, 1.5, 1.5, 8, 8, 8);
-    const material = new THREE.MeshBasicMaterial({
-        color: 0xffffff,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.8
-    });
-    
-    const body = new THREE.Mesh(bodyGeometry, material);
+    // Create a group to hold all the rabbit parts
+    const rabbitGroup = new THREE.Group();
+
+    // Create the body - main cube
+    const bodyGeometry = new THREE.BoxGeometry(1, 1, 1);
+    const bodyMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
+    const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
     body.position.set(0, 0, 0);
-    pixelRabbit.add(body);
+    rabbitGroup.add(body);
+
+    // Create the head - slightly smaller cube
+    const headGeometry = new THREE.BoxGeometry(0.8, 0.8, 0.8);
+    const headMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
+    const head = new THREE.Mesh(headGeometry, headMaterial);
+    head.position.set(0, 0.9, 0);
+    rabbitGroup.add(head);
+
+    // Create the ears - two thin rectangles
+    const earGeometry = new THREE.BoxGeometry(0.2, 0.6, 0.1);
+    const earMaterial = new THREE.MeshPhongMaterial({ color: 0xffccff });
     
-    const headGeometry = new THREE.BoxGeometry(1.2, 1.2, 1.2, 8, 8, 8);
-    const head = new THREE.Mesh(headGeometry, material);
-    head.position.set(-1.2, 0.5, 0);
-    pixelRabbit.add(head);
+    const leftEar = new THREE.Mesh(earGeometry, earMaterial);
+    leftEar.position.set(-0.25, 1.5, 0);
+    leftEar.rotation.z = -0.2;
+    rabbitGroup.add(leftEar);
     
-    const noseGeometry = new THREE.SphereGeometry(0.2, 8, 8);
-    const noseMaterial = new THREE.MeshBasicMaterial({
-        color: 0xfeccea,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.9
-    });
-    const nose = new THREE.Mesh(noseGeometry, noseMaterial);
-    nose.position.set(-1.8, 0.5, 0);
-    pixelRabbit.add(nose);
-    
-    const eyeGeometry = new THREE.SphereGeometry(0.15, 12, 8);
-    const eyeMaterial = new THREE.MeshBasicMaterial({
-        color: 0x44445c,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.9,
-        depthWrite: false
-    });
+    const rightEar = new THREE.Mesh(earGeometry, earMaterial);
+    rightEar.position.set(0.25, 1.5, 0);
+    rightEar.rotation.z = 0.2;
+    rabbitGroup.add(rightEar);
+
+    // Create eyes - small spheres
+    const eyeGeometry = new THREE.SphereGeometry(0.1, 8, 8);
+    const eyeMaterial = new THREE.MeshPhongMaterial({ color: 0x000000 });
     
     const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
-    leftEye.position.set(-1.7, 0.7, 0.4);
-    leftEye.renderOrder = 2;
-    pixelRabbit.add(leftEye);
+    leftEye.position.set(-0.2, 1, 0.35);
+    rabbitGroup.add(leftEye);
     
     const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
-    rightEye.position.set(-1.7, 0.7, -0.4);
-    rightEye.renderOrder = 2;
-    pixelRabbit.add(rightEye);
+    rightEye.position.set(0.2, 1, 0.35);
+    rabbitGroup.add(rightEye);
+
+    // Create nose - small sphere
+    const noseGeometry = new THREE.SphereGeometry(0.08, 8, 8);
+    const noseMaterial = new THREE.MeshPhongMaterial({ color: 0xffcccc });
+    const nose = new THREE.Mesh(noseGeometry, noseMaterial);
+    nose.position.set(0, 0.85, 0.4);
+    rabbitGroup.add(nose);
+
+    // Create feet - small cubes
+    const footGeometry = new THREE.BoxGeometry(0.3, 0.2, 0.5);
+    const footMaterial = new THREE.MeshPhongMaterial({ color: 0xffccff });
     
-    // Создаем контейнеры для ушей
-    leftEarPivot = new THREE.Group();
-    rightEarPivot = new THREE.Group();
+    const leftFoot = new THREE.Mesh(footGeometry, footMaterial);
+    leftFoot.position.set(-0.25, -0.6, 0.2);
+    rabbitGroup.add(leftFoot);
     
-    // Позиционируем контейнеры в местах крепления ушей к голове
-    leftEarPivot.position.set(-1.2, 1.1, 0.3);  // точка крепления к голове
-    rightEarPivot.position.set(-1.2, 1.1, -0.3);
+    const rightFoot = new THREE.Mesh(footGeometry, footMaterial);
+    rightFoot.position.set(0.25, -0.6, 0.2);
+    rabbitGroup.add(rightFoot);
     
-    const earGeometry = new THREE.BoxGeometry(0.3, 1.5, 0.2, 4, 8, 2);
+    // Add small tail 
+    const tailGeometry = new THREE.SphereGeometry(0.2, 8, 8);
+    const tailMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
+    const tail = new THREE.Mesh(tailGeometry, tailMaterial);
+    tail.position.set(0, -0.3, -0.6);
+    rabbitGroup.add(tail);
+
+    // Scale down the whole rabbit
+    rabbitGroup.scale.set(1.2, 1.2, 1.2);
     
-    const leftEar = new THREE.Mesh(earGeometry, material);
-    leftEar.position.set(0, 0.75, 0);  // половина высоты уха
-    leftEarPivot.rotation.z = Math.PI / 12;
-    leftEarPivot.add(leftEar);
-    
-    const rightEar = new THREE.Mesh(earGeometry, material);
-    rightEar.position.set(0, 0.75, 0);  // половина высоты уха
-    rightEarPivot.rotation.z = -Math.PI / 12;
-    rightEarPivot.add(rightEar);
-    
-    // Добавляем контейнеры ушей к кролику
-    pixelRabbit.add(leftEarPivot);
-    pixelRabbit.add(rightEarPivot);
-    
-    const legGeometry = new THREE.BoxGeometry(0.4, 0.6, 0.4, 4, 6, 4);
-    const legMaterial = new THREE.MeshBasicMaterial({
-        color: 0xffffff,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.8,
-        depthTest: false
-    });
-    
-    const frontLeftLeg = new THREE.Mesh(legGeometry, legMaterial);
-    frontLeftLeg.position.set(-0.8, -0.95, 0.5);
-    frontLeftLeg.renderOrder = 1;
-    pixelRabbit.add(frontLeftLeg);
-    
-    const frontRightLeg = new THREE.Mesh(legGeometry, legMaterial);
-    frontRightLeg.position.set(-0.8, -0.95, -0.5);
-    frontRightLeg.renderOrder = 1;
-    pixelRabbit.add(frontRightLeg);
-    
-    const backLeftLeg = new THREE.Mesh(legGeometry, legMaterial);
-    backLeftLeg.position.set(0.8, -0.95, 0.5);
-    backLeftLeg.renderOrder = 1;
-    pixelRabbit.add(backLeftLeg);
-    
-    const backRightLeg = new THREE.Mesh(legGeometry, legMaterial);
-    backRightLeg.position.set(0.8, -0.95, -0.5);
-    backRightLeg.renderOrder = 1;
-    pixelRabbit.add(backRightLeg);
-    
-    const tailGeometry = new THREE.SphereGeometry(0.3, 8, 8);
-    const tail = new THREE.Mesh(tailGeometry, material);
-    tail.position.set(1.2, 0, 0);
-    pixelRabbit.add(tail);
-    
-    // Уменьшаем масштаб модели кролика
-    pixelRabbit.scale.set(1.4, 1.4, 1.4);
-    
-    scene.add(pixelRabbit);
+    return rabbitGroup;
 }
 
 function createParticleSystem() {
@@ -379,74 +341,23 @@ function onWindowResize() {
 }
 
 function animate() {
-    requestAnimationFrame(animate);
-    
-    const elapsedTime = clock.getElapsedTime();
-    
-    // Анимация фона - увеличиваем скорость вращения
-    if (particleSystem) {
-        particleSystem.rotation.x += 0.0008;
-        particleSystem.rotation.y += 0.001;
-        
-        // Добавляем реакцию на движение мыши для фона
-        particleSystem.rotation.x += (mouseY * 0.0001);
-        particleSystem.rotation.y += (mouseX * 0.0001);
-    }
-    
-    // Анимация 3D модели
-    if (pixelRabbit) {
-        pixelRabbit.rotation.y += 0.01;
-        
-        pixelRabbit.rotation.x += (mouseY - pixelRabbit.rotation.x * 0.1) * 0.02;
-        pixelRabbit.rotation.y += (mouseX - pixelRabbit.rotation.y * 0.1) * 0.02;
-        
-        // Пульсация с учетом уменьшенного размера модели
-        const pulseFactor = Math.sin(elapsedTime * 2) * 0.05 + 1;
-        pixelRabbit.scale.set(pulseFactor * 1.4, pulseFactor * 1.4, pulseFactor * 1.4);
-        
-        // Анимируем уши через контейнеры
-        if (leftEarPivot && rightEarPivot) {
-            // Используем разную частоту и фазовый сдвиг для каждого уха
-            leftEarPivot.rotation.z = Math.PI / 12 + Math.sin(elapsedTime * 1.3) * 0.12;
-            rightEarPivot.rotation.z = -Math.PI / 12 + Math.sin(elapsedTime * 1.7 + Math.PI/3) * 0.09;
-        }
+    // Request the next animation frame for continuous rendering
+    animationFrameId = requestAnimationFrame(animate);
 
-        if (pixelRabbit.children[3] && pixelRabbit.children[4]) {
-            const leftEye = pixelRabbit.children[3];
-            const rightEye = pixelRabbit.children[4];
-            
-            const blinkFactor = Math.sin(elapsedTime * 3) > 0.95 ? 0.2 : 1;
-            leftEye.scale.set(1, blinkFactor, 1);
-            rightEye.scale.set(1, blinkFactor, 1);
-        }
+    // Handle background animation
+    const time = Date.now() * 0.001;
+    
+    // Rotate the background particles
+    backgroundParticles.rotation.x = time * 0.0008;
+    backgroundParticles.rotation.y = time * 0.001;
+
+    // Pulse the rabbit to make it more dynamic
+    if (pixelRabbit) {
+        const pulseFactor = 1 + Math.sin(time * 2) * 0.03;
+        pixelRabbit.scale.set(1.2 * pulseFactor, 1.2 * pulseFactor, 1.2 * pulseFactor);
         
-        if (pixelRabbit.children[2]) {
-            const nose = pixelRabbit.children[2];
-            
-            const nosePulse = Math.sin(elapsedTime * 1.5) * 0.1 + 1;
-            nose.scale.set(nosePulse, nosePulse, nosePulse);
-        }
-        
-        // Анимация ног
-        if (pixelRabbit.children[7] && pixelRabbit.children[8] && 
-            pixelRabbit.children[9] && pixelRabbit.children[10]) {
-            
-            const frontLeftLeg = pixelRabbit.children[7];
-            const frontRightLeg = pixelRabbit.children[8];
-            const backLeftLeg = pixelRabbit.children[9];
-            const backRightLeg = pixelRabbit.children[10];
-            
-            frontLeftLeg.position.y = -0.95 + Math.sin(elapsedTime * 1.5) * 0.1;
-            frontRightLeg.position.y = -0.95 + Math.sin(elapsedTime * 1.5 + Math.PI) * 0.1;
-            backLeftLeg.position.y = -0.95 + Math.sin(elapsedTime * 1.5 + Math.PI) * 0.1;
-            backRightLeg.position.y = -0.95 + Math.sin(elapsedTime * 1.5) * 0.1;
-            
-            // Добавляем небольшое вращение для более естественного движения
-            frontLeftLeg.rotation.x = Math.sin(elapsedTime * 1.5) * 0.3;
-            frontRightLeg.rotation.x = Math.sin(elapsedTime * 1.5 + Math.PI) * 0.3;
-            backLeftLeg.rotation.x = Math.sin(elapsedTime * 1.5 + Math.PI) * 0.3;
-            backRightLeg.rotation.x = Math.sin(elapsedTime * 1.5) * 0.3;
-        }
+        // Gentle rotation for the rabbit
+        pixelRabbit.rotation.y = Math.sin(time * 0.5) * 0.3;
     }
     
     // Рендеринг фона
