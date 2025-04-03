@@ -236,14 +236,15 @@ class Preloader {
             if (this.preloaderElement) {
                 this.preloaderElement.classList.add('hidden');
                 
-                // Удаляем прелоадер из DOM после завершения анимации
+                // ВАЖНО: Сначала инициируем событие о завершении загрузки,
+                // чтобы Three.js мог выполнить свою работу до удаления прелоадера
+                document.dispatchEvent(new Event('preloaderFinished'));
+                
+                // Удаляем прелоадер из DOM после завершения анимации и только после запуска Three.js
                 setTimeout(() => {
                     if (this.preloaderElement && this.preloaderElement.parentNode) {
                         this.preloaderElement.parentNode.removeChild(this.preloaderElement);
                     }
-                    
-                    // Инициируем событие о завершении загрузки
-                    document.dispatchEvent(new Event('preloaderFinished'));
                 }, 600); // Время анимации скрытия
             }
         }, 800); // Задержка перед скрытием

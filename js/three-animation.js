@@ -5,8 +5,12 @@ let particleSystem, pixelRabbit;
 let mouseX = 0, mouseY = 0;
 let clock = new THREE.Clock();
 let leftEarPivot, rightEarPivot;
+let threeJsInitialized = false;
 
 function initThree() {
+    if (threeJsInitialized) return; // Предотвращаем повторную инициализацию
+    threeJsInitialized = true;
+    
     const loadingManager = new THREE.LoadingManager();
     loadingManager.onLoad = function() {
         try {
@@ -471,6 +475,26 @@ function animate() {
 
 // Ждем, пока DOM будет готов перед инициализацией Three.js
 document.addEventListener('DOMContentLoaded', function() {
-    // Добавляем небольшую задержку перед инициализацией Three.js для улучшения совместимости с прелоадером
-    setTimeout(initThree, 500);
+    // Проверяем, есть ли на странице прелоадер
+    if (document.querySelector('.preloader')) {
+        console.log('Прелоадер обнаружен, ожидаем событие preloaderFinished');
+        
+        // Слушаем событие завершения работы прелоадера
+        document.addEventListener('preloaderFinished', function() {
+            console.log('Прелоадер завершил работу, инициализируем Three.js');
+            // Инициализируем Three.js с задержкой для уверенности
+            setTimeout(initThree, 100);
+        });
+        
+        // Дополнительная страховка - инициализируем Three.js в любом случае через 15 секунд
+        setTimeout(function() {
+            if (!threeJsInitialized) {
+                console.warn('Истекло время ожидания прелоадера, инициализируем Three.js принудительно');
+                initThree();
+            }
+        }, 15000);
+    } else {
+        // Если прелоадера нет, просто инициализируем Three.js с задержкой
+        setTimeout(initThree, 500);
+    }
 });
