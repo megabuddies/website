@@ -1,7 +1,0 @@
-[33mcommit 7c36d01f0d223d94ed664f3ddbee1fc28d22e377[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mv0colour1[m[33m)[m
-Author: Mega Buddies <megabuddies@example.com>
-Date:   Thu Apr 3 10:54:42 2025 +0200
-
-    Remove left pixelated edge effect from carousel
-
-M	css/style.css
