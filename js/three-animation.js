@@ -21,8 +21,20 @@ function initThree() {
             });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            renderer.domElement.classList.add('fullscreen-bg');
-            document.body.appendChild(renderer.domElement);
+            
+            // Remove fullscreen-bg class to prevent any layout issues
+            const container = document.getElementById('hero-animation');
+            if (container) {
+                container.appendChild(renderer.domElement);
+                renderer.domElement.style.width = '100%';
+                renderer.domElement.style.height = '100%';
+                renderer.domElement.style.position = 'absolute';
+                renderer.domElement.style.top = '0';
+                renderer.domElement.style.left = '0';
+            } else {
+                renderer.domElement.classList.add('fullscreen-bg');
+                document.body.appendChild(renderer.domElement);
+            }
             
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
             scene.add(ambientLight);
@@ -286,8 +298,8 @@ function animate() {
     const elapsedTime = clock.getElapsedTime();
     
     if (pixelRabbit) {
-        // Ensure the model is centered for equal distance from center to both text elements
-        pixelRabbit.position.x = 0; // Explicitly center the model
+        // Ensure the model is exactly centered
+        pixelRabbit.position.set(0, 0, 0);
         
         pixelRabbit.rotation.y += 0.01;
         

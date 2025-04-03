@@ -368,29 +368,51 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Ensure equal spacing from 3D model center to MEGA and BUDDIES
+    // Completely revised: Calculate the distance from center of 3D model to text elements
     function adjustTextSpacing() {
         const heroAnimation = document.getElementById('hero-animation');
         const megaTitle = document.querySelector('.hero-title.mega');
         const buddiesTitle = document.querySelector('.hero-title.buddies');
         
         if (heroAnimation && megaTitle && buddiesTitle) {
-            // Get the width of the MEGA text
+            // Reset margins first to get true widths
+            megaTitle.style.marginRight = '0';
+            buddiesTitle.style.marginLeft = '0';
+            
+            // Force a reflow to ensure accurate measurements
+            void megaTitle.offsetWidth;
+            
+            // Get the dimensions after reset
             const megaWidth = megaTitle.offsetWidth;
+            const animationWidth = heroAnimation.offsetWidth;
             
-            // Set equal distance from center of animation to end of MEGA and start of BUDDIES
-            // This ensures the requested symmetry
-            const heroAnimationWidth = heroAnimation.offsetWidth;
-            const distanceFromCenter = megaWidth / 2;
+            // For mobile view, don't apply spacing
+            if (window.innerWidth <= 768) {
+                megaTitle.style.marginRight = '0';
+                buddiesTitle.style.marginLeft = '0';
+                return;
+            }
             
-            // Apply the adjustments
-            megaTitle.style.marginRight = `${distanceFromCenter}px`;
-            buddiesTitle.style.marginLeft = `${distanceFromCenter}px`;
+            // The distance from the center of the animation to the text
+            // equals the width of MEGA text to match the user's requirement
+            const spacing = megaWidth;
+            
+            // Apply the calculated spacing
+            megaTitle.style.marginRight = `${spacing}px`;
+            buddiesTitle.style.marginLeft = `${spacing}px`;
+            
+            // Log for debugging
+            console.log(`Applied spacing: ${spacing}px (MEGA width: ${megaWidth}px)`);
         }
     }
     
-    // Call the function after the page loads and whenever window is resized
+    // Call adjustment on multiple events to ensure it works in all scenarios
     window.addEventListener('load', adjustTextSpacing);
     window.addEventListener('resize', adjustTextSpacing);
+    window.addEventListener('DOMContentLoaded', adjustTextSpacing);
+    
+    // Additional call after fonts have likely loaded
+    setTimeout(adjustTextSpacing, 500);
+    setTimeout(adjustTextSpacing, 1000);
 });
 
