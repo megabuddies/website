@@ -5,38 +5,8 @@ let particleSystem, pixelRabbit;
 let mouseX = 0, mouseY = 0;
 let clock = new THREE.Clock();
 let leftEarPivot, rightEarPivot;
-let isLowPowerDevice = false;
-let frameSkip = 0;
-let frameCount = 0;
-let animationReady = false;
-
-// Обнаружение устройств с низкой производительностью
-function detectLowPowerDevice() {
-    // Определяем мобильные устройства
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
-    // Определяем количество логических процессоров
-    const cpuCores = navigator.hardwareConcurrency || 2;
-    
-    // Проверяем поддержку WebGL и его возможности
-    const canvas = document.createElement('canvas');
-    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-    
-    // Если WebGL не поддерживается или это мобильное устройство с малым количеством ядер
-    isLowPowerDevice = !gl || (isMobile && cpuCores <= 4);
-    
-    console.log("Low power device detected:", isLowPowerDevice);
-    
-    // Настраиваем пропуск кадров для слабых устройств
-    frameSkip = isLowPowerDevice ? 2 : 0; // Пропускаем 2 кадра из 3 на слабых устройствах
-    
-    return isLowPowerDevice;
-}
 
 function initThree() {
-    // Определяем слабые устройства
-    detectLowPowerDevice();
-    
     const loadingManager = new THREE.LoadingManager();
     loadingManager.onLoad = function() {
         try {
@@ -49,28 +19,29 @@ function initThree() {
             document.addEventListener('mousemove', onDocumentMouseMove);
             window.addEventListener('resize', onWindowResize);
             
-            // Сообщаем что анимация готова
-            animationReady = true;
+            // Сообщаем прелоадеру, что Three.js инициализирован
+            document.dispatchEvent(new Event('threeJsInitialized'));
             
-            // Запускаем анимацию
             animate();
         } catch (error) {
             console.error("Ошибка инициализации Three.js:", error);
             createFallbackAnimation();
+            
+            // Сообщаем прелоадеру, что произошла ошибка, но все равно нужно продолжить
+            document.dispatchEvent(new Event('threeJsInitialized'));
         }
     };
     
     loadingManager.onError = function(url) {
         console.error("Ошибка загрузки ресурса:", url);
         createFallbackAnimation();
+        
+        // Сообщаем прелоадеру, что произошла ошибка, но все равно нужно продолжить
+        document.dispatchEvent(new Event('threeJsInitialized'));
     };
     
-    loadingManager.itemStart('init');
-    
-    // Добавляем небольшую задержку перед запуском, чтобы прелоадер успел подготовить интерфейс
-    setTimeout(() => {
-        loadingManager.itemEnd('init');
-    }, 500);
+    loadingManager.itemStart();
+    loadingManager.itemEnd();
 }
 
 function initFullscreenBackground() {
@@ -84,12 +55,11 @@ function initFullscreenBackground() {
     // Рендерер для фона на весь экран
     backgroundRenderer = new THREE.WebGLRenderer({ 
         alpha: true, 
-        antialias: isLowPowerDevice ? false : true, // Отключаем сглаживание на слабых устройствах
-        powerPreference: "high-performance",
-        precision: isLowPowerDevice ? "lowp" : "mediump" // Снижаем точность вычислений на слабых устройствах
+        antialias: true,
+        powerPreference: "high-performance"
     });
     backgroundRenderer.setSize(window.innerWidth, window.innerHeight);
-    backgroundRenderer.setPixelRatio(Math.min(window.devicePixelRatio, isLowPowerDevice ? 1 : 2));
+    backgroundRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     
     // Находим элемент заднего фона или создаем новый
     let backgroundElement = document.getElementById('background-animation');
@@ -139,12 +109,11 @@ function initModelInContainer() {
     // Рендерер для 3D модели в контейнере
     renderer = new THREE.WebGLRenderer({ 
         alpha: true, 
-        antialias: isLowPowerDevice ? false : true, // Отключаем сглаживание на слабых устройствах
-        powerPreference: "high-performance",
-        precision: isLowPowerDevice ? "lowp" : "mediump" // Снижаем точность вычислений на слабых устройствах
+        antialias: true,
+        powerPreference: "high-performance"
     });
     renderer.setSize(containerWidth, containerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isLowPowerDevice ? 1 : 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     
     // Очищаем существующее содержимое
     while (heroAnimationContainer.firstChild) {
@@ -176,10 +145,7 @@ function initModelInContainer() {
 function createPixelRabbit() {
     pixelRabbit = new THREE.Group();
     
-    // Уменьшаем количество сегментов на слабых устройствах
-    const segmentDetail = isLowPowerDevice ? 4 : 8;
-    
-    const bodyGeometry = new THREE.BoxGeometry(2, 1.5, 1.5, segmentDetail, segmentDetail, segmentDetail);
+    const bodyGeometry = new THREE.BoxGeometry(2, 1.5, 1.5, 8, 8, 8);
     const material = new THREE.MeshBasicMaterial({
         color: 0xffffff,
         wireframe: true,
@@ -191,14 +157,12 @@ function createPixelRabbit() {
     body.position.set(0, 0, 0);
     pixelRabbit.add(body);
     
-    const headGeometry = new THREE.BoxGeometry(1.2, 1.2, 1.2, segmentDetail, segmentDetail, segmentDetail);
+    const headGeometry = new THREE.BoxGeometry(1.2, 1.2, 1.2, 8, 8, 8);
     const head = new THREE.Mesh(headGeometry, material);
     head.position.set(-1.2, 0.5, 0);
     pixelRabbit.add(head);
     
-    // Снижаем детализацию сферы для слабых устройств
-    const sphereDetail = isLowPowerDevice ? 4 : 8;
-    const noseGeometry = new THREE.SphereGeometry(0.2, sphereDetail, sphereDetail);
+    const noseGeometry = new THREE.SphereGeometry(0.2, 8, 8);
     const noseMaterial = new THREE.MeshBasicMaterial({
         color: 0xfeccea,
         wireframe: true,
@@ -209,7 +173,7 @@ function createPixelRabbit() {
     nose.position.set(-1.8, 0.5, 0);
     pixelRabbit.add(nose);
     
-    const eyeGeometry = new THREE.SphereGeometry(0.15, isLowPowerDevice ? 6 : 12, sphereDetail);
+    const eyeGeometry = new THREE.SphereGeometry(0.15, 12, 8);
     const eyeMaterial = new THREE.MeshBasicMaterial({
         color: 0x44445c,
         wireframe: true,
@@ -236,8 +200,7 @@ function createPixelRabbit() {
     leftEarPivot.position.set(-1.2, 1.1, 0.3);  // точка крепления к голове
     rightEarPivot.position.set(-1.2, 1.1, -0.3);
     
-    // Уменьшаем детализацию ушей
-    const earGeometry = new THREE.BoxGeometry(0.3, 1.5, 0.2, 2, segmentDetail, 2);
+    const earGeometry = new THREE.BoxGeometry(0.3, 1.5, 0.2, 4, 8, 2);
     
     const leftEar = new THREE.Mesh(earGeometry, material);
     leftEar.position.set(0, 0.75, 0);  // половина высоты уха
@@ -253,8 +216,7 @@ function createPixelRabbit() {
     pixelRabbit.add(leftEarPivot);
     pixelRabbit.add(rightEarPivot);
     
-    // Упрощаем геометрию ног
-    const legGeometry = new THREE.BoxGeometry(0.4, 0.6, 0.4, 2, 4, 2);
+    const legGeometry = new THREE.BoxGeometry(0.4, 0.6, 0.4, 4, 6, 4);
     const legMaterial = new THREE.MeshBasicMaterial({
         color: 0xffffff,
         wireframe: true,
@@ -283,7 +245,7 @@ function createPixelRabbit() {
     backRightLeg.renderOrder = 1;
     pixelRabbit.add(backRightLeg);
     
-    const tailGeometry = new THREE.SphereGeometry(0.3, sphereDetail, sphereDetail);
+    const tailGeometry = new THREE.SphereGeometry(0.3, 8, 8);
     const tail = new THREE.Mesh(tailGeometry, material);
     tail.position.set(1.2, 0, 0);
     pixelRabbit.add(tail);
@@ -295,8 +257,7 @@ function createPixelRabbit() {
 }
 
 function createParticleSystem() {
-    // Уменьшаем количество частиц на слабых устройствах
-    const particleCount = isLowPowerDevice ? 750 : 1500;
+    const particleCount = 1500; // Увеличиваем количество частиц для фона
     const particles = new THREE.BufferGeometry();
     
     const positions = new Float32Array(particleCount * 3);
@@ -348,9 +309,8 @@ function createParticleSystem() {
 }
 
 function createGrid() {
-    // Для слабых устройств создаем менее детализированную сетку
-    const gridSize = 80;
-    const gridDivisions = isLowPowerDevice ? 40 : 80;
+    const gridSize = 80;  // Увеличиваем размер сетки
+    const gridDivisions = 80;
     const gridColor = 0x929397; // Change grid color to gray
     
     const gridHelper = new THREE.GridHelper(gridSize, gridDivisions, gridColor, gridColor);
@@ -366,10 +326,7 @@ function createFallbackAnimation() {
     const heroSection = document.getElementById('hero-animation');
     heroSection.style.background = 'radial-gradient(circle at center, rgba(146, 147, 151, 0.2) 0%, transparent 70%)';
     
-    // Уменьшаем количество элементов для фолбэк-анимации на слабых устройствах
-    const starCount = isLowPowerDevice ? 50 : 100;
-    
-    for (let i = 0; i < starCount; i++) {
+    for (let i = 0; i < 100; i++) {
         const star = document.createElement('div');
         star.style.position = 'absolute';
         star.style.width = '2px';
@@ -425,7 +382,7 @@ function onWindowResize() {
         const containerWidth = heroAnimationContainer.offsetWidth;
         const containerHeight = heroAnimationContainer.offsetHeight;
         camera.aspect = containerWidth / containerHeight;
-        camera.updateProjectionMatrix();
+    camera.updateProjectionMatrix();
         renderer.setSize(containerWidth, containerHeight);
     }
 }
@@ -433,55 +390,41 @@ function onWindowResize() {
 function animate() {
     requestAnimationFrame(animate);
     
-    // Пропускаем кадры для слабых устройств
-    if (frameSkip > 0) {
-        frameCount = (frameCount + 1) % (frameSkip + 1);
-        if (frameCount !== 0) {
-            return;
-        }
-    }
-    
     const elapsedTime = clock.getElapsedTime();
     
-    // Анимация фона - оптимизированное вращение
+    // Анимация фона - увеличиваем скорость вращения
     if (particleSystem) {
-        // Уменьшаем скорость вращения на слабых устройствах
-        const rotationSpeed = isLowPowerDevice ? 0.5 : 1;
-        
-        particleSystem.rotation.x += 0.0008 * rotationSpeed;
-        particleSystem.rotation.y += 0.001 * rotationSpeed;
+        particleSystem.rotation.x += 0.0008;
+        particleSystem.rotation.y += 0.001;
         
         // Добавляем реакцию на движение мыши для фона
-        particleSystem.rotation.x += (mouseY * 0.0001) * rotationSpeed;
-        particleSystem.rotation.y += (mouseX * 0.0001) * rotationSpeed;
+        particleSystem.rotation.x += (mouseY * 0.0001);
+        particleSystem.rotation.y += (mouseX * 0.0001);
     }
     
     // Анимация 3D модели
     if (pixelRabbit) {
-        // Уменьшаем скорость вращения на слабых устройствах
-        const rotationSpeed = isLowPowerDevice ? 0.5 : 1;
+        pixelRabbit.rotation.y += 0.01;
         
-        pixelRabbit.rotation.y += 0.01 * rotationSpeed;
-        
-        pixelRabbit.rotation.x += (mouseY - pixelRabbit.rotation.x * 0.1) * 0.02 * rotationSpeed;
-        pixelRabbit.rotation.y += (mouseX - pixelRabbit.rotation.y * 0.1) * 0.02 * rotationSpeed;
+        pixelRabbit.rotation.x += (mouseY - pixelRabbit.rotation.x * 0.1) * 0.02;
+        pixelRabbit.rotation.y += (mouseX - pixelRabbit.rotation.y * 0.1) * 0.02;
         
         // Пульсация с учетом уменьшенного размера модели
-        const pulseFactor = Math.sin(elapsedTime * 2 * rotationSpeed) * 0.05 + 1;
+        const pulseFactor = Math.sin(elapsedTime * 2) * 0.05 + 1;
         pixelRabbit.scale.set(pulseFactor * 1.2, pulseFactor * 1.2, pulseFactor * 1.2);
         
         // Анимируем уши через контейнеры
         if (leftEarPivot && rightEarPivot) {
             // Используем разную частоту и фазовый сдвиг для каждого уха
-            leftEarPivot.rotation.z = Math.PI / 12 + Math.sin(elapsedTime * 1.3 * rotationSpeed) * 0.12;
-            rightEarPivot.rotation.z = -Math.PI / 12 + Math.sin(elapsedTime * 1.7 * rotationSpeed + Math.PI/3) * 0.09;
+            leftEarPivot.rotation.z = Math.PI / 12 + Math.sin(elapsedTime * 1.3) * 0.12;
+            rightEarPivot.rotation.z = -Math.PI / 12 + Math.sin(elapsedTime * 1.7 + Math.PI/3) * 0.09;
         }
 
         if (pixelRabbit.children[3] && pixelRabbit.children[4]) {
             const leftEye = pixelRabbit.children[3];
             const rightEye = pixelRabbit.children[4];
             
-            const blinkFactor = Math.sin(elapsedTime * 3 * rotationSpeed) > 0.95 ? 0.2 : 1;
+            const blinkFactor = Math.sin(elapsedTime * 3) > 0.95 ? 0.2 : 1;
             leftEye.scale.set(1, blinkFactor, 1);
             rightEye.scale.set(1, blinkFactor, 1);
         }
@@ -489,7 +432,7 @@ function animate() {
         if (pixelRabbit.children[2]) {
             const nose = pixelRabbit.children[2];
             
-            const nosePulse = Math.sin(elapsedTime * 1.5 * rotationSpeed) * 0.1 + 1;
+            const nosePulse = Math.sin(elapsedTime * 1.5) * 0.1 + 1;
             nose.scale.set(nosePulse, nosePulse, nosePulse);
         }
         
@@ -502,16 +445,16 @@ function animate() {
             const backLeftLeg = pixelRabbit.children[9];
             const backRightLeg = pixelRabbit.children[10];
             
-            frontLeftLeg.position.y = -0.95 + Math.sin(elapsedTime * 1.5 * rotationSpeed) * 0.1;
-            frontRightLeg.position.y = -0.95 + Math.sin(elapsedTime * 1.5 * rotationSpeed + Math.PI) * 0.1;
-            backLeftLeg.position.y = -0.95 + Math.sin(elapsedTime * 1.5 * rotationSpeed + Math.PI) * 0.1;
-            backRightLeg.position.y = -0.95 + Math.sin(elapsedTime * 1.5 * rotationSpeed) * 0.1;
+            frontLeftLeg.position.y = -0.95 + Math.sin(elapsedTime * 1.5) * 0.1;
+            frontRightLeg.position.y = -0.95 + Math.sin(elapsedTime * 1.5 + Math.PI) * 0.1;
+            backLeftLeg.position.y = -0.95 + Math.sin(elapsedTime * 1.5 + Math.PI) * 0.1;
+            backRightLeg.position.y = -0.95 + Math.sin(elapsedTime * 1.5) * 0.1;
             
             // Добавляем небольшое вращение для более естественного движения
-            frontLeftLeg.rotation.x = Math.sin(elapsedTime * 1.5 * rotationSpeed) * 0.3;
-            frontRightLeg.rotation.x = Math.sin(elapsedTime * 1.5 * rotationSpeed + Math.PI) * 0.3;
-            backLeftLeg.rotation.x = Math.sin(elapsedTime * 1.5 * rotationSpeed + Math.PI) * 0.3;
-            backRightLeg.rotation.x = Math.sin(elapsedTime * 1.5 * rotationSpeed) * 0.3;
+            frontLeftLeg.rotation.x = Math.sin(elapsedTime * 1.5) * 0.3;
+            frontRightLeg.rotation.x = Math.sin(elapsedTime * 1.5 + Math.PI) * 0.3;
+            backLeftLeg.rotation.x = Math.sin(elapsedTime * 1.5 + Math.PI) * 0.3;
+            backRightLeg.rotation.x = Math.sin(elapsedTime * 1.5) * 0.3;
         }
     }
     
@@ -522,32 +465,12 @@ function animate() {
     
     // Рендеринг 3D модели
     if (renderer && scene && camera) {
-        renderer.render(scene, camera);
+    renderer.render(scene, camera);
     }
 }
 
-// Инициализация Three.js при загрузке страницы
+// Ждем, пока DOM будет готов перед инициализацией Three.js
 document.addEventListener('DOMContentLoaded', function() {
-    // Не запускаем инициализацию сразу, а ждем завершения прелоадера
-    document.addEventListener('preloaderFinished', function() {
-        console.log("Preloader finished, initializing 3D animation");
-        setTimeout(() => {
-            try {
-                initThree();
-            } catch (error) {
-                console.error("Ошибка инициализации Three.js:", error);
-                createFallbackAnimation();
-            }
-        }, 500); // Даем дополнительное время после завершения прелоадера
-    });
-    
-    // Если прелоадера нет или он уже скрыт, инициализируем сразу
-    if (!document.querySelector('.preloader')) {
-        try {
-            initThree();
-        } catch (error) {
-            console.error("Ошибка инициализации Three.js:", error);
-            createFallbackAnimation();
-        }
-    }
+    // Добавляем небольшую задержку перед инициализацией Three.js для улучшения совместимости с прелоадером
+    setTimeout(initThree, 500);
 });

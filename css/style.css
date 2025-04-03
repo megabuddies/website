@@ -1643,9 +1643,36 @@ body {
     }
 }
 
-/* Оптимизация для мобильных устройств - только изменение размеров */
+/* Для слабых устройств выключаем некоторые тяжелые эффекты */
+@media (prefers-reduced-motion: reduce) {
+    .slider-track {
+        animation-duration: 120s !important;
+    }
+    
+    .neon-text, .neon-button, .neon-glow, .neon-pulse {
+        animation-duration: 8s !important;
+    }
+    
+    #background-animation, #star-field, #hero-animation {
+        opacity: 0.5;
+    }
+    
+    .scan-line {
+        display: none;
+    }
+}
+
+/* Оптимизация для мобильных устройств */
 @media (max-width: 768px) {
+    .slider-track {
+        animation-duration: 60s !important;
+    }
+    
     .nft-card {
         width: 200px;
+    }
+    
+    #background-animation, #star-field {
+        opacity: 0.6;
     }
 }

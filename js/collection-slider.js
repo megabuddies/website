@@ -251,8 +251,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Добавляем новую анимацию с небольшой задержкой, чтобы сброс успел применится
         setTimeout(() => {
-            // Используем фиксированное время для анимации вместо расчетного
-            sliderTrack.style.animation = `slideAnimation 30s linear infinite`;
+            sliderTrack.style.animation = `slideAnimation ${totalWidth/50}s linear infinite`;
         }, 10);
         
         // Останавливаем анимацию при выходе со страницы для экономии ресурсов

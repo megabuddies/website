@@ -14,15 +14,17 @@ class Preloader {
             "Взлом матрицы...",
             "Сопротивление системе...",
             "Построение цифрового будущего...",
-            "Оптимизация 3D моделей...",
-            "Подключение к метавселенной...",
-            "Калибровка нейронной сети..."
+            "Загрузка 3D модели...",
+            "Рендеринг фона...",
+            "Инициализация Three.js..."
         ];
         this.messageElement = null; // Элемент для отображения сообщений
         this.preloaderElement = null; // Элемент прелоадера
         this.isReady = false; // Флаг готовности
-        this.startTime = Date.now(); // Запоминаем время старта для минимального времени показа
-        this.minDisplayTime = 4000; // Минимальное время показа прелоадера в мс
+        this.threeJsReady = false; // Флаг готовности Three.js
+        this.minLoadingTime = 3000; // Минимальное время отображения прелоадера (3 секунды)
+        this.startTime = Date.now(); // Время начала загрузки
+        this.threeJsLoaded = false; // Флаг загрузки Three.js
         this.init();
     }
 
@@ -58,6 +60,33 @@ class Preloader {
 
         // Начинаем отслеживать загрузку ресурсов
         this.trackResourceLoading();
+
+        // Добавляем слушатель событий для отслеживания загрузки Three.js
+        document.addEventListener('threeJsInitialized', () => {
+            console.log('Three.js инициализирован');
+            this.threeJsLoaded = true;
+            this.checkIfReady();
+        });
+
+        // Если Three.js не инициализировался через 12 секунд, все равно закрываем прелоадер
+        setTimeout(() => {
+            if (!this.threeJsLoaded) {
+                console.warn('Three.js не инициализировался за отведенное время');
+                this.threeJsLoaded = true;
+                this.checkIfReady();
+            }
+        }, 12000);
+
+        // Добавляем слушатель события DOMContentLoaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                this.domLoaded = true;
+                this.checkIfReady();
+            });
+        } else {
+            this.domLoaded = true;
+            this.checkIfReady();
+        }
     }
 
     // Отображение случайных сообщений во время загрузки
@@ -112,16 +141,13 @@ class Preloader {
         // Добавляем скрипты, CSS и другие ресурсы
         const otherResources = Array.from(document.querySelectorAll('script, link[rel="stylesheet"]'));
         
-        // Имитируем загрузку дополнительных ресурсов для 3D
-        const extraResources = 15; // Добавляем виртуальные ресурсы для 3D модели
-        
-        // Общее количество ресурсов
-        this.totalResources = images.length + otherResources.length + extraResources;
+        // Общее количество ресурсов (увеличиваем на 5 для трехмерной анимации и фона)
+        this.totalResources = images.length + otherResources.length + 5;
         
         // Если ресурсов нет, сразу завершаем загрузку
         if (this.totalResources === 0) {
             this.setProgress(100);
-            this.finishLoading();
+            this.checkIfReady();
             return;
         }
 
@@ -140,20 +166,20 @@ class Preloader {
         otherResources.forEach(() => {
             setTimeout(() => this.resourceLoaded(), 300 + Math.random() * 700);
         });
-        
-        // Имитируем загрузку 3D ресурсов с более долгой загрузкой
-        for (let i = 0; i < extraResources; i++) {
-            // Растягиваем загрузку 3D ресурсов равномерно от 1 до 4 секунд
-            const loadTime = 1000 + (i / extraResources) * 3000 + Math.random() * 500;
-            setTimeout(() => this.resourceLoaded(), loadTime);
-        }
+
+        // Разделяем загрузку Three.js на неколько этапов для более плавного прогресса
+        setTimeout(() => this.resourceLoaded(), 2000); // Загрузка базовых компонентов
+        setTimeout(() => this.resourceLoaded(), 3000); // Загрузка шейдеров
+        setTimeout(() => this.resourceLoaded(), 4000); // Загрузка текстур
+        setTimeout(() => this.resourceLoaded(), 5000); // Инициализация сцены
+        setTimeout(() => this.resourceLoaded(), 6000); // Финальная подготовка
 
         // Устанавливаем таймаут, чтобы не ждать вечно, если какие-то ресурсы не загрузятся
         setTimeout(() => {
             if (!this.isReady) {
-                this.finishLoading();
+                this.checkIfReady(true); // Форсировать завершение загрузки
             }
-        }, 10000); // Максимум 10 секунд на загрузку
+        }, 15000); // Максимум 15 секунд на загрузку
     }
 
     // Обработка загрузки одного ресурса
@@ -166,18 +192,10 @@ class Preloader {
         // Обновляем прогресс
         this.setProgress(progress);
         
-        // Если все загружено, проверяем минимальное время показа
-        if (progress >= 100 && !this.isReady) {
-            const currentTime = Date.now();
-            const elapsedTime = currentTime - this.startTime;
-            
-            if (elapsedTime >= this.minDisplayTime) {
-                this.finishLoading(); // Если минимальное время прошло, завершаем прелоадер
-            } else {
-                // Иначе ставим таймер на оставшееся время
-                const remainingTime = this.minDisplayTime - elapsedTime;
-                setTimeout(() => this.finishLoading(), remainingTime);
-            }
+        // Если все загружено, проверяем готовность
+        if (progress >= 100) {
+            this.resourcesLoaded = true;
+            this.checkIfReady();
         }
     }
 
@@ -189,6 +207,23 @@ class Preloader {
         }
     }
 
+    // Проверка готовности всех компонентов
+    checkIfReady(force = false) {
+        if (this.isReady) return;
+        
+        // Проверяем, прошло ли минимальное время отображения прелоадера
+        const elapsedTime = Date.now() - this.startTime;
+        const timeCondition = elapsedTime >= this.minLoadingTime;
+        
+        // Проверяем, загружены ли все ресурсы или Three.js
+        const resourceCondition = this.resourcesLoaded || this.loadedResources >= this.totalResources;
+        
+        // Условие для завершения загрузки
+        if ((timeCondition && resourceCondition && this.threeJsLoaded) || force) {
+            this.finishLoading();
+        }
+    }
+
     // Завершение загрузки и скрытие прелоадера
     finishLoading() {
         this.isReady = true;
@@ -196,72 +231,22 @@ class Preloader {
         // Устанавливаем прогресс на 100% для уверенности
         this.setProgress(100);
         
-        // Предварительно загружаем Three.js библиотеку
-        this.preloadThreeJs(() => {
-            // Задержка для гарантии, что пользователь увидит 100%
-            setTimeout(() => {
-                if (this.preloaderElement) {
-                    this.preloaderElement.classList.add('hidden');
+        // Задержка для гарантии, что пользователь увидит 100%
+        setTimeout(() => {
+            if (this.preloaderElement) {
+                this.preloaderElement.classList.add('hidden');
+                
+                // Удаляем прелоадер из DOM после завершения анимации
+                setTimeout(() => {
+                    if (this.preloaderElement && this.preloaderElement.parentNode) {
+                        this.preloaderElement.parentNode.removeChild(this.preloaderElement);
+                    }
                     
-                    // Удаляем прелоадер из DOM после завершения анимации
-                    setTimeout(() => {
-                        if (this.preloaderElement && this.preloaderElement.parentNode) {
-                            this.preloaderElement.parentNode.removeChild(this.preloaderElement);
-                        }
-                        
-                        // Убеждаемся, что все элементы фона остаются видимыми
-                        document.getElementById('background-animation').style.display = '';
-                        document.getElementById('background-animation').style.visibility = 'visible';
-                        document.getElementById('background-animation').style.opacity = '1';
-                        
-                        document.getElementById('star-field').style.display = '';
-                        document.getElementById('star-field').style.visibility = 'visible';
-                        document.getElementById('star-field').style.opacity = '1';
-                        
-                        document.getElementById('hero-animation').style.display = '';
-                        document.getElementById('hero-animation').style.visibility = 'visible';
-                        document.getElementById('hero-animation').style.opacity = '1';
-                        
-                        // Инициируем событие о завершении загрузки
-                        document.dispatchEvent(new Event('preloaderFinished'));
-                    }, 600); // Время анимации скрытия
-                }
-            }, 800); // Задержка перед скрытием
-        });
-    }
-    
-    // Предварительная загрузка Three.js ресурсов
-    preloadThreeJs(callback) {
-        // Проверка, загружен ли уже Three.js
-        if (window.THREE) {
-            console.log("Three.js уже загружен");
-            callback();
-            return;
-        }
-        
-        console.log("Предварительная загрузка Three.js...");
-        
-        // Список скриптов для предварительной загрузки
-        const threejsScripts = [
-            'js/three-animation.js'
-        ];
-        
-        let loadedScripts = 0;
-        
-        threejsScripts.forEach(script => {
-            const preloadLink = document.createElement('link');
-            preloadLink.rel = 'preload';
-            preloadLink.href = script;
-            preloadLink.as = 'script';
-            document.head.appendChild(preloadLink);
-            
-            // После предзагрузки отмечаем как загруженный
-            loadedScripts++;
-            if (loadedScripts === threejsScripts.length) {
-                console.log("Все скрипты Three.js предзагружены");
-                callback();
+                    // Инициируем событие о завершении загрузки
+                    document.dispatchEvent(new Event('preloaderFinished'));
+                }, 600); // Время анимации скрытия
             }
-        });
+        }, 800); // Задержка перед скрытием
     }
 }
 
