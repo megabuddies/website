@@ -1674,11 +1674,11 @@ body {
 
 /* Увеличиваем отступы для текста, чтобы дать больше места модели */
 .hero-title.mega {
-  /* margin-right: 430px; */
+  margin-right: 300px; /* Базовый отступ, который JavaScript может уточнить */
   transition: margin 0.3s ease;
 }
 
 .hero-title.buddies {
-  /* margin-left: 430px; */
+  margin-left: 300px; /* Базовый отступ, который JavaScript может уточнить */
   transition: margin 0.3s ease;
 }
