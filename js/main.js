@@ -375,9 +375,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function adjustTextSpacing() {
         const megaTitle = document.querySelector('.hero-title.mega');
         const buddiesTitle = document.querySelector('.hero-title.buddies');
+        const heroAnimation = document.getElementById('hero-animation');
         const viewportWidth = window.innerWidth;
         
-        if (!megaTitle || !buddiesTitle) return;
+        if (!megaTitle || !buddiesTitle || !heroAnimation) {
+            console.log('Не найдены все необходимые элементы для выравнивания');
+            return;
+        }
         
         // На мобильных устройствах не применяем динамическую регулировку
         if (viewportWidth <= 768) {
@@ -386,9 +390,53 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Используем фиксированные отступы для текста из CSS
-        // Это обеспечит равное расстояние по обе стороны от центра
-        console.log('Обновлены фиксированные отступы для текста. Модель центрирована.');
+        // Сбрасываем текущие значения маргинов для корректного измерения
+        megaTitle.style.marginRight = '0';
+        buddiesTitle.style.marginLeft = '0';
+        
+        // Вызываем reflow для применения изменений стилей перед измерением
+        document.body.offsetHeight;
+        
+        // Получаем размеры и позиции элементов
+        const megaRect = megaTitle.getBoundingClientRect();
+        const buddiesRect = buddiesTitle.getBoundingClientRect();
+        const heroRect = heroAnimation.getBoundingClientRect();
+        
+        // Вычисляем центр 3D модели
+        const heroCenterX = heroRect.left + (heroRect.width / 2);
+        
+        // Вычисляем текущие расстояния от центра модели до конца MEGA и начала BUDDIES
+        const distanceToMegaEnd = heroCenterX - megaRect.right;
+        const distanceToBuddiesStart = buddiesRect.left - heroCenterX;
+        
+        console.log('Центр модели:', heroCenterX);
+        console.log('Конец MEGA:', megaRect.right);
+        console.log('Начало BUDDIES:', buddiesRect.left);
+        console.log('Расстояние до конца MEGA:', distanceToMegaEnd);
+        console.log('Расстояние до начала BUDDIES:', distanceToBuddiesStart);
+        
+        // Уравниваем расстояния, корректируя отступы
+        if (distanceToMegaEnd !== distanceToBuddiesStart) {
+            // Выбираем большее из двух расстояний
+            const targetDistance = Math.max(distanceToMegaEnd, distanceToBuddiesStart);
+            
+            // Корректируем отступы для достижения равных расстояний
+            if (distanceToMegaEnd < targetDistance) {
+                const adjustment = targetDistance - distanceToMegaEnd;
+                megaTitle.style.marginRight = `${adjustment}px`;
+                console.log('Корректировка MEGA:', adjustment);
+            }
+            
+            if (distanceToBuddiesStart < targetDistance) {
+                const adjustment = targetDistance - distanceToBuddiesStart;
+                buddiesTitle.style.marginLeft = `${adjustment}px`;
+                console.log('Корректировка BUDDIES:', adjustment);
+            }
+            
+            console.log('Отступы обновлены для равного расстояния от центра модели');
+        } else {
+            console.log('Расстояния уже равны, корректировка не требуется');
+        }
     }
     
     // Call the function after the page is fully loaded
