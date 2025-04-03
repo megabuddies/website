@@ -70,11 +70,12 @@ body {
   pointer-events: none;
 }
 
-.star {
+/* Удаляем стили для статических звезд */
+/* .star {
   position: absolute;
   border-radius: 50%;
   pointer-events: none;
-}
+} */
 
 .section {
   padding: 50px 0;
@@ -380,8 +381,8 @@ body {
 }
 
 #hero-animation {
-  width: 200px;
-  height: 200px;
+  width: 300px;
+  height: 300px;
   position: relative;
   z-index: 2;
   opacity: 0.9;
@@ -592,8 +593,8 @@ body {
   }
   
   #hero-animation {
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
     margin: 1rem 0;
   }
   

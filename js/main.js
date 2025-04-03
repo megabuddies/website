@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Create starfield background
-    createStarfieldBackground();
+    // Удаляем создание статического звездного фона
+    // createStarfieldBackground();
     
     // Добавляем сканирующую линию для эффекта старого монитора
     const scanLine = document.createElement('div');
@@ -432,60 +432,5 @@ document.addEventListener('DOMContentLoaded', function() {
     // Run it again after a delay to account for font loading
     setTimeout(adjustTextSpacing, 1000);
     setTimeout(adjustTextSpacing, 2000);
-
-    // Function to create starfield background
-    function createStarfieldBackground() {
-        const starField = document.getElementById('star-field');
-        if (!starField) return;
-        
-        // Clear any existing content
-        starField.innerHTML = '';
-        
-        // Create star particles
-        for (let i = 0; i < 200; i++) {
-            const star = document.createElement('div');
-            star.classList.add('star');
-            star.style.position = 'absolute';
-            star.style.width = `${Math.random() * 3 + 1}px`;
-            star.style.height = star.style.width;
-            
-            // Set color based on random value
-            const colorRandom = Math.random();
-            if (colorRandom < 0.6) {
-                star.style.backgroundColor = '#929397'; // Gray
-            } else if (colorRandom < 0.9) {
-                star.style.backgroundColor = '#1391ff'; // Blue
-            } else {
-                star.style.backgroundColor = '#ffffff'; // White
-            }
-            
-            // Random position
-            star.style.left = `${Math.random() * 100}%`;
-            star.style.top = `${Math.random() * 100}%`;
-            
-            // Random opacity and glow effect
-            const opacityBase = Math.random() * 0.7 + 0.3;
-            star.style.opacity = opacityBase.toString();
-            star.style.boxShadow = `0 0 ${Math.random() * 5 + 2}px currentColor`;
-            
-            // Add subtle animation
-            star.style.animation = `starTwinkle ${Math.random() * 3 + 2}s infinite alternate`;
-            
-            starField.appendChild(star);
-        }
-        
-        // Add keyframes for twinkling animation if not already present
-        if (!document.getElementById('star-animation-style')) {
-            const style = document.createElement('style');
-            style.id = 'star-animation-style';
-            style.textContent = `
-                @keyframes starTwinkle {
-                    0% { opacity: 0.2; }
-                    100% { opacity: 1; }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-    }
 });
 
