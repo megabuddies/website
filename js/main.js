@@ -390,14 +390,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Принудительно сбрасываем существующие отступы и устанавливаем !important
-        megaTitle.style.cssText += 'margin-right: 0 !important;';
-        buddiesTitle.style.cssText += 'margin-left: 0 !important;';
-        
-        // Форсируем перерасчет макета перед измерением
-        void document.body.offsetHeight;
-        
-        // Получаем размеры и позиции элементов после сброса стилей
+        // Получаем текущие размеры и позиции элементов
         const megaRect = megaTitle.getBoundingClientRect();
         const buddiesRect = buddiesTitle.getBoundingClientRect();
         const heroRect = heroAnimation.getBoundingClientRect();
@@ -418,31 +411,47 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Расстояние до конца MEGA:', distanceToMegaEnd);
         console.log('Расстояние до начала BUDDIES:', distanceToBuddiesStart);
         
-        // Уравниваем расстояния, выбираем фиксированное значение
-        const targetDistance = Math.max(distanceToMegaEnd, distanceToBuddiesStart) + 10; // Добавляем небольшой запас
-        
-        // Устанавливаем новые отступы с !important для переопределения CSS
-        megaTitle.style.cssText += `margin-right: ${targetDistance - distanceToMegaEnd}px !important;`;
-        buddiesTitle.style.cssText += `margin-left: ${targetDistance - distanceToBuddiesStart}px !important;`;
-        
-        console.log('Применены новые отступы:');
-        console.log('MEGA отступ справа:', targetDistance - distanceToMegaEnd, 'px');
-        console.log('BUDDIES отступ слева:', targetDistance - distanceToBuddiesStart, 'px');
-        
-        // Проверяем окончательные расстояния после корректировки
-        setTimeout(() => {
-            const finalMegaRect = megaTitle.getBoundingClientRect();
-            const finalBuddiesRect = buddiesTitle.getBoundingClientRect();
-            const finalDistanceToMegaEnd = heroCenterX - finalMegaRect.right;
-            const finalDistanceToBuddiesStart = finalBuddiesRect.left - heroCenterX;
+        // Проверяем, нужна ли корректировка (разница больше 10px)
+        if (Math.abs(distanceToMegaEnd - distanceToBuddiesStart) > 10) {
+            console.log('Требуется корректировка отступов...');
             
-            console.log('=== ИТОГОВАЯ ПРОВЕРКА ===');
-            console.log('Итоговое расстояние до MEGA:', finalDistanceToMegaEnd);
-            console.log('Итоговое расстояние до BUDDIES:', finalDistanceToBuddiesStart);
+            // Получаем текущие значения margin из CSS
+            const currentMegaMargin = parseInt(window.getComputedStyle(megaTitle).marginRight) || 0;
+            const currentBuddiesMargin = parseInt(window.getComputedStyle(buddiesTitle).marginLeft) || 0;
             
-            // Визуальная индикация для отладки
-            console.log('Равны ли расстояния:', Math.abs(finalDistanceToMegaEnd - finalDistanceToBuddiesStart) < 5);
-        }, 100);
+            console.log('Текущие отступы: MEGA:', currentMegaMargin, 'BUDDIES:', currentBuddiesMargin);
+            
+            // Вычисляем целевое расстояние (max + небольшой запас)
+            const targetDistance = Math.max(distanceToMegaEnd, distanceToBuddiesStart) + 20;
+            
+            // Корректируем отступы для достижения равных расстояний
+            if (distanceToMegaEnd < targetDistance) {
+                const newMegaMargin = currentMegaMargin + (targetDistance - distanceToMegaEnd);
+                megaTitle.style.marginRight = `${newMegaMargin}px`;
+                console.log('Новый отступ MEGA:', newMegaMargin);
+            }
+            
+            if (distanceToBuddiesStart < targetDistance) {
+                const newBuddiesMargin = currentBuddiesMargin + (targetDistance - distanceToBuddiesStart);
+                buddiesTitle.style.marginLeft = `${newBuddiesMargin}px`;
+                console.log('Новый отступ BUDDIES:', newBuddiesMargin);
+            }
+            
+            // Проверяем результаты корректировки
+            setTimeout(() => {
+                const finalMegaRect = megaTitle.getBoundingClientRect();
+                const finalBuddiesRect = buddiesTitle.getBoundingClientRect();
+                const finalDistanceToMegaEnd = heroCenterX - finalMegaRect.right;
+                const finalDistanceToBuddiesStart = finalBuddiesRect.left - heroCenterX;
+                
+                console.log('=== ИТОГОВАЯ ПРОВЕРКА ===');
+                console.log('Итоговое расстояние до MEGA:', finalDistanceToMegaEnd);
+                console.log('Итоговое расстояние до BUDDIES:', finalDistanceToBuddiesStart);
+                console.log('Разница расстояний:', Math.abs(finalDistanceToMegaEnd - finalDistanceToBuddiesStart));
+            }, 100);
+        } else {
+            console.log('Корректировка не требуется, разница менее 10px');
+        }
     }
     
     // Вызываем функцию после полной загрузки страницы
