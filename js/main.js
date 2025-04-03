@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Create starfield background
+    createStarfieldBackground();
+    
     // Добавляем сканирующую линию для эффекта старого монитора
     const scanLine = document.createElement('div');
     scanLine.classList.add('scan-line');
@@ -368,39 +371,115 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Simple text spacing adjustment that won't affect the 3D model
+    // Precise spacing adjustment between MEGA and BUDDIES
     function adjustTextSpacing() {
-        // Get the text elements
         const megaTitle = document.querySelector('.hero-title.mega');
+        const heroAnimation = document.getElementById('hero-animation');
         const buddiesTitle = document.querySelector('.hero-title.buddies');
         
-        if (!megaTitle || !buddiesTitle) return;
+        if (!megaTitle || !heroAnimation || !buddiesTitle) return;
         
-        // Reset any existing adjustments
-        megaTitle.style.marginLeft = '';
-        megaTitle.style.marginRight = '';
-        buddiesTitle.style.marginLeft = '';
-        buddiesTitle.style.marginRight = '';
+        // Reset any existing margins to get accurate measurements
+        megaTitle.style.marginRight = '0';
+        buddiesTitle.style.marginLeft = '0';
         
-        // Let the layout stabilize
-        setTimeout(() => {
-            // Set a fixed equal margin for both MEGA and BUDDIES
-            // This maintains the 3D model in the center
-            // Negative margin brings MEGA closer to center
-            megaTitle.style.marginRight = '-30px';
-            
-            // Negative margin brings BUDDIES closer to center
-            buddiesTitle.style.marginLeft = '-30px';
-        }, 100);
+        // Force layout recalculation
+        void megaTitle.offsetWidth;
+        
+        // Get the positions and dimensions
+        const megaRect = megaTitle.getBoundingClientRect();
+        const heroRect = heroAnimation.getBoundingClientRect();
+        const buddiesRect = buddiesTitle.getBoundingClientRect();
+        
+        // Calculate center of hero animation
+        const heroCenter = heroRect.left + (heroRect.width / 2);
+        
+        // Calculate current distances
+        const distanceToMegaEnd = heroCenter - megaRect.right;
+        const distanceToBuddiesStart = buddiesRect.left - heroCenter;
+        
+        console.log(`Current distances - MEGA end: ${distanceToMegaEnd}px, BUDDIES start: ${distanceToBuddiesStart}px`);
+        
+        // Calculate adjustments needed
+        if (distanceToMegaEnd > distanceToBuddiesStart) {
+            // Need to move BUDDIES away from center
+            const adjustment = distanceToMegaEnd - distanceToBuddiesStart;
+            buddiesTitle.style.marginLeft = `${adjustment}px`;
+            console.log(`Adjusting BUDDIES margin-left to ${adjustment}px`);
+        } else if (distanceToBuddiesStart > distanceToMegaEnd) {
+            // Need to move MEGA away from center
+            const adjustment = distanceToBuddiesStart - distanceToMegaEnd;
+            megaTitle.style.marginRight = `${adjustment}px`;
+            console.log(`Adjusting MEGA margin-right to ${adjustment}px`);
+        }
     }
     
-    // Call the function after the page loads
+    // Call the function after the page is fully loaded
     window.addEventListener('load', adjustTextSpacing);
     
     // Also on resize
     window.addEventListener('resize', adjustTextSpacing);
     
-    // Call immediately
+    // Try to run it immediately in case everything is already loaded
     adjustTextSpacing();
+    
+    // Run it again after a delay to account for font loading
+    setTimeout(adjustTextSpacing, 500);
+    setTimeout(adjustTextSpacing, 1000);
+
+    // Function to create starfield background
+    function createStarfieldBackground() {
+        const starField = document.getElementById('star-field');
+        if (!starField) return;
+        
+        // Clear any existing content
+        starField.innerHTML = '';
+        
+        // Create star particles
+        for (let i = 0; i < 200; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.position = 'absolute';
+            star.style.width = `${Math.random() * 3 + 1}px`;
+            star.style.height = star.style.width;
+            
+            // Set color based on random value
+            const colorRandom = Math.random();
+            if (colorRandom < 0.6) {
+                star.style.backgroundColor = '#929397'; // Gray
+            } else if (colorRandom < 0.9) {
+                star.style.backgroundColor = '#1391ff'; // Blue
+            } else {
+                star.style.backgroundColor = '#ffffff'; // White
+            }
+            
+            // Random position
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            
+            // Random opacity and glow effect
+            const opacityBase = Math.random() * 0.7 + 0.3;
+            star.style.opacity = opacityBase.toString();
+            star.style.boxShadow = `0 0 ${Math.random() * 5 + 2}px currentColor`;
+            
+            // Add subtle animation
+            star.style.animation = `starTwinkle ${Math.random() * 3 + 2}s infinite alternate`;
+            
+            starField.appendChild(star);
+        }
+        
+        // Add keyframes for twinkling animation if not already present
+        if (!document.getElementById('star-animation-style')) {
+            const style = document.createElement('style');
+            style.id = 'star-animation-style';
+            style.textContent = `
+                @keyframes starTwinkle {
+                    0% { opacity: 0.2; }
+                    100% { opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
 });
 

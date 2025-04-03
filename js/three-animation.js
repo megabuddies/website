@@ -19,10 +19,38 @@ function initThree() {
                 antialias: true,
                 powerPreference: "high-performance"
             });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            renderer.domElement.classList.add('fullscreen-bg');
-            document.body.appendChild(renderer.domElement);
+            
+            // Find the hero animation container
+            const heroAnimationContainer = document.getElementById('hero-animation');
+            
+            if (heroAnimationContainer) {
+                // Set the renderer size to match the container
+                const containerWidth = heroAnimationContainer.offsetWidth;
+                const containerHeight = heroAnimationContainer.offsetHeight;
+                renderer.setSize(containerWidth, containerHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                
+                // Clear any previous children
+                while (heroAnimationContainer.firstChild) {
+                    heroAnimationContainer.removeChild(heroAnimationContainer.firstChild);
+                }
+                
+                // Append the renderer to the container, not the body
+                heroAnimationContainer.appendChild(renderer.domElement);
+                
+                // Make the canvas fill the container
+                renderer.domElement.style.position = 'absolute';
+                renderer.domElement.style.top = '0';
+                renderer.domElement.style.left = '0';
+                renderer.domElement.style.width = '100%';
+                renderer.domElement.style.height = '100%';
+            } else {
+                // Fallback for when container isn't found
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                renderer.domElement.classList.add('fullscreen-bg');
+                document.body.appendChild(renderer.domElement);
+            }
             
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
             scene.add(ambientLight);
@@ -275,9 +303,21 @@ function onDocumentMouseMove(event) {
 }
 
 function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    const heroAnimationContainer = document.getElementById('hero-animation');
+    
+    if (heroAnimationContainer && renderer.domElement.parentElement === heroAnimationContainer) {
+        // Container-based rendering - resize to container dimensions
+        const containerWidth = heroAnimationContainer.offsetWidth;
+        const containerHeight = heroAnimationContainer.offsetHeight;
+        camera.aspect = containerWidth / containerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(containerWidth, containerHeight);
+    } else {
+        // Fallback to window dimensions
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
 }
 
 function animate() {
