@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Скрываем прелоадер после начальной загрузки и показываем контент
     window.addEventListener('load', function() {
-        // Добавляем небольшую задержку перед скрытием прелоадера для завершения анимации
+        // Добавляем задержку перед скрытием прелоадера для завершения загрузки модели (увеличена на 5 секунд)
         setTimeout(() => {
             updateProgress(100);
             
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Разрешаем скролл после скрытия прелоадера
                 document.body.style.overflow = 'auto';
             }, 500);
-        }, 1000);
+        }, 6000);
     });
     
     // Запрещаем скролл пока прелоадер активен
