@@ -7,30 +7,11 @@ let clock = new THREE.Clock();
 let leftEarPivot, rightEarPivot;
 let threeJsInitialized = false;
 
-// Незамедлительная инициализация Three.js при загрузке скрипта
-(function() {
-    // Если Three.js уже инициализирован, выходим
-    if (threeJsInitialized) return;
-    
-    // Инициализация будет запущена после загрузки DOM
-    window.addEventListener('DOMContentLoaded', function() {
-        // Запускаем инициализацию с минимальной задержкой
-        setTimeout(initThree, 100);
-    });
-    
-    // Дополнительная страховка - пробуем инициализировать через window.onload
-    window.addEventListener('load', function() {
-        if (!threeJsInitialized) {
-            console.log('Инициализация через window.onload');
-            initThree();
-        }
-    });
-})();
-
 function initThree() {
     if (threeJsInitialized) return; // Предотвращаем повторную инициализацию
     threeJsInitialized = true;
-    console.log('Начинаем инициализацию Three.js');
+    
+    console.log('Запуск инициализации Three.js');
     
     try {
         // Инициализация фона на весь экран
@@ -42,7 +23,9 @@ function initThree() {
         document.addEventListener('mousemove', onDocumentMouseMove);
         window.addEventListener('resize', onWindowResize);
         
+        // Запускаем анимацию
         animate();
+        
         console.log('Three.js успешно инициализирован');
     } catch (error) {
         console.error("Ошибка инициализации Three.js:", error);
@@ -72,7 +55,7 @@ function initFullscreenBackground() {
     if (!backgroundElement) {
         backgroundElement = document.createElement('div');
         backgroundElement.id = 'background-animation';
-        backgroundElement.className = 'fullscreen-bg';
+        backgroundElement.classList.add('fullscreen-bg');
         document.body.appendChild(backgroundElement);
     }
     
@@ -98,27 +81,16 @@ function initModelInContainer() {
     scene = new THREE.Scene();
     
     // Находим контейнер для 3D модели
-    let heroAnimationContainer = document.getElementById('hero-animation');
+    const heroAnimationContainer = document.getElementById('hero-animation');
     
     if (!heroAnimationContainer) {
-        console.log('Контейнер для 3D модели не найден, создаём новый');
-        heroAnimationContainer = document.createElement('div');
-        heroAnimationContainer.id = 'hero-animation';
-        
-        // Находим секцию hero для вставки контейнера
-        const heroSection = document.querySelector('.hero');
-        if (heroSection) {
-            // Вставляем перед первым дочерним элементом
-            heroSection.insertBefore(heroAnimationContainer, heroSection.firstChild);
-        } else {
-            // Если секция hero не найдена, добавляем в body
-            document.body.appendChild(heroAnimationContainer);
-        }
+        console.error('Контейнер для 3D модели не найден');
+        return;
     }
     
     // Получаем размеры контейнера
-    const containerWidth = heroAnimationContainer.offsetWidth || window.innerWidth;
-    const containerHeight = heroAnimationContainer.offsetHeight || window.innerHeight;
+    const containerWidth = heroAnimationContainer.offsetWidth || 300;
+    const containerHeight = heroAnimationContainer.offsetHeight || 300;
     
     // Камера для 3D модели с соотношением сторон контейнера
     camera = new THREE.PerspectiveCamera(75, containerWidth / containerHeight, 0.1, 1000);
@@ -486,3 +458,27 @@ function animate() {
     renderer.render(scene, camera);
     }
 }
+
+// Инициализируем Three.js сразу при загрузке DOM
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM загружен, запускаем инициализацию Three.js');
+    
+    // Запускаем инициализацию с небольшой задержкой
+    setTimeout(initThree, 100);
+    
+    // Слушаем событие от прелоадера для принудительной инициализации
+    document.addEventListener('initThreeJs', function() {
+        console.log('Получено событие initThreeJs от прелоадера');
+        initThree();
+    });
+    
+    // Слушаем событие завершения прелоадера для повторной проверки инициализации
+    document.addEventListener('preloaderFinished', function() {
+        console.log('Прелоадер завершен, проверяем инициализацию Three.js');
+        // Если по какой-то причине Three.js не инициализирован, пробуем еще раз
+        if (!threeJsInitialized) {
+            console.warn('После закрытия прелоадера Three.js не инициализирован, пробуем еще раз');
+            initThree();
+        }
+    });
+});
