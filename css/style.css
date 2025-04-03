@@ -76,6 +76,29 @@
                  0 0 20px rgba(85, 85, 255, calc(var(--glow-intensity) * 0.5)),
                  0 0 30px rgba(85, 85, 255, calc(var(--glow-intensity) * 0.3));
     animation: titlePulse 2s infinite alternate;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.preloader-content .logo img {
+    max-width: 120px;
+    margin-bottom: 15px;
+    animation: logoPulse 2.5s infinite alternate;
+    filter: drop-shadow(0 0 10px var(--accent-glow-color));
+}
+
+@keyframes logoPulse {
+    0% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 10px var(--accent-glow-color));
+    }
+    100% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 15px var(--secondary-glow-color))
+                drop-shadow(0 0 25px rgba(85, 85, 255, calc(var(--glow-intensity) * 0.5)));
+    }
 }
 
 .loading-bar {
