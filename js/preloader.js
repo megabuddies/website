@@ -183,6 +183,19 @@ class Preloader {
                         this.preloaderElement.parentNode.removeChild(this.preloaderElement);
                     }
                     
+                    // Убеждаемся, что все элементы фона остаются видимыми
+                    document.getElementById('background-animation').style.display = '';
+                    document.getElementById('background-animation').style.visibility = 'visible';
+                    document.getElementById('background-animation').style.opacity = '1';
+                    
+                    document.getElementById('star-field').style.display = '';
+                    document.getElementById('star-field').style.visibility = 'visible';
+                    document.getElementById('star-field').style.opacity = '1';
+                    
+                    document.getElementById('hero-animation').style.display = '';
+                    document.getElementById('hero-animation').style.visibility = 'visible';
+                    document.getElementById('hero-animation').style.opacity = '1';
+                    
                     // Инициируем событие о завершении загрузки
                     document.dispatchEvent(new Event('preloaderFinished'));
                 }, 600); // Время анимации скрытия
