@@ -374,44 +374,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // Precise spacing adjustment between MEGA and BUDDIES
     function adjustTextSpacing() {
         const megaTitle = document.querySelector('.hero-title.mega');
-        const heroAnimation = document.getElementById('hero-animation');
         const buddiesTitle = document.querySelector('.hero-title.buddies');
+        const viewportWidth = window.innerWidth;
         
-        if (!megaTitle || !heroAnimation || !buddiesTitle) return;
+        if (!megaTitle || !buddiesTitle) return;
         
-        // Reset any existing margins to get accurate measurements
-        megaTitle.style.marginRight = '0';
-        buddiesTitle.style.marginLeft = '0';
-        
-        // Force layout recalculation
-        void megaTitle.offsetWidth;
-        
-        // Get the positions and dimensions
-        const megaRect = megaTitle.getBoundingClientRect();
-        const heroRect = heroAnimation.getBoundingClientRect();
-        const buddiesRect = buddiesTitle.getBoundingClientRect();
-        
-        // Calculate center of hero animation
-        const heroCenter = heroRect.left + (heroRect.width / 2);
-        
-        // Calculate current distances
-        const distanceToMegaEnd = heroCenter - megaRect.right;
-        const distanceToBuddiesStart = buddiesRect.left - heroCenter;
-        
-        console.log(`Current distances - MEGA end: ${distanceToMegaEnd}px, BUDDIES start: ${distanceToBuddiesStart}px`);
-        
-        // Calculate adjustments needed
-        if (distanceToMegaEnd > distanceToBuddiesStart) {
-            // Need to move BUDDIES away from center
-            const adjustment = distanceToMegaEnd - distanceToBuddiesStart;
-            buddiesTitle.style.marginLeft = `${adjustment}px`;
-            console.log(`Adjusting BUDDIES margin-left to ${adjustment}px`);
-        } else if (distanceToBuddiesStart > distanceToMegaEnd) {
-            // Need to move MEGA away from center
-            const adjustment = distanceToBuddiesStart - distanceToMegaEnd;
-            megaTitle.style.marginRight = `${adjustment}px`;
-            console.log(`Adjusting MEGA margin-right to ${adjustment}px`);
+        // На мобильных устройствах не применяем динамическую регулировку
+        if (viewportWidth <= 768) {
+            megaTitle.style.marginRight = '0';
+            buddiesTitle.style.marginLeft = '0';
+            return;
         }
+        
+        // Используем фиксированные отступы для текста из CSS
+        // Это обеспечит равное расстояние по обе стороны от центра
+        console.log('Обновлены фиксированные отступы для текста. Модель центрирована.');
     }
     
     // Call the function after the page is fully loaded
