@@ -367,5 +367,30 @@ document.addEventListener('DOMContentLoaded', function() {
             this.classList.remove('neon-pulse');
         });
     });
+
+    // Ensure equal spacing from 3D model center to MEGA and BUDDIES
+    function adjustTextSpacing() {
+        const heroAnimation = document.getElementById('hero-animation');
+        const megaTitle = document.querySelector('.hero-title.mega');
+        const buddiesTitle = document.querySelector('.hero-title.buddies');
+        
+        if (heroAnimation && megaTitle && buddiesTitle) {
+            // Get the width of the MEGA text
+            const megaWidth = megaTitle.offsetWidth;
+            
+            // Set equal distance from center of animation to end of MEGA and start of BUDDIES
+            // This ensures the requested symmetry
+            const heroAnimationWidth = heroAnimation.offsetWidth;
+            const distanceFromCenter = megaWidth / 2;
+            
+            // Apply the adjustments
+            megaTitle.style.marginRight = `${distanceFromCenter}px`;
+            buddiesTitle.style.marginLeft = `${distanceFromCenter}px`;
+        }
+    }
+    
+    // Call the function after the page loads and whenever window is resized
+    window.addEventListener('load', adjustTextSpacing);
+    window.addEventListener('resize', adjustTextSpacing);
 });
 
