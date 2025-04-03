@@ -1,5 +1,6 @@
-// Обновленная версия three-animation.js с использованием кролика
+// Обновленная версия three-animation.js с разделенным фоном и моделью
 let scene, camera, renderer;
+let backgroundScene, backgroundCamera, backgroundRenderer;
 let particleSystem, pixelRabbit;
 let mouseX = 0, mouseY = 0;
 let clock = new THREE.Clock();
@@ -9,31 +10,11 @@ function initThree() {
     const loadingManager = new THREE.LoadingManager();
     loadingManager.onLoad = function() {
         try {
-            scene = new THREE.Scene();
+            // Инициализация фона на весь экран
+            initFullscreenBackground();
             
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.z = 5;
-            
-            renderer = new THREE.WebGLRenderer({ 
-                alpha: true, 
-                antialias: true,
-                powerPreference: "high-performance"
-            });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            renderer.domElement.classList.add('fullscreen-bg');
-            document.body.appendChild(renderer.domElement);
-            
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-            scene.add(ambientLight);
-            
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-            directionalLight.position.set(10, 10, 10);
-            scene.add(directionalLight);
-            
-            createPixelRabbit();
-            createParticleSystem();
-            createGrid();
+            // Инициализация 3D модели в контейнере
+            initModelInContainer();
             
             document.addEventListener('mousemove', onDocumentMouseMove);
             window.addEventListener('resize', onWindowResize);
@@ -52,6 +33,104 @@ function initThree() {
     
     loadingManager.itemStart();
     loadingManager.itemEnd();
+}
+
+function initFullscreenBackground() {
+    // Создаем отдельную сцену для фона
+    backgroundScene = new THREE.Scene();
+    
+    // Камера для фона
+    backgroundCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    backgroundCamera.position.z = 5;
+    
+    // Рендерер для фона на весь экран
+    backgroundRenderer = new THREE.WebGLRenderer({ 
+        alpha: true, 
+        antialias: true,
+        powerPreference: "high-performance"
+    });
+    backgroundRenderer.setSize(window.innerWidth, window.innerHeight);
+    backgroundRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    
+    // Находим элемент заднего фона или создаем новый
+    let backgroundElement = document.getElementById('background-animation');
+    if (!backgroundElement) {
+        backgroundElement = document.createElement('div');
+        backgroundElement.id = 'background-animation';
+        document.body.appendChild(backgroundElement);
+    }
+    
+    // Очищаем существующее содержимое
+    while (backgroundElement.firstChild) {
+        backgroundElement.removeChild(backgroundElement.firstChild);
+    }
+    
+    // Добавляем канвас в DOM
+    backgroundElement.appendChild(backgroundRenderer.domElement);
+    
+    // Добавляем свет для фона
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    backgroundScene.add(ambientLight);
+    
+    // Создаем элементы фона
+    createParticleSystem();
+    createGrid();
+}
+
+function initModelInContainer() {
+    // Основная сцена для 3D модели
+    scene = new THREE.Scene();
+    
+    // Находим контейнер для 3D модели
+    const heroAnimationContainer = document.getElementById('hero-animation');
+    
+    if (!heroAnimationContainer) {
+        console.error('Контейнер для 3D модели не найден');
+        return;
+    }
+    
+    // Получаем размеры контейнера
+    const containerWidth = heroAnimationContainer.offsetWidth;
+    const containerHeight = heroAnimationContainer.offsetHeight;
+    
+    // Камера для 3D модели с соотношением сторон контейнера
+    camera = new THREE.PerspectiveCamera(75, containerWidth / containerHeight, 0.1, 1000);
+    camera.position.z = 7; // Увеличиваем расстояние, чтобы модель была визуально меньше
+    
+    // Рендерер для 3D модели в контейнере
+    renderer = new THREE.WebGLRenderer({ 
+        alpha: true, 
+        antialias: true,
+        powerPreference: "high-performance"
+    });
+    renderer.setSize(containerWidth, containerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    
+    // Очищаем существующее содержимое
+    while (heroAnimationContainer.firstChild) {
+        heroAnimationContainer.removeChild(heroAnimationContainer.firstChild);
+    }
+    
+    // Добавляем канвас в контейнер
+    heroAnimationContainer.appendChild(renderer.domElement);
+    
+    // Устанавливаем размеры канваса
+    renderer.domElement.style.position = 'absolute';
+    renderer.domElement.style.top = '0';
+    renderer.domElement.style.left = '0';
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
+    
+    // Добавляем свет для 3D модели
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+    
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(10, 10, 10);
+    scene.add(directionalLight);
+    
+    // Создаем 3D модель
+    createPixelRabbit();
 }
 
 function createPixelRabbit() {
@@ -162,13 +241,14 @@ function createPixelRabbit() {
     tail.position.set(1.2, 0, 0);
     pixelRabbit.add(tail);
     
-    pixelRabbit.scale.set(0.7, 0.7, 0.7);
+    // Уменьшаем масштаб модели кролика на 15% (с 1.6 до 1.36)
+    pixelRabbit.scale.set(1.2, 1.2, 1.2);
     
     scene.add(pixelRabbit);
 }
 
 function createParticleSystem() {
-    const particleCount = 1000;
+    const particleCount = 1500; // Увеличиваем количество частиц для фона
     const particles = new THREE.BufferGeometry();
     
     const positions = new Float32Array(particleCount * 3);
@@ -180,9 +260,9 @@ function createParticleSystem() {
     const color3 = new THREE.Color(0x1391ff); // Light Blue
     
     for (let i = 0; i < particleCount; i++) {
-        positions[i * 3] = (Math.random() - 0.5) * 30;
-        positions[i * 3 + 1] = (Math.random() - 0.5) * 30;
-        positions[i * 3 + 2] = (Math.random() - 0.5) * 30;
+        positions[i * 3] = (Math.random() - 0.5) * 60;  // Увеличиваем область для частиц
+        positions[i * 3 + 1] = (Math.random() - 0.5) * 60;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 60;
         
         const colorChoice = Math.random();
         let color;
@@ -214,19 +294,23 @@ function createParticleSystem() {
     });
     
     particleSystem = new THREE.Points(particles, particleMaterial);
-    scene.add(particleSystem);
+    
+    // Добавляем частицы в фоновую сцену
+    backgroundScene.add(particleSystem);
 }
 
 function createGrid() {
-    const gridSize = 50;
-    const gridDivisions = 50;
+    const gridSize = 80;  // Увеличиваем размер сетки
+    const gridDivisions = 80;
     const gridColor = 0x929397; // Change grid color to gray
     
     const gridHelper = new THREE.GridHelper(gridSize, gridDivisions, gridColor, gridColor);
     gridHelper.material.opacity = 0.1;
     gridHelper.material.transparent = true;
-    gridHelper.position.y = -5;
-    scene.add(gridHelper);
+    gridHelper.position.y = -10;
+    
+    // Добавляем сетку в фоновую сцену
+    backgroundScene.add(gridHelper);
 }
 
 function createFallbackAnimation() {
@@ -275,9 +359,23 @@ function onDocumentMouseMove(event) {
 }
 
 function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
+    // Обновляем размеры фонового рендерера
+    if (backgroundRenderer) {
+        backgroundCamera.aspect = window.innerWidth / window.innerHeight;
+        backgroundCamera.updateProjectionMatrix();
+        backgroundRenderer.setSize(window.innerWidth, window.innerHeight);
+    }
+    
+    // Обновляем размеры рендерера 3D модели
+    const heroAnimationContainer = document.getElementById('hero-animation');
+    
+    if (heroAnimationContainer && renderer) {
+        const containerWidth = heroAnimationContainer.offsetWidth;
+        const containerHeight = heroAnimationContainer.offsetHeight;
+        camera.aspect = containerWidth / containerHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setSize(containerWidth, containerHeight);
+    }
 }
 
 function animate() {
@@ -285,14 +383,26 @@ function animate() {
     
     const elapsedTime = clock.getElapsedTime();
     
+    // Анимация фона - увеличиваем скорость вращения
+    if (particleSystem) {
+        particleSystem.rotation.x += 0.0008;
+        particleSystem.rotation.y += 0.001;
+        
+        // Добавляем реакцию на движение мыши для фона
+        particleSystem.rotation.x += (mouseY * 0.0001);
+        particleSystem.rotation.y += (mouseX * 0.0001);
+    }
+    
+    // Анимация 3D модели
     if (pixelRabbit) {
         pixelRabbit.rotation.y += 0.01;
         
         pixelRabbit.rotation.x += (mouseY - pixelRabbit.rotation.x * 0.1) * 0.02;
         pixelRabbit.rotation.y += (mouseX - pixelRabbit.rotation.y * 0.1) * 0.02;
         
+        // Пульсация с учетом уменьшенного размера модели
         const pulseFactor = Math.sin(elapsedTime * 2) * 0.05 + 1;
-        pixelRabbit.scale.set(pulseFactor * 0.7, pulseFactor * 0.7, pulseFactor * 0.7);
+        pixelRabbit.scale.set(pulseFactor * 1.2, pulseFactor * 1.2, pulseFactor * 1.2);
         
         // Анимируем уши через контейнеры
         if (leftEarPivot && rightEarPivot) {
@@ -317,7 +427,7 @@ function animate() {
             nose.scale.set(nosePulse, nosePulse, nosePulse);
         }
         
-        // Обновляем индексы ног, так как мы изменили структуру объектов
+        // Анимация ног
         if (pixelRabbit.children[7] && pixelRabbit.children[8] && 
             pixelRabbit.children[9] && pixelRabbit.children[10]) {
             
@@ -339,13 +449,15 @@ function animate() {
         }
     }
     
-    // Вращаем систему частиц
-    if (particleSystem) {
-        particleSystem.rotation.x += 0.0005;
-        particleSystem.rotation.y += 0.0008;
+    // Рендеринг фона
+    if (backgroundRenderer && backgroundScene && backgroundCamera) {
+        backgroundRenderer.render(backgroundScene, backgroundCamera);
     }
     
+    // Рендеринг 3D модели
+    if (renderer && scene && camera) {
     renderer.render(scene, camera);
+    }
 }
 
 // Инициализация Three.js при загрузке страницы

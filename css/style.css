@@ -46,7 +46,36 @@ body {
   width: 100%;
   height: 100%;
   z-index: -1;
+  pointer-events: none;
 }
+
+#background-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2; /* Behind star-field */
+  pointer-events: none;
+}
+
+#star-field {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: radial-gradient(circle at center, rgba(20, 20, 30, 0.3) 0%, rgba(10, 10, 15, 0.1) 70%);
+  pointer-events: none;
+}
+
+/* Удаляем стили для статических звезд */
+/* .star {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+} */
 
 .section {
   padding: 50px 0;
@@ -349,16 +378,20 @@ body {
   white-space: nowrap;
   padding: 0 2rem;
   position: relative;
+  z-index: 2;
 }
 
 #hero-animation {
-  width: 200px;
-  height: 200px;
-  position: relative;
-  z-index: 2;
+  width: 800px;
+  height: 800px;
+  position: fixed;
+  z-index: -1;
   opacity: 0.9;
-  margin: 0 4rem;
-  flex-shrink: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  overflow: visible;
+  pointer-events: none;
 }
 
 .hero-header {
@@ -558,23 +591,28 @@ body {
 
 @media (max-width: 768px) {
   .hero-title-container {
-    flex-direction: row;
-    gap: 0;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 0 1rem;
+    flex-direction: column;
+    gap: 1rem;
   }
   
   #hero-animation {
-    width: 150px;
-    height: 150px;
-    margin: 0 2rem;
+    width: 400px;
+    height: 400px;
+    margin: 1rem 0;
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
   }
   
   .hero-title {
-    font-size: clamp(2rem, 5vw, 3rem);
-    min-width: 150px;
-    padding: 0 1rem;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    padding: 0;
+  }
+  
+  .hero-title.mega,
+  .hero-title.buddies {
+    margin: 0 !important; /* Override margins on mobile */
   }
 }
 
@@ -1632,4 +1670,15 @@ body {
 
 .roadmap-content:hover::before {
   transform: translateX(100%);
+}
+
+/* Увеличиваем отступы для текста, чтобы дать больше места модели */
+.hero-title.mega {
+  /* margin-right: 430px; */
+  transition: margin 0.3s ease;
+}
+
+.hero-title.buddies {
+  /* margin-left: 430px; */
+  transition: margin 0.3s ease;
 }
