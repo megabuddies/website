@@ -130,7 +130,8 @@ function initModelInContainer() {
     scene.add(directionalLight);
     
     // Создаем 3D модель
-    createPixelRabbit();
+    pixelRabbit = createPixelRabbit();
+    scene.add(pixelRabbit);
 }
 
 function createPixelRabbit() {
@@ -203,16 +204,10 @@ function createPixelRabbit() {
     tail.position.set(0, -0.3, -0.6);
     rabbitGroup.add(tail);
 
-    // Scale down the whole rabbit
-    rabbitGroup.scale.set(1.2, 1.2, 1.2);
+    // Scale down the whole rabbit (reduced by 15% from 1.4)
+    rabbitGroup.scale.set(1.19, 1.19, 1.19);
     
-    // Устанавливаем глобальную переменную pixelRabbit
-    pixelRabbit = rabbitGroup;
-    
-    // Добавляем кролика в сцену
-    scene.add(pixelRabbit);
-    
-    return pixelRabbit;
+    return rabbitGroup;
 }
 
 function createParticleSystem() {
@@ -354,13 +349,16 @@ function animate() {
     const time = Date.now() * 0.001;
     
     // Rotate the background particles
-    particleSystem.rotation.x = time * 0.0008;
-    particleSystem.rotation.y = time * 0.001;
+    if (particleSystem) {
+        particleSystem.rotation.x = time * 0.0008;
+        particleSystem.rotation.y = time * 0.001;
+    }
 
     // Pulse the rabbit to make it more dynamic
     if (pixelRabbit) {
         const pulseFactor = 1 + Math.sin(time * 2) * 0.03;
-        pixelRabbit.scale.set(1.2 * pulseFactor, 1.2 * pulseFactor, 1.2 * pulseFactor);
+        // Use the reduced scale (1.19) as the base for the pulse effect
+        pixelRabbit.scale.set(1.19 * pulseFactor, 1.19 * pulseFactor, 1.19 * pulseFactor);
         
         // Gentle rotation for the rabbit
         pixelRabbit.rotation.y = Math.sin(time * 0.5) * 0.3;
