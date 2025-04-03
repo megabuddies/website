@@ -21,20 +21,8 @@ function initThree() {
             });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            
-            // Remove fullscreen-bg class to prevent any layout issues
-            const container = document.getElementById('hero-animation');
-            if (container) {
-                container.appendChild(renderer.domElement);
-                renderer.domElement.style.width = '100%';
-                renderer.domElement.style.height = '100%';
-                renderer.domElement.style.position = 'absolute';
-                renderer.domElement.style.top = '0';
-                renderer.domElement.style.left = '0';
-            } else {
-                renderer.domElement.classList.add('fullscreen-bg');
-                document.body.appendChild(renderer.domElement);
-            }
+            renderer.domElement.classList.add('fullscreen-bg');
+            document.body.appendChild(renderer.domElement);
             
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
             scene.add(ambientLight);
@@ -298,9 +286,6 @@ function animate() {
     const elapsedTime = clock.getElapsedTime();
     
     if (pixelRabbit) {
-        // Ensure model is perfectly centered
-        pixelRabbit.position.set(0, 0, 0);
-        
         pixelRabbit.rotation.y += 0.01;
         
         pixelRabbit.rotation.x += (mouseY - pixelRabbit.rotation.x * 0.1) * 0.02;

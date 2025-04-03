@@ -347,7 +347,7 @@ body {
   gap: 0;
   margin-bottom: 2rem;
   white-space: nowrap;
-  padding: 0;
+  padding: 0 2rem;
   position: relative;
 }
 
@@ -357,11 +357,8 @@ body {
   position: relative;
   z-index: 2;
   opacity: 0.9;
+  margin: 0 4rem;
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: visible;
 }
 
 .hero-header {
@@ -383,19 +380,6 @@ body {
   min-width: 200px;
   text-align: center;
   padding: 0 2rem;
-}
-
-/* Styling for the hero titles with clean positioning */
-.hero-title.mega {
-  text-align: right;
-  padding-right: 0;
-  /* No fixed margin-right - will be set dynamically */
-}
-
-.hero-title.buddies {
-  text-align: left;
-  padding-left: 0;
-  /* No fixed margin-left - will be set dynamically */
 }
 
 @keyframes titlePulse {
@@ -592,7 +576,6 @@ body {
   .hero-title.mega,
   .hero-title.buddies {
     margin: 0 !important; /* Override JS margins on mobile */
-    text-align: center;
   }
 }
 

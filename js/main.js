@@ -368,68 +368,39 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Calculate equal distance from center of 3D model to end of MEGA and start of BUDDIES
+    // Simple text spacing adjustment that won't affect the 3D model
     function adjustTextSpacing() {
-        const heroAnimation = document.getElementById('hero-animation');
+        // Get the text elements
         const megaTitle = document.querySelector('.hero-title.mega');
         const buddiesTitle = document.querySelector('.hero-title.buddies');
         
-        if (heroAnimation && megaTitle && buddiesTitle) {
-            // Reset any existing margins to get accurate measurements
-            megaTitle.style.marginRight = '0';
-            buddiesTitle.style.marginLeft = '0';
+        if (!megaTitle || !buddiesTitle) return;
+        
+        // Reset any existing adjustments
+        megaTitle.style.marginLeft = '';
+        megaTitle.style.marginRight = '';
+        buddiesTitle.style.marginLeft = '';
+        buddiesTitle.style.marginRight = '';
+        
+        // Let the layout stabilize
+        setTimeout(() => {
+            // Set a fixed equal margin for both MEGA and BUDDIES
+            // This maintains the 3D model in the center
+            // Negative margin brings MEGA closer to center
+            megaTitle.style.marginRight = '-30px';
             
-            // Force reflow to ensure dimensions are accurate
-            void megaTitle.offsetWidth;
-            
-            // Get the dimensions and positions
-            const heroRect = heroAnimation.getBoundingClientRect();
-            const megaRect = megaTitle.getBoundingClientRect();
-            const buddiesRect = buddiesTitle.getBoundingClientRect();
-            
-            // Calculate center point of 3D model
-            const centerX = heroRect.left + (heroRect.width / 2);
-            
-            // Calculate current distances
-            const distToMegaEnd = centerX - megaRect.right;
-            const distToBuddiesStart = buddiesRect.left - centerX;
-            
-            // We want these distances to be equal
-            // If the distance to MEGA end is greater, we need to move MEGA closer
-            // If the distance to BUDDIES start is greater, we need to move BUDDIES closer
-            
-            if (distToMegaEnd > distToBuddiesStart) {
-                // Move MEGA closer to center by adjusting margin
-                const adjustment = distToMegaEnd - distToBuddiesStart;
-                megaTitle.style.marginRight = `-${adjustment}px`;
-                buddiesTitle.style.marginLeft = '0px';
-            } else {
-                // Move BUDDIES closer to center by adjusting margin
-                const adjustment = distToBuddiesStart - distToMegaEnd;
-                megaTitle.style.marginRight = '0px';
-                buddiesTitle.style.marginLeft = `-${adjustment}px`;
-            }
-            
-            console.log(`Distance to MEGA end: ${distToMegaEnd}px, Distance to BUDDIES start: ${distToBuddiesStart}px`);
-        }
+            // Negative margin brings BUDDIES closer to center
+            buddiesTitle.style.marginLeft = '-30px';
+        }, 100);
     }
     
-    // Call adjustment on multiple events to ensure it works in all scenarios
+    // Call the function after the page loads
     window.addEventListener('load', adjustTextSpacing);
+    
+    // Also on resize
     window.addEventListener('resize', adjustTextSpacing);
-    window.addEventListener('DOMContentLoaded', adjustTextSpacing);
     
-    // Additional calls after fonts have likely loaded
-    setTimeout(adjustTextSpacing, 500);
-    setTimeout(adjustTextSpacing, 1000);
-    
-    // Add mutation observer to detect any DOM changes that might affect layout
-    if (window.MutationObserver) {
-        const observer = new MutationObserver(adjustTextSpacing);
-        const container = document.querySelector('.hero-title-container');
-        if (container) {
-            observer.observe(container, { childList: true, subtree: true, attributes: true });
-        }
-    }
+    // Call immediately
+    adjustTextSpacing();
 });
 
