@@ -836,7 +836,7 @@ body {
 }
 
 .collection-subtitle {
-  text-align: center;
+  text-align: left;
   font-size: 1rem;
   color: var(--text-color);
   margin-top: 5px;
@@ -885,56 +885,6 @@ body {
   overflow: hidden;
   position: relative;
   height: 100%;
-}
-
-/* Создаем пиксельные края для слайдера без использования SVG */
-.slider-wrapper::before, 
-.slider-wrapper::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  height: 100%;
-  width: 40px;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.slider-wrapper::before {
-  left: 0;
-  /* Создаем базовый пиксельный узор */
-  background-image: 
-    /* Пиксельный узор в шахматном порядке */
-    linear-gradient(45deg, var(--background-color) 25%, transparent 25%), 
-    linear-gradient(-45deg, var(--background-color) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, var(--background-color) 75%),
-    linear-gradient(-45deg, transparent 75%, var(--background-color) 75%);
-  
-  /* Устанавливаем размер пикселей */
-  background-size: 8px 8px;
-  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
-  
-  /* Накладываем градиент прозрачности с помощью маски */
-  -webkit-mask-image: linear-gradient(to right, var(--background-color), transparent);
-  mask-image: linear-gradient(to right, var(--background-color), transparent);
-}
-
-.slider-wrapper::after {
-  right: 0;
-  /* Создаем базовый пиксельный узор */
-  background-image: 
-    /* Пиксельный узор в шахматном порядке */
-    linear-gradient(45deg, var(--background-color) 25%, transparent 25%), 
-    linear-gradient(-45deg, var(--background-color) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, var(--background-color) 75%),
-    linear-gradient(-45deg, transparent 75%, var(--background-color) 75%);
-  
-  /* Устанавливаем размер пикселей */
-  background-size: 8px 8px;
-  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
-  
-  /* Накладываем градиент прозрачности с помощью маски */
-  -webkit-mask-image: linear-gradient(to left, var(--background-color), transparent);
-  mask-image: linear-gradient(to left, var(--background-color), transparent);
 }
 
 .slider-track {
