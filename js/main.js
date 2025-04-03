@@ -368,7 +368,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Adjust spacing between MEGA and BUDDIES for equal distance from 3D model center
+    // Calculate equal distance from center of 3D model to end of MEGA and start of BUDDIES
     function adjustTextSpacing() {
         const heroAnimation = document.getElementById('hero-animation');
         const megaTitle = document.querySelector('.hero-title.mega');
@@ -379,34 +379,57 @@ document.addEventListener('DOMContentLoaded', function() {
             megaTitle.style.marginRight = '0';
             buddiesTitle.style.marginLeft = '0';
             
-            // Force reflow to get accurate measurements
+            // Force reflow to ensure dimensions are accurate
             void megaTitle.offsetWidth;
             
-            // Calculate the appropriate spacing:
-            // We want the distance from center of 3D model to end of MEGA
-            // to be the same as distance from center to start of BUDDIES
+            // Get the dimensions and positions
+            const heroRect = heroAnimation.getBoundingClientRect();
+            const megaRect = megaTitle.getBoundingClientRect();
+            const buddiesRect = buddiesTitle.getBoundingClientRect();
             
-            // Get actual MEGA text width
-            const megaWidth = megaTitle.getBoundingClientRect().width;
-            const buddiesWidth = buddiesTitle.getBoundingClientRect().width;
+            // Calculate center point of 3D model
+            const centerX = heroRect.left + (heroRect.width / 2);
             
-            // Calculate the distance needed for MEGA
-            const megaRightMargin = 0; // Start with zero margin
+            // Calculate current distances
+            const distToMegaEnd = centerX - megaRect.right;
+            const distToBuddiesStart = buddiesRect.left - centerX;
             
-            // Apply margins - keep the default margins from CSS
-            // Just add small adjustments as needed
-            megaTitle.style.marginRight = '0';
-            buddiesTitle.style.marginLeft = `${megaWidth}px`;
+            // We want these distances to be equal
+            // If the distance to MEGA end is greater, we need to move MEGA closer
+            // If the distance to BUDDIES start is greater, we need to move BUDDIES closer
             
-            console.log(`Applied spacing: MEGA right = 0, BUDDIES left = ${megaWidth}px`);
+            if (distToMegaEnd > distToBuddiesStart) {
+                // Move MEGA closer to center by adjusting margin
+                const adjustment = distToMegaEnd - distToBuddiesStart;
+                megaTitle.style.marginRight = `-${adjustment}px`;
+                buddiesTitle.style.marginLeft = '0px';
+            } else {
+                // Move BUDDIES closer to center by adjusting margin
+                const adjustment = distToBuddiesStart - distToMegaEnd;
+                megaTitle.style.marginRight = '0px';
+                buddiesTitle.style.marginLeft = `-${adjustment}px`;
+            }
+            
+            console.log(`Distance to MEGA end: ${distToMegaEnd}px, Distance to BUDDIES start: ${distToBuddiesStart}px`);
         }
     }
     
-    // Call the function after important page events
+    // Call adjustment on multiple events to ensure it works in all scenarios
     window.addEventListener('load', adjustTextSpacing);
     window.addEventListener('resize', adjustTextSpacing);
+    window.addEventListener('DOMContentLoaded', adjustTextSpacing);
     
-    // Add a small delay to ensure font loading is complete
+    // Additional calls after fonts have likely loaded
     setTimeout(adjustTextSpacing, 500);
+    setTimeout(adjustTextSpacing, 1000);
+    
+    // Add mutation observer to detect any DOM changes that might affect layout
+    if (window.MutationObserver) {
+        const observer = new MutationObserver(adjustTextSpacing);
+        const container = document.querySelector('.hero-title-container');
+        if (container) {
+            observer.observe(container, { childList: true, subtree: true, attributes: true });
+        }
+    }
 });
 
