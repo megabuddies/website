@@ -381,6 +381,91 @@ body {
   z-index: 2;
 }
 
+/* Декоративные линии для заголовка */
+.hero-title-container::before,
+.hero-title-container::after {
+  content: '';
+  height: 2px;
+  background: linear-gradient(90deg, rgba(146, 147, 151, 0.01), var(--accent-color));
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  box-shadow: 0 0 10px var(--accent-color), 0 0 20px rgba(146, 147, 151, 0.5);
+}
+
+.hero-title-container::before {
+  left: 0;
+  right: calc(50% + 220px); /* Линия до MEGA */
+}
+
+.hero-title-container::after {
+  left: calc(50% + 220px); /* Линия после BUDDIES */
+  right: 0;
+}
+
+/* Создаем пунктирный эффект для линий */
+@keyframes dashAnimation {
+  from { background-position: 0 0; }
+  to { background-position: 20px 0; }
+}
+
+.hero-title-container::before,
+.hero-title-container::after {
+  background-image: linear-gradient(90deg, var(--accent-color) 50%, transparent 50%);
+  background-size: 10px 2px;
+  animation: dashAnimation 1s linear infinite;
+}
+
+/* Увеличиваем отступы для текста, чтобы дать больше места модели */
+.hero-title.mega {
+  margin-right: 300px; /* Базовый отступ, который JavaScript может уточнить */
+  transition: margin 0.3s ease;
+  position: relative;
+}
+
+.hero-title.buddies {
+  margin-left: 300px; /* Базовый отступ, который JavaScript может уточнить */
+  transition: margin 0.3s ease;
+  position: relative;
+}
+
+/* Добавляем нижнюю линию под словами */
+.hero-title.mega::after,
+.hero-title.buddies::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+  box-shadow: 0 0 10px var(--accent-color), 0 0 20px rgba(146, 147, 151, 0.5);
+}
+
+/* Добавляем вертикальные линии по краям слов */
+.hero-title.mega::before {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: -10px;
+  width: 2px;
+  height: calc(100% + 30px);
+  background: linear-gradient(180deg, transparent, var(--accent-color), transparent);
+  box-shadow: 0 0 10px var(--accent-color), 0 0 20px rgba(146, 147, 151, 0.5);
+}
+
+.hero-title.buddies::before {
+  content: '';
+  position: absolute;
+  top: -15px;
+  right: -10px;
+  width: 2px;
+  height: calc(100% + 30px);
+  background: linear-gradient(180deg, transparent, var(--accent-color), transparent);
+  box-shadow: 0 0 10px var(--accent-color), 0 0 20px rgba(146, 147, 151, 0.5);
+}
+
 #hero-animation {
   width: 800px;
   height: 800px;
