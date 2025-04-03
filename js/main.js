@@ -389,15 +389,15 @@ document.addEventListener('DOMContentLoaded', function() {
             buddiesTitle.style.marginLeft = '0';
             return;
         }
+
+        // Принудительно сбрасываем существующие отступы и устанавливаем !important
+        megaTitle.style.cssText += 'margin-right: 0 !important;';
+        buddiesTitle.style.cssText += 'margin-left: 0 !important;';
         
-        // Сбрасываем текущие значения маргинов для корректного измерения
-        megaTitle.style.marginRight = '0';
-        buddiesTitle.style.marginLeft = '0';
+        // Форсируем перерасчет макета перед измерением
+        void document.body.offsetHeight;
         
-        // Вызываем reflow для применения изменений стилей перед измерением
-        document.body.offsetHeight;
-        
-        // Получаем размеры и позиции элементов
+        // Получаем размеры и позиции элементов после сброса стилей
         const megaRect = megaTitle.getBoundingClientRect();
         const buddiesRect = buddiesTitle.getBoundingClientRect();
         const heroRect = heroAnimation.getBoundingClientRect();
@@ -409,53 +409,57 @@ document.addEventListener('DOMContentLoaded', function() {
         const distanceToMegaEnd = heroCenterX - megaRect.right;
         const distanceToBuddiesStart = buddiesRect.left - heroCenterX;
         
-        console.log('Центр модели:', heroCenterX);
-        console.log('Конец MEGA:', megaRect.right);
-        console.log('Начало BUDDIES:', buddiesRect.left);
+        // Выводим логи для отладки
+        console.log('=== ДИАГНОСТИКА ВЫРАВНИВАНИЯ ===');
+        console.log('Ширина окна:', viewportWidth);
+        console.log('Центр модели X:', heroCenterX);
+        console.log('MEGA право:', megaRect.right);
+        console.log('BUDDIES лево:', buddiesRect.left);
         console.log('Расстояние до конца MEGA:', distanceToMegaEnd);
         console.log('Расстояние до начала BUDDIES:', distanceToBuddiesStart);
         
-        // Уравниваем расстояния, корректируя отступы
-        if (distanceToMegaEnd !== distanceToBuddiesStart) {
-            // Выбираем большее из двух расстояний
-            const targetDistance = Math.max(distanceToMegaEnd, distanceToBuddiesStart);
+        // Уравниваем расстояния, выбираем фиксированное значение
+        const targetDistance = Math.max(distanceToMegaEnd, distanceToBuddiesStart) + 10; // Добавляем небольшой запас
+        
+        // Устанавливаем новые отступы с !important для переопределения CSS
+        megaTitle.style.cssText += `margin-right: ${targetDistance - distanceToMegaEnd}px !important;`;
+        buddiesTitle.style.cssText += `margin-left: ${targetDistance - distanceToBuddiesStart}px !important;`;
+        
+        console.log('Применены новые отступы:');
+        console.log('MEGA отступ справа:', targetDistance - distanceToMegaEnd, 'px');
+        console.log('BUDDIES отступ слева:', targetDistance - distanceToBuddiesStart, 'px');
+        
+        // Проверяем окончательные расстояния после корректировки
+        setTimeout(() => {
+            const finalMegaRect = megaTitle.getBoundingClientRect();
+            const finalBuddiesRect = buddiesTitle.getBoundingClientRect();
+            const finalDistanceToMegaEnd = heroCenterX - finalMegaRect.right;
+            const finalDistanceToBuddiesStart = finalBuddiesRect.left - heroCenterX;
             
-            // Корректируем отступы для достижения равных расстояний
-            if (distanceToMegaEnd < targetDistance) {
-                const adjustment = targetDistance - distanceToMegaEnd;
-                megaTitle.style.marginRight = `${adjustment}px`;
-                console.log('Корректировка MEGA:', adjustment);
-            }
+            console.log('=== ИТОГОВАЯ ПРОВЕРКА ===');
+            console.log('Итоговое расстояние до MEGA:', finalDistanceToMegaEnd);
+            console.log('Итоговое расстояние до BUDDIES:', finalDistanceToBuddiesStart);
             
-            if (distanceToBuddiesStart < targetDistance) {
-                const adjustment = targetDistance - distanceToBuddiesStart;
-                buddiesTitle.style.marginLeft = `${adjustment}px`;
-                console.log('Корректировка BUDDIES:', adjustment);
-            }
-            
-            console.log('Отступы обновлены для равного расстояния от центра модели');
-        } else {
-            console.log('Расстояния уже равны, корректировка не требуется');
-        }
+            // Визуальная индикация для отладки
+            console.log('Равны ли расстояния:', Math.abs(finalDistanceToMegaEnd - finalDistanceToBuddiesStart) < 5);
+        }, 100);
     }
     
-    // Call the function after the page is fully loaded
+    // Вызываем функцию после полной загрузки страницы
     window.addEventListener('load', function() {
-        // Delay the adjustment to ensure ThreeJS has initialized
-        setTimeout(adjustTextSpacing, 200);
+        // Более длительная задержка для гарантии, что ThreeJS полностью инициализирован
+        setTimeout(adjustTextSpacing, 500);
     });
     
-    // Also on resize
+    // Вызываем функцию при изменении размера окна
     window.addEventListener('resize', function() {
-        // Delay adjustment after resize to ensure ThreeJS has updated
-        setTimeout(adjustTextSpacing, 200);
+        setTimeout(adjustTextSpacing, 500);
     });
     
-    // Try to run it immediately in case everything is already loaded
-    setTimeout(adjustTextSpacing, 200);
-    
-    // Run it again after a delay to account for font loading
-    setTimeout(adjustTextSpacing, 1000);
-    setTimeout(adjustTextSpacing, 2000);
+    // Запускаем несколько раз с разными задержками для гарантии применения
+    // после загрузки всех ресурсов, включая шрифты и 3D-модель
+    setTimeout(adjustTextSpacing, 500);
+    setTimeout(adjustTextSpacing, 1500);
+    setTimeout(adjustTextSpacing, 3000); // Длительная задержка для гарантии
 });
 
