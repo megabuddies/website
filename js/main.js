@@ -415,17 +415,23 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Call the function after the page is fully loaded
-    window.addEventListener('load', adjustTextSpacing);
+    window.addEventListener('load', function() {
+        // Delay the adjustment to ensure ThreeJS has initialized
+        setTimeout(adjustTextSpacing, 200);
+    });
     
     // Also on resize
-    window.addEventListener('resize', adjustTextSpacing);
+    window.addEventListener('resize', function() {
+        // Delay adjustment after resize to ensure ThreeJS has updated
+        setTimeout(adjustTextSpacing, 200);
+    });
     
     // Try to run it immediately in case everything is already loaded
-    adjustTextSpacing();
+    setTimeout(adjustTextSpacing, 200);
     
     // Run it again after a delay to account for font loading
-    setTimeout(adjustTextSpacing, 500);
     setTimeout(adjustTextSpacing, 1000);
+    setTimeout(adjustTextSpacing, 2000);
 
     // Function to create starfield background
     function createStarfieldBackground() {
