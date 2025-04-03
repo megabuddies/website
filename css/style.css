@@ -5,7 +5,12 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #000;
+    background-color: var(--background-color);
+    background-image: 
+      linear-gradient(0deg, rgba(146, 147, 151, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(146, 147, 151, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: center;
     z-index: 9999;
     display: flex;
     justify-content: center;
@@ -13,6 +18,17 @@
     opacity: 1;
     transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
     visibility: visible;
+}
+
+#preloader::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(20, 20, 30, 0.7) 0%, rgba(10, 10, 15, 0.9) 70%);
+    z-index: -1;
 }
 
 #preloader.active {
@@ -28,87 +44,105 @@
 .preloader-content {
     text-align: center;
     width: 300px;
+    border: 2px solid var(--accent-color);
+    border-radius: 5px;
+    padding: 30px;
+    background-color: rgba(18, 18, 24, 0.8);
+    box-shadow: 0 0 20px var(--accent-glow-color),
+                0 0 40px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.3));
+    position: relative;
+    overflow: hidden;
+}
+
+.preloader-content::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border: 2px solid transparent;
+    border-image: linear-gradient(to right, var(--accent-color), var(--secondary-color)) 1;
+    pointer-events: none;
+    z-index: 1;
 }
 
 .preloader-content .logo {
     margin-bottom: 30px;
     font-size: 36px;
-    font-family: 'Press Start 2P', cursive;
-    text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
-    animation: pulse 1.5s infinite;
+    font-family: var(--font-display);
+    color: var(--text-color);
+    text-shadow: 0 0 10px var(--secondary-glow-color),
+                 0 0 20px rgba(85, 85, 255, calc(var(--glow-intensity) * 0.5)),
+                 0 0 30px rgba(85, 85, 255, calc(var(--glow-intensity) * 0.3));
+    animation: titlePulse 2s infinite alternate;
 }
 
 .loading-bar {
     width: 100%;
-    height: 6px;
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 3px;
-    margin: 20px 0;
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    margin: 25px 0;
     position: relative;
     overflow: hidden;
+    border: 1px solid var(--accent-color);
 }
 
 .loading-bar .progress {
     width: 0;
     height: 100%;
-    background: linear-gradient(90deg, #ff00ff, #00ffff);
+    background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
     border-radius: 3px;
     transition: width 0.3s ease-out;
     position: absolute;
     top: 0;
     left: 0;
-    animation: progress-animation 2s ease-out infinite;
+    box-shadow: 0 0 10px var(--accent-glow-color),
+                0 0 20px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.3));
 }
 
 .loading-text {
-    font-family: 'VT323', monospace;
-    color: #fff;
+    font-family: var(--font-mono);
+    color: var(--text-color);
     font-size: 24px;
     letter-spacing: 2px;
+    text-transform: uppercase;
+    position: relative;
+    display: inline-block;
+}
+
+.loading-text::after {
+    content: '';
+    position: absolute;
+    right: -10px;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background-color: var(--accent-color);
+    animation: cursorBlink 1s step-end infinite;
 }
 
 .loading-text .dots {
-    animation: dots 1.5s infinite;
     display: inline-block;
     width: 24px;
     text-align: left;
+    animation: neonFlicker 2s infinite;
 }
 
-@keyframes pulse {
+@keyframes titlePulse {
     0% {
-        opacity: 0.6;
+        opacity: 0.8;
+        text-shadow: 0 0 10px var(--secondary-glow-color),
+                    0 0 20px rgba(85, 85, 255, calc(var(--glow-intensity) * 0.5)),
+                    0 0 30px rgba(85, 85, 255, calc(var(--glow-intensity) * 0.3));
     }
-    50% {
+    100% {
         opacity: 1;
-    }
-    100% {
-        opacity: 0.6;
-    }
-}
-
-@keyframes progress-animation {
-    0% {
-        width: 0;
-        background-position: 0 0;
-    }
-    50% {
-        width: 70%;
-    }
-    100% {
-        width: 95%;
-        background-position: 100% 0;
-    }
-}
-
-@keyframes dots {
-    0%, 20% {
-        content: ".";
-    }
-    40% {
-        content: "..";
-    }
-    60%, 100% {
-        content: "...";
+        text-shadow: 0 0 15px var(--secondary-glow-color),
+                    0 0 30px rgba(85, 85, 255, calc(var(--glow-intensity) * 0.7)),
+                    0 0 45px rgba(85, 85, 255, calc(var(--glow-intensity) * 0.5)),
+                    0 0 60px rgba(85, 85, 255, calc(var(--glow-intensity) * 0.3));
     }
 }
 

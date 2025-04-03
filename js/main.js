@@ -2,12 +2,31 @@ document.addEventListener('DOMContentLoaded', function() {
     // Получаем элемент прелоадера
     const preloader = document.getElementById('preloader');
     const progressBar = document.querySelector('#preloader .progress');
+    const terminalText = document.querySelector('#preloader .terminal-text');
     let loadingProgress = 0;
+    
+    // Массив сообщений загрузки для имитации реального процесса
+    const loadingMessages = [
+        'Загрузка 3D модели...',
+        'Инициализация окружения...',
+        'Подготовка визуальных эффектов...',
+        'Загрузка NFT коллекции...',
+        'Синхронизация с блокчейном...',
+        'Проверка безопасности соединения...',
+        'Запуск дополнительных ресурсов...',
+        'Почти готово...'
+    ];
     
     // Функция для обновления прогресса загрузки
     function updateProgress(progress) {
         loadingProgress = progress;
         progressBar.style.width = `${Math.min(loadingProgress, 95)}%`;
+        
+        // Обновляем текст терминала в зависимости от прогресса
+        const messageIndex = Math.floor((loadingProgress / 100) * loadingMessages.length);
+        if (messageIndex < loadingMessages.length) {
+            terminalText.innerHTML = `<span class="terminal-prompt">&gt;</span> ${loadingMessages[messageIndex]}`;
+        }
     }
     
     // Начальное значение прогресса
@@ -20,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Функция для увеличения счетчика загруженных ресурсов
     function incrementResourcesLoaded() {
         resourcesLoaded++;
-        const percentLoaded = Math.min(90, Math.floor((resourcesLoaded / resourcesTotal) * 90));
+        const percentLoaded = Math.min(75, Math.floor((resourcesLoaded / resourcesTotal) * 75));
         updateProgress(percentLoaded);
     }
     
@@ -36,26 +55,36 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Для скриптов и стилей используем интервал, симулирующий загрузку
     const progressInterval = setInterval(() => {
-        if (loadingProgress < 90) {
-            updateProgress(loadingProgress + 2);
+        if (loadingProgress < 75) {
+            updateProgress(loadingProgress + 1);
         } else {
             clearInterval(progressInterval);
         }
-    }, 200);
+    }, 100);
     
     // Скрываем прелоадер после начальной загрузки и показываем контент
     window.addEventListener('load', function() {
         // Добавляем задержку перед скрытием прелоадера для завершения загрузки модели (увеличена на 5 секунд)
         setTimeout(() => {
-            updateProgress(100);
-            
-            setTimeout(() => {
-                preloader.classList.remove('active');
-                preloader.classList.add('hidden');
-                
-                // Разрешаем скролл после скрытия прелоадера
-                document.body.style.overflow = 'auto';
-            }, 500);
+            // Плавно завершаем загрузку от текущего значения до 100%
+            const completeInterval = setInterval(() => {
+                if (loadingProgress < 100) {
+                    updateProgress(loadingProgress + 1);
+                } else {
+                    clearInterval(completeInterval);
+                    
+                    // Отображаем финальное сообщение
+                    terminalText.innerHTML = '<span class="terminal-prompt" style="color: #5f5;">&gt;</span> <span style="color: #5f5;">Загрузка завершена. Запуск системы...</span>';
+                    
+                    setTimeout(() => {
+                        preloader.classList.remove('active');
+                        preloader.classList.add('hidden');
+                        
+                        // Разрешаем скролл после скрытия прелоадера
+                        document.body.style.overflow = 'auto';
+                    }, 800);
+                }
+            }, 30);
         }, 6000);
     });
     
