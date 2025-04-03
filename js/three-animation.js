@@ -241,8 +241,8 @@ function createPixelRabbit() {
     tail.position.set(1.2, 0, 0);
     pixelRabbit.add(tail);
     
-    // Увеличиваем масштаб модели кролика еще больше
-    pixelRabbit.scale.set(1.6, 1.6, 1.6);
+    // Уменьшаем масштаб модели кролика на 15% (с 1.6 до 1.36)
+    pixelRabbit.scale.set(1.36, 1.36, 1.36);
     
     scene.add(pixelRabbit);
 }
@@ -400,9 +400,9 @@ function animate() {
         pixelRabbit.rotation.x += (mouseY - pixelRabbit.rotation.x * 0.1) * 0.02;
         pixelRabbit.rotation.y += (mouseX - pixelRabbit.rotation.y * 0.1) * 0.02;
         
-        // Пульсация с учетом увеличенного размера модели
+        // Пульсация с учетом уменьшенного размера модели
         const pulseFactor = Math.sin(elapsedTime * 2) * 0.05 + 1;
-        pixelRabbit.scale.set(pulseFactor * 1.6, pulseFactor * 1.6, pulseFactor * 1.6);
+        pixelRabbit.scale.set(pulseFactor * 1.36, pulseFactor * 1.36, pulseFactor * 1.36);
         
         // Анимируем уши через контейнеры
         if (leftEarPivot && rightEarPivot) {
