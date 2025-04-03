@@ -379,18 +379,19 @@ body {
   padding: 0 2rem;
   position: relative;
   z-index: 2;
-  width: 100%;
 }
 
 #hero-animation {
-  position: absolute;
+  width: 400px;
+  height: 400px;
+  position: fixed;
+  z-index: -1;
+  opacity: 0.9;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 525px;
-  height: 525px;
   overflow: visible;
-  z-index: -1;
+  pointer-events: none;
 }
 
 .hero-header {
@@ -597,6 +598,11 @@ body {
   #hero-animation {
     width: 250px;
     height: 250px;
+    margin: 1rem 0;
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
   }
   
   .hero-title {
@@ -607,7 +613,6 @@ body {
   .hero-title.mega,
   .hero-title.buddies {
     margin: 0 !important; /* Override margins on mobile */
-    text-align: center;
   }
 }
 
@@ -1669,11 +1674,9 @@ body {
 
 /* Увеличиваем отступы для текста, чтобы дать больше места модели */
 .hero-title.mega {
-  margin-right: 250px;
-  text-align: right;
+  margin-right: 230px;
 }
 
 .hero-title.buddies {
-  margin-left: 250px;
-  text-align: left;
+  margin-left: 230px;
 }
