@@ -138,6 +138,7 @@ html, body {
     position: relative;
   }
   
+  /* Улучшаем анимацию появления меню */
   .nav-list {
     top: 0;
     right: -100%;
@@ -151,7 +152,8 @@ html, body {
     justify-content: flex-start;
     padding: 80px 20px;
     z-index: 1000;
-    transition: right 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateX(100%);
     background-image: 
       linear-gradient(0deg, rgba(146, 147, 151, 0.05) 1px, transparent 1px),
       linear-gradient(90deg, rgba(146, 147, 151, 0.05) 1px, transparent 1px);
@@ -173,6 +175,7 @@ html, body {
   
   .nav-list.active {
     right: 0;
+    transform: translateX(0);
   }
   
   .nav-item {
@@ -187,7 +190,7 @@ html, body {
     display: block;
   }
   
-  /* Улучшенный герой раздел */
+  /* Улучшенный герой раздел - поднимаем MEGA BUDDIES выше */
   .hero {
     margin: 0;
     padding: 0;
@@ -200,7 +203,7 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
   }
   
   .hero-content {
@@ -208,7 +211,7 @@ html, body {
     max-width: 100%;
     text-align: center;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 40px 20px 120px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -268,7 +271,7 @@ html, body {
   /* Исправление для скролл-индикатора (прокрутите вниз) */
   .scroll-indicator {
     position: absolute;
-    bottom: 30px;
+    bottom: 50px;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
@@ -289,6 +292,33 @@ html, body {
     padding: 0 10px;
     overflow: hidden;
     width: 100%;
+  }
+  
+  /* Изменение расположения кнопок фильтров */
+  .collection-filters {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .filter-btn[data-filter="all"] {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 10px;
+  }
+  
+  .collection-filters .filter-btn:not([data-filter="all"]) {
+    display: inline-block;
+    margin: 0 5px;
+  }
+  
+  .collection-filters::after {
+    content: '';
+    display: flex;
+    margin-top: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
   }
   
   .nft-grid {
@@ -359,19 +389,20 @@ html, body {
     100% { opacity: 0.7; }
   }
   
-  /* Полная переработка дорожной карты */
+  /* Адаптируем дорожную карту как в основной версии */
   .roadmap-container {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
     padding: 0;
-    margin: 0;
-    width: 100%;
   }
   
   .roadmap-timeline {
-    width: 2px;
-    left: 15px;
-    top: 15px;
-    bottom: 15px;
     position: absolute;
+    width: 2px;
+    left: 30px;
+    top: 0;
+    bottom: 0;
     background-color: var(--accent-color);
     box-shadow: 0 0 10px var(--accent-glow-color);
     z-index: 1;
@@ -384,44 +415,65 @@ html, body {
   }
   
   .roadmap-item {
-    padding-left: 40px;
+    display: flex;
+    margin-bottom: 40px;
     position: relative;
-    margin-bottom: 30px;
-    width: 100%;
+    transform: translateZ(0);
+    transition: all 0.3s ease;
   }
   
   .roadmap-icon {
-    position: absolute;
-    left: 0;
-    top: 15px;
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 0;
+    background: var(--background-color);
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--background-color);
+    margin-right: 15px;
     border: 2px solid var(--accent-color);
     box-shadow: 0 0 10px var(--accent-glow-color);
-    border-radius: 50%;
     z-index: 2;
-    font-size: 14px;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    transition: all 0.3s ease;
+  }
+  
+  .roadmap-icon i {
+    font-size: 20px;
+    color: var(--accent-color);
+    transition: all 0.3s ease;
   }
   
   .roadmap-content {
-    background-color: rgba(18, 18, 24, 0.8);
-    border: 1px solid var(--accent-color);
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 0 15px rgba(146, 147, 151, 0.1);
+    flex: 1;
+    padding: 20px;
+    border-radius: 0;
+    background: rgba(26, 26, 26, 0.7);
+    border: 2px solid var(--accent-color);
+    clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
     position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .roadmap-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    box-sizing: border-box;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(146, 147, 151, 0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
   }
   
   .roadmap-date {
-    font-size: 16px;
-    margin-bottom: 5px;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
     color: var(--accent-color);
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
   }
   
   .roadmap-content h4 {
@@ -438,15 +490,12 @@ html, body {
   
   .roadmap-status {
     display: inline-block;
-    padding: 3px 8px;
-    font-size: 10px;
-    border-radius: 4px;
-    background-color: rgba(18, 18, 24, 0.8);
-    border: 1px solid var(--accent-color);
-    color: var(--accent-color);
-    position: relative;
-    float: right;
-    margin-top: -30px;
+    padding: 5px 10px;
+    border-radius: 0;
+    font-size: 0.8rem;
+    margin-top: 10px;
+    clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
+    transition: all 0.3s ease;
   }
   
   .roadmap-status.completed {
@@ -459,6 +508,11 @@ html, body {
     background-color: rgba(255, 165, 0, 0.1);
     border-color: #ffa500;
     color: #ffa500;
+  }
+  
+  .roadmap-status.planned {
+    background-color: rgba(19, 145, 255, 0.2);
+    color: var(--secondary-color);
   }
   
   /* Улучшенная подписка */
@@ -606,7 +660,7 @@ html, body {
   
   /* Более компактный герой раздел */
   .hero-content {
-    padding: 80px 15px 60px;
+    padding: 40px 15px 100px;
   }
   
   /* Более плотное меню фильтров коллекции */
@@ -650,12 +704,12 @@ html, body {
   
   /* Еще более компактная дорожная карта */
   .roadmap-item {
-    padding-left: 35px;
+    padding-left: 0;
   }
   
   .roadmap-icon {
-    width: 25px;
-    height: 25px;
+    width: 40px;
+    height: 40px;
   }
   
   /* Корректировки для NFT карточек */
@@ -712,14 +766,10 @@ html, body {
   }
 
   /* Специальные настройки для дорожной карты на сверхмалых экранах */
-  .roadmap-item {
-    padding-left: 28px;
-  }
-  
   .roadmap-icon {
-    width: 22px;
-    height: 22px;
-    font-size: 11px;
+    width: 35px;
+    height: 35px;
+    font-size: 15px;
   }
   
   .roadmap-content {
@@ -744,7 +794,7 @@ html, body {
   }
   
   .hero-content {
-    padding: 80px 20px 60px;
+    padding: 40px 20px 60px;
   }
   
   .hero-title {
@@ -789,7 +839,6 @@ html, body {
   .roadmap-item {
     width: 48%;
     margin-bottom: 20px;
-    padding-left: 30px;
   }
   
   .roadmap-timeline {
@@ -804,7 +853,20 @@ html, body {
   
   /* Размещение скролл-индикатора */
   .scroll-indicator {
-    bottom: 10px;
+    bottom: 15px;
+  }
+  
+  /* Кнопки фильтров в один ряд */
+  .collection-filters {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .filter-btn[data-filter="all"] {
+    width: auto;
+    max-width: none;
+    margin: 5px;
   }
 }
 
@@ -969,12 +1031,12 @@ html.slow-connection img {
 /* Подъем MEGA BUDDIES выше для экономии места */
 @media (max-width: 768px) {
   .hero-content {
-    padding-top: 80px;
-    padding-bottom: 60px;
+    padding-top: 40px;
+    padding-bottom: 120px;
   }
 
   .hero-title-container {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
 
   .hero-title {
@@ -989,8 +1051,8 @@ html.slow-connection img {
   }
 
   .hero-description {
-    margin-top: 15px;
-    margin-bottom: 25px;
+    margin-top: 10px;
+    margin-bottom: 15px;
     font-size: 15px;
     max-width: 90%;
     margin-left: auto;
