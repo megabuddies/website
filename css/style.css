@@ -774,7 +774,7 @@ body {
 }
 
 .hero-subtitle-container {
-  margin-top: 3rem;
+  margin-top: 4.5rem;
   margin-bottom: 0.5rem;
 }
 
@@ -807,7 +807,7 @@ body {
 
 .hero-buttons {
   margin-top: 1.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .btn-primary {
@@ -869,7 +869,7 @@ body {
 
 .scroll-indicator {
   position: absolute;
-  bottom: 5rem;
+  bottom: 7rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
