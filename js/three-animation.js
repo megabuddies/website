@@ -10,6 +10,31 @@ let animationPaused = false;
 let lastFrameTime = 0;
 const frameInterval = 1000 / 60; // Assuming a default frameInterval
 
+// Определяем мобильное устройство
+const isMobile = window.innerWidth <= 768;
+const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+// Настройки производительности для различных устройств
+const performanceSettings = {
+    desktop: {
+        starCount: 300,
+        starSize: { min: 0.2, max: 1.5 },
+        starOpacity: 0.8,
+        starSpeed: 0.02,
+        backgroundOpacity: 0.5
+    },
+    mobile: {
+        starCount: 150,
+        starSize: { min: 0.1, max: 1.0 },
+        starOpacity: 0.7,
+        starSpeed: 0.015,
+        backgroundOpacity: 0.4
+    }
+};
+
+// Выбираем настройки в зависимости от устройства
+const settings = isMobile ? performanceSettings.mobile : performanceSettings.desktop;
+
 function initThree() {
     // Сразу инициализируем фон для быстрого отображения
     try {

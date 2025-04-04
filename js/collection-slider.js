@@ -3,8 +3,9 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentCategory = 'all';
     const initializedCategories = new Set(); // Отслеживаем, какие категории уже инициализированы
     
-    // Проверка мобильного устройства
+    // Определение типа устройства
     const isMobile = window.innerWidth <= 768;
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     
     // Показываем или скрываем индикатор свайпа на мобильных устройствах
     const swipeIndicator = document.querySelector('.swipe-indicator');

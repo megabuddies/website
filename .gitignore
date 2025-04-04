@@ -1,34 +1,41 @@
-# Dependencies
-node_modules/
-package-lock.json
-
-# IDE files
-.vscode/
-.idea/
-*.sublime-project
-*.sublime-workspace
-
 # OS files
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# Logs
-*.log
+# Editor directories and files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Dependency directories
+node_modules/
+jspm_packages/
+bower_components/
+
+# Build outputs
+dist/
+build/
+tmp/
+out/
+.next/
+
+# Debug logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+logs
+*.log
 
-# Environment variables
+# Local env files
 .env
 .env.local
-.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# Build output
-dist/
-build/
-out/
-
-# Temporary files
-*.tmp
-*.temp
-.cache/ 
+# Cache
+.cache/
+.npm/
+.eslintcache 
