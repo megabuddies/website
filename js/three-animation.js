@@ -9,44 +9,7 @@ let resourcesLoaded = false;
 let animationPaused = false;
 
 // Проверка на мобильное устройство
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-                  window.innerWidth < 768;
-
-// Настройки качества рендеринга
-const QUALITY_SETTINGS = {
-    high: {
-        particleCount: 1000,
-        particleSize: 0.05,
-        animationSpeed: 1.0,
-        bloomStrength: 1.5,
-        bloomRadius: 0.75,
-        bloomThreshold: 0.2
-    },
-    medium: {
-        particleCount: 500,
-        particleSize: 0.08,
-        animationSpeed: 0.8,
-        bloomStrength: 1.2,
-        bloomRadius: 0.6,
-        bloomThreshold: 0.3
-    },
-    low: {
-        particleCount: 200,
-        particleSize: 0.1,
-        animationSpeed: 0.5,
-        bloomStrength: 0.8,
-        bloomRadius: 0.5,
-        bloomThreshold: 0.4
-    }
-};
-
-// Выбираем качество на основе устройства
-const renderQuality = (isMobile) 
-    ? (window.MOBILE_RENDER_QUALITY || 'low') 
-    : 'high';
-
-// Получаем настройки в соответствии с выбранным качеством
-const qualitySettings = QUALITY_SETTINGS[renderQuality];
+const isMobile = window.innerWidth <= 768;
 
 function initThree() {
     // Сразу инициализируем фон для быстрого отображения
@@ -322,7 +285,7 @@ function createPixelRabbit() {
 }
 
 function createParticleSystem() {
-    const particleCount = qualitySettings.particleCount;
+    const particleCount = 1500; // Увеличиваем количество частиц для фона
     const particles = new THREE.BufferGeometry();
     
     const positions = new Float32Array(particleCount * 3);
@@ -353,7 +316,7 @@ function createParticleSystem() {
         colors[i * 3 + 1] = color.g;
         colors[i * 3 + 2] = color.b;
         
-        sizes[i] = Math.random() * qualitySettings.particleSize + 0.05;
+        sizes[i] = Math.random() * 0.15 + 0.05;
     }
     
     particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
@@ -453,45 +416,24 @@ function onWindowResize() {
 }
 
 function animate() {
-    // Если анимация на паузе, просто запрашиваем следующий кадр
-    if (animationPaused) {
-        requestAnimationFrame(animate);
-        return;
-    }
+    requestAnimationFrame(animate);
     
-    // Получаем время
-    const time = Date.now() * 0.001;
+    // Если анимация приостановлена, пропускаем отрисовку для экономии ресурсов
+    if (animationPaused) return;
     
-    // Скорость анимации зависит от качества рендеринга
-    const speed = qualitySettings.animationSpeed;
+    const elapsedTime = clock.getElapsedTime();
     
-    // Вращаем частицы
+    // Анимация фона - увеличиваем скорость вращения
     if (particleSystem) {
-        particleSystem.rotation.y = time * speed * 0.05;
-        particleSystem.rotation.z = time * speed * 0.03;
+        particleSystem.rotation.x += 0.0008;
+        particleSystem.rotation.y += 0.001;
+        
+        // Добавляем реакцию на движение мыши для фона
+        particleSystem.rotation.x += (mouseY * 0.0001);
+        particleSystem.rotation.y += (mouseX * 0.0001);
     }
     
-    // Другие анимации для частиц
-    if (particleSystem && particleSystem.geometry && particleSystem.geometry.attributes.position) {
-        const positions = particleSystem.geometry.attributes.position.array;
-        const sizes = particleSystem.geometry.attributes.size.array;
-        
-        for (let i = 0; i < positions.length / 3; i++) {
-            // Ограничиваем количество обрабатываемых частиц на мобильных
-            if (isMobile && i > positions.length / 6) break;
-            
-            // Добавляем синусоидальное движение для частиц
-            positions[i * 3 + 1] += Math.sin(time * speed + i) * 0.01;
-            
-            // Меняем размер частиц
-            sizes[i] = (Math.sin(time * speed + i) * 0.5 + 1.5) * qualitySettings.particleSize;
-        }
-        
-        particleSystem.geometry.attributes.position.needsUpdate = true;
-        particleSystem.geometry.attributes.size.needsUpdate = true;
-    }
-    
-    // Анимация фона
+    // Рендеринг фона (всегда отображаем фон, даже если модель не загружена)
     if (backgroundRenderer && backgroundScene && backgroundCamera) {
         backgroundRenderer.render(backgroundScene, backgroundCamera);
     }
@@ -504,14 +446,14 @@ function animate() {
         pixelRabbit.rotation.y += (mouseX - pixelRabbit.rotation.y * 0.1) * 0.02;
         
         // Пульсация с учетом уменьшенного размера модели
-        const pulseFactor = Math.sin(time * 2) * 0.05 + 1;
+        const pulseFactor = Math.sin(elapsedTime * 2) * 0.05 + 1;
         pixelRabbit.scale.set(pulseFactor * 1.2, pulseFactor * 1.2, pulseFactor * 1.2);
         
         // Анимируем уши через контейнеры
         if (leftEarPivot && rightEarPivot) {
             // Используем разную частоту и фазовый сдвиг для каждого уха
-            leftEarPivot.rotation.z = Math.PI / 12 + Math.sin(time * 1.3) * 0.12;
-            rightEarPivot.rotation.z = -Math.PI / 12 + Math.sin(time * 1.7 + Math.PI/3) * 0.09;
+            leftEarPivot.rotation.z = Math.PI / 12 + Math.sin(elapsedTime * 1.3) * 0.12;
+            rightEarPivot.rotation.z = -Math.PI / 12 + Math.sin(elapsedTime * 1.7 + Math.PI/3) * 0.09;
         }
 
         if (pixelRabbit.children[3] && pixelRabbit.children[4]) {
@@ -558,43 +500,6 @@ function animate() {
     }
 }
 
-// Обработчики событий для мобильной оптимизации
-function initMobileOptimizations() {
-    if (isMobile) {
-        // Пауза при прокрутке на мобильных для повышения производительности
-        let scrollTimeout;
-        window.addEventListener('scroll', function() {
-            animationPaused = true;
-            
-            clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(function() {
-                animationPaused = false;
-            }, 200);
-        }, { passive: true });
-        
-        // Пауза при невидимости вкладки
-        document.addEventListener('visibilitychange', function() {
-            animationPaused = document.hidden;
-        });
-        
-        // Оптимизация разрешения на мобильных
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-        
-        // Уменьшаем интенсивность блюма на мобильных
-        if (bloomPass) {
-            bloomPass.strength = qualitySettings.bloomStrength;
-            bloomPass.radius = qualitySettings.bloomRadius;
-            bloomPass.threshold = qualitySettings.bloomThreshold;
-        }
-    }
-}
-
-// Инициализируем Three.js анимацию
-initThree();
-
-// Добавляем оптимизации для мобильных устройств
-initMobileOptimizations();
-
 // Инициализация Three.js при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
     try {
@@ -604,3 +509,84 @@ document.addEventListener('DOMContentLoaded', function() {
         createFallbackAnimation();
     }
 });
+
+// Регулировка настроек для производительности
+if (isMobile) {
+    // Уменьшаем качество рендеринга для мобильных устройств
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    
+    // Уменьшаем количество частиц
+    let particleReductionFactor = window.innerWidth <= 576 ? 0.3 : 0.5;
+    
+    // Применяем к существующим системам частиц
+    if (typeof particlesCount !== 'undefined') {
+        particlesCount = Math.floor(particlesCount * particleReductionFactor);
+    }
+    
+    // Уменьшаем кол-во треугольников в геометриях
+    if (typeof backgroundParticles !== 'undefined' && backgroundParticles.geometry) {
+        const geometryVertexCount = backgroundParticles.geometry.attributes.position.count;
+        const reducedCount = Math.floor(geometryVertexCount * particleReductionFactor);
+        
+        if (reducedCount < geometryVertexCount) {
+            const tempPositions = new Float32Array(reducedCount * 3);
+            const tempColors = new Float32Array(reducedCount * 3);
+            const tempSizes = new Float32Array(reducedCount);
+            
+            // Копируем только часть данных
+            for (let i = 0; i < reducedCount; i++) {
+                tempPositions[i * 3] = backgroundParticles.geometry.attributes.position.array[i * 3];
+                tempPositions[i * 3 + 1] = backgroundParticles.geometry.attributes.position.array[i * 3 + 1];
+                tempPositions[i * 3 + 2] = backgroundParticles.geometry.attributes.position.array[i * 3 + 2];
+                
+                if (backgroundParticles.geometry.attributes.color) {
+                    tempColors[i * 3] = backgroundParticles.geometry.attributes.color.array[i * 3];
+                    tempColors[i * 3 + 1] = backgroundParticles.geometry.attributes.color.array[i * 3 + 1];
+                    tempColors[i * 3 + 2] = backgroundParticles.geometry.attributes.color.array[i * 3 + 2];
+                }
+                
+                if (backgroundParticles.geometry.attributes.size) {
+                    tempSizes[i] = backgroundParticles.geometry.attributes.size.array[i];
+                }
+            }
+            
+            backgroundParticles.geometry.setAttribute('position', new THREE.BufferAttribute(tempPositions, 3));
+            if (backgroundParticles.geometry.attributes.color) {
+                backgroundParticles.geometry.setAttribute('color', new THREE.BufferAttribute(tempColors, 3));
+            }
+            if (backgroundParticles.geometry.attributes.size) {
+                backgroundParticles.geometry.setAttribute('size', new THREE.BufferAttribute(tempSizes, 1));
+            }
+        }
+    }
+}
+
+// Обработка изменения размера окна
+window.addEventListener('resize', () => {
+    // Обновляем размеры камеры и рендерера
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    
+    // Проверяем, изменился ли тип устройства
+    const newIsMobile = window.innerWidth <= 768;
+    if (newIsMobile !== isMobile && typeof resizeRendererToDisplaySize === 'function') {
+        // Вызываем функцию ресайза, если она существует
+        resizeRendererToDisplaySize(renderer);
+    }
+});
+
+// Функция для оптимизации размера рендерера
+function resizeRendererToDisplaySize(renderer) {
+    const canvas = renderer.domElement;
+    const pixelRatio = window.devicePixelRatio;
+    const width = canvas.clientWidth * pixelRatio | 0;
+    const height = canvas.clientHeight * pixelRatio | 0;
+    const needResize = canvas.width !== width || canvas.height !== height;
+    
+    if (needResize) {
+        renderer.setSize(width, height, false);
+    }
+    
+    return needResize;
+}

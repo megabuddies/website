@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentCategory = 'all';
     let globalAnimationId = null;
     const initializedCategories = new Set(); // Отслеживаем, какие категории уже инициализированы
+    const isMobile = window.innerWidth <= 768;
     
     // Отложенная инициализация контейнеров
     function deferredInitialization() {
@@ -17,8 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Инициализация контейнеров при загрузке страницы
     function initializeContainers() {
-        // Устанавливаем фиксированную высоту для всех контейнеров
-        const fixedHeight = 450;
+        // Устанавливаем фиксированную высоту в зависимости от размера экрана
+        const fixedHeight = isMobile ? 400 : 450;
         
         // Применяем стили ко всем контейнерам
         document.querySelectorAll('.nft-grid').forEach(grid => {
@@ -110,8 +111,70 @@ document.addEventListener('DOMContentLoaded', function() {
         container.setAttribute('data-initialized', 'true');
         initializedCategories.add(category);
         
-        // Запускаем анимацию для этого контейнера
-        setupSliderAnimation(sliderTrack);
+        // Запускаем анимацию только если не мобильное устройство
+        if (!isMobile) {
+            setupSliderAnimation(sliderTrack);
+        } else {
+            // На мобильных устройствах добавляем поддержку свайпа
+            setupMobileSwipe(sliderTrack);
+        }
+    }
+    
+    // Функция для поддержки свайпа на мобильных устройствах
+    function setupMobileSwipe(sliderTrack) {
+        let startX, startScrollLeft;
+        let isDown = false;
+        
+        // Обработчики для десктопа (мышь)
+        sliderTrack.addEventListener('mousedown', (e) => {
+            isDown = true;
+            sliderTrack.classList.add('active');
+            startX = e.pageX - sliderTrack.offsetLeft;
+            startScrollLeft = sliderTrack.scrollLeft;
+        });
+        
+        sliderTrack.addEventListener('mouseleave', () => {
+            isDown = false;
+            sliderTrack.classList.remove('active');
+        });
+        
+        sliderTrack.addEventListener('mouseup', () => {
+            isDown = false;
+            sliderTrack.classList.remove('active');
+        });
+        
+        sliderTrack.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - sliderTrack.offsetLeft;
+            const walk = (x - startX) * 2; // Скорость скролла
+            sliderTrack.scrollLeft = startScrollLeft - walk;
+        });
+        
+        // Обработчики для мобильных (тач)
+        sliderTrack.addEventListener('touchstart', (e) => {
+            isDown = true;
+            sliderTrack.classList.add('active');
+            startX = e.touches[0].pageX - sliderTrack.offsetLeft;
+            startScrollLeft = sliderTrack.scrollLeft;
+        }, { passive: true });
+        
+        sliderTrack.addEventListener('touchend', () => {
+            isDown = false;
+            sliderTrack.classList.remove('active');
+        }, { passive: true });
+        
+        sliderTrack.addEventListener('touchcancel', () => {
+            isDown = false;
+            sliderTrack.classList.remove('active');
+        }, { passive: true });
+        
+        sliderTrack.addEventListener('touchmove', (e) => {
+            if (!isDown) return;
+            const x = e.touches[0].pageX - sliderTrack.offsetLeft;
+            const walk = (x - startX) * 2;
+            sliderTrack.scrollLeft = startScrollLeft - walk;
+        }, { passive: true });
     }
     
     // Функция для загрузки изображений для каждой категории
@@ -268,5 +331,16 @@ document.addEventListener('DOMContentLoaded', function() {
             // Загружаем изображения для выбранной категории
             loadImagesForCategory(newCategory);
         });
+    });
+    
+    // Обновляем слушатель рейзайза окна
+    window.addEventListener('resize', function() {
+        const newIsMobile = window.innerWidth <= 768;
+        
+        // Если изменился режим отображения (с мобильного на десктоп или наоборот)
+        if (newIsMobile !== isMobile) {
+            // Перезагружаем текущую категорию
+            loadImagesForCategory(currentCategory, true);
+        }
     });
 });
