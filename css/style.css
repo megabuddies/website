@@ -125,21 +125,7 @@
 
 /* Сканирующая линия для прелоадера */
 .scan-line-preloader {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
-    animation: preloaderScanline 3s linear infinite;
-    z-index: 4;
-}
-
-@keyframes preloaderScanline {
-    0% { top: 0; opacity: 0.5; }
-    50% { opacity: 1; }
-    100% { top: 100%; opacity: 0.5; }
+    display: none;
 }
 
 .preloader-content .logo {
@@ -307,7 +293,19 @@
     display: inline-block;
     width: 24px;
     text-align: left;
-    animation: neonFlicker 2s infinite;
+}
+
+@keyframes dotAnimation {
+    0% { content: ''; }
+    25% { content: '.'; }
+    50% { content: '..'; }
+    75% { content: '...'; }
+    100% { content: '...'; }
+}
+
+.loading-text .dots::after {
+    content: '';
+    animation: dotAnimation 1.5s infinite;
 }
 
 /* Пиксельный текст терминала */
