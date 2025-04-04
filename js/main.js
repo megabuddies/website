@@ -1,6 +1,137 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Удаляем создание статического звездного фона
-    // createStarfieldBackground();
+    // Получаем элемент прелоадера
+    const preloader = document.getElementById('preloader');
+    const progressBar = document.querySelector('#preloader .progress');
+    const terminalText = document.querySelector('#preloader .terminal-text');
+    const pixelOverlay = document.querySelector('#preloader .pixel-overlay');
+    let loadingProgress = 0;
+    
+    // Создаем пиксельный эффект для оверлея
+    function createPixelOverlay() {
+        if (!pixelOverlay) return;
+        
+        const gridSize = 4;
+        for (let i = 0; i < 32; i++) {
+            for (let j = 0; j < 6; j++) {
+                const pixel = document.createElement('div');
+                pixel.style.position = 'absolute';
+                pixel.style.width = gridSize + 'px';
+                pixel.style.height = gridSize + 'px';
+                pixel.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                pixel.style.left = (i * gridSize) + 'px';
+                pixel.style.top = (j * gridSize) + 'px';
+                pixel.style.opacity = Math.random() > 0.7 ? '0.5' : '0';
+                
+                // Случайная анимация мерцания
+                if (Math.random() > 0.5) {
+                    pixel.style.animation = `pixelFlicker ${(Math.random() * 3 + 1)}s infinite`;
+                }
+                
+                pixelOverlay.appendChild(pixel);
+            }
+        }
+    }
+    
+    // Вызываем создание пиксельного оверлея
+    createPixelOverlay();
+    
+    // Массив сообщений загрузки для имитации реального процесса
+    const loadingMessages = [
+        'Загрузка 3D модели...',
+        'Инициализация окружения...',
+        'Подготовка визуальных эффектов...',
+        'Загрузка NFT коллекции...',
+        'Синхронизация с блокчейном...',
+        'Проверка безопасности соединения...',
+        'Запуск дополнительных ресурсов...',
+        'Почти готово...'
+    ];
+    
+    // Функция для обновления прогресса загрузки
+    function updateProgress(progress) {
+        loadingProgress = progress;
+        // Используем steps для пиксельной анимации прогресса
+        progressBar.style.width = `${Math.floor(Math.min(loadingProgress, 95) / 5) * 5}%`;
+        
+        // Обновляем текст терминала в зависимости от прогресса
+        const messageIndex = Math.floor((loadingProgress / 100) * loadingMessages.length);
+        if (messageIndex < loadingMessages.length) {
+            terminalText.innerHTML = `<span class="terminal-prompt">&gt;</span> ${loadingMessages[messageIndex]}`;
+        }
+    }
+    
+    // Начальное значение прогресса
+    updateProgress(5);
+    
+    // Отслеживаем прогресс загрузки ресурсов
+    const resourcesTotal = document.images.length + document.scripts.length + document.styleSheets.length;
+    let resourcesLoaded = 0;
+    
+    // Функция для увеличения счетчика загруженных ресурсов
+    function incrementResourcesLoaded() {
+        resourcesLoaded++;
+        const percentLoaded = Math.min(75, Math.floor((resourcesLoaded / resourcesTotal) * 75));
+        updateProgress(percentLoaded);
+    }
+    
+    // Обработчики загрузки изображений
+    Array.from(document.images).forEach(img => {
+        if (img.complete) {
+            incrementResourcesLoaded();
+        } else {
+            img.addEventListener('load', incrementResourcesLoaded);
+            img.addEventListener('error', incrementResourcesLoaded);
+        }
+    });
+    
+    // Для скриптов и стилей используем интервал, симулирующий загрузку
+    const progressInterval = setInterval(() => {
+        if (loadingProgress < 75) {
+            // Увеличиваем прогресс шагами по 5% для пиксельного эффекта
+            updateProgress(Math.ceil(loadingProgress / 5) * 5 + 5);
+        } else {
+            clearInterval(progressInterval);
+        }
+    }, 250);
+    
+    // Добавляем CSS для анимации пикселей
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes pixelFlicker {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 0.5; }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Скрываем прелоадер после начальной загрузки и показываем контент
+    window.addEventListener('load', function() {
+        // Добавляем задержку перед скрытием прелоадера для завершения загрузки модели (увеличена на 5 секунд)
+        setTimeout(() => {
+            // Плавно завершаем загрузку от текущего значения до 100% шагами по 5%
+            const completeInterval = setInterval(() => {
+                if (loadingProgress < 100) {
+                    updateProgress(Math.ceil(loadingProgress / 5) * 5 + 5);
+                } else {
+                    clearInterval(completeInterval);
+                    
+                    // Отображаем финальное сообщение
+                    terminalText.innerHTML = '<span class="terminal-prompt" style="color: #5f5;">&gt;</span> <span style="color: #5f5;">Загрузка завершена. Запуск системы...</span>';
+                    
+                    setTimeout(() => {
+                        preloader.classList.remove('active');
+                        preloader.classList.add('hidden');
+                        
+                        // Разрешаем скролл после скрытия прелоадера
+                        document.body.style.overflow = 'auto';
+                    }, 800);
+                }
+            }, 150);
+        }, 6000);
+    });
+    
+    // Запрещаем скролл пока прелоадер активен
+    document.body.style.overflow = 'hidden';
     
     // Добавляем сканирующую линию для эффекта старого монитора
     const scanLine = document.createElement('div');

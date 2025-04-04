@@ -1,3 +1,347 @@
+/* Стили для прелоадера */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-color);
+    background-image: 
+      linear-gradient(0deg, rgba(146, 147, 151, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(146, 147, 151, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: center;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+    visibility: visible;
+}
+
+#preloader::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(20, 20, 30, 0.7) 0%, rgba(10, 10, 15, 0.9) 70%);
+    z-index: -1;
+}
+
+/* Добавляем пиксельный эффект на фон прелоадера */
+#preloader::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%237087e3' fill-opacity='0.05' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 5v1H0V0h5z'/%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.3;
+    mix-blend-mode: overlay;
+    z-index: -1;
+}
+
+#preloader.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+#preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Добавляем контейнер для прелоадера и заголовка */
+.preloader-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Обновляем стили для заголовка прелоадера */
+.preloader-title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    color: var(--accent-color);
+    letter-spacing: 2px;
+    text-align: center;
+    margin: 0;
+}
+
+/* Основной контейнер прелоадера с CRT эффектом */
+.preloader-content {
+    text-align: center;
+    width: 320px;
+    border: 2px solid var(--accent-color);
+    border-radius: 5px;
+    padding: 30px;
+    background-color: rgba(18, 18, 24, 0.8);
+    box-shadow: 0 0 20px var(--accent-glow-color),
+                0 0 40px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.3));
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Добавляем рамку с градиентом */
+.preloader-content::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border: 2px solid transparent;
+    border-image: linear-gradient(to right, var(--accent-color), var(--secondary-color)) 1;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Добавляем эффект мониторной сетки */
+.preloader-content::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(transparent 50%, rgba(0, 0, 0, 0.05) 50%),
+        linear-gradient(90deg, transparent 50%, rgba(0, 0, 0, 0.05) 50%);
+    background-size: 2px 2px;
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0.3;
+}
+
+/* Сканирующая линия для прелоадера */
+.scan-line-preloader {
+    display: none;
+}
+
+.preloader-content .logo {
+    margin-bottom: 30px;
+    font-size: 36px;
+    font-family: var(--font-display);
+    color: var(--text-color);
+    text-shadow: 0 0 10px var(--secondary-glow-color),
+                 0 0 20px rgba(85, 85, 255, calc(var(--glow-intensity) * 0.5)),
+                 0 0 30px rgba(85, 85, 255, calc(var(--glow-intensity) * 0.3));
+    animation: titlePulse 2s infinite alternate;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.preloader-content .logo img {
+    max-width: 120px;
+    margin-bottom: 15px;
+    animation: logoPulse 2.5s infinite alternate;
+    filter: drop-shadow(0 0 10px var(--accent-glow-color));
+    image-rendering: pixelated; /* Добавляем пиксельный рендеринг логотипа */
+}
+
+@keyframes logoPulse {
+    0% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 10px var(--accent-glow-color));
+    }
+    100% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 15px var(--secondary-glow-color))
+                drop-shadow(0 0 25px rgba(85, 85, 255, calc(var(--glow-intensity) * 0.5)));
+    }
+}
+
+/* Пиксельный оверлей для дополнительных эффектов */
+.pixel-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 6;
+    opacity: 0.6;
+}
+
+/* Обновленный пиксельный прогресс-бар */
+.loading-bar {
+    width: 100%;
+    height: 24px;
+    background-color: rgba(10, 10, 15, 0.6);
+    border-radius: 0;
+    margin: 15px 0;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid var(--accent-color);
+    image-rendering: pixelated;
+    box-shadow: 0 0 10px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.5));
+}
+
+.loading-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1) 20%, transparent 40%, transparent 60%, rgba(255, 255, 255, 0.1) 80%, transparent);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+    z-index: 1;
+}
+
+.loading-bar::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    background-image: 
+        repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(255, 255, 255, 0.03) 8px, rgba(255, 255, 255, 0.03) 16px);
+    pointer-events: none;
+    z-index: 2;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.loading-bar .progress {
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+    transition: width 0.3s steps(20);
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-shadow: 0 0 15px var(--secondary-glow-color);
+    z-index: 3;
+}
+
+/* Создаем пиксельный эффект для прогресс-бара */
+.loading-bar .progress::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(90deg, 
+            rgba(255, 255, 255, 0.15), 
+            rgba(255, 255, 255, 0.15) 3px, 
+            transparent 3px, 
+            transparent 6px),
+        linear-gradient(0deg, 
+            rgba(0, 0, 0, 0.1), 
+            rgba(0, 0, 0, 0.1) 3px, 
+            transparent 3px, 
+            transparent 6px);
+    background-size: 6px 6px, 6px 6px;
+    pointer-events: none;
+    z-index: 4;
+}
+
+.loading-bar .progress::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 4px;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 8px var(--secondary-color), 0 0 16px var(--secondary-color);
+    z-index: 5;
+}
+
+.loading-text {
+    font-family: var(--font-mono);
+    color: var(--text-color);
+    font-size: 24px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    position: relative;
+    display: inline-block;
+}
+
+.loading-text::after {
+    content: '';
+    position: absolute;
+    right: -10px;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background-color: var(--accent-color);
+    animation: cursorBlink 1s step-end infinite;
+}
+
+.loading-text .dots {
+    display: inline-block;
+    width: 24px;
+    text-align: left;
+}
+
+@keyframes dotAnimation {
+    0% { content: ''; }
+    25% { content: '.'; }
+    50% { content: '..'; }
+    75% { content: '...'; }
+    100% { content: '...'; }
+}
+
+.loading-text .dots::after {
+    content: '';
+    animation: dotAnimation 1.5s infinite;
+}
+
+/* Пиксельный текст терминала */
+#preloader .terminal-text {
+    margin-top: 15px;
+    font-size: 14px;
+    opacity: 0.8;
+    text-align: left;
+    font-family: var(--font-mono);
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-left: 2px solid var(--accent-color);
+    width: 100%;
+}
+
+#preloader .terminal-prompt {
+    color: var(--accent-color);
+    margin-right: 6px;
+}
+
+@keyframes titlePulse {
+    0% {
+        opacity: 0.8;
+        text-shadow: 0 0 10px var(--secondary-glow-color),
+                    0 0 20px rgba(85, 85, 255, calc(var(--glow-intensity) * 0.5)),
+                    0 0 30px rgba(85, 85, 255, calc(var(--glow-intensity) * 0.3));
+    }
+    100% {
+        opacity: 1;
+        text-shadow: 0 0 15px var(--secondary-glow-color),
+                    0 0 30px rgba(85, 85, 255, calc(var(--glow-intensity) * 0.7)),
+                    0 0 45px rgba(85, 85, 255, calc(var(--glow-intensity) * 0.5)),
+                    0 0 60px rgba(85, 85, 255, calc(var(--glow-intensity) * 0.3));
+    }
+}
+
 :root {
   --background-color: #121218;
   --text-color: #dfd9d9;
