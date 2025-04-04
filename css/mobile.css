@@ -85,25 +85,123 @@ body, html {
 
 /* Специфичные настройки для телефонов (768px и меньше) */
 @media (max-width: 768px) {
-  /* Улучшенное мобильное меню */
+  /* Настройки мобильного меню и навигации */
   .mobile-menu-toggle {
+    margin-left: auto;
+    z-index: 1001;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     transition: all 0.3s ease;
+  }
+  
+  .mobile-menu-toggle span {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background-color: var(--accent-color);
+    margin: 3px 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 5px var(--accent-glow-color);
   }
   
   .mobile-menu-toggle.active {
     transform: rotate(180deg);
   }
   
-  /* Улучшенная анимация гамбургер-иконки */
-  .mobile-menu-toggle span {
-    transition: all 0.3s ease;
+  .mobile-menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  
+  .mobile-menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .mobile-menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+  }
+  
+  .main-header .container {
+    position: relative;
+  }
+  
+  .nav-list {
+    top: 0;
+    right: -100%;
+    width: 80%;
+    height: 100vh;
+    padding-top: var(--mobile-header-height);
+    position: fixed;
+    background-color: var(--background-color);
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 80px 20px;
+    z-index: 1000;
+    transition: right 0.3s ease;
+    background-image: 
+      linear-gradient(0deg, rgba(146, 147, 151, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(146, 147, 151, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    border-left: 2px solid var(--accent-color);
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+  }
+  
+  .nav-list::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(20, 20, 30, 0.7) 0%, rgba(10, 10, 15, 0.95) 70%);
+    z-index: -1;
+  }
+  
+  .nav-list.active {
+    right: 0;
+  }
+  
+  .nav-item {
+    margin: 15px 0;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .nav-link {
+    font-size: 18px;
+    padding: 12px;
+    display: block;
   }
   
   /* Улучшенный герой раздел */
   .hero {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
     padding-top: var(--mobile-header-height);
     min-height: calc(100vh - var(--mobile-header-height));
-    height: auto;
+  }
+  
+  .hero-content {
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
   #hero-animation {
@@ -127,6 +225,12 @@ body, html {
     height: 2px;
     background-color: var(--accent-color);
     box-shadow: 0 0 10px var(--accent-glow-color);
+  }
+  
+  /* Фикс для контейнеров section */
+  .section .container {
+    width: 100%;
+    box-sizing: border-box;
   }
   
   /* Улучшения для коллекции */
@@ -209,6 +313,75 @@ body, html {
     font-size: 10px;
   }
   
+  /* Оптимизация дорожной карты для мобильных устройств */
+  .roadmap-container {
+    padding: 0;
+    margin: 0;
+  }
+  
+  .roadmap-timeline {
+    width: 2px;
+    left: 15px;
+  }
+  
+  .roadmap-item {
+    display: flex;
+    flex-direction: column;
+    padding-left: 35px;
+    position: relative;
+    margin-bottom: 30px;
+  }
+  
+  .roadmap-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+    border-width: 2px;
+  }
+  
+  .roadmap-content {
+    width: 100%;
+    padding: 15px;
+  }
+  
+  .roadmap-date {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  
+  .roadmap-content h4 {
+    font-size: 16px;
+    margin-top: 5px;
+    margin-bottom: 8px;
+  }
+  
+  .roadmap-content p {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  /* Исправление проблемы с растягиванием картинок в коллекции */
+  .nft-image-container {
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%; /* Создает квадратное соотношение сторон */
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .nft-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Предотвращает растягивание */
+    object-position: center;
+  }
+  
   /* Улучшенная подписка */
   .newsletter-content {
     margin: 0 auto;
@@ -222,6 +395,9 @@ body, html {
   
   /* Улучшенная анимация скролла */
   .scroll-indicator {
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
     bottom: 30px;
   }
   
@@ -442,6 +618,29 @@ body, html {
     padding: 10px;
     font-size: 12px;
   }
+
+  /* Специальные настройки для дорожной карты на сверхмалых экранах */
+  .roadmap-item {
+    padding-left: 30px;
+  }
+  
+  .roadmap-icon {
+    width: 25px;
+    height: 25px;
+    font-size: 12px;
+  }
+  
+  .roadmap-content {
+    padding: 12px;
+  }
+  
+  .roadmap-date {
+    font-size: 14px;
+  }
+  
+  .roadmap-content h4 {
+    font-size: 15px;
+  }
 }
 
 /* Стили для различных ориентаций экрана */
@@ -549,28 +748,6 @@ html.landscape {
   }
 }
 
-/* Анимированная иконка гамбургер-меню */
-@media (max-width: 768px) {
-  .mobile-menu-toggle {
-    width: 44px;
-    height: 44px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .mobile-menu-toggle span {
-    display: block;
-    width: 25px;
-    height: 2px;
-    background-color: var(--accent-color);
-    margin: 3px 0;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 5px var(--accent-glow-color);
-  }
-}
-
 /* Улучшения для пользователей с функциями доступности */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -648,4 +825,36 @@ html.slow-connection #star-field {
 
 html.slow-connection img {
   filter: none !important;
+}
+
+/* Подъем MEGA BUDDIES выше для экономии места */
+@media (max-width: 768px) {
+  .hero-content {
+    padding-top: 80px;
+    padding-bottom: 60px;
+  }
+
+  .hero-title-container {
+    margin-bottom: 10px;
+  }
+
+  .hero-title {
+    font-size: 46px;
+    margin-bottom: 0;
+    line-height: 1.1;
+  }
+
+  .hero-subtitle {
+    margin-top: 5px;
+    font-size: 14px;
+  }
+
+  .hero-description {
+    margin-top: 15px;
+    margin-bottom: 25px;
+    font-size: 15px;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
 } 
