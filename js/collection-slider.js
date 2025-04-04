@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function initializeContainers() {
         // Устанавливаем фиксированную высоту для всех контейнеров
         const fixedHeight = 450;
+        const isMobile = window.innerWidth <= 768;
         
         // Применяем стили ко всем контейнерам
         document.querySelectorAll('.nft-grid').forEach(grid => {
@@ -26,6 +27,12 @@ document.addEventListener('DOMContentLoaded', function() {
             grid.style.height = `${fixedHeight}px`;
             grid.style.display = 'none';
             grid.style.opacity = '0';
+            
+            // Если мобильное устройство, изменяем стили контейнера
+            if (isMobile) {
+                grid.style.overflowX = 'auto';
+                grid.style.webkitOverflowScrolling = 'touch';
+            }
         });
         
         // Загружаем только текущую активную категорию
@@ -220,32 +227,52 @@ document.addEventListener('DOMContentLoaded', function() {
         return prices[rarity] || '0.1 ETH';
     }
     
-    // Оптимизированная функция анимации слайдера
+    // Функция для настройки анимации слайдера
     function setupSliderAnimation(sliderTrack) {
-        // Используем CSS анимацию для более эффективной анимации
-        const cardWidth = 250; // Ширина карточки в px из CSS
-        const gap = 25; // Расстояние между карточками в px из CSS
-        const totalWidth = 10 * (cardWidth + gap); // Ширина всех карточек
+        if (!sliderTrack) return;
         
-        // Устанавливаем стартовую позицию
-        sliderTrack.style.transform = 'translateX(0)';
+        let position = 0;
+        const speed = 0.5; // Уменьшена скорость
+        const cardWidth = 280; // Примерная ширина карточки + отступы
+        const totalCardWidth = sliderTrack.querySelector('.nft-card').offsetWidth;
+        const cardsCount = sliderTrack.querySelectorAll('.nft-card').length / 2; // Делим на 2, т.к. у нас один набор дубликатов
         
-        // Устанавливаем CSS-анимацию
-        sliderTrack.style.animation = 'none'; // Сначала сбрасываем любую предыдущую анимацию
+        // Проверяем, на мобильном ли устройстве
+        const isMobile = window.innerWidth <= 768;
         
-        // Добавляем новую анимацию с небольшой задержкой, чтобы сброс успел применится
-        setTimeout(() => {
-            sliderTrack.style.animation = `slideAnimation ${totalWidth/50}s linear infinite`;
-        }, 10);
-        
-        // Остановка анимации при выходе со страницы для экономии ресурсов
-        document.addEventListener('visibilitychange', function() {
-            if (document.hidden) {
-                sliderTrack.style.animationPlayState = 'paused';
-            } else {
-                sliderTrack.style.animationPlayState = 'running';
+        // Если мобильное устройство, добавляем ручное перетаскивание
+        if (isMobile) {
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+            const container = sliderTrack.parentElement;
+            
+            // Делаем контейнер прокручиваемым на мобильных
+            if (container) {
+                container.style.overflowX = 'auto';
+                container.style.overflowY = 'hidden';
+                container.style.webkitOverflowScrolling = 'touch';
+                container.style.scrollBehavior = 'smooth';
+                
+                // Отключаем авто-прокрутку в мобильной версии
+                return;
             }
-        });
+        }
+        
+        // Анимация для десктопной версии
+        function animate() {
+            position -= speed;
+            
+            // Если прокрутили на ширину одной карточки × количество карточек, возвращаемся в начало
+            if (position <= -cardWidth * cardsCount) {
+                position = 0;
+            }
+            
+            sliderTrack.style.transform = `translateX(${position}px)`;
+            globalAnimationId = requestAnimationFrame(animate);
+        }
+        
+        globalAnimationId = requestAnimationFrame(animate);
     }
     
     // Не инициализируем контейнеры напрямую здесь, так как используем deferredInitialization

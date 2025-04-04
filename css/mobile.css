@@ -5,6 +5,21 @@
   --mobile-header-height: 70px;
 }
 
+/* Фикс для проблемы с шириной сайта */
+body, html {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.container {
+  width: 100%;
+  max-width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+  box-sizing: border-box;
+}
+
 /* Базовые мобильные настройки для всех экранов меньше 992px */
 @media (max-width: 992px) {
   html {
@@ -44,7 +59,7 @@
   /* Манифест */
   .terminal-content {
     max-height: 400px;
-    overflow-y: auto;
+    overflow-y: scroll;
     scrollbar-width: thin;
     scrollbar-color: var(--accent-color) var(--background-color);
     padding-right: 10px;
@@ -52,15 +67,19 @@
   
   .terminal-content::-webkit-scrollbar {
     width: 5px;
+    display: block;
   }
   
   .terminal-content::-webkit-scrollbar-track {
     background: var(--background-color);
+    visibility: visible;
   }
   
   .terminal-content::-webkit-scrollbar-thumb {
     background-color: var(--accent-color);
     border-radius: 5px;
+    visibility: visible;
+    opacity: 0.7;
   }
 }
 
@@ -112,15 +131,76 @@
   
   /* Улучшения для коллекции */
   .nft-grid {
-    gap: 20px;
+    display: block;
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 10px; /* Для полосы прокрутки */
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) var(--background-color);
   }
   
+  /* Показываем полосу прокрутки в коллекции */
+  .nft-grid::-webkit-scrollbar {
+    height: 5px;
+    display: block;
+  }
+  
+  .nft-grid::-webkit-scrollbar-track {
+    background: var(--background-color);
+    visibility: visible;
+  }
+  
+  .nft-grid::-webkit-scrollbar-thumb {
+    background-color: var(--accent-color);
+    border-radius: 5px;
+    visibility: visible;
+    opacity: 0.7;
+  }
+  
+  /* Стили для слайдера */
+  .slider-wrapper {
+    width: 100%;
+    overflow: visible;
+  }
+  
+  .slider-track {
+    display: inline-flex;
+    transition: none;
+    transform: none !important;
+    animation: none !important;
+  }
+  
+  /* Стили для карточек NFT */
   .nft-card {
-    margin: 0 auto;
-    max-width: 320px;
+    display: inline-block;
+    white-space: normal;
+    width: 250px;
+    min-width: 250px;
+    margin-right: 15px;
+    scroll-snap-align: start;
   }
   
-  /* Улучшенная дорожная карта */
+  /* Индикатор прокрутки */
+  .collection-container::after {
+    content: '← прокрутите →';
+    display: block;
+    text-align: center;
+    font-size: 12px;
+    color: var(--accent-color);
+    margin-top: 10px;
+    opacity: 0.7;
+    animation: pulseText 1.5s infinite alternate ease-in-out;
+  }
+  
+  @keyframes pulseText {
+    0% { opacity: 0.3; }
+    100% { opacity: 0.7; }
+  }
+  
+  /* Восстановленные стили для дорожной карты */
   .roadmap-status {
     position: absolute;
     top: 10px;
@@ -224,6 +304,45 @@
                   0 0 30px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.5));
     }
   }
+
+  /* Улучшенная адаптация плиток сообщества для мобильных устройств */
+  .community-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .twitter-feed, 
+  .discord-community {
+    width: 100%;
+    padding: 20px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .community-heading {
+    font-size: 20px;
+    margin-bottom: 15px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .social-icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+  }
+
+  .community-btn {
+    width: 100%;
+    max-width: 250px;
+    padding: 12px 15px;
+    margin-top: 15px;
+    font-size: 14px;
+  }
 }
 
 /* Малые мобильные устройства (576px и меньше) */
@@ -308,6 +427,20 @@
   .nft-card {
     max-width: none;
     width: 100%;
+  }
+
+  .community-heading {
+    font-size: 18px;
+  }
+
+  .social-icon {
+    font-size: 36px;
+  }
+
+  .community-btn {
+    max-width: 220px;
+    padding: 10px;
+    font-size: 12px;
   }
 }
 
