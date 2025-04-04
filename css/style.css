@@ -868,14 +868,12 @@ body {
 }
 
 .scroll-indicator {
-  position: absolute;
-  bottom: 7rem;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
+  margin: 5vh auto 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: clamp(0.5rem, 1vh, 1rem);
   z-index: 3;
   opacity: 0.9;
   transition: all 0.3s ease;
@@ -884,12 +882,12 @@ body {
 
 .scroll-indicator:hover {
   opacity: 1;
-  transform: translateX(-50%) translateY(-5px);
+  transform: translateY(-5px);
 }
 
 .scroll-text {
   font-family: var(--font-mono);
-  font-size: 1rem;
+  font-size: clamp(0.7rem, 1vw, 1rem);
   font-weight: bold;
   color: var(--accent-color);
   letter-spacing: 1px;
@@ -901,13 +899,13 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
+  gap: clamp(0.2rem, 0.5vh, 0.4rem);
 }
 
 .scroll-arrow {
   display: block;
-  width: 18px;
-  height: 18px;
+  width: clamp(12px, 2vw, 18px);
+  height: clamp(12px, 2vw, 18px);
   border-right: 3px solid var(--accent-color);
   border-bottom: 3px solid var(--accent-color);
   transform: rotate(45deg);
