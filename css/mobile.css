@@ -105,7 +105,7 @@ html, body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.3s ease;
   }
   
   .mobile-menu-toggle span {
@@ -114,7 +114,7 @@ html, body {
     height: 2px;
     background-color: var(--accent-color);
     margin: 3px 0;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.3s ease;
     box-shadow: 0 0 5px var(--accent-glow-color);
   }
   
@@ -138,6 +138,7 @@ html, body {
     position: relative;
   }
   
+  /* Улучшение анимации появления меню */
   .nav-list {
     top: 0;
     right: -100%;
@@ -151,15 +152,13 @@ html, body {
     justify-content: flex-start;
     padding: 80px 20px;
     z-index: 1000;
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+    transition: right 0.5s cubic-bezier(0.19, 1, 0.22, 1); /* Более плавная анимация */
     background-image: 
       linear-gradient(0deg, rgba(146, 147, 151, 0.05) 1px, transparent 1px),
       linear-gradient(90deg, rgba(146, 147, 151, 0.05) 1px, transparent 1px);
     background-size: 20px 20px;
     border-left: 2px solid var(--accent-color);
     box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
-    transform: translateX(100%);
-    opacity: 0;
   }
   
   .nav-list::before {
@@ -171,16 +170,13 @@ html, body {
     height: 100%;
     background: radial-gradient(circle at center, rgba(20, 20, 30, 0.7) 0%, rgba(10, 10, 15, 0.95) 70%);
     z-index: -1;
-    opacity: 0;
-    transition: opacity 0.5s ease;
   }
   
   .nav-list.active {
     right: 0;
-    transform: translateX(0);
-    opacity: 1;
   }
   
+  /* Анимация появления элементов меню */
   .nav-item {
     margin: 15px 0;
     width: 100%;
@@ -188,7 +184,7 @@ html, body {
     opacity: 0;
     transform: translateX(20px);
     transition: opacity 0.4s ease, transform 0.4s ease;
-    transition-delay: calc(var(--item-index, 0) * 0.08s + 0.1s);
+    transition-delay: calc(var(--item-index, 0) * 0.05s);
   }
   
   .nav-list.active .nav-item {
@@ -200,28 +196,9 @@ html, body {
     font-size: 18px;
     padding: 12px;
     display: block;
-    position: relative;
-    overflow: hidden;
   }
   
-  .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 8px;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background-color: var(--accent-color);
-    transform: translateX(-50%);
-    transition: width 0.3s ease;
-  }
-  
-  .nav-item.active .nav-link::after,
-  .nav-link:hover::after {
-    width: 30%;
-  }
-  
-  /* Улучшенный герой раздел */
+  /* Улучшенный герой раздел - поднят выше */
   .hero {
     margin: 0;
     padding: 0;
@@ -234,7 +211,7 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
   }
   
   .hero-content {
@@ -247,7 +224,8 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 30px;
+    /* Уменьшаем отступы, поднимая контент выше */
+    padding-top: 40px;
     padding-bottom: 120px;
   }
   
@@ -259,7 +237,6 @@ html, body {
     width: 100%;
     max-width: 350px;
     margin: 0 auto;
-    margin-bottom: 80px;
   }
   
   .btn-primary, .btn-secondary {
@@ -305,7 +282,7 @@ html, body {
   /* Исправление для скролл-индикатора (прокрутите вниз) */
   .scroll-indicator {
     position: absolute;
-    bottom: 20px;
+    bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
@@ -326,6 +303,34 @@ html, body {
     padding: 0 10px;
     overflow: hidden;
     width: 100%;
+  }
+  
+  /* Уменьшенный размер кнопок фильтров и оптимизация их расположения */
+  .collection-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .filter-btn {
+    font-size: 12px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    min-height: 36px;
+    margin: 0;
+  }
+  
+  /* Размещение кнопки "ВСЕ" отдельно сверху */
+  .filter-btn[data-filter="all"] {
+    width: 80%;
+    max-width: 250px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    padding: 10px;
+    order: -1;
+    flex-basis: 100%;
   }
   
   .nft-grid {
@@ -396,37 +401,22 @@ html, body {
     100% { opacity: 0.7; }
   }
   
-  /* Оптимизация дорожной карты для мобильных устройств (в стиле основного сайта) */
+  /* Оптимизированная дорожная карта, более похожая на десктопную версию */
   .roadmap-container {
-    position: relative;
     padding: 0;
     margin: 0;
     width: 100%;
   }
   
   .roadmap-timeline {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 30px;
     width: 2px;
+    left: 15px;
+    top: 15px;
+    bottom: 15px;
+    position: absolute;
     background-color: var(--accent-color);
     box-shadow: 0 0 10px var(--accent-glow-color);
     z-index: 1;
-  }
-
-  .roadmap-timeline::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 20px;
-    height: 20px;
-    background-color: var(--accent-color);
-    border-radius: 0;
-    box-shadow: 0 0 10px var(--accent-glow-color);
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   }
   
   .roadmap-items {
@@ -436,64 +426,56 @@ html, body {
   }
   
   .roadmap-item {
-    display: flex;
-    margin-bottom: 40px;
-    padding-left: 0;
+    padding-left: 40px;
     position: relative;
+    margin-bottom: 30px;
     width: 100%;
-    transform: translateZ(0);
-    transition: all 0.3s ease;
-    user-select: none; /* Предотвращает выделение текста при касании */
   }
   
   .roadmap-icon {
-    position: relative;
-    width: 60px;
-    height: 60px;
-    border-radius: 0;
-    background: var(--background-color);
+    position: absolute;
+    left: 0;
+    top: 15px;
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 20px;
+    background-color: var(--background-color);
     border: 2px solid var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-glow-color);
+    border-radius: 50%;
     z-index: 2;
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-    transition: all 0.3s ease;
-    font-size: 24px;
+    font-size: 14px;
   }
   
+  /* Исправление выделения плиток дорожной карты */
   .roadmap-content {
-    flex: 1;
     background-color: rgba(18, 18, 24, 0.8);
-    border: 2px solid var(--accent-color);
-    padding: 20px;
+    border: 1px solid var(--accent-color);
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 0 15px rgba(146, 147, 151, 0.1);
     position: relative;
     width: 100%;
     box-sizing: border-box;
-    clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s ease;
+    cursor: pointer;
   }
   
-  .roadmap-content::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(45deg, transparent, rgba(146, 147, 151, 0.1), transparent);
-    transform: translateX(-100%);
-    transition: transform 0.5s ease;
+  /* Добавляем активное состояние при нажатии - синее выделение */
+  .roadmap-content:active,
+  .roadmap-content.touch-active {
+    background-color: rgba(0, 120, 255, 0.15);
+    border-color: rgba(0, 120, 255, 0.7);
+    box-shadow: 0 0 15px rgba(0, 120, 255, 0.5);
+    transform: translateY(-3px);
   }
   
   .roadmap-date {
-    font-family: var(--font-display);
-    font-size: 1.2rem;
+    font-size: 16px;
+    margin-bottom: 5px;
     color: var(--accent-color);
-    margin-bottom: 10px;
   }
   
   .roadmap-content h4 {
@@ -510,14 +492,15 @@ html, body {
   
   .roadmap-status {
     display: inline-block;
-    padding: 5px 10px;
-    font-size: 0.8rem;
-    border-radius: 0;
+    padding: 3px 8px;
+    font-size: 10px;
+    border-radius: 4px;
     background-color: rgba(18, 18, 24, 0.8);
     border: 1px solid var(--accent-color);
     color: var(--accent-color);
-    margin-top: 10px;
-    clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
+    position: relative;
+    float: right;
+    margin-top: -30px;
   }
   
   .roadmap-status.completed {
@@ -530,10 +513,6 @@ html, body {
     background-color: rgba(255, 165, 0, 0.1);
     border-color: #ffa500;
     color: #ffa500;
-  }
-  
-  .roadmap-status.planned {
-    background-color: rgba(146, 147, 151, 0.1);
   }
   
   /* Улучшенная подписка */
@@ -1044,16 +1023,16 @@ html.slow-connection img {
 /* Подъем MEGA BUDDIES выше для экономии места */
 @media (max-width: 768px) {
   .hero-content {
-    padding-top: 30px;
-    padding-bottom: 120px;
+    padding-top: 80px;
+    padding-bottom: 60px;
   }
 
   .hero-title-container {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
 
   .hero-title {
-    font-size: 42px;
+    font-size: 46px;
     margin-bottom: 0;
     line-height: 1.1;
   }
@@ -1061,106 +1040,14 @@ html.slow-connection img {
   .hero-subtitle {
     margin-top: 5px;
     font-size: 14px;
-    margin-bottom: 10px;
   }
 
   .hero-description {
-    margin-top: 10px;
-    margin-bottom: 15px;
+    margin-top: 15px;
+    margin-bottom: 25px;
     font-size: 15px;
     max-width: 90%;
     margin-left: auto;
     margin-right: auto;
   }
-  
-  /* Больше места между кнопками и индикатором прокрутки */
-  .hero-buttons {
-    margin-bottom: 70px;
-  }
-  
-  /* Поднимаем индикатор скролла выше */
-  .scroll-indicator {
-    bottom: 50px;
-  }
-}
-
-/* Улучшенные стили для фильтров коллекции */
-.collection-filters {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-  width: 100%;
-}
-
-.filter-primary {
-  width: 100%;
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.filter-primary .filter-btn {
-  min-width: 100px;
-  font-size: 14px;
-  padding: 6px 12px;
-}
-
-.filter-secondary {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-}
-
-.filter-secondary .filter-btn {
-  min-width: 80px;
-  font-size: 12px;
-  padding: 5px 10px;
-}
-
-.filter-btn {
-  background-color: transparent;
-  color: var(--text-color);
-  border: 1px solid var(--accent-color);
-  padding: 6px 10px;
-  margin: 0 3px;
-  cursor: pointer;
-  font-family: var(--font-display);
-  font-size: 13px;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 5px var(--accent-glow-color);
-}
-
-.filter-btn.active, .filter-btn:hover {
-  background-color: var(--accent-color);
-  color: var(--background-color);
-  box-shadow: 0 0 10px var(--accent-glow-color),
-              0 0 20px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.3));
-}
-
-/* Стили для выделения плиток дорожной карты при нажатии */
-.roadmap-item {
-  cursor: pointer;
-}
-
-.touch-device .roadmap-item.touch-active .roadmap-content {
-  border-color: #1391ff;
-  box-shadow: 0 0 15px rgba(19, 145, 255, 0.5),
-              0 0 30px rgba(19, 145, 255, 0.3);
-  transform: translateY(-5px);
-}
-
-.touch-device .roadmap-item.touch-active .roadmap-icon {
-  border-color: #1391ff;
-  box-shadow: 0 0 10px rgba(19, 145, 255, 0.5);
-}
-
-.touch-device .nft-card.touch-active,
-.touch-device .about-item.touch-active,
-.touch-device .twitter-feed.touch-active,
-.touch-device .discord-community.touch-active {
-  transform: translateY(-5px);
-  box-shadow: 0 0 15px var(--accent-glow-color),
-              0 0 30px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.5)),
-              0 0 45px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.3));
 } 

@@ -6,109 +6,194 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Определение, является ли устройство сенсорным
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+    // Определяем, является ли устройство сенсорным
+    const isTouchDevice = ('ontouchstart' in window) || 
+                          (navigator.maxTouchPoints > 0) || 
+                          (navigator.msMaxTouchPoints > 0);
     
+    // Добавляем класс к body для возможности настройки стилей под тач-устройства
     if (isTouchDevice) {
-        // Добавляем класс touch-device для специальных стилей
         document.documentElement.classList.add('touch-device');
         
-        // Список всех интерактивных элементов
-        const touchElements = document.querySelectorAll('.nft-card, .about-item, .roadmap-item, .twitter-feed, .discord-community, .nav-link, .social-link, .filter-btn');
-        
-        touchElements.forEach(element => {
-            // Добавление активного класса при касании
-            element.addEventListener('touchstart', function(e) {
-                // Удаляем активные классы со всех элементов того же типа
-                const elementType = this.classList[0]; // первый класс как тип элемента
-                document.querySelectorAll('.' + elementType).forEach(el => {
-                    el.classList.remove('touch-active');
-                });
-                
-                // Добавляем активный класс текущему элементу
-                this.classList.add('touch-active');
+        // Настраиваем touch эффекты
+        setupTouchEffects();
+    } else {
+        document.body.classList.add('no-touch');
+    }
+    
+    function setupTouchEffects() {
+        // Для NFT карточек
+        const nftCards = document.querySelectorAll('.nft-card');
+        nftCards.forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.classList.add('touch-active');
             });
             
-            // Особая обработка для элементов дорожной карты
-            if (element.classList.contains('roadmap-item')) {
-                element.addEventListener('touchstart', function(e) {
-                    // Если касание не на ссылке внутри элемента, то предотвращаем дефолтное поведение
-                    if (!e.target.closest('a')) {
-                        e.preventDefault();
-                    }
-                    
-                    // Удаляем активное состояние у всех плиток
-                    document.querySelectorAll('.roadmap-item').forEach(i => i.classList.remove('touch-active'));
-                    // Добавляем активное состояние для текущей плитки
-                    this.classList.add('touch-active');
-                }, { passive: false });
+            card.addEventListener('touchend', () => {
+                setTimeout(() => {
+                    card.classList.remove('touch-active');
+                }, 300);
+            });
+            
+            card.addEventListener('touchcancel', () => {
+                card.classList.remove('touch-active');
+            });
+        });
+        
+        // Для блоков в секции "О проекте"
+        const aboutItems = document.querySelectorAll('.about-item');
+        aboutItems.forEach(item => {
+            item.addEventListener('touchstart', () => {
+                item.classList.add('touch-active');
+            });
+            
+            item.addEventListener('touchend', () => {
+                setTimeout(() => {
+                    item.classList.remove('touch-active');
+                }, 300);
+            });
+            
+            item.addEventListener('touchcancel', () => {
+                item.classList.remove('touch-active');
+            });
+        });
+        
+        // Для блоков в секции "Дорожная карта"
+        const roadmapItems = document.querySelectorAll('.roadmap-content');
+        roadmapItems.forEach(item => {
+            item.addEventListener('touchstart', () => {
+                item.classList.add('touch-active');
+            });
+            
+            item.addEventListener('touchend', () => {
+                setTimeout(() => {
+                    item.classList.remove('touch-active');
+                }, 300);
+            });
+            
+            item.addEventListener('touchcancel', () => {
+                item.classList.remove('touch-active');
+            });
+        });
+        
+        // Для блоков в секции "Сообщество"
+        const communityItems = document.querySelectorAll('.twitter-feed, .discord-community');
+        communityItems.forEach(item => {
+            item.addEventListener('touchstart', () => {
+                item.classList.add('touch-active');
+            });
+            
+            item.addEventListener('touchend', () => {
+                setTimeout(() => {
+                    item.classList.remove('touch-active');
+                }, 300);
+            });
+            
+            item.addEventListener('touchcancel', () => {
+                item.classList.remove('touch-active');
+            });
+        });
+        
+        // Для навигационных ссылок
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('touchstart', () => {
+                link.classList.add('touch-active');
+            });
+            
+            link.addEventListener('touchend', () => {
+                setTimeout(() => {
+                    link.classList.remove('touch-active');
+                }, 300);
+            });
+            
+            link.addEventListener('touchcancel', () => {
+                link.classList.remove('touch-active');
+            });
+        });
+        
+        // Для социальных ссылок
+        const socialLinks = document.querySelectorAll('.social-link');
+        socialLinks.forEach(link => {
+            link.addEventListener('touchstart', () => {
+                link.classList.add('touch-active');
+            });
+            
+            link.addEventListener('touchend', () => {
+                setTimeout(() => {
+                    link.classList.remove('touch-active');
+                }, 300);
+            });
+            
+            link.addEventListener('touchcancel', () => {
+                link.classList.remove('touch-active');
+            });
+        });
+        
+        // Для полей ввода для улучшения отзывчивости формы
+        const inputFields = document.querySelectorAll('input, textarea');
+        inputFields.forEach(field => {
+            field.addEventListener('focus', () => {
+                field.classList.add('input-focused');
+            });
+            
+            field.addEventListener('blur', () => {
+                field.classList.remove('input-focused');
+            });
+        });
+        
+        // Добавляем индексы для задержки анимации элементов мобильного меню
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach((item, index) => {
+            item.style.setProperty('--item-index', index);
+        });
+    }
+    
+    // Обработчик для возврата к нормальному состоянию интерфейса после touch событий
+    document.addEventListener('touchend', (e) => {
+        if (!e.target.classList.contains('touch-active') && !e.target.closest('.touch-active')) {
+            document.querySelectorAll('.touch-active').forEach(element => {
+                element.classList.remove('touch-active');
+            });
+        }
+    });
+    
+    // Определяем кастомное поведение скрытия адресной строки в мобильных браузерах
+    if (isTouchDevice && window.innerHeight < 700) {
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (currentScroll > lastScrollTop && currentScroll > 200) {
+                // Скролл вниз - скрываем UI элементы
+                document.querySelector('.main-header').classList.add('header-hidden');
+                document.querySelector('#scroll-top').classList.add('visible');
+            } else if (currentScroll < lastScrollTop || currentScroll < 50) {
+                // Скролл вверх или вернулись к началу - показываем UI элементы
+                document.querySelector('.main-header').classList.remove('header-hidden');
                 
-                // Удаляем активный класс после небольшой задержки
-                element.addEventListener('touchend', function() {
-                    const item = this;
-                    setTimeout(() => {
-                        item.classList.remove('touch-active');
-                    }, 500);
-                });
+                if (currentScroll < 200) {
+                    document.querySelector('#scroll-top').classList.remove('visible');
+                }
             }
-        });
-        
-        // Обработка полей ввода
-        const inputElements = document.querySelectorAll('input, textarea, select');
-        
-        inputElements.forEach(input => {
-            input.addEventListener('focus', function() {
-                this.classList.add('input-focused');
+            
+            lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+        }, { passive: true });
+    }
+    
+    // Оптимизация для режима экономии энергии
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('reduce-animations');
+    }
+    
+    // Обработчик для кнопки быстрого перехода наверх
+    const scrollTopBtn = document.getElementById('scroll-top');
+    if (scrollTopBtn) {
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
             });
-            
-            input.addEventListener('blur', function() {
-                this.classList.remove('input-focused');
-            });
-        });
-        
-        // Предотвращение двойного нажатия для увеличения экрана
-        document.querySelectorAll('a, button, .btn-primary, .btn-secondary, .nav-link').forEach(element => {
-            element.addEventListener('touchend', function(e) {
-                if (!e.target.closest('a[href], button[type="submit"]')) {
-                    e.preventDefault();
-                }
-            });
-        });
-        
-        // Улучшение скролла для сенсорных устройств
-        const scrollableElements = document.querySelectorAll('.nft-grid, .terminal-content');
-        
-        scrollableElements.forEach(element => {
-            let isScrolling = false;
-            let startX, startY;
-            
-            element.addEventListener('touchstart', function(e) {
-                isScrolling = true;
-                startX = e.touches[0].clientX;
-                startY = e.touches[0].clientY;
-            }, { passive: true });
-            
-            element.addEventListener('touchmove', function(e) {
-                if (!isScrolling) return;
-                
-                const touchX = e.touches[0].clientX;
-                const touchY = e.touches[0].clientY;
-                
-                const deltaX = startX - touchX;
-                const deltaY = startY - touchY;
-                
-                // Если движение более горизонтальное, чем вертикальное
-                if (Math.abs(deltaX) > Math.abs(deltaY) && this.classList.contains('nft-grid')) {
-                    // Плавный скролл для горизонтальных коллекций
-                    this.scrollLeft += deltaX;
-                    startX = touchX;
-                    startY = touchY;
-                }
-            }, { passive: true });
-            
-            element.addEventListener('touchend', function() {
-                isScrolling = false;
-            }, { passive: true });
         });
     }
     
@@ -130,10 +215,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         // Учитываем высоту хедера при прокрутке
                         const headerHeight = document.querySelector('.main-header').offsetHeight;
+                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
                         
-                        // Плавная прокрутка к элементу
+                        // Плавная прокрутка
                         window.scrollTo({
-                            top: targetElement.offsetTop - headerHeight,
+                            top: targetPosition,
                             behavior: 'smooth'
                         });
                         
@@ -152,24 +238,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Обработка кнопки прокрутки наверх
-    const scrollTopBtn = document.getElementById('scroll-top');
-    if (scrollTopBtn) {
-        // Показываем кнопку только когда прокрутили вниз
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > window.innerHeight / 2) {
-                scrollTopBtn.classList.add('visible');
-            } else {
-                scrollTopBtn.classList.remove('visible');
-            }
-        });
-        
-        // Действие кнопки прокрутки наверх
-        scrollTopBtn.addEventListener('click', function() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+    // Оптимизация форм для мобильных устройств
+    if (isTouchDevice) {
+        // Предотвращаем зум на полях ввода в некоторых браузерах
+        // добавляя правильный размер шрифта
+        const mobileInputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], textarea');
+        mobileInputs.forEach(input => {
+            input.style.fontSize = '16px';
         });
     }
 }); 

@@ -4,103 +4,205 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Определяем, является ли устройство мобильным
-    const isMobileDevice = window.innerWidth <= 768;
+    // Кеширование DOM элементов
+    const body = document.body;
+    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    const navList = document.querySelector('.nav-list');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const nftGrids = document.querySelectorAll('.nft-grid');
+    const scrollTopBtn = document.getElementById('scroll-top');
     
-    if (isMobileDevice) {
-        // Оптимизация прелоадера для мобильных устройств
-        const preloaderProgressBar = document.querySelector('#preloader .progress');
-        if (preloaderProgressBar) {
-            // Ускоряем анимацию загрузки на мобильных устройствах
-            // чтобы уменьшить время ожидания пользователя
-            const preloaderInterval = setInterval(function() {
-                const currentWidth = parseFloat(preloaderProgressBar.style.width) || 0;
-                if (currentWidth < 95) {
-                    // Увеличиваем скорость загрузки для мобильных устройств
-                    preloaderProgressBar.style.width = `${Math.min(currentWidth + 5, 95)}%`;
-                } else {
-                    clearInterval(preloaderInterval);
-                }
-            }, 100); // Ускоряем интервал
-        }
-        
-        // Отложенная загрузка несущественных скриптов и ресурсов
-        function loadDeferredResources() {
-            // Массив скриптов, которые можно загрузить с задержкой
-            const deferredScripts = [
-                { src: 'js/scroll-animations.js', defer: true },
-                { src: 'js/three-animation.js', defer: true }
-            ];
-            
-            // Загружаем отложенные скрипты
-            deferredScripts.forEach(function(script) {
-                setTimeout(function() {
-                    const scriptEl = document.createElement('script');
-                    scriptEl.src = script.src;
-                    scriptEl.defer = script.defer;
-                    document.body.appendChild(scriptEl);
-                }, 2000); // Задержка 2 секунды после загрузки страницы
-            });
-        }
-        
-        // Вызываем отложенную загрузку ресурсов после завершения критического рендеринга
-        window.addEventListener('load', loadDeferredResources);
-        
-        // Управление режимом энергосбережения для анимаций
-        let batteryAPISupported = false;
-        
-        // Проверяем поддержку Battery API
-        if ('getBattery' in navigator) {
-            batteryAPISupported = true;
-            navigator.getBattery().then(function(battery) {
-                // Если заряд меньше 20%, уменьшаем интенсивность анимаций
-                if (battery.level < 0.2) {
-                    document.documentElement.classList.add('reduce-animations');
-                }
+    // Проверка на мобильное устройство
+    function isMobile() {
+        return window.innerWidth <= 992;
+    }
+    
+    // Инициализация улучшенного мобильного меню
+    function initMobileMenu() {
+        if (mobileMenuToggle && navList) {
+            // Улучшенное плавное открытие меню
+            mobileMenuToggle.addEventListener('click', function() {
+                mobileMenuToggle.classList.toggle('active');
+                navList.classList.toggle('active');
                 
-                // Слушаем изменения уровня заряда
-                battery.addEventListener('levelchange', function() {
-                    if (battery.level < 0.2) {
-                        document.documentElement.classList.add('reduce-animations');
-                    } else {
-                        document.documentElement.classList.remove('reduce-animations');
+                if (navList.classList.contains('active')) {
+                    body.style.overflow = 'hidden';
+                    
+                    // Анимация появления пунктов меню с задержкой
+                    const navItems = document.querySelectorAll('.nav-item');
+                    navItems.forEach((item, index) => {
+                        item.style.setProperty('--item-index', index);
+                    });
+                } else {
+                    body.style.overflow = 'auto';
+                }
+            });
+            
+            // Закрытие меню при клике на пункт меню
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (isMobile() && navList.classList.contains('active')) {
+                        mobileMenuToggle.classList.remove('active');
+                        navList.classList.remove('active');
+                        body.style.overflow = 'auto';
                     }
                 });
             });
-        }
-        
-        // Проверяем системное предпочтение для снижения анимаций
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-        if (prefersReducedMotion.matches) {
-            document.documentElement.classList.add('reduce-animations');
-        }
-        
-        // Отслеживаем изменения системных предпочтений
-        prefersReducedMotion.addEventListener('change', function(e) {
-            if (e.matches) {
-                document.documentElement.classList.add('reduce-animations');
-            } else {
-                // Возвращаем обычный режим, если нет проблем с батареей
-                if (!batteryAPISupported || (batteryAPISupported && battery.level >= 0.2)) {
-                    document.documentElement.classList.remove('reduce-animations');
-                }
-            }
-        });
-        
-        // Оптимизация для сетей с медленным соединением
-        if ('connection' in navigator) {
-            const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
             
-            // Если соединение медленное, еще больше оптимизируем страницу
-            if (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g') {
-                document.documentElement.classList.add('slow-connection');
-                
-                // Отключаем некоторые тяжелые анимации
-                const animatedElements = document.querySelectorAll('.neon-pulse, .neon-flicker');
-                animatedElements.forEach(function(el) {
-                    el.classList.remove('neon-pulse', 'neon-flicker');
+            // Закрытие меню при клике вне меню
+            document.addEventListener('click', function(event) {
+                if (isMobile() && 
+                    navList.classList.contains('active') && 
+                    !navList.contains(event.target) && 
+                    !mobileMenuToggle.contains(event.target)) {
+                    
+                    mobileMenuToggle.classList.remove('active');
+                    navList.classList.remove('active');
+                    body.style.overflow = 'auto';
+                }
+            });
+        }
+    }
+    
+    // Инициализация фильтров коллекции
+    function initCollectionFilters() {
+        if (filterButtons.length > 0) {
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // Удаляем активный класс со всех кнопок
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Добавляем активный класс нажатой кнопке
+                    this.classList.add('active');
+                    
+                    // Скрываем все сетки
+                    nftGrids.forEach(grid => {
+                        grid.style.display = 'none';
+                    });
+                    
+                    // Показываем нужную сетку
+                    const targetGrid = document.querySelector(`.nft-grid[data-category="${filter}"]`);
+                    if (targetGrid) {
+                        targetGrid.style.display = 'flex';
+                    }
                 });
+            });
+            
+            // По умолчанию показываем "ВСЕ"
+            const allButton = document.querySelector('.filter-btn[data-filter="all"]');
+            if (allButton) {
+                allButton.click();
             }
         }
     }
+    
+    // Инициализация дорожной карты
+    function initRoadmap() {
+        const roadmapItems = document.querySelectorAll('.roadmap-item');
+        
+        roadmapItems.forEach(item => {
+            const content = item.querySelector('.roadmap-content');
+            
+            if (content) {
+                // Добавляем обработчик нажатия для выделения плитки
+                content.addEventListener('click', function() {
+                    // Убираем активное состояние у других плиток
+                    document.querySelectorAll('.roadmap-content').forEach(el => {
+                        el.classList.remove('active');
+                    });
+                    
+                    // Добавляем активное состояние текущей плитке
+                    this.classList.add('active');
+                });
+            }
+        });
+    }
+    
+    // Оптимизация скролла для мобильных устройств
+    function optimizeScroll() {
+        if (isMobile()) {
+            let lastScrollTop = 0;
+            
+            window.addEventListener('scroll', function() {
+                const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // Показываем/скрываем кнопку прокрутки наверх
+                if (scrollTopBtn) {
+                    if (currentScrollTop > 300) {
+                        scrollTopBtn.classList.add('visible');
+                    } else {
+                        scrollTopBtn.classList.remove('visible');
+                    }
+                }
+                
+                lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
+            }, { passive: true });
+        }
+    }
+    
+    // Инициализация кнопки прокрутки наверх
+    function initScrollTopButton() {
+        if (scrollTopBtn) {
+            scrollTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+    }
+    
+    // Оптимизация для подъема контента на главной странице
+    function optimizeHero() {
+        if (isMobile()) {
+            const heroContent = document.querySelector('.hero-content');
+            const scrollIndicator = document.querySelector('.scroll-indicator');
+            
+            if (heroContent && scrollIndicator) {
+                // Оптимизация размещения элементов герояp
+                const viewportHeight = window.innerHeight;
+                const headerHeight = document.querySelector('.main-header')?.offsetHeight || 70;
+                
+                // Подстраиваем отступы в зависимости от высоты экрана
+                if (viewportHeight < 700) {
+                    // Для очень маленьких экранов поднимаем еще выше
+                    heroContent.style.paddingTop = '30px';
+                    heroContent.style.paddingBottom = '100px';
+                    scrollIndicator.style.bottom = '20px';
+                } else {
+                    heroContent.style.paddingTop = '40px';
+                    heroContent.style.paddingBottom = '120px';
+                    scrollIndicator.style.bottom = '30px';
+                }
+            }
+        }
+    }
+    
+    // Инициализация всех оптимизаций
+    function init() {
+        initMobileMenu();
+        initCollectionFilters();
+        initRoadmap();
+        optimizeScroll();
+        initScrollTopButton();
+        optimizeHero();
+        
+        // Пересчитываем оптимизации при изменении размера окна
+        window.addEventListener('resize', function() {
+            optimizeHero();
+        });
+        
+        // Пересчитываем оптимизации при изменении ориентации
+        window.addEventListener('orientationchange', function() {
+            setTimeout(function() {
+                optimizeHero();
+            }, 300);
+        });
+    }
+    
+    // Запуск инициализации
+    init();
 }); 
