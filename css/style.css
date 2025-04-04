@@ -693,16 +693,14 @@ body {
 
 /* Обновленные стили для секции Hero */
 .hero {
-  min-height: 100vh;
-  width: 100%;
+  height: 100vh;
+  position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   padding-top: 60px;
   max-height: 100vh;
-  position: relative;
 }
 
 .hero-content {
@@ -712,12 +710,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  margin-top: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 80vh;
+  margin-top: 15vh;
 }
 
 .hero-title-container {
@@ -875,8 +868,10 @@ body {
 }
 
 .scroll-indicator {
-  position: relative;
-  margin-top: 2rem;
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -885,12 +880,11 @@ body {
   opacity: 0.9;
   transition: all 0.3s ease;
   cursor: pointer;
-  text-decoration: none;
 }
 
 .scroll-indicator:hover {
   opacity: 1;
-  transform: translateY(-5px);
+  transform: translateX(-50%) translateY(-5px);
 }
 
 .scroll-text {

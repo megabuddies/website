@@ -182,19 +182,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Обработчик для кнопки прокрутки вниз
-    const scrollIndicator = document.querySelector('.scroll-indicator');
+    // Обработчик для индикатора прокрутки
+    const scrollIndicator = document.getElementById('scroll-down');
     if (scrollIndicator) {
-        scrollIndicator.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            const targetId = this.getAttribute('href').substring(1);
-            const targetSection = document.getElementById(targetId);
-            
-            window.scrollTo({
-                top: targetSection.offsetTop - 100,
-                behavior: 'smooth'
-            });
+        scrollIndicator.addEventListener('click', function() {
+            const aboutSection = document.getElementById('about');
+            if (aboutSection) {
+                window.scrollTo({
+                    top: aboutSection.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            }
         });
     }
     
@@ -496,7 +494,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const megaTitle = document.querySelector('.hero-title.mega');
         const buddiesTitle = document.querySelector('.hero-title.buddies');
         const heroAnimation = document.getElementById('hero-animation');
-        const heroContent = document.querySelector('.hero-content');
         const viewportWidth = window.innerWidth;
         
         if (!megaTitle || !buddiesTitle || !heroAnimation) {
@@ -518,7 +515,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Вычисляем центр 3D модели
         const heroCenterX = heroRect.left + (heroRect.width / 2);
-        const heroCenterY = heroRect.top + (heroRect.height / 2);
         
         // Вычисляем текущие расстояния от центра модели до конца MEGA и начала BUDDIES
         const distanceToMegaEnd = heroCenterX - megaRect.right;
@@ -528,32 +524,10 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('=== ДИАГНОСТИКА ВЫРАВНИВАНИЯ ===');
         console.log('Ширина окна:', viewportWidth);
         console.log('Центр модели X:', heroCenterX);
-        console.log('Центр модели Y:', heroCenterY);
         console.log('MEGA право:', megaRect.right);
         console.log('BUDDIES лево:', buddiesRect.left);
         console.log('Расстояние до конца MEGA:', distanceToMegaEnd);
         console.log('Расстояние до начала BUDDIES:', distanceToBuddiesStart);
-        
-        // Вертикальное выравнивание относительно центра 3D модели
-        if (heroContent) {
-            const titleContainer = document.querySelector('.hero-title-container');
-            if (titleContainer) {
-                const titleRect = titleContainer.getBoundingClientRect();
-                const titleCenterY = titleRect.top + (titleRect.height / 2);
-                const verticalOffset = heroCenterY - titleCenterY;
-                
-                console.log('Центр заголовка Y:', titleCenterY);
-                console.log('Вертикальное смещение:', verticalOffset);
-                
-                // Применяем смещение только если разница значительна (больше 10px)
-                if (Math.abs(verticalOffset) > 10) {
-                    const currentMarginTop = parseInt(window.getComputedStyle(heroContent).marginTop) || 0;
-                    const newMarginTop = currentMarginTop + verticalOffset;
-                    heroContent.style.marginTop = `${newMarginTop}px`;
-                    console.log('Новый отступ сверху для героя:', newMarginTop);
-                }
-            }
-        }
         
         // Проверяем, нужна ли корректировка (разница больше 10px)
         if (Math.abs(distanceToMegaEnd - distanceToBuddiesStart) > 10) {
