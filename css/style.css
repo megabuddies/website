@@ -774,8 +774,8 @@ body {
 }
 
 .hero-subtitle-container {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  margin-top: 4.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .hero-subtitle {
@@ -792,8 +792,8 @@ body {
 }
 
 .hero-text {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .hero-description {
@@ -806,8 +806,8 @@ body {
 }
 
 .hero-buttons {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .btn-primary {
@@ -869,13 +869,13 @@ body {
 
 .scroll-indicator {
   position: absolute;
-  bottom: 2rem;
+  bottom: 7rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: clamp(0.5rem, 1vh, 1rem);
   z-index: 3;
   opacity: 0.9;
   transition: all 0.3s ease;
@@ -889,7 +889,7 @@ body {
 
 .scroll-text {
   font-family: var(--font-mono);
-  font-size: 1rem;
+  font-size: clamp(0.7rem, 1vw, 1rem);
   font-weight: bold;
   color: var(--accent-color);
   letter-spacing: 1px;
@@ -901,13 +901,13 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
+  gap: clamp(0.2rem, 0.5vh, 0.4rem);
 }
 
 .scroll-arrow {
   display: block;
-  width: 18px;
-  height: 18px;
+  width: clamp(12px, 2vw, 18px);
+  height: clamp(12px, 2vw, 18px);
   border-right: 3px solid var(--accent-color);
   border-bottom: 3px solid var(--accent-color);
   transform: rotate(45deg);
@@ -962,6 +962,18 @@ body {
   .hero-title.mega,
   .hero-title.buddies {
     margin: 0 !important; /* Override margins on mobile */
+  }
+  
+  .scroll-indicator {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    margin: 4vh auto 0;
+  }
+  
+  .scroll-indicator:hover {
+    transform: translateY(-5px);
   }
 }
 

@@ -389,7 +389,7 @@ document.addEventListener('DOMContentLoaded', function() {
     animatedElements.forEach(element => {
         observer.observe(element);
     });
-
+    
     // Добавляем эффект для статистических показателей
     const statValues = document.querySelectorAll('.stat-value');
     
