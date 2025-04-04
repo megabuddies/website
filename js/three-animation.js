@@ -8,9 +8,6 @@ let leftEarPivot, rightEarPivot;
 let resourcesLoaded = false;
 let animationPaused = false;
 
-// Проверка на мобильное устройство
-const isMobile = window.innerWidth <= 768;
-
 function initThree() {
     // Сразу инициализируем фон для быстрого отображения
     try {
@@ -509,86 +506,3 @@ document.addEventListener('DOMContentLoaded', function() {
         createFallbackAnimation();
     }
 });
-
-// Регулировка настроек для производительности
-if (isMobile) {
-    // Уменьшаем качество рендеринга для мобильных устройств
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-    
-    // Уменьшаем количество частиц
-    let particleReductionFactor = window.innerWidth <= 576 ? 0.5 : 0.7;
-    
-    // Не отключаем отображение 3D модели, просто оптимизируем ее
-    
-    // Применяем к существующим системам частиц
-    if (typeof particlesCount !== 'undefined') {
-        particlesCount = Math.floor(particlesCount * particleReductionFactor);
-    }
-    
-    // Уменьшаем количество деталей в геометрии для лучшей производительности
-    if (typeof backgroundParticles !== 'undefined' && backgroundParticles.geometry) {
-        const geometryVertexCount = backgroundParticles.geometry.attributes.position.count;
-        const reducedCount = Math.floor(geometryVertexCount * particleReductionFactor);
-        
-        if (reducedCount < geometryVertexCount) {
-            const tempPositions = new Float32Array(reducedCount * 3);
-            const tempColors = new Float32Array(reducedCount * 3);
-            const tempSizes = new Float32Array(reducedCount);
-            
-            // Копируем только часть данных
-            for (let i = 0; i < reducedCount; i++) {
-                tempPositions[i * 3] = backgroundParticles.geometry.attributes.position.array[i * 3];
-                tempPositions[i * 3 + 1] = backgroundParticles.geometry.attributes.position.array[i * 3 + 1];
-                tempPositions[i * 3 + 2] = backgroundParticles.geometry.attributes.position.array[i * 3 + 2];
-                
-                if (backgroundParticles.geometry.attributes.color) {
-                    tempColors[i * 3] = backgroundParticles.geometry.attributes.color.array[i * 3];
-                    tempColors[i * 3 + 1] = backgroundParticles.geometry.attributes.color.array[i * 3 + 1];
-                    tempColors[i * 3 + 2] = backgroundParticles.geometry.attributes.color.array[i * 3 + 2];
-                }
-                
-                if (backgroundParticles.geometry.attributes.size) {
-                    tempSizes[i] = backgroundParticles.geometry.attributes.size.array[i];
-                }
-            }
-            
-            backgroundParticles.geometry.setAttribute('position', new THREE.BufferAttribute(tempPositions, 3));
-            if (backgroundParticles.geometry.attributes.color) {
-                backgroundParticles.geometry.setAttribute('color', new THREE.BufferAttribute(tempColors, 3));
-            }
-            if (backgroundParticles.geometry.attributes.size) {
-                backgroundParticles.geometry.setAttribute('size', new THREE.BufferAttribute(tempSizes, 1));
-            }
-        }
-    }
-}
-
-// Обработка изменения размера окна
-window.addEventListener('resize', () => {
-    // Обновляем размеры камеры и рендерера
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    
-    // Проверяем, изменился ли тип устройства
-    const newIsMobile = window.innerWidth <= 768;
-    if (newIsMobile !== isMobile && typeof resizeRendererToDisplaySize === 'function') {
-        // Вызываем функцию ресайза, если она существует
-        resizeRendererToDisplaySize(renderer);
-    }
-});
-
-// Функция для оптимизации размера рендерера
-function resizeRendererToDisplaySize(renderer) {
-    const canvas = renderer.domElement;
-    const pixelRatio = window.devicePixelRatio;
-    const width = canvas.clientWidth * pixelRatio | 0;
-    const height = canvas.clientHeight * pixelRatio | 0;
-    const needResize = canvas.width !== width || canvas.height !== height;
-    
-    if (needResize) {
-        renderer.setSize(width, height, false);
-    }
-    
-    return needResize;
-}

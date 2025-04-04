@@ -151,30 +151,37 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Мобильное меню
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-    const mainNav = document.querySelector('.main-nav');
     const navList = document.querySelector('.nav-list');
+    const body = document.body;
     
-    // Улучшенный обработчик для мобильного меню
+    // Функция для определения, является ли устройство мобильным
+    function isMobile() {
+        return window.innerWidth <= 768;
+    }
+    
+    // Улучшенная обработка мобильного меню
     mobileMenuToggle.addEventListener('click', () => {
         mobileMenuToggle.classList.toggle('active');
         navList.classList.toggle('active');
         
-        // Блокируем скролл при открытом меню
+        // Блокируем прокрутку страницы при открытом меню
         if (navList.classList.contains('active')) {
-            document.body.style.overflow = 'hidden';
+            body.style.overflow = 'hidden';
         } else {
-            document.body.style.overflow = 'auto';
+            body.style.overflow = 'auto';
         }
     });
     
-    // Закрытие меню при клике вне его области
+    // Закрытие мобильного меню при клике за его пределами
     document.addEventListener('click', (e) => {
-        if (navList.classList.contains('active') && 
-            !e.target.closest('.nav-list') && 
-            !e.target.closest('.mobile-menu-toggle')) {
-            navList.classList.remove('active');
+        if (isMobile() && 
+            navList.classList.contains('active') && 
+            !navList.contains(e.target) && 
+            !mobileMenuToggle.contains(e.target)) {
+            
             mobileMenuToggle.classList.remove('active');
-            document.body.style.overflow = 'auto';
+            navList.classList.remove('active');
+            body.style.overflow = 'auto';
         }
     });
     
@@ -188,20 +195,75 @@ document.addEventListener('DOMContentLoaded', function() {
             const targetId = this.getAttribute('href').substring(1);
             const targetSection = document.getElementById(targetId);
             
-            // Одинаковое поведение для всех разделов
-            window.scrollTo({
-                top: targetSection.offsetTop - 80, // Уменьшаем отступ для мобильных устройств
-                behavior: 'smooth'
-            });
+            if (targetSection) {
+                // Отступ с учетом мобильной версии
+                const offset = isMobile() ? 70 : 100;
+                
+                window.scrollTo({
+                    top: targetSection.offsetTop - offset,
+                    behavior: 'smooth'
+                });
+            }
             
             // Закрываем мобильное меню при клике на ссылку
-            if (navList.classList.contains('active')) {
+            if (isMobile() && navList.classList.contains('active')) {
                 mobileMenuToggle.classList.remove('active');
                 navList.classList.remove('active');
-                document.body.style.overflow = 'auto';
+                body.style.overflow = 'auto';
             }
         });
     });
+    
+    // Функция для добавления/удаления класса active для навигационных элементов при скролле
+    function setActiveNavItem() {
+        const sections = document.querySelectorAll('.section, .hero');
+        let currentSection = '';
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            
+            // Учитываем отступ хедера для мобильных устройств
+            const offset = isMobile() ? 70 : 100;
+            
+            if (window.scrollY >= sectionTop - offset) {
+                currentSection = section.getAttribute('id');
+            }
+        });
+        
+        navLinks.forEach(link => {
+            link.parentElement.classList.remove('active');
+            if (link.getAttribute('href') === `#${currentSection}`) {
+                link.parentElement.classList.add('active');
+            }
+        });
+    }
+    
+    // Вызываем функцию при скролле
+    window.addEventListener('scroll', setActiveNavItem);
+    
+    // Вызываем функцию при загрузке страницы
+    window.addEventListener('load', setActiveNavItem);
+    
+    // Обработка ориентации экрана для мобильных устройств
+    function handleOrientationChange() {
+        const html = document.documentElement;
+        
+        if (window.innerHeight < window.innerWidth) {
+            // Ландшафтная ориентация
+            html.classList.add('landscape');
+            html.classList.remove('portrait');
+        } else {
+            // Портретная ориентация
+            html.classList.add('portrait');
+            html.classList.remove('landscape');
+        }
+    }
+    
+    // Запускаем проверку ориентации при загрузке и изменении размера окна
+    window.addEventListener('load', handleOrientationChange);
+    window.addEventListener('resize', handleOrientationChange);
+    window.addEventListener('orientationchange', handleOrientationChange);
     
     // Обработчик для индикатора прокрутки
     const scrollIndicator = document.getElementById('scroll-down');
@@ -209,60 +271,16 @@ document.addEventListener('DOMContentLoaded', function() {
         scrollIndicator.addEventListener('click', function() {
             const aboutSection = document.getElementById('about');
             if (aboutSection) {
+                // Отступ с учетом мобильной версии
+                const offset = isMobile() ? 70 : 100;
+                
                 window.scrollTo({
-                    top: aboutSection.offsetTop - 100,
+                    top: aboutSection.offsetTop - offset,
                     behavior: 'smooth'
                 });
             }
         });
     }
-    
-    // Обновленная функция активации пунктов меню при скролле - активация при прокрутке 70% раздела
-    function setActiveNavItem() {
-        const sections = document.querySelectorAll('section[id]');
-        const scrollPosition = window.scrollY + 150; // Уменьшаем это значение для более точной активации
-        
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.offsetHeight;
-            const sectionId = section.getAttribute('id');
-            
-            // Активируем следующий раздел, когда прокручено 70% текущего раздела (остается 30%)
-            // Точка, когда пользователь прокрутил 70% текущего раздела
-            const activationThreshold = sectionTop + (sectionHeight * 0.7);
-            
-            // Проверяем, находимся ли мы после точки активации, но до конца текущего раздела
-            if (scrollPosition >= activationThreshold && scrollPosition < (sectionTop + sectionHeight)) {
-                // Если мы в последних 30% раздела, активируем следующую кнопку
-                const nextSection = section.nextElementSibling;
-                if (nextSection && nextSection.id) {
-                    document.querySelectorAll('.nav-item').forEach(item => {
-                        item.classList.remove('active');
-                    });
-                    
-                    const activeLink = document.querySelector(`.nav-item a[href="#${nextSection.id}"]`);
-                    if (activeLink) {
-                        activeLink.parentElement.classList.add('active');
-                    }
-                }
-            } 
-            // Если мы не в последних 30% раздела, активируем текущую кнопку
-            else if (scrollPosition >= sectionTop && scrollPosition < activationThreshold) {
-                document.querySelectorAll('.nav-item').forEach(item => {
-                    item.classList.remove('active');
-                });
-                
-                const activeLink = document.querySelector(`.nav-item a[href="#${sectionId}"]`);
-                if (activeLink) {
-                    activeLink.parentElement.classList.add('active');
-                }
-            }
-        });
-    }
-    
-    // Вызываем функцию при загрузке и скролле
-    setActiveNavItem();
-    window.addEventListener('scroll', setActiveNavItem);
     
     // Эффект печатающегося текста для терминала
     function typeWriter(element, text, speed = 50) {
@@ -510,61 +528,86 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Функция для адаптивных настроек на основе размера экрана
-    function setupResponsiveSettings() {
-        const isMobile = window.innerWidth <= 768;
-        const isSmallMobile = window.innerWidth <= 576;
-        
-        // Регулировка анимаций в зависимости от устройства
-        if (isMobile) {
-            // Уменьшаем интенсивность анимаций для мобильных устройств
-            document.documentElement.style.setProperty('--glow-intensity', '0.6');
-            
-            // Оптимизация для коллекции на мобильных устройствах
-            const nftGrids = document.querySelectorAll('.nft-grid');
-            nftGrids.forEach(grid => {
-                if (grid.getAttribute('data-category') === 'all') {
-                    grid.style.minHeight = isSmallMobile ? '350px' : '400px';
-                    grid.style.height = isSmallMobile ? '350px' : '400px';
-                }
-            });
-        } else {
-            // Восстанавливаем полные настройки для десктопа
-            document.documentElement.style.setProperty('--glow-intensity', '1');
-        }
-    }
-    
-    // Вызываем функцию при загрузке страницы
-    setupResponsiveSettings();
-    
-    // Обновляем настройки при изменении размера окна
-    window.addEventListener('resize', setupResponsiveSettings);
-
-    // Обновленная функция для подгонки текста заголовков
+    // Precise spacing adjustment between MEGA and BUDDIES
     function adjustTextSpacing() {
-        const isMobile = window.innerWidth <= 768;
+        const megaTitle = document.querySelector('.hero-title.mega');
+        const buddiesTitle = document.querySelector('.hero-title.buddies');
+        const heroAnimation = document.getElementById('hero-animation');
+        const viewportWidth = window.innerWidth;
         
-        if (!isMobile) {
-            // Только для десктопа регулируем отступы заголовков
-            const megaTitle = document.querySelector('.hero-title.mega');
-            const buddiesTitle = document.querySelector('.hero-title.buddies');
+        if (!megaTitle || !buddiesTitle || !heroAnimation) {
+            console.log('Не найдены все необходимые элементы для выравнивания');
+            return;
+        }
+        
+        // На мобильных устройствах не применяем динамическую регулировку
+        if (viewportWidth <= 768) {
+            megaTitle.style.marginRight = '0';
+            buddiesTitle.style.marginLeft = '0';
+            return;
+        }
+
+        // Получаем текущие размеры и позиции элементов
+        const megaRect = megaTitle.getBoundingClientRect();
+        const buddiesRect = buddiesTitle.getBoundingClientRect();
+        const heroRect = heroAnimation.getBoundingClientRect();
+        
+        // Вычисляем центр 3D модели
+        const heroCenterX = heroRect.left + (heroRect.width / 2);
+        
+        // Вычисляем текущие расстояния от центра модели до конца MEGA и начала BUDDIES
+        const distanceToMegaEnd = heroCenterX - megaRect.right;
+        const distanceToBuddiesStart = buddiesRect.left - heroCenterX;
+        
+        // Выводим логи для отладки
+        console.log('=== ДИАГНОСТИКА ВЫРАВНИВАНИЯ ===');
+        console.log('Ширина окна:', viewportWidth);
+        console.log('Центр модели X:', heroCenterX);
+        console.log('MEGA право:', megaRect.right);
+        console.log('BUDDIES лево:', buddiesRect.left);
+        console.log('Расстояние до конца MEGA:', distanceToMegaEnd);
+        console.log('Расстояние до начала BUDDIES:', distanceToBuddiesStart);
+        
+        // Проверяем, нужна ли корректировка (разница больше 10px)
+        if (Math.abs(distanceToMegaEnd - distanceToBuddiesStart) > 10) {
+            console.log('Требуется корректировка отступов...');
             
-            if (megaTitle && buddiesTitle) {
-                const windowWidth = window.innerWidth;
-                const baseOffset = Math.min(300, windowWidth * 0.25);
+            // Получаем текущие значения margin из CSS
+            const currentMegaMargin = parseInt(window.getComputedStyle(megaTitle).marginRight) || 0;
+            const currentBuddiesMargin = parseInt(window.getComputedStyle(buddiesTitle).marginLeft) || 0;
+            
+            console.log('Текущие отступы: MEGA:', currentMegaMargin, 'BUDDIES:', currentBuddiesMargin);
+            
+            // Вычисляем целевое расстояние (max + небольшой запас)
+            const targetDistance = Math.max(distanceToMegaEnd, distanceToBuddiesStart) + 20;
+            
+            // Корректируем отступы для достижения равных расстояний
+            if (distanceToMegaEnd < targetDistance) {
+                const newMegaMargin = currentMegaMargin + (targetDistance - distanceToMegaEnd);
+                megaTitle.style.marginRight = `${newMegaMargin}px`;
+                console.log('Новый отступ MEGA:', newMegaMargin);
+            }
+            
+            if (distanceToBuddiesStart < targetDistance) {
+                const newBuddiesMargin = currentBuddiesMargin + (targetDistance - distanceToBuddiesStart);
+                buddiesTitle.style.marginLeft = `${newBuddiesMargin}px`;
+                console.log('Новый отступ BUDDIES:', newBuddiesMargin);
+            }
+            
+            // Проверяем результаты корректировки
+            setTimeout(() => {
+                const finalMegaRect = megaTitle.getBoundingClientRect();
+                const finalBuddiesRect = buddiesTitle.getBoundingClientRect();
+                const finalDistanceToMegaEnd = heroCenterX - finalMegaRect.right;
+                const finalDistanceToBuddiesStart = finalBuddiesRect.left - heroCenterX;
                 
-                megaTitle.style.marginRight = `${baseOffset}px`;
-                buddiesTitle.style.marginLeft = `${baseOffset}px`;
-            }
+                console.log('=== ИТОГОВАЯ ПРОВЕРКА ===');
+                console.log('Итоговое расстояние до MEGA:', finalDistanceToMegaEnd);
+                console.log('Итоговое расстояние до BUDDIES:', finalDistanceToBuddiesStart);
+                console.log('Разница расстояний:', Math.abs(finalDistanceToMegaEnd - finalDistanceToBuddiesStart));
+            }, 100);
         } else {
-            // Для мобильных устройств центрируем заголовки
-            const megaTitle = document.querySelector('.hero-title.mega');
-            const buddiesTitle = document.querySelector('.hero-title.buddies');
-            
-            if (megaTitle && buddiesTitle) {
-                megaTitle.style.marginRight = '0';
-                buddiesTitle.style.marginLeft = '0';
-            }
+            console.log('Корректировка не требуется, разница менее 10px');
         }
     }
     
@@ -584,76 +627,5 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(adjustTextSpacing, 500);
     setTimeout(adjustTextSpacing, 1500);
     setTimeout(adjustTextSpacing, 3000); // Длительная задержка для гарантии
-});
-
-// Функциональность мобильного меню
-document.addEventListener('DOMContentLoaded', function() {
-    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-    const navList = document.querySelector('.nav-list');
-    const header = document.querySelector('.main-header');
-    
-    // Убедимся, что у нас есть необходимые элементы
-    if (mobileMenuToggle && navList) {
-        // Добавляем обработчик нажатия на бургер-кнопку
-        mobileMenuToggle.addEventListener('click', function() {
-            mobileMenuToggle.classList.toggle('active');
-            navList.classList.toggle('active');
-            
-            // Добавляем/убираем класс у body для предотвращения скролла
-            if (navList.classList.contains('active')) {
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = '';
-            }
-        });
-        
-        // Обработка кликов по пунктам меню
-        const navLinks = document.querySelectorAll('.nav-link');
-        navLinks.forEach(function(link) {
-            link.addEventListener('click', function() {
-                // Закрываем меню при клике на пункт
-                mobileMenuToggle.classList.remove('active');
-                navList.classList.remove('active');
-                document.body.style.overflow = '';
-            });
-        });
-        
-        // Обработка клика вне меню
-        document.addEventListener('click', function(event) {
-            if (!navList.contains(event.target) && !mobileMenuToggle.contains(event.target) && navList.classList.contains('active')) {
-                mobileMenuToggle.classList.remove('active');
-                navList.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        });
-    }
-    
-    // Дополнительная обработка для фиксированного хедера
-    if (header) {
-        let lastScrollTop = 0;
-        window.addEventListener('scroll', function() {
-            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            
-            // Если скроллим более чем на 50px от топа, добавляем класс
-            if (scrollTop > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-            
-            // Скрываем/показываем хедер при скролле вниз/вверх
-            if (scrollTop > lastScrollTop && scrollTop > 100) {
-                // Скрол вниз, скрываем хедер, если не открыто меню
-                if (!navList.classList.contains('active')) {
-                    header.style.transform = 'translateY(-100%)';
-                }
-            } else {
-                // Скрол вверх, показываем хедер
-                header.style.transform = 'translateY(0)';
-            }
-            
-            lastScrollTop = scrollTop;
-        });
-    }
 });
 
