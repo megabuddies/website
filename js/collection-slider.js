@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let globalAnimationId = null;
     const initializedCategories = new Set(); // Отслеживаем, какие категории уже инициализированы
     const isMobile = window.innerWidth <= 768;
+    const isSmallMobile = window.innerWidth <= 480;
     
     // Отложенная инициализация контейнеров
     function deferredInitialization() {
@@ -60,11 +61,27 @@ document.addEventListener('DOMContentLoaded', function() {
         const sliderTrack = document.createElement('div');
         sliderTrack.className = 'slider-track';
         
+        // Для мобильных устройств устанавливаем специальные стили
+        if (isMobile) {
+            sliderTrack.style.paddingLeft = '10px';
+            sliderTrack.style.paddingRight = '10px';
+            sliderTrack.style.boxSizing = 'border-box';
+            sliderTrack.style.width = '100%';
+        }
+        
         // Добавляем карточки в ленту слайдера
         for (let i = 1; i <= cardsCount; i++) {
             const nftCard = document.createElement('div');
             nftCard.className = 'nft-card';
             nftCard.setAttribute('data-rarity', category === 'all' ? ['common', 'rare', 'legendary'][Math.floor(Math.random() * 3)] : category);
+            
+            // Для мобильных делаем специальные стили карточек
+            if (isMobile) {
+                nftCard.style.minWidth = isSmallMobile ? '130px' : '140px';
+                nftCard.style.maxWidth = isSmallMobile ? '130px' : '140px';
+                nftCard.style.boxSizing = 'border-box';
+                nftCard.style.margin = '0 5px';
+            }
             
             nftCard.innerHTML = `
                 <div class="nft-image-container">
@@ -85,6 +102,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const nftCard = document.createElement('div');
             nftCard.className = 'nft-card';
             nftCard.setAttribute('data-rarity', category === 'all' ? ['common', 'rare', 'legendary'][Math.floor(Math.random() * 3)] : category);
+            
+            // Для мобильных делаем специальные стили карточек
+            if (isMobile) {
+                nftCard.style.minWidth = isSmallMobile ? '130px' : '140px';
+                nftCard.style.maxWidth = isSmallMobile ? '130px' : '140px';
+                nftCard.style.boxSizing = 'border-box';
+                nftCard.style.margin = '0 5px';
+            }
             
             nftCard.innerHTML = `
                 <div class="nft-image-container">

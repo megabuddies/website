@@ -516,14 +516,16 @@ if (isMobile) {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     
     // Уменьшаем количество частиц
-    let particleReductionFactor = window.innerWidth <= 576 ? 0.3 : 0.5;
+    let particleReductionFactor = window.innerWidth <= 576 ? 0.5 : 0.7;
+    
+    // Не отключаем отображение 3D модели, просто оптимизируем ее
     
     // Применяем к существующим системам частиц
     if (typeof particlesCount !== 'undefined') {
         particlesCount = Math.floor(particlesCount * particleReductionFactor);
     }
     
-    // Уменьшаем кол-во треугольников в геометриях
+    // Уменьшаем количество деталей в геометрии для лучшей производительности
     if (typeof backgroundParticles !== 'undefined' && backgroundParticles.geometry) {
         const geometryVertexCount = backgroundParticles.geometry.attributes.position.count;
         const reducedCount = Math.floor(geometryVertexCount * particleReductionFactor);

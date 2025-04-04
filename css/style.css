@@ -2270,49 +2270,110 @@ body {
   html, body {
     overflow-x: hidden;
     width: 100%;
+    max-width: 100vw;
+    position: relative;
   }
   
+  /* Убираем подчеркивание логотипа */
+  a.logo {
+    text-decoration: none !important;
+  }
+
+  /* Исправляем позицию кнопки меню */
+  .mobile-menu-toggle {
+    position: absolute;
+    right: var(--mobile-padding);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+  }
+
   /* Исправление горизонтального скрола */
+  .container, 
+  .header-container,
+  .footer-container,
+  .section,
   .fullscreen-bg,
   #background-animation,
-  #star-field {
-    width: 100%;
+  #star-field,
+  .hero-content,
+  .about-content,
+  .collection-container,
+  .roadmap-container,
+  .community-content,
+  .newsletter-content {
     max-width: 100vw;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+  
+  /* Фикс для карточек в коллекции */
+  .nft-card {
+    min-width: 140px;
+    max-width: 140px;
+    height: auto;
+    margin: 8px;
+  }
+  
+  .nft-image-container {
+    width: 100%;
+    height: auto;
     overflow: hidden;
   }
   
-  /* Улучшенные стили для слайдера коллекции */
-  .slider-wrapper {
+  .nft-image {
     width: 100%;
-    overflow-x: hidden;
+    height: auto;
+    object-fit: cover;
   }
   
-  /* Оптимизация для слайдера */
+  /* Восстановление 3D модели для мобильной версии */
+  #hero-animation {
+    display: block;
+    width: 300px;
+    height: 300px;
+    margin: 0 auto 20px;
+  }
+
+  /* Исправление размеров элементов для маленьких экранов */
   @media (max-width: 576px) {
-    .slider-track {
-      display: flex;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      margin: 0 -10px;
-      padding-bottom: 15px;
-      scroll-snap-type: x mandatory;
-    }
-    
     .nft-card {
-      scroll-snap-align: start;
-      flex: 0 0 auto;
+      min-width: 130px;
+      max-width: 130px;
     }
     
-    /* Скрываем скролбар но сохраняем функциональность */
-    .slider-track::-webkit-scrollbar {
-      display: none;
+    .about-item, 
+    .terminal-container, 
+    .roadmap-content {
+      padding: 20px 15px;
+      width: 100%;
+      box-sizing: border-box;
     }
     
-    .slider-track {
-      scrollbar-width: none;
-      -ms-overflow-style: none;
+    .terminal-text {
+      font-size: 0.85rem;
+      line-height: 1.4;
     }
+    
+    .roadmap-item {
+      align-items: center;
+    }
+    
+    #hero-animation {
+      width: 250px;
+      height: 250px;
+    }
+  }
+}
+
+/* Исправление для ссылок - не подчеркивать лого */
+@media (max-width: 576px) {
+  a:not(.btn-primary):not(.btn-secondary):not(.nav-link):not(.logo) {
+    text-decoration: underline;
+  }
+  
+  a.logo {
+    text-decoration: none !important;
   }
 }
 
@@ -2322,10 +2383,12 @@ body {
   .mobile-menu-toggle {
     width: 30px;
     height: 25px;
-    position: relative;
+    position: absolute;
+    right: var(--mobile-padding);
+    top: 50%;
+    transform: translateY(-50%);
     cursor: pointer;
     z-index: 1000;
-    margin-left: auto;
   }
   
   .mobile-menu-toggle span {
@@ -2372,6 +2435,46 @@ body {
   }
 }
 
+/* Слайдер коллекции для мобильных */
+@media (max-width: 768px) {
+  /* Улучшенные стили для слайдера коллекции */
+  .slider-wrapper {
+    width: 100%;
+    overflow-x: hidden;
+  }
+  
+  /* Оптимизация для слайдера */
+  @media (max-width: 576px) {
+    .slider-track {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 0;
+      padding-bottom: 15px;
+      scroll-snap-type: x mandatory;
+      width: 100%;
+    }
+    
+    .nft-card {
+      scroll-snap-align: start;
+      flex: 0 0 auto;
+      width: 130px !important;
+      margin: 0 5px;
+    }
+    
+    /* Скрываем скролбар но сохраняем функциональность */
+    .slider-track::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .slider-track {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+  }
+}
+
 /* Классы оптимизации производительности */
 @media (max-width: 768px) {
   /* Стили для оптимизированного режима скроллинга */
@@ -2379,12 +2482,6 @@ body {
     transition: none !important;
     animation: none !important;
     box-shadow: none !important;
-  }
-  
-  /* Оптимизация 3D трансформаций */
-  .optimized::before,
-  .optimized::after {
-    display: none !important;
   }
   
   /* Отключаем тяжелые эффекты во время скроллинга */
@@ -2408,138 +2505,5 @@ body {
   body.is-scrolling .newsletter-form button {
     box-shadow: none !important;
     transition: none !important;
-  }
-  
-  /* Делаем положение фона фиксированным для оптимизации рендеринга */
-  body.is-scrolling .fullscreen-bg,
-  body.is-scrolling #background-animation,
-  body.is-scrolling #star-field {
-    transform: none !important;
-    animation: none !important;
-    transition: none !important;
-  }
-  
-  /* Дополнительная оптимизация для малых экранов */
-  @media (max-width: 576px) {
-    .mobile-hidden {
-      display: none !important;
-    }
-    
-    /* Уменьшение размера сложных элементов */
-    .nft-card,
-    .about-item,
-    .terminal-container,
-    .roadmap-content {
-      transform: scale(0.98) !important;
-    }
-  }
-}
-
-/* Улучшенные анимации для мобильных устройств (упрощенные и менее ресурсоемкие) */
-@media (max-width: 768px) {
-  @keyframes simplePulse {
-    0%, 100% { opacity: 0.8; }
-    50% { opacity: 1; }
-  }
-  
-  .neon-text,
-  .section-heading,
-  .hero-title {
-    animation: simplePulse 3s infinite alternate !important;
-  }
-}
-
-/* Улучшенная читаемость текста на мобильных */
-@media (max-width: 576px) {
-  body {
-    line-height: 1.5;
-  }
-  
-  p, .terminal-text, .hero-description, .nft-price {
-    font-size: 14px;
-    line-height: 1.5;
-  }
-  
-  .hero-title, .section-heading {
-    line-height: 1.3;
-  }
-  
-  /* Подчеркивание ссылок для лучшей доступности */
-  a:not(.btn-primary):not(.btn-secondary):not(.nav-link) {
-    text-decoration: underline;
-  }
-}
-
-/* Улучшенные стили формы для мобильных устройств */
-@media (max-width: 768px) {
-  .newsletter-form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-    gap: 15px;
-  }
-  
-  .newsletter-form input {
-    width: 100%;
-    padding: 15px 20px;
-    background: rgba(18, 18, 24, 0.7);
-    border: 2px solid var(--accent-color);
-    color: var(--text-color);
-    font-family: var(--font-mono);
-    font-size: 1rem;
-    outline: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 10px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.3));
-    border-radius: 0;
-  }
-  
-  .newsletter-form input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-  }
-  
-  .newsletter-form input:focus {
-    border-color: var(--secondary-color);
-    box-shadow: 0 0 15px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.5));
-  }
-  
-  .newsletter-form button {
-    width: 100%;
-    padding: 15px 30px;
-    background: rgba(18, 18, 24, 0.8);
-    border: 2px solid var(--accent-color);
-    color: var(--accent-color);
-    font-family: var(--font-display);
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    box-shadow: 0 0 10px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.3));
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    letter-spacing: 1px;
-    border-radius: 0;
-  }
-  
-  .newsletter-form button:hover {
-    background-color: rgba(26, 26, 32, 0.9);
-    color: var(--secondary-color);
-    border-color: var(--secondary-color);
-    box-shadow: 0 0 15px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.5));
-  }
-  
-  /* Доп. стили для улучшения UX на мобильных */
-  @media (max-width: 576px) {
-    .newsletter-form input {
-      font-size: 14px;
-      padding: 12px 15px;
-    }
-    
-    .newsletter-form button {
-      font-size: 14px;
-      padding: 12px 15px;
-    }
   }
 }

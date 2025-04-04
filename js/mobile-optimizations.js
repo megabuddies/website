@@ -31,15 +31,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Функция оптимизации для мобильных устройств
     function optimizeMobile() {
         // Уменьшаем интенсивность эффектов свечения
-        document.documentElement.style.setProperty('--glow-intensity', '0.6');
+        document.documentElement.style.setProperty('--glow-intensity', '0.7');
         
-        // Оптимизируем анимации
-        const animationElements = document.querySelectorAll('.neon-pulse, .neon-flicker, .neon-glow');
+        // Оптимизируем анимации, но делаем это аккуратно
+        const animationElements = document.querySelectorAll('.neon-pulse, .neon-flicker');
         animationElements.forEach(el => {
-            el.style.animation = 'none';
-            el.style.animationDelay = '0s';
-            // Убираем тяжелые тени для текста
-            el.style.textShadow = 'none';
+            // Уменьшаем интенсивность анимаций, но не отключаем их полностью
+            el.style.animationDuration = '4s';
         });
         
         // Уменьшаем количество пикселей в декоративных элементах
@@ -55,11 +53,20 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Отключаем анимации для фона на мобильных
-        const backgroundElements = document.querySelectorAll('.fullscreen-bg');
-        backgroundElements.forEach(el => {
-            el.style.animation = 'none';
-        });
+        // Убеждаемся, что 3D модель видна
+        const heroAnimation = document.getElementById('hero-animation');
+        if (heroAnimation) {
+            heroAnimation.style.display = 'block';
+            
+            // Меняем размер в зависимости от размера экрана
+            if (isSmallMobile) {
+                heroAnimation.style.width = '250px';
+                heroAnimation.style.height = '250px';
+            } else {
+                heroAnimation.style.width = '300px';
+                heroAnimation.style.height = '300px';
+            }
+        }
         
         // Оптимизация производительности для скрола
         optimizeScrollPerformance();
@@ -75,6 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
         animationElements.forEach(el => {
             el.style.animation = '';
             el.style.animationDelay = '';
+            el.style.animationDuration = '';
             el.style.textShadow = '';
         });
         
@@ -86,11 +94,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Восстанавливаем анимации фона
-        const backgroundElements = document.querySelectorAll('.fullscreen-bg');
-        backgroundElements.forEach(el => {
-            el.style.animation = '';
-        });
+        // Восстанавливаем 3D модель
+        const heroAnimation = document.getElementById('hero-animation');
+        if (heroAnimation) {
+            heroAnimation.style.width = '';
+            heroAnimation.style.height = '';
+        }
     }
     
     // Оптимизация производительности при скроле
