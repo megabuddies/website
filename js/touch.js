@@ -10,10 +10,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
     
     if (isTouchDevice) {
+        // Добавляем класс touch-device для специальных стилей
         document.documentElement.classList.add('touch-device');
         
         // Список всех интерактивных элементов
-        const touchElements = document.querySelectorAll('.nft-card, .about-item, .roadmap-item, .twitter-feed, .discord-community, .nav-link, .social-link');
+        const touchElements = document.querySelectorAll('.nft-card, .about-item, .roadmap-item, .twitter-feed, .discord-community, .nav-link, .social-link, .filter-btn');
         
         touchElements.forEach(element => {
             // Добавление активного класса при касании
@@ -35,7 +36,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (!e.target.closest('a')) {
                         e.preventDefault();
                     }
-                });
+                    
+                    // Удаляем активное состояние у всех плиток
+                    document.querySelectorAll('.roadmap-item').forEach(i => i.classList.remove('touch-active'));
+                    // Добавляем активное состояние для текущей плитки
+                    this.classList.add('touch-active');
+                }, { passive: false });
                 
                 // Удаляем активный класс после небольшой задержки
                 element.addEventListener('touchend', function() {
@@ -68,6 +74,42 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         });
+        
+        // Улучшение скролла для сенсорных устройств
+        const scrollableElements = document.querySelectorAll('.nft-grid, .terminal-content');
+        
+        scrollableElements.forEach(element => {
+            let isScrolling = false;
+            let startX, startY;
+            
+            element.addEventListener('touchstart', function(e) {
+                isScrolling = true;
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            }, { passive: true });
+            
+            element.addEventListener('touchmove', function(e) {
+                if (!isScrolling) return;
+                
+                const touchX = e.touches[0].clientX;
+                const touchY = e.touches[0].clientY;
+                
+                const deltaX = startX - touchX;
+                const deltaY = startY - touchY;
+                
+                // Если движение более горизонтальное, чем вертикальное
+                if (Math.abs(deltaX) > Math.abs(deltaY) && this.classList.contains('nft-grid')) {
+                    // Плавный скролл для горизонтальных коллекций
+                    this.scrollLeft += deltaX;
+                    startX = touchX;
+                    startY = touchY;
+                }
+            }, { passive: true });
+            
+            element.addEventListener('touchend', function() {
+                isScrolling = false;
+            }, { passive: true });
+        });
     }
     
     // Улучшенная прокрутка для сенсорных устройств
@@ -88,11 +130,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         // Учитываем высоту хедера при прокрутке
                         const headerHeight = document.querySelector('.main-header').offsetHeight;
-                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
                         
-                        // Плавная прокрутка
+                        // Плавная прокрутка к элементу
                         window.scrollTo({
-                            top: targetPosition,
+                            top: targetElement.offsetTop - headerHeight,
                             behavior: 'smooth'
                         });
                         

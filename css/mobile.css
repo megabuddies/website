@@ -105,7 +105,7 @@ html, body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
   
   .mobile-menu-toggle span {
@@ -114,7 +114,7 @@ html, body {
     height: 2px;
     background-color: var(--accent-color);
     margin: 3px 0;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     box-shadow: 0 0 5px var(--accent-glow-color);
   }
   
@@ -172,7 +172,7 @@ html, body {
     background: radial-gradient(circle at center, rgba(20, 20, 30, 0.7) 0%, rgba(10, 10, 15, 0.95) 70%);
     z-index: -1;
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.5s ease;
   }
   
   .nav-list.active {
@@ -187,8 +187,8 @@ html, body {
     text-align: center;
     opacity: 0;
     transform: translateX(20px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    transition-delay: calc(var(--item-index, 0) * 0.05s);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    transition-delay: calc(var(--item-index, 0) * 0.08s + 0.1s);
   }
   
   .nav-list.active .nav-item {
@@ -200,6 +200,25 @@ html, body {
     font-size: 18px;
     padding: 12px;
     display: block;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent-color);
+    transform: translateX(-50%);
+    transition: width 0.3s ease;
+  }
+  
+  .nav-item.active .nav-link::after,
+  .nav-link:hover::after {
+    width: 30%;
   }
   
   /* Улучшенный герой раздел */
@@ -1046,7 +1065,7 @@ html.slow-connection img {
   }
 
   .hero-description {
-    margin-top: 5px;
+    margin-top: 10px;
     margin-bottom: 15px;
     font-size: 15px;
     max-width: 90%;
@@ -1054,12 +1073,14 @@ html.slow-connection img {
     margin-right: auto;
   }
   
+  /* Больше места между кнопками и индикатором прокрутки */
   .hero-buttons {
-    margin-bottom: 80px;
+    margin-bottom: 70px;
   }
   
+  /* Поднимаем индикатор скролла выше */
   .scroll-indicator {
-    bottom: 20px;
+    bottom: 50px;
   }
 }
 
@@ -1091,6 +1112,12 @@ html.slow-connection img {
   gap: 8px;
 }
 
+.filter-secondary .filter-btn {
+  min-width: 80px;
+  font-size: 12px;
+  padding: 5px 10px;
+}
+
 .filter-btn {
   background-color: transparent;
   color: var(--text-color);
@@ -1099,7 +1126,7 @@ html.slow-connection img {
   margin: 0 3px;
   cursor: pointer;
   font-family: var(--font-display);
-  font-size: 12px;
+  font-size: 13px;
   transition: all 0.3s ease;
   box-shadow: 0 0 5px var(--accent-glow-color);
 }
@@ -1111,10 +1138,15 @@ html.slow-connection img {
               0 0 20px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.3));
 }
 
+/* Стили для выделения плиток дорожной карты при нажатии */
+.roadmap-item {
+  cursor: pointer;
+}
+
 .touch-device .roadmap-item.touch-active .roadmap-content {
   border-color: #1391ff;
   box-shadow: 0 0 15px rgba(19, 145, 255, 0.5),
-              0 0 25px rgba(19, 145, 255, 0.3);
+              0 0 30px rgba(19, 145, 255, 0.3);
   transform: translateY(-5px);
 }
 
