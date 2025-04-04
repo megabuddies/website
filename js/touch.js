@@ -6,62 +6,67 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Определяем, поддерживает ли устройство сенсорные события
-    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
+    // Определение, является ли устройство сенсорным
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
     
-    // Добавляем класс к body для специфических стилей
     if (isTouchDevice) {
-        document.body.classList.add('touch-device');
-    } else {
-        document.body.classList.add('no-touch');
-    }
-    
-    // Обработка элементов с эффектами при наведении для сенсорных устройств
-    if (isTouchDevice) {
-        // Находим все элементы, которые имеют hover-эффекты
-        const hoverElements = document.querySelectorAll('.nft-card, .about-item, .roadmap-item, .twitter-feed, .discord-community, .nav-link, .social-link');
+        document.documentElement.classList.add('touch-device');
         
-        // Добавляем обработчики для сенсорного нажатия
-        hoverElements.forEach(element => {
+        // Список всех интерактивных элементов
+        const touchElements = document.querySelectorAll('.nft-card, .about-item, .roadmap-item, .twitter-feed, .discord-community, .nav-link, .social-link');
+        
+        touchElements.forEach(element => {
+            // Добавление активного класса при касании
             element.addEventListener('touchstart', function(e) {
-                // Если элемент уже активен, не делаем ничего (позволяем перейти по ссылке)
-                if (this.classList.contains('touch-active')) {
-                    return;
-                }
-                
-                // Удаляем активный класс у всех элементов того же типа
-                const sameElements = document.querySelectorAll('.' + this.className.split(' ')[0]);
-                sameElements.forEach(el => {
+                // Удаляем активные классы со всех элементов того же типа
+                const elementType = this.classList[0]; // первый класс как тип элемента
+                document.querySelectorAll('.' + elementType).forEach(el => {
                     el.classList.remove('touch-active');
                 });
                 
-                // Добавляем активный класс к текущему элементу
+                // Добавляем активный класс текущему элементу
                 this.classList.add('touch-active');
-                
-                // Предотвращаем стандартное поведение для первого касания
-                // чтобы сначала показать эффект hover
-                e.preventDefault();
             });
-        });
-        
-        // Снимаем активное состояние при касании в другом месте
-        document.addEventListener('touchstart', function(e) {
-            const activeElements = document.querySelectorAll('.touch-active');
-            if (activeElements.length > 0) {
-                let shouldRemove = true;
-                
-                activeElements.forEach(active => {
-                    if (active.contains(e.target)) {
-                        shouldRemove = false;
+            
+            // Особая обработка для элементов дорожной карты
+            if (element.classList.contains('roadmap-item')) {
+                element.addEventListener('touchstart', function(e) {
+                    // Если касание не на ссылке внутри элемента, то предотвращаем дефолтное поведение
+                    if (!e.target.closest('a')) {
+                        e.preventDefault();
                     }
                 });
                 
-                if (shouldRemove) {
-                    activeElements.forEach(el => {
-                        el.classList.remove('touch-active');
-                    });
-                }
+                // Удаляем активный класс после небольшой задержки
+                element.addEventListener('touchend', function() {
+                    const item = this;
+                    setTimeout(() => {
+                        item.classList.remove('touch-active');
+                    }, 500);
+                });
             }
+        });
+        
+        // Обработка полей ввода
+        const inputElements = document.querySelectorAll('input, textarea, select');
+        
+        inputElements.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.classList.add('input-focused');
+            });
+            
+            input.addEventListener('blur', function() {
+                this.classList.remove('input-focused');
+            });
+        });
+        
+        // Предотвращение двойного нажатия для увеличения экрана
+        document.querySelectorAll('a, button, .btn-primary, .btn-secondary, .nav-link').forEach(element => {
+            element.addEventListener('touchend', function(e) {
+                if (!e.target.closest('a[href], button[type="submit"]')) {
+                    e.preventDefault();
+                }
+            });
         });
     }
     
@@ -103,30 +108,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
             });
-        });
-    }
-    
-    // Оптимизация форм для мобильных устройств
-    if (isTouchDevice) {
-        // Обработка полей ввода
-        const inputFields = document.querySelectorAll('input, textarea');
-        
-        inputFields.forEach(field => {
-            // Улучшенный фокус на мобильных устройствах
-            field.addEventListener('focus', function() {
-                this.classList.add('input-focused');
-            });
-            
-            field.addEventListener('blur', function() {
-                this.classList.remove('input-focused');
-            });
-        });
-        
-        // Предотвращаем зум на полях ввода в некоторых браузерах
-        // добавляя правильный размер шрифта
-        const mobileInputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], textarea');
-        mobileInputs.forEach(input => {
-            input.style.fontSize = '16px';
         });
     }
     

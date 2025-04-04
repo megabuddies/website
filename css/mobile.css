@@ -151,7 +151,7 @@ html, body {
     justify-content: flex-start;
     padding: 80px 20px;
     z-index: 1000;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
     background-image: 
       linear-gradient(0deg, rgba(146, 147, 151, 0.05) 1px, transparent 1px),
       linear-gradient(90deg, rgba(146, 147, 151, 0.05) 1px, transparent 1px);
@@ -181,18 +181,14 @@ html, body {
     opacity: 1;
   }
   
-  .nav-list.active::before {
-    opacity: 1;
-  }
-  
   .nav-item {
     margin: 15px 0;
     width: 100%;
     text-align: center;
     opacity: 0;
     transform: translateX(20px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
-    transition-delay: calc(var(--item-index, 0) * 0.07s);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition-delay: calc(var(--item-index, 0) * 0.05s);
   }
   
   .nav-list.active .nav-item {
@@ -232,8 +228,8 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 50px;
-    padding-bottom: 100px;
+    padding-top: 30px;
+    padding-bottom: 120px;
   }
   
   /* Исправление кнопок в герое */
@@ -244,7 +240,7 @@ html, body {
     width: 100%;
     max-width: 350px;
     margin: 0 auto;
-    margin-bottom: 60px;
+    margin-bottom: 80px;
   }
   
   .btn-primary, .btn-secondary {
@@ -290,7 +286,7 @@ html, body {
   /* Исправление для скролл-индикатора (прокрутите вниз) */
   .scroll-indicator {
     position: absolute;
-    bottom: 30px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
@@ -428,25 +424,7 @@ html, body {
     width: 100%;
     transform: translateZ(0);
     transition: all 0.3s ease;
-    cursor: pointer;
-    touch-action: manipulation;
-  }
-  
-  .roadmap-item:active, 
-  .roadmap-item.active {
-    transform: translateY(-5px);
-  }
-  
-  .roadmap-item:active .roadmap-content,
-  .roadmap-item.active .roadmap-content {
-    border-color: #1391FF;
-    box-shadow: 0 0 15px rgba(19, 145, 255, 0.6);
-  }
-  
-  .roadmap-item:active .roadmap-icon,
-  .roadmap-item.active .roadmap-icon {
-    border-color: #1391FF;
-    box-shadow: 0 0 10px rgba(19, 145, 255, 0.6);
+    user-select: none; /* Предотвращает выделение текста при касании */
   }
   
   .roadmap-icon {
@@ -477,8 +455,7 @@ html, body {
     clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
     position: relative;
     overflow: hidden;
-    transition: all 0.3s ease;
-    -webkit-tap-highlight-color: transparent;
+    transition: all 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   }
   
   .roadmap-content::before {
@@ -1053,22 +1030,23 @@ html.slow-connection img {
   }
 
   .hero-title-container {
-    margin-bottom: 2px;
+    margin-bottom: 5px;
   }
 
   .hero-title {
-    font-size: 46px;
+    font-size: 42px;
     margin-bottom: 0;
     line-height: 1.1;
   }
 
   .hero-subtitle {
-    margin-top: 2px;
+    margin-top: 5px;
     font-size: 14px;
+    margin-bottom: 10px;
   }
 
   .hero-description {
-    margin-top: 8px;
+    margin-top: 5px;
     margin-bottom: 15px;
     font-size: 15px;
     max-width: 90%;
@@ -1080,9 +1058,8 @@ html.slow-connection img {
     margin-bottom: 80px;
   }
   
-  /* Улучшенное позиционирование индикатора скролла */
   .scroll-indicator {
-    bottom: 15px;
+    bottom: 20px;
   }
 }
 
@@ -1104,6 +1081,7 @@ html.slow-connection img {
 .filter-primary .filter-btn {
   min-width: 100px;
   font-size: 14px;
+  padding: 6px 12px;
 }
 
 .filter-secondary {
@@ -1117,7 +1095,7 @@ html.slow-connection img {
   background-color: transparent;
   color: var(--text-color);
   border: 1px solid var(--accent-color);
-  padding: 6px 12px;
+  padding: 6px 10px;
   margin: 0 3px;
   cursor: pointer;
   font-family: var(--font-display);
@@ -1131,4 +1109,26 @@ html.slow-connection img {
   color: var(--background-color);
   box-shadow: 0 0 10px var(--accent-glow-color),
               0 0 20px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.3));
+}
+
+.touch-device .roadmap-item.touch-active .roadmap-content {
+  border-color: #1391ff;
+  box-shadow: 0 0 15px rgba(19, 145, 255, 0.5),
+              0 0 25px rgba(19, 145, 255, 0.3);
+  transform: translateY(-5px);
+}
+
+.touch-device .roadmap-item.touch-active .roadmap-icon {
+  border-color: #1391ff;
+  box-shadow: 0 0 10px rgba(19, 145, 255, 0.5);
+}
+
+.touch-device .nft-card.touch-active,
+.touch-device .about-item.touch-active,
+.touch-device .twitter-feed.touch-active,
+.touch-device .discord-community.touch-active {
+  transform: translateY(-5px);
+  box-shadow: 0 0 15px var(--accent-glow-color),
+              0 0 30px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.5)),
+              0 0 45px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.3));
 } 
