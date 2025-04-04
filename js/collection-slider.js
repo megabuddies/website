@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Создаем обертку для слайдера
         const sliderWrapper = document.createElement('div');
         sliderWrapper.className = 'slider-wrapper';
+        sliderWrapper.style.width = '100%';
         
         // Создаем ленту слайдера
         const sliderTrack = document.createElement('div');
@@ -66,7 +67,24 @@ document.addEventListener('DOMContentLoaded', function() {
             sliderTrack.style.paddingLeft = '10px';
             sliderTrack.style.paddingRight = '10px';
             sliderTrack.style.boxSizing = 'border-box';
-            sliderTrack.style.width = '100%';
+            sliderTrack.style.width = 'auto'; // Позволяем контенту определять ширину
+            sliderTrack.style.display = 'flex';
+            sliderTrack.style.gap = '10px';
+            sliderTrack.style.flexWrap = 'nowrap'; // Всегда nowrap для горизонтального скролла
+            sliderTrack.style.justifyContent = 'flex-start';
+            sliderTrack.style.overflow = 'visible';
+            sliderTrack.style.overflowX = 'auto'; // Добавляем горизонтальный скролл
+            sliderTrack.style.WebkitOverflowScrolling = 'touch'; // Для плавного скролла на iOS
+            sliderTrack.style.scrollbarWidth = 'none'; // Скрываем скроллбар в Firefox
+            sliderTrack.style.msOverflowStyle = 'none'; // Скрываем скроллбар в IE
+            sliderTrack.style.paddingBottom = '15px'; // Место для скроллбара
+        }
+        
+        // Добавляем стиль для скрытия скроллбара в Chrome и Safari
+        if (isMobile) {
+            const style = document.createElement('style');
+            style.textContent = '.slider-track::-webkit-scrollbar { display: none; }';
+            document.head.appendChild(style);
         }
         
         // Добавляем карточки в ленту слайдера
@@ -77,52 +95,235 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Для мобильных делаем специальные стили карточек
             if (isMobile) {
-                nftCard.style.minWidth = isSmallMobile ? '130px' : '140px';
-                nftCard.style.maxWidth = isSmallMobile ? '130px' : '140px';
-                nftCard.style.boxSizing = 'border-box';
+                const cardWidth = isSmallMobile ? '120px' : '130px';
+                nftCard.style.minWidth = cardWidth;
+                nftCard.style.maxWidth = cardWidth;
+                nftCard.style.width = cardWidth;
                 nftCard.style.margin = '0 5px';
+                nftCard.style.boxSizing = 'border-box';
+                nftCard.style.flex = '0 0 auto';
+                nftCard.style.aspectRatio = '0.75'; // Фиксированное соотношение сторон
             }
             
-            nftCard.innerHTML = `
-                <div class="nft-image-container">
-                    <img src="${imgPath}" alt="Mega Buddy #${i}" class="nft-image">
-                </div>
-                <div class="nft-info">
-                    <h3 class="nft-name">${getNftName(category, i)}</h3>
-                    <p class="nft-rarity">${getRarityText(category === 'all' ? nftCard.getAttribute('data-rarity') : category)}</p>
-                    <p class="nft-price">${getNftPrice(category === 'all' ? nftCard.getAttribute('data-rarity') : category)}</p>
-                </div>
-            `;
+            // Создаем структуру карточки с правильным соотношением сторон для изображения
+            const imageContainer = document.createElement('div');
+            imageContainer.className = 'nft-image-container';
+            
+            if (isMobile) {
+                imageContainer.style.width = '100%';
+                imageContainer.style.paddingTop = '100%'; // Делаем контейнер квадратным
+                imageContainer.style.position = 'relative';
+                imageContainer.style.overflow = 'hidden';
+                imageContainer.style.borderRadius = '8px';
+                imageContainer.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+            }
+            
+            const img = document.createElement('img');
+            img.src = imgPath;
+            img.alt = `Mega Buddy #${i}`;
+            img.className = 'nft-image';
+            img.loading = 'lazy'; // Добавляем ленивую загрузку
+            
+            if (isMobile) {
+                img.style.position = 'absolute';
+                img.style.top = '0';
+                img.style.left = '0';
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'cover';
+            }
+            
+            // Добавляем обработчик для предзагрузки изображений
+            img.onload = function() {
+                this.classList.add('loaded');
+            };
+            
+            // Устанавливаем предварительный пустой src для предотвращения преждевременной загрузки
+            img.src = "";
+            // Задержка перед установкой реального src для предотвращения блокировки рендеринга
+            setTimeout(() => {
+                img.src = imgPath;
+            }, 100);
+            
+            imageContainer.appendChild(img);
+            nftCard.appendChild(imageContainer);
+            
+            // Информация о карточке
+            const infoContainer = document.createElement('div');
+            infoContainer.className = 'nft-info';
+            
+            if (isMobile) {
+                infoContainer.style.padding = isSmallMobile ? '8px' : '10px';
+                infoContainer.style.textAlign = 'center';
+            }
+            
+            const name = document.createElement('h3');
+            name.className = 'nft-name';
+            name.textContent = getNftName(category, i);
+            
+            if (isMobile && isSmallMobile) {
+                name.style.fontSize = '0.8rem';
+                name.style.marginBottom = '5px';
+            }
+            
+            const rarity = document.createElement('p');
+            rarity.className = 'nft-rarity';
+            rarity.textContent = getRarityText(category === 'all' ? nftCard.getAttribute('data-rarity') : category);
+            
+            if (isMobile && isSmallMobile) {
+                rarity.style.fontSize = '0.7rem';
+                rarity.style.marginBottom = '3px';
+            }
+            
+            const price = document.createElement('p');
+            price.className = 'nft-price';
+            price.textContent = getNftPrice(category === 'all' ? nftCard.getAttribute('data-rarity') : category);
+            
+            if (isMobile && isSmallMobile) {
+                price.style.fontSize = '0.7rem';
+            }
+            
+            infoContainer.appendChild(name);
+            infoContainer.appendChild(rarity);
+            infoContainer.appendChild(price);
+            nftCard.appendChild(infoContainer);
             
             sliderTrack.appendChild(nftCard);
         }
         
-        // Добавляем только один набор дублирующих карточек (вместо трех)
-        for (let i = 1; i <= cardsCount; i++) {
-            const nftCard = document.createElement('div');
-            nftCard.className = 'nft-card';
-            nftCard.setAttribute('data-rarity', category === 'all' ? ['common', 'rare', 'legendary'][Math.floor(Math.random() * 3)] : category);
+        // На мобильных устройствах добавляем только небольшое количество дублирующих карточек
+        if (isMobile) {
+            // Добавляем только 4 дополнительные карточки для мобильных
+            const duplicateCount = 4;
             
-            // Для мобильных делаем специальные стили карточек
-            if (isMobile) {
-                nftCard.style.minWidth = isSmallMobile ? '130px' : '140px';
-                nftCard.style.maxWidth = isSmallMobile ? '130px' : '140px';
-                nftCard.style.boxSizing = 'border-box';
+            for (let i = 1; i <= duplicateCount; i++) {
+                const nftCard = document.createElement('div');
+                nftCard.className = 'nft-card';
+                nftCard.setAttribute('data-rarity', category === 'all' ? ['common', 'rare', 'legendary'][Math.floor(Math.random() * 3)] : category);
+                
+                const cardWidth = isSmallMobile ? '120px' : '130px';
+                nftCard.style.minWidth = cardWidth;
+                nftCard.style.maxWidth = cardWidth;
+                nftCard.style.width = cardWidth;
                 nftCard.style.margin = '0 5px';
+                nftCard.style.boxSizing = 'border-box';
+                nftCard.style.flex = '0 0 auto';
+                nftCard.style.aspectRatio = '0.75';
+                
+                // Аналогичная структура для дублирующих карточек
+                const imageContainer = document.createElement('div');
+                imageContainer.className = 'nft-image-container';
+                imageContainer.style.width = '100%';
+                imageContainer.style.paddingTop = '100%';
+                imageContainer.style.position = 'relative';
+                imageContainer.style.overflow = 'hidden';
+                imageContainer.style.borderRadius = '8px';
+                imageContainer.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+                
+                const img = document.createElement('img');
+                img.src = imgPath;
+                img.alt = `Mega Buddy #${i}`;
+                img.className = 'nft-image';
+                img.loading = 'lazy';
+                img.style.position = 'absolute';
+                img.style.top = '0';
+                img.style.left = '0';
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'cover';
+                
+                img.onload = function() {
+                    this.classList.add('loaded');
+                };
+                
+                img.src = "";
+                setTimeout(() => {
+                    img.src = imgPath;
+                }, 100);
+                
+                imageContainer.appendChild(img);
+                nftCard.appendChild(imageContainer);
+                
+                const infoContainer = document.createElement('div');
+                infoContainer.className = 'nft-info';
+                infoContainer.style.padding = isSmallMobile ? '8px' : '10px';
+                infoContainer.style.textAlign = 'center';
+                
+                const name = document.createElement('h3');
+                name.className = 'nft-name';
+                name.textContent = getNftName(category, i);
+                
+                if (isSmallMobile) {
+                    name.style.fontSize = '0.8rem';
+                    name.style.marginBottom = '5px';
+                }
+                
+                const rarity = document.createElement('p');
+                rarity.className = 'nft-rarity';
+                rarity.textContent = getRarityText(category === 'all' ? nftCard.getAttribute('data-rarity') : category);
+                
+                if (isSmallMobile) {
+                    rarity.style.fontSize = '0.7rem';
+                    rarity.style.marginBottom = '3px';
+                }
+                
+                const price = document.createElement('p');
+                price.className = 'nft-price';
+                price.textContent = getNftPrice(category === 'all' ? nftCard.getAttribute('data-rarity') : category);
+                
+                if (isSmallMobile) {
+                    price.style.fontSize = '0.7rem';
+                }
+                
+                infoContainer.appendChild(name);
+                infoContainer.appendChild(rarity);
+                infoContainer.appendChild(price);
+                nftCard.appendChild(infoContainer);
+                
+                sliderTrack.appendChild(nftCard);
             }
-            
-            nftCard.innerHTML = `
-                <div class="nft-image-container">
-                    <img src="${imgPath}" alt="Mega Buddy #${i}" class="nft-image">
-                </div>
-                <div class="nft-info">
-                    <h3 class="nft-name">${getNftName(category, i)}</h3>
-                    <p class="nft-rarity">${getRarityText(category === 'all' ? nftCard.getAttribute('data-rarity') : category)}</p>
-                    <p class="nft-price">${getNftPrice(category === 'all' ? nftCard.getAttribute('data-rarity') : category)}</p>
-                </div>
-            `;
-            
-            sliderTrack.appendChild(nftCard);
+        } else {
+            // Для десктопа дублируем все карточки
+            for (let i = 1; i <= cardsCount; i++) {
+                const nftCard = document.createElement('div');
+                nftCard.className = 'nft-card';
+                nftCard.setAttribute('data-rarity', category === 'all' ? ['common', 'rare', 'legendary'][Math.floor(Math.random() * 3)] : category);
+                
+                // Создаем структуру карточки
+                const imageContainer = document.createElement('div');
+                imageContainer.className = 'nft-image-container';
+                
+                const img = document.createElement('img');
+                img.src = imgPath;
+                img.alt = `Mega Buddy #${i}`;
+                img.className = 'nft-image';
+                img.loading = 'lazy';
+                
+                imageContainer.appendChild(img);
+                nftCard.appendChild(imageContainer);
+                
+                const infoContainer = document.createElement('div');
+                infoContainer.className = 'nft-info';
+                
+                const name = document.createElement('h3');
+                name.className = 'nft-name';
+                name.textContent = getNftName(category, i);
+                
+                const rarity = document.createElement('p');
+                rarity.className = 'nft-rarity';
+                rarity.textContent = getRarityText(category === 'all' ? nftCard.getAttribute('data-rarity') : category);
+                
+                const price = document.createElement('p');
+                price.className = 'nft-price';
+                price.textContent = getNftPrice(category === 'all' ? nftCard.getAttribute('data-rarity') : category);
+                
+                infoContainer.appendChild(name);
+                infoContainer.appendChild(rarity);
+                infoContainer.appendChild(price);
+                nftCard.appendChild(infoContainer);
+                
+                sliderTrack.appendChild(nftCard);
+            }
         }
         
         // Вставляем ленту в обертку, а обертку в фрагмент

@@ -40,23 +40,17 @@ document.addEventListener('DOMContentLoaded', function() {
             el.style.animationDuration = '4s';
         });
         
-        // Уменьшаем количество пикселей в декоративных элементах
-        const pixelElements = document.querySelectorAll('.pixel-overlay');
-        pixelElements.forEach(el => {
-            if (el.children.length > 20) {
-                // Оставляем только каждый третий пиксель
-                for (let i = el.children.length - 1; i >= 0; i--) {
-                    if (i % 3 !== 0) {
-                        el.children[i].style.display = 'none';
-                    }
-                }
-            }
-        });
-        
-        // Убеждаемся, что 3D модель видна
+        // Убеждаемся, что 3D модель видна и правильно расположена
         const heroAnimation = document.getElementById('hero-animation');
         if (heroAnimation) {
+            // Центрируем модель
             heroAnimation.style.display = 'block';
+            heroAnimation.style.position = 'relative';
+            heroAnimation.style.left = 'auto';
+            heroAnimation.style.right = 'auto';
+            heroAnimation.style.top = 'auto';
+            heroAnimation.style.transform = 'none';
+            heroAnimation.style.margin = '0 auto 20px';
             
             // Меняем размер в зависимости от размера экрана
             if (isSmallMobile) {
@@ -66,6 +60,47 @@ document.addEventListener('DOMContentLoaded', function() {
                 heroAnimation.style.width = '300px';
                 heroAnimation.style.height = '300px';
             }
+            
+            // Перемещаем 3D модель в правильное место
+            const heroContent = document.querySelector('.hero-content');
+            const heroTitle = document.querySelector('.hero-title-container');
+            
+            if (heroContent && heroTitle) {
+                // Вставляем 3D модель после заголовков
+                heroContent.insertBefore(heroAnimation, heroTitle.nextSibling);
+            }
+        }
+        
+        // Исправляем позицию индикатора скролла
+        const scrollIndicator = document.getElementById('scroll-down');
+        if (scrollIndicator) {
+            scrollIndicator.style.position = 'absolute';
+            scrollIndicator.style.bottom = '20px';
+            scrollIndicator.style.left = '50%';
+            scrollIndicator.style.transform = 'translateX(-50%)';
+            scrollIndicator.style.margin = '0';
+        }
+        
+        // Оптимизация секции "Сообщество"
+        const communityContent = document.querySelector('.community-content');
+        if (communityContent) {
+            communityContent.style.flexDirection = 'column';
+            communityContent.style.gap = '20px';
+            
+            const socialItems = communityContent.querySelectorAll('.twitter-feed, .discord-community');
+            socialItems.forEach(item => {
+                item.style.width = '100%';
+                item.style.padding = '15px';
+                item.style.marginBottom = '10px';
+                
+                // Оптимизируем кнопки
+                const btn = item.querySelector('.community-btn');
+                if (btn) {
+                    btn.style.width = '100%';
+                    btn.style.marginTop = '10px';
+                    btn.style.padding = '10px';
+                }
+            });
         }
         
         // Оптимизация производительности для скрола
@@ -99,6 +134,49 @@ document.addEventListener('DOMContentLoaded', function() {
         if (heroAnimation) {
             heroAnimation.style.width = '';
             heroAnimation.style.height = '';
+            heroAnimation.style.position = '';
+            heroAnimation.style.left = '';
+            heroAnimation.style.right = '';
+            heroAnimation.style.top = '';
+            heroAnimation.style.transform = '';
+            heroAnimation.style.margin = '';
+            
+            // Возвращаем 3D модель на исходное место
+            const heroSection = document.querySelector('.hero');
+            if (heroSection) {
+                heroSection.appendChild(heroAnimation);
+            }
+        }
+        
+        // Восстанавливаем индикатор скролла
+        const scrollIndicator = document.getElementById('scroll-down');
+        if (scrollIndicator) {
+            scrollIndicator.style.position = '';
+            scrollIndicator.style.bottom = '';
+            scrollIndicator.style.left = '';
+            scrollIndicator.style.transform = '';
+            scrollIndicator.style.margin = '';
+        }
+        
+        // Восстанавливаем секцию "Сообщество"
+        const communityContent = document.querySelector('.community-content');
+        if (communityContent) {
+            communityContent.style.flexDirection = '';
+            communityContent.style.gap = '';
+            
+            const socialItems = communityContent.querySelectorAll('.twitter-feed, .discord-community');
+            socialItems.forEach(item => {
+                item.style.width = '';
+                item.style.padding = '';
+                item.style.marginBottom = '';
+                
+                const btn = item.querySelector('.community-btn');
+                if (btn) {
+                    btn.style.width = '';
+                    btn.style.marginTop = '';
+                    btn.style.padding = '';
+                }
+            });
         }
     }
     

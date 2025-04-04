@@ -2046,6 +2046,10 @@ body {
   
   .mobile-menu-toggle {
     display: flex;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
     z-index: 999;
   }
   
@@ -2061,319 +2065,199 @@ body {
     width: 100%;
   }
   
-  /* Герой секция */
+  /* Герой секция - уменьшаем отступы */
   .hero {
-    min-height: 100vh;
-    padding-top: 80px;
+    min-height: 90vh;
+    padding-top: 70px;
+    padding-bottom: 20px;
   }
   
+  /* Исправление позиционирования 3D модели */
+  #hero-animation {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    height: 300px;
+    margin: 0 auto 20px;
+    left: auto;
+    right: auto;
+    transform: none;
+  }
+  
+  /* Центрирование заголовков */
   .hero-title-container {
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.5rem;
+    max-width: 100%;
+    text-align: center;
   }
   
   .hero-title.mega,
   .hero-title.buddies {
-    margin: 0 !important;
+    margin: 0 auto !important;
     text-align: center;
+    max-width: 100%;
   }
   
   .hero-subtitle {
     text-align: center;
+    margin-top: 5px;
   }
   
   .hero-text {
     text-align: center;
-    padding: 0 10px;
+    padding: 0;
+    margin: 10px auto;
+    max-width: 100%;
   }
   
-  .hero-buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-  }
-  
-  .btn-primary, 
-  .btn-secondary {
-    width: 100%;
-    max-width: 300px;
-    text-align: center;
-  }
-  
-  #hero-animation {
-    width: 100%;
-    max-width: 400px;
-    height: 300px;
-    margin: 0 auto;
+  /* Исправление кнопки прокрутки вниз */
+  .scroll-indicator {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
   }
 }
 
 /* Мобильные стили */
 @media (max-width: 576px) {
-  /* Хедер */
-  .header-container {
-    padding: 10px var(--mobile-padding);
+  /* Уменьшаем отступы для экономии места */
+  .section {
+    padding: 40px 0;
   }
   
-  .logo {
-    font-size: 1.2rem;
+  .container {
+    padding: 0 10px;
   }
   
-  .logo img {
-    width: 30px;
-    height: auto;
-  }
-  
-  /* Герой секция */
-  .hero-title {
-    font-size: 2.5rem;
-  }
-  
-  .hero-subtitle {
-    font-size: 0.9rem;
-  }
-  
-  .hero-description {
-    font-size: 0.9rem;
-    line-height: 1.5;
-  }
-  
-  /* О проекте */
-  .about-content {
+  /* Оптимизация для секции "Сообщество" */
+  .community-content {
+    flex-direction: column;
     gap: 20px;
   }
   
-  .about-item {
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-  
-  /* Манифест */
-  .terminal-container {
-    padding: 20px 15px;
-  }
-  
-  .terminal-text {
-    font-size: 0.9rem;
-    line-height: 1.5;
+  .twitter-feed, 
+  .discord-community {
+    width: 100%;
+    padding: 15px;
     margin-bottom: 10px;
   }
   
-  /* Коллекция */
-  .collection-filters {
-    flex-wrap: wrap;
-    gap: 10px;
+  .community-heading {
+    font-size: 1.1rem;
   }
   
-  .filter-btn {
-    font-size: 0.8rem;
-    padding: 8px 15px;
+  .social-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
   }
   
-  .nft-card {
-    width: 140px;
-    margin: 10px;
-  }
-  
-  .nft-info {
+  .community-btn {
+    width: 100%;
+    margin-top: 10px;
     padding: 10px;
   }
   
-  .nft-name {
-    font-size: 0.9rem;
-  }
-  
-  .nft-rarity,
-  .nft-price {
-    font-size: 0.8rem;
-  }
-  
-  /* Дорожная карта */
-  .roadmap-item {
-    flex-direction: column;
-  }
-  
-  .roadmap-icon {
-    margin-bottom: 15px;
-    margin-right: 0;
-  }
-  
-  .roadmap-content {
-    padding: 20px;
-  }
-  
-  /* Сообщество */
-  .community-content {
-    flex-direction: column;
-  }
-  
-  .twitter-feed, .discord-community {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-  
-  /* Подписка на рассылку */
-  .newsletter-form {
-    flex-direction: column;
-    width: 100%;
-  }
-  
-  .newsletter-form input {
-    width: 100%;
-    margin-bottom: 15px;
-    padding: 12px;
-  }
-  
-  .newsletter-form button {
-    width: 100%;
-  }
-  
-  /* Футер */
-  .footer-container {
-    flex-direction: column;
-    padding: 40px var(--mobile-padding) 20px;
-  }
-  
-  .footer-nav {
-    flex-direction: column;
-    margin-top: 30px;
-  }
-  
-  .footer-nav-section {
-    margin-bottom: 20px;
-    width: 100%;
-  }
-}
-
-/* Специфические стили для очень маленьких устройств */
-@media (max-width: 375px) {
-  .hero-title {
-    font-size: 2rem;
-  }
-  
-  .section-heading {
-    font-size: 1.8rem;
-  }
-  
+  /* Оптимизация для коллекции */
   .nft-card {
-    width: 130px;
-  }
-  
-  .roadmap-content {
-    padding: 15px;
-  }
-}
-
-/* Фиксы для переполнения и скролла на мобильных устройствах */
-@media (max-width: 768px) {
-  html, body {
-    overflow-x: hidden;
-    width: 100%;
-    max-width: 100vw;
-    position: relative;
-  }
-  
-  /* Убираем подчеркивание логотипа */
-  a.logo {
-    text-decoration: none !important;
-  }
-
-  /* Исправляем позицию кнопки меню */
-  .mobile-menu-toggle {
-    position: absolute;
-    right: var(--mobile-padding);
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 1000;
-  }
-
-  /* Исправление горизонтального скрола */
-  .container, 
-  .header-container,
-  .footer-container,
-  .section,
-  .fullscreen-bg,
-  #background-animation,
-  #star-field,
-  .hero-content,
-  .about-content,
-  .collection-container,
-  .roadmap-container,
-  .community-content,
-  .newsletter-content {
-    max-width: 100vw;
-    overflow-x: hidden;
-    box-sizing: border-box;
-  }
-  
-  /* Фикс для карточек в коллекции */
-  .nft-card {
-    min-width: 140px;
-    max-width: 140px;
+    width: 130px !important;
+    max-width: 130px !important;
     height: auto;
-    margin: 8px;
+    margin: 5px;
+    aspect-ratio: 0.75; /* Соотношение сторон, чтобы карточки не были вытянутыми */
   }
   
   .nft-image-container {
     width: 100%;
-    height: auto;
+    padding-top: 100%; /* Делаем контейнер для изображения квадратным */
+    position: relative;
     overflow: hidden;
   }
   
   .nft-image {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: auto;
-    object-fit: cover;
-  }
-  
-  /* Восстановление 3D модели для мобильной версии */
-  #hero-animation {
-    display: block;
-    width: 300px;
-    height: 300px;
-    margin: 0 auto 20px;
-  }
-
-  /* Исправление размеров элементов для маленьких экранов */
-  @media (max-width: 576px) {
-    .nft-card {
-      min-width: 130px;
-      max-width: 130px;
-    }
-    
-    .about-item, 
-    .terminal-container, 
-    .roadmap-content {
-      padding: 20px 15px;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    
-    .terminal-text {
-      font-size: 0.85rem;
-      line-height: 1.4;
-    }
-    
-    .roadmap-item {
-      align-items: center;
-    }
-    
-    #hero-animation {
-      width: 250px;
-      height: 250px;
-    }
+    height: 100%;
+    object-fit: cover; /* Чтобы изображение корректно заполняло контейнер */
   }
 }
 
-/* Исправление для ссылок - не подчеркивать лого */
-@media (max-width: 576px) {
-  a:not(.btn-primary):not(.btn-secondary):not(.nav-link):not(.logo) {
-    text-decoration: underline;
+/* Фиксы для элементов на самых маленьких экранах */
+@media (max-width: 375px) {
+  #hero-animation {
+    height: 200px;
+    max-width: 200px;
   }
   
-  a.logo {
-    text-decoration: none !important;
+  .hero-title {
+    font-size: 1.8rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.8rem;
+  }
+  
+  .btn-primary, 
+  .btn-secondary {
+    padding: 10px 15px;
+    font-size: 0.8rem;
+  }
+  
+  .section-heading {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+  
+  /* Сокращаем отступы еще больше */
+  .about-item, 
+  .terminal-container, 
+  .roadmap-content {
+    padding: 15px 10px;
+  }
+}
+
+/* Слайдер коллекции для мобильных - фикс карточек */
+@media (max-width: 768px) {
+  .slider-wrapper {
+    width: 100%;
+    overflow-x: hidden;
+    padding: 0;
+  }
+  
+  .slider-track {
+    display: flex;
+    gap: 10px;
+    padding: 10px 5px;
+    box-sizing: border-box;
+  }
+  
+  @media (max-width: 576px) {
+    .nft-card {
+      aspect-ratio: 0.75; /* Исправление соотношения сторон */
+      min-width: 120px !important;
+      max-width: 120px !important;
+      margin: 0 5px;
+      box-sizing: border-box;
+    }
+    
+    .nft-info {
+      padding: 8px;
+    }
+    
+    .nft-name {
+      font-size: 0.8rem;
+      margin-bottom: 5px;
+    }
+    
+    .nft-rarity,
+    .nft-price {
+      font-size: 0.7rem;
+      margin-bottom: 3px;
+    }
   }
 }
 
@@ -2382,9 +2266,9 @@ body {
   /* Стили для бургер-меню */
   .mobile-menu-toggle {
     width: 30px;
-    height: 25px;
+    height: 24px;
     position: absolute;
-    right: var(--mobile-padding);
+    right: 15px;
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
@@ -2433,45 +2317,37 @@ body {
     transform: rotate(-135deg);
     background: var(--secondary-color);
   }
-}
-
-/* Слайдер коллекции для мобильных */
-@media (max-width: 768px) {
-  /* Улучшенные стили для слайдера коллекции */
-  .slider-wrapper {
-    width: 100%;
+  
+  /* Базовые фиксы для мобильных */
+  html, body {
     overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+    position: relative;
   }
   
-  /* Оптимизация для слайдера */
-  @media (max-width: 576px) {
-    .slider-track {
-      display: flex;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      margin: 0;
-      padding-bottom: 15px;
-      scroll-snap-type: x mandatory;
-      width: 100%;
-    }
-    
-    .nft-card {
-      scroll-snap-align: start;
-      flex: 0 0 auto;
-      width: 130px !important;
-      margin: 0 5px;
-    }
-    
-    /* Скрываем скролбар но сохраняем функциональность */
-    .slider-track::-webkit-scrollbar {
-      display: none;
-    }
-    
-    .slider-track {
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
+  /* Убираем подчеркивание логотипа */
+  a.logo {
+    text-decoration: none !important;
+  }
+  
+  /* Исправление горизонтального скрола */
+  .container, 
+  .header-container,
+  .footer-container,
+  .section,
+  .fullscreen-bg,
+  #background-animation,
+  #star-field,
+  .hero-content,
+  .about-content,
+  .collection-container,
+  .roadmap-container,
+  .community-content,
+  .newsletter-content {
+    max-width: 100vw;
+    overflow-x: hidden;
+    box-sizing: border-box;
   }
 }
 
@@ -2505,5 +2381,32 @@ body {
   body.is-scrolling .newsletter-form button {
     box-shadow: none !important;
     transition: none !important;
+  }
+}
+
+/* Исправление для ссылок - не подчеркивать лого */
+@media (max-width: 576px) {
+  a:not(.btn-primary):not(.btn-secondary):not(.nav-link):not(.logo) {
+    text-decoration: underline;
+  }
+  
+  a.logo {
+    text-decoration: none !important;
+  }
+  
+  /* Оптимизированные кнопки для мобильных */
+  .hero-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+  }
+  
+  .btn-primary, 
+  .btn-secondary {
+    width: 100%;
+    max-width: 260px;
+    text-align: center;
   }
 }

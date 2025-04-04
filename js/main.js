@@ -586,3 +586,74 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(adjustTextSpacing, 3000); // Длительная задержка для гарантии
 });
 
+// Функциональность мобильного меню
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    const navList = document.querySelector('.nav-list');
+    const header = document.querySelector('.main-header');
+    
+    // Убедимся, что у нас есть необходимые элементы
+    if (mobileMenuToggle && navList) {
+        // Добавляем обработчик нажатия на бургер-кнопку
+        mobileMenuToggle.addEventListener('click', function() {
+            mobileMenuToggle.classList.toggle('active');
+            navList.classList.toggle('active');
+            
+            // Добавляем/убираем класс у body для предотвращения скролла
+            if (navList.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // Обработка кликов по пунктам меню
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(function(link) {
+            link.addEventListener('click', function() {
+                // Закрываем меню при клике на пункт
+                mobileMenuToggle.classList.remove('active');
+                navList.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+        
+        // Обработка клика вне меню
+        document.addEventListener('click', function(event) {
+            if (!navList.contains(event.target) && !mobileMenuToggle.contains(event.target) && navList.classList.contains('active')) {
+                mobileMenuToggle.classList.remove('active');
+                navList.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    }
+    
+    // Дополнительная обработка для фиксированного хедера
+    if (header) {
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Если скроллим более чем на 50px от топа, добавляем класс
+            if (scrollTop > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            // Скрываем/показываем хедер при скролле вниз/вверх
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // Скрол вниз, скрываем хедер, если не открыто меню
+                if (!navList.classList.contains('active')) {
+                    header.style.transform = 'translateY(-100%)';
+                }
+            } else {
+                // Скрол вверх, показываем хедер
+                header.style.transform = 'translateY(0)';
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+    }
+});
+
