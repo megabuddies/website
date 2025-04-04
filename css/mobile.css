@@ -1,0 +1,311 @@
+/* mobile.css - Стили для мобильной версии сайта Mega Buddies */
+
+/* Основные медиа запросы для мобильных устройств */
+
+/* Планшеты и малые десктопы */
+@media (max-width: 992px) {
+  /* Улучшенное мобильное меню и контейнер */
+  .mobile-menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1001;
+  }
+  
+  .mobile-menu-toggle span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: var(--accent-color);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+}
+
+/* Мобильные устройства */
+@media (max-width: 768px) {
+  /* Анимация бургер меню */
+  .mobile-menu-toggle.active {
+    transform: rotate(180deg);
+  }
+  
+  .mobile-menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 6px);
+  }
+  
+  .mobile-menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .mobile-menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -5px);
+  }
+  
+  /* Улучшенная навигация */
+  .nav-link {
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  
+  .nav-link:after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: var(--accent-color);
+    transition: width 0.3s ease;
+  }
+  
+  .nav-link:hover:after,
+  .nav-item.active .nav-link:after {
+    width: 50%;
+  }
+  
+  /* Улучшения для героя */
+  #hero-animation {
+    transform: scale(0.8);
+  }
+  
+  /* Улучшения для мобильных кнопок */
+  .btn-primary, 
+  .btn-secondary {
+    padding: 14px 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 280px;
+  }
+  
+  /* Улучшения для секций */
+  .section-line {
+    margin: 20px auto 40px;
+  }
+  
+  /* Улучшения для терминала */
+  .terminal-container {
+    padding: 20px 15px;
+  }
+  
+  .terminal-text {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  
+  /* Улучшения для сообщества */
+  .twitter-feed, .discord-community {
+    padding: 25px 20px;
+  }
+  
+  /* Улучшения для подписки */
+  .newsletter-content {
+    padding: 25px 20px;
+  }
+  
+  /* Добавляем внутренние отступы, когда меню скрыто */
+  .main-header {
+    transition: transform 0.3s ease;
+  }
+  
+  /* Более плавные анимации для мобильных устройств */
+  .nav-link,
+  .btn-primary,
+  .btn-secondary,
+  .community-btn,
+  .footer-nav-link a {
+    transition: all 0.2s ease;
+  }
+  
+  /* Увеличиваем область нажатия для кнопок */
+  .nav-link,
+  .community-btn,
+  .btn-primary,
+  .btn-secondary,
+  .filter-btn,
+  .footer-nav-link a {
+    padding: 12px 20px;
+  }
+  
+  /* Убираем эффекты наведения, которые не работают на мобильных */
+  .about-item:hover,
+  .terminal-container:hover,
+  .roadmap-item:hover,
+  .twitter-feed:hover,
+  .discord-community:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  
+  /* Заменяем эффекты наведения на эффекты касания */
+  .mobile .about-item.touch-active,
+  .mobile .terminal-container.touch-active,
+  .mobile .roadmap-item.touch-active,
+  .mobile .twitter-feed.touch-active,
+  .mobile .discord-community.touch-active {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(146, 147, 151, 0.2);
+    border-color: var(--secondary-color);
+  }
+  
+  .hero {
+    height: calc(100 * var(--vh));
+    min-height: calc(100 * var(--vh));
+  }
+  
+  /* Гарантируем, что контент не выходит за границы экрана */
+  img, video, canvas, svg {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Обертки для текста, чтобы предотвратить переполнение */
+  .text-wrapper {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+  
+  /* Настройка шрифтов для лучшей читаемости на мобильных */
+  p, div, span, li {
+    max-width: 100%;
+    word-break: break-word;
+  }
+  
+  /* Уменьшаем отступы для элементов на мобильном */
+  .section {
+    padding: 50px 0;
+  }
+  
+  /* Улучшение формы подписки */
+  .newsletter-form {
+    max-width: 100%;
+  }
+  
+  /* Корректировка пиксельных элементов на мобильных устройствах */
+  .pixel-decoration {
+    display: none;
+  }
+  
+  /* Ограничиваем минимальную высоту для секций */
+  .section {
+    min-height: auto;
+  }
+}
+
+/* Малые мобильные устройства */
+@media (max-width: 576px) {
+  /* Сжатие заголовков для экономии места */
+  .section-heading {
+    letter-spacing: 1px;
+  }
+  
+  /* Улучшения для героя на маленьких экранах */
+  .hero {
+    min-height: 90vh;
+  }
+  
+  /* Оптимизация NFT сетки */
+  .nft-card {
+    border-width: 2px;
+  }
+  
+  /* Оптимизация дорожной карты */
+  .roadmap-item {
+    clip-path: none;
+  }
+  
+  /* Улучшения для прелоадера */
+  .preloader-title {
+    font-size: 20px;
+  }
+  
+  /* Оптимизация для очень маленьких экранов */
+  .terminal-buttons {
+    display: none;
+  }
+  
+  .terminal-title {
+    font-size: 0.9rem;
+  }
+}
+
+/* Улучшения для ориентации экрана */
+@media (max-height: 600px) and (orientation: landscape) {
+  .hero {
+    min-height: 450px;
+    padding: 80px 0 40px;
+  }
+  
+  .hero-content {
+    padding-bottom: 40px;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-description {
+    margin-bottom: 15px;
+  }
+  
+  .hero-buttons {
+    gap: 10px;
+  }
+  
+  .scroll-indicator {
+    display: none;
+  }
+}
+
+/* Стили для тач-эффектов на мобильных устройствах */
+.touch-active {
+  transform: scale(0.98) !important;
+  opacity: 0.9 !important;
+  transition: transform 0.1s ease, opacity 0.1s ease !important;
+}
+
+/* Улучшенный header для мобильных устройств */
+.header-hidden {
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+}
+
+/* CSS переменная для правильной высоты на мобильных устройствах */
+:root {
+  --vh: 1vh;
+}
+
+/* Оптимизация для малых экранов */
+@media (max-width: 320px) {
+  .container {
+    padding: 0 10px;
+  }
+  
+  .hero-title {
+    font-size: 1.5rem;
+  }
+  
+  .section-heading {
+    font-size: 1.5rem;
+  }
+  
+  .preloader-content {
+    width: 250px;
+    padding: 15px;
+  }
+}
+
+/* Фиксы для предотвращения горизонтальной прокрутки */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+} 

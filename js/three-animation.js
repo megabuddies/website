@@ -7,33 +7,46 @@ let clock = new THREE.Clock();
 let leftEarPivot, rightEarPivot;
 let resourcesLoaded = false;
 let animationPaused = false;
-let lastFrameTime = 0;
-const frameInterval = 1000 / 60; // Assuming a default frameInterval
 
-// Определяем мобильное устройство
-const isMobile = window.innerWidth <= 768;
-const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+// Проверка на мобильное устройство
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                  window.innerWidth < 768;
 
-// Настройки производительности для различных устройств
-const performanceSettings = {
-    desktop: {
-        starCount: 300,
-        starSize: { min: 0.2, max: 1.5 },
-        starOpacity: 0.8,
-        starSpeed: 0.02,
-        backgroundOpacity: 0.5
+// Настройки качества рендеринга
+const QUALITY_SETTINGS = {
+    high: {
+        particleCount: 1000,
+        particleSize: 0.05,
+        animationSpeed: 1.0,
+        bloomStrength: 1.5,
+        bloomRadius: 0.75,
+        bloomThreshold: 0.2
     },
-    mobile: {
-        starCount: 150,
-        starSize: { min: 0.1, max: 1.0 },
-        starOpacity: 0.7,
-        starSpeed: 0.015,
-        backgroundOpacity: 0.4
+    medium: {
+        particleCount: 500,
+        particleSize: 0.08,
+        animationSpeed: 0.8,
+        bloomStrength: 1.2,
+        bloomRadius: 0.6,
+        bloomThreshold: 0.3
+    },
+    low: {
+        particleCount: 200,
+        particleSize: 0.1,
+        animationSpeed: 0.5,
+        bloomStrength: 0.8,
+        bloomRadius: 0.5,
+        bloomThreshold: 0.4
     }
 };
 
-// Выбираем настройки в зависимости от устройства
-const settings = isMobile ? performanceSettings.mobile : performanceSettings.desktop;
+// Выбираем качество на основе устройства
+const renderQuality = (isMobile) 
+    ? (window.MOBILE_RENDER_QUALITY || 'low') 
+    : 'high';
+
+// Получаем настройки в соответствии с выбранным качеством
+const qualitySettings = QUALITY_SETTINGS[renderQuality];
 
 function initThree() {
     // Сразу инициализируем фон для быстрого отображения
@@ -309,7 +322,7 @@ function createPixelRabbit() {
 }
 
 function createParticleSystem() {
-    const particleCount = 1500; // Увеличиваем количество частиц для фона
+    const particleCount = qualitySettings.particleCount;
     const particles = new THREE.BufferGeometry();
     
     const positions = new Float32Array(particleCount * 3);
@@ -340,7 +353,7 @@ function createParticleSystem() {
         colors[i * 3 + 1] = color.g;
         colors[i * 3 + 2] = color.b;
         
-        sizes[i] = Math.random() * 0.15 + 0.05;
+        sizes[i] = Math.random() * qualitySettings.particleSize + 0.05;
     }
     
     particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
@@ -439,30 +452,46 @@ function onWindowResize() {
     }
 }
 
-function animate(timestamp) {
-    // Ограничение частоты кадров
-    if (timestamp && lastFrameTime && timestamp - lastFrameTime < frameInterval) {
+function animate() {
+    // Если анимация на паузе, просто запрашиваем следующий кадр
+    if (animationPaused) {
         requestAnimationFrame(animate);
         return;
     }
-    lastFrameTime = timestamp || 0;
     
-    // Если анимация приостановлена, пропускаем отрисовку для экономии ресурсов
-    if (animationPaused) return;
+    // Получаем время
+    const time = Date.now() * 0.001;
     
-    const elapsedTime = clock.getElapsedTime();
+    // Скорость анимации зависит от качества рендеринга
+    const speed = qualitySettings.animationSpeed;
     
-    // Анимация фона - увеличиваем скорость вращения
+    // Вращаем частицы
     if (particleSystem) {
-        particleSystem.rotation.x += 0.0008;
-        particleSystem.rotation.y += 0.001;
-        
-        // Добавляем реакцию на движение мыши для фона
-        particleSystem.rotation.x += (mouseY * 0.0001);
-        particleSystem.rotation.y += (mouseX * 0.0001);
+        particleSystem.rotation.y = time * speed * 0.05;
+        particleSystem.rotation.z = time * speed * 0.03;
     }
     
-    // Рендеринг фона (всегда отображаем фон, даже если модель не загружена)
+    // Другие анимации для частиц
+    if (particleSystem && particleSystem.geometry && particleSystem.geometry.attributes.position) {
+        const positions = particleSystem.geometry.attributes.position.array;
+        const sizes = particleSystem.geometry.attributes.size.array;
+        
+        for (let i = 0; i < positions.length / 3; i++) {
+            // Ограничиваем количество обрабатываемых частиц на мобильных
+            if (isMobile && i > positions.length / 6) break;
+            
+            // Добавляем синусоидальное движение для частиц
+            positions[i * 3 + 1] += Math.sin(time * speed + i) * 0.01;
+            
+            // Меняем размер частиц
+            sizes[i] = (Math.sin(time * speed + i) * 0.5 + 1.5) * qualitySettings.particleSize;
+        }
+        
+        particleSystem.geometry.attributes.position.needsUpdate = true;
+        particleSystem.geometry.attributes.size.needsUpdate = true;
+    }
+    
+    // Анимация фона
     if (backgroundRenderer && backgroundScene && backgroundCamera) {
         backgroundRenderer.render(backgroundScene, backgroundCamera);
     }
@@ -472,17 +501,17 @@ function animate(timestamp) {
         pixelRabbit.rotation.y += 0.01;
         
         pixelRabbit.rotation.x += (mouseY - pixelRabbit.rotation.x * 0.1) * 0.02;
-        pixelRabbit.rotation.y += (mouseX - pixelRabbit.rotation.y * 0.1) * 0.2;
+        pixelRabbit.rotation.y += (mouseX - pixelRabbit.rotation.y * 0.1) * 0.02;
         
         // Пульсация с учетом уменьшенного размера модели
-        const pulseFactor = Math.sin(elapsedTime * 2) * 0.05 + 1;
+        const pulseFactor = Math.sin(time * 2) * 0.05 + 1;
         pixelRabbit.scale.set(pulseFactor * 1.2, pulseFactor * 1.2, pulseFactor * 1.2);
         
         // Анимируем уши через контейнеры
         if (leftEarPivot && rightEarPivot) {
             // Используем разную частоту и фазовый сдвиг для каждого уха
-            leftEarPivot.rotation.z = Math.PI / 12 + Math.sin(elapsedTime * 1.3) * 0.12;
-            rightEarPivot.rotation.z = -Math.PI / 12 + Math.sin(elapsedTime * 1.7 + Math.PI/3) * 0.09;
+            leftEarPivot.rotation.z = Math.PI / 12 + Math.sin(time * 1.3) * 0.12;
+            rightEarPivot.rotation.z = -Math.PI / 12 + Math.sin(time * 1.7 + Math.PI/3) * 0.09;
         }
 
         if (pixelRabbit.children[3] && pixelRabbit.children[4]) {
@@ -527,214 +556,51 @@ function animate(timestamp) {
             renderer.render(scene, camera);
         }
     }
-    
-    requestAnimationFrame(animate);
 }
+
+// Обработчики событий для мобильной оптимизации
+function initMobileOptimizations() {
+    if (isMobile) {
+        // Пауза при прокрутке на мобильных для повышения производительности
+        let scrollTimeout;
+        window.addEventListener('scroll', function() {
+            animationPaused = true;
+            
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(function() {
+                animationPaused = false;
+            }, 200);
+        }, { passive: true });
+        
+        // Пауза при невидимости вкладки
+        document.addEventListener('visibilitychange', function() {
+            animationPaused = document.hidden;
+        });
+        
+        // Оптимизация разрешения на мобильных
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+        
+        // Уменьшаем интенсивность блюма на мобильных
+        if (bloomPass) {
+            bloomPass.strength = qualitySettings.bloomStrength;
+            bloomPass.radius = qualitySettings.bloomRadius;
+            bloomPass.threshold = qualitySettings.bloomThreshold;
+        }
+    }
+}
+
+// Инициализируем Three.js анимацию
+initThree();
+
+// Добавляем оптимизации для мобильных устройств
+initMobileOptimizations();
 
 // Инициализация Three.js при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
-    // Проверка на мобильное устройство
-    const isMobile = window.innerWidth <= 768;
-    
-    // Настройки качества и производительности
-    const performanceSettings = {
-        desktop: {
-            particleCount: 1000,
-            particleSize: 10,
-            effectIntensity: 1.0,
-            maxFPS: 60,
-            bgOpacity: 1.0
-        },
-        mobile: {
-            particleCount: 200,  // Уменьшаем количество частиц для мобильных
-            particleSize: 6,     // Уменьшаем размер
-            effectIntensity: 0.5, // Уменьшаем интенсивность
-            maxFPS: 30,           // Снижаем FPS
-            bgOpacity: 0.7        // Делаем фон менее заметным
-        }
-    };
-    
-    // Выбираем настройки в зависимости от устройства
-    const settings = isMobile ? performanceSettings.mobile : performanceSettings.desktop;
-    
-    // Ограничение FPS для экономии батареи на мобильных устройствах
-    lastFrameTime = 0;
-    frameInterval = 1000 / settings.maxFPS;
-    
-    // Для мобильных устройств изменяем инициализацию
-    if (isMobile) {
-        // Облегченная версия для мобильных
-        initMobileBackground(); 
-    } else {
-        // Полная версия для десктопа
-        try {
-            initThree();
-            initStarField();
-        } catch (error) {
-            console.error("Ошибка при инициализации 3D анимаций:", error);
-            createFallbackAnimation();
-        }
-    }
-    
-    // Инициализация упрощенного фона для мобильных
-    function initMobileBackground() {
-        // Создаем звездный фон
-        initStarField();
-        
-        // Упрощенная версия 3D модели для мобильных
-        const heroAnimation = document.getElementById('hero-animation');
-        if (heroAnimation) {
-            // Создаем эффект градиента
-            heroAnimation.style.background = 'radial-gradient(circle at center, rgba(19, 145, 255, 0.15) 0%, rgba(10, 10, 15, 0.05) 70%)';
-            
-            // Добавляем простую анимацию с помощью CSS
-            const simpleMesh = document.createElement('div');
-            simpleMesh.className = 'simple-mesh';
-            simpleMesh.style.cssText = `
-                position: absolute;
-                width: 80px;
-                height: 80px;
-                left: 50%;
-                top: 50%;
-                transform: translate(-50%, -50%);
-                border: 2px solid rgba(19, 145, 255, 0.5);
-                box-shadow: 0 0 15px rgba(19, 145, 255, 0.3);
-                animation: rotateMesh 6s infinite linear;
-                transform-style: preserve-3d;
-            `;
-            
-            // Добавляем грани куба
-            for (let i = 0; i < 6; i++) {
-                const face = document.createElement('div');
-                face.className = 'cube-face';
-                face.style.cssText = `
-                    position: absolute;
-                    width: 100%;
-                    height: 100%;
-                    background-color: rgba(19, 145, 255, 0.1);
-                    border: 1px solid rgba(19, 145, 255, 0.3);
-                    backface-visibility: visible;
-                    box-shadow: inset 0 0 10px rgba(19, 145, 255, 0.2);
-                `;
-                
-                switch(i) {
-                    case 0: // front
-                        face.style.transform = 'translateZ(40px)';
-                        break;
-                    case 1: // back
-                        face.style.transform = 'rotateY(180deg) translateZ(40px)';
-                        break;
-                    case 2: // right
-                        face.style.transform = 'rotateY(90deg) translateZ(40px)';
-                        break;
-                    case 3: // left
-                        face.style.transform = 'rotateY(-90deg) translateZ(40px)';
-                        break;
-                    case 4: // top
-                        face.style.transform = 'rotateX(90deg) translateZ(40px)';
-                        break;
-                    case 5: // bottom
-                        face.style.transform = 'rotateX(-90deg) translateZ(40px)';
-                        break;
-                }
-                
-                simpleMesh.appendChild(face);
-            }
-            
-            heroAnimation.appendChild(simpleMesh);
-            
-            // Добавляем стили для анимации
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes rotateMesh {
-                    0% { transform: translate(-50%, -50%) rotateX(0) rotateY(0); }
-                    100% { transform: translate(-50%, -50%) rotateX(360deg) rotateY(360deg); }
-                }
-                
-                @keyframes pulse {
-                    0% { opacity: 0.5; transform: scale(1); }
-                    50% { opacity: 0.8; transform: scale(1.05); }
-                    100% { opacity: 0.5; transform: scale(1); }
-                }
-                
-                .simple-mesh {
-                    opacity: ${settings.bgOpacity};
-                }
-                
-                .cube-face {
-                    animation: pulse 3s infinite alternate;
-                }
-            `;
-            document.head.appendChild(style);
-        }
-        
-        // Упрощенный фон
-        const backgroundAnimation = document.getElementById('background-animation');
-        if (backgroundAnimation) {
-            backgroundAnimation.style.background = 'radial-gradient(circle at center, rgba(10, 10, 15, 0.5) 0%, rgba(0, 0, 0, 0) 70%)';
-            backgroundAnimation.style.opacity = settings.bgOpacity.toString();
-        }
-    }
-});
-
-// Инициализация звездного фона
-function initStarField() {
-    const starField = document.getElementById('star-field');
-    const isMobile = window.innerWidth <= 768;
-    
-    if (!starField) return;
-    
-    // Уменьшаем количество звезд для мобильных устройств
-    const starCount = isMobile ? 150 : 800;
-    
-    // Очищаем контейнер перед добавлением новых звезд
-    starField.innerHTML = '';
-    
-    // Создаем звезды
-    for (let i = 0; i < starCount; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        
-        // Случайные размеры и позиции
-        const size = Math.random() * (isMobile ? 1.5 : 2) + (isMobile ? 0.5 : 1);
-        const x = Math.random() * 100;
-        const y = Math.random() * 100;
-        const delay = Math.random() * 15;
-        const duration = Math.random() * 3 + 3;
-        
-        // Применяем стили
-        star.style.width = `${size}px`;
-        star.style.height = `${size}px`;
-        star.style.left = `${x}%`;
-        star.style.top = `${y}%`;
-        star.style.animationDelay = `${delay}s`;
-        star.style.animationDuration = `${duration}s`;
-        star.style.opacity = isMobile ? '0.7' : '1';
-        
-        // Добавляем звезду
-        starField.appendChild(star);
-    }
-}
-
-// Обработчик изменения размера окна для адаптивности
-window.addEventListener('resize', function() {
-    const newIsMobile = window.innerWidth <= 768;
-    
-    // Обновляем размеры рендерера и камеры
-    if (camera && renderer) {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        
-        // Если изменился статус мобильного устройства, обновляем настройки
-        if (newIsMobile !== isMobile) {
-            // Обновим настройки производительности
-            const newSettings = newIsMobile ? 
-                performanceSettings.mobile : 
-                performanceSettings.desktop;
-            
-            // Обновляем частоту кадров
-            frameInterval = 1000 / newSettings.maxFPS;
-        }
+    try {
+        initThree();
+    } catch (error) {
+        console.error("Ошибка инициализации Three.js:", error);
+        createFallbackAnimation();
     }
 });
