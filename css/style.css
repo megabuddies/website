@@ -68,6 +68,10 @@
                 0 0 40px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.3));
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Добавляем рамку с градиентом */
@@ -173,7 +177,7 @@
     height: 24px;
     background-color: rgba(10, 10, 15, 0.6);
     border-radius: 0;
-    margin: 25px 0;
+    margin: 15px 0;
     position: relative;
     overflow: hidden;
     border: 2px solid var(--accent-color);
@@ -298,6 +302,7 @@
     padding: 8px;
     background-color: rgba(0, 0, 0, 0.3);
     border-left: 2px solid var(--accent-color);
+    width: 100%;
 }
 
 #preloader .terminal-prompt {
