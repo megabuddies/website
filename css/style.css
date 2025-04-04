@@ -31,6 +31,21 @@
     z-index: -1;
 }
 
+/* Добавляем пиксельный эффект на фон прелоадера */
+#preloader::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%237087e3' fill-opacity='0.05' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 5v1H0V0h5z'/%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.3;
+    mix-blend-mode: overlay;
+    z-index: -1;
+}
+
 #preloader.active {
     opacity: 1;
     visibility: visible;
@@ -41,9 +56,10 @@
     visibility: hidden;
 }
 
+/* Основной контейнер прелоадера с CRT эффектом */
 .preloader-content {
     text-align: center;
-    width: 300px;
+    width: 320px;
     border: 2px solid var(--accent-color);
     border-radius: 5px;
     padding: 30px;
@@ -54,6 +70,7 @@
     overflow: hidden;
 }
 
+/* Добавляем рамку с градиентом */
 .preloader-content::before {
     content: '';
     position: absolute;
@@ -64,7 +81,43 @@
     border: 2px solid transparent;
     border-image: linear-gradient(to right, var(--accent-color), var(--secondary-color)) 1;
     pointer-events: none;
-    z-index: 1;
+    z-index: 2;
+}
+
+/* Добавляем эффект мониторной сетки */
+.preloader-content::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(transparent 50%, rgba(0, 0, 0, 0.05) 50%),
+        linear-gradient(90deg, transparent 50%, rgba(0, 0, 0, 0.05) 50%);
+    background-size: 2px 2px;
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0.3;
+}
+
+/* Сканирующая линия для прелоадера */
+.scan-line-preloader {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+    animation: preloaderScanline 3s linear infinite;
+    z-index: 4;
+}
+
+@keyframes preloaderScanline {
+    0% { top: 0; opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { top: 100%; opacity: 0.5; }
 }
 
 .preloader-content .logo {
@@ -87,6 +140,7 @@
     margin-bottom: 15px;
     animation: logoPulse 2.5s infinite alternate;
     filter: drop-shadow(0 0 10px var(--accent-glow-color));
+    image-rendering: pixelated; /* Добавляем пиксельный рендеринг логотипа */
 }
 
 @keyframes logoPulse {
@@ -101,28 +155,109 @@
     }
 }
 
+/* Пиксельный оверлей для дополнительных эффектов */
+.pixel-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 6;
+    opacity: 0.6;
+}
+
+/* Обновленный пиксельный прогресс-бар */
 .loading-bar {
     width: 100%;
-    height: 8px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
+    height: 24px;
+    background-color: rgba(10, 10, 15, 0.6);
+    border-radius: 0;
     margin: 25px 0;
     position: relative;
     overflow: hidden;
-    border: 1px solid var(--accent-color);
+    border: 2px solid var(--accent-color);
+    image-rendering: pixelated;
+    box-shadow: 0 0 10px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.5));
+}
+
+.loading-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1) 20%, transparent 40%, transparent 60%, rgba(255, 255, 255, 0.1) 80%, transparent);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+    z-index: 1;
+}
+
+.loading-bar::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    background-image: 
+        repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(255, 255, 255, 0.03) 8px, rgba(255, 255, 255, 0.03) 16px);
+    pointer-events: none;
+    z-index: 2;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
 }
 
 .loading-bar .progress {
     width: 0;
     height: 100%;
     background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
-    border-radius: 3px;
-    transition: width 0.3s ease-out;
+    transition: width 0.3s steps(20);
     position: absolute;
     top: 0;
     left: 0;
-    box-shadow: 0 0 10px var(--accent-glow-color),
-                0 0 20px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.3));
+    box-shadow: 0 0 15px var(--secondary-glow-color);
+    z-index: 3;
+}
+
+/* Создаем пиксельный эффект для прогресс-бара */
+.loading-bar .progress::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(90deg, 
+            rgba(255, 255, 255, 0.15), 
+            rgba(255, 255, 255, 0.15) 3px, 
+            transparent 3px, 
+            transparent 6px),
+        linear-gradient(0deg, 
+            rgba(0, 0, 0, 0.1), 
+            rgba(0, 0, 0, 0.1) 3px, 
+            transparent 3px, 
+            transparent 6px);
+    background-size: 6px 6px, 6px 6px;
+    pointer-events: none;
+    z-index: 4;
+}
+
+.loading-bar .progress::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 4px;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 8px var(--secondary-color), 0 0 16px var(--secondary-color);
+    z-index: 5;
 }
 
 .loading-text {
@@ -151,6 +286,23 @@
     width: 24px;
     text-align: left;
     animation: neonFlicker 2s infinite;
+}
+
+/* Пиксельный текст терминала */
+#preloader .terminal-text {
+    margin-top: 15px;
+    font-size: 14px;
+    opacity: 0.8;
+    text-align: left;
+    font-family: var(--font-mono);
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-left: 2px solid var(--accent-color);
+}
+
+#preloader .terminal-prompt {
+    color: var(--accent-color);
+    margin-right: 6px;
 }
 
 @keyframes titlePulse {

@@ -3,7 +3,37 @@ document.addEventListener('DOMContentLoaded', function() {
     const preloader = document.getElementById('preloader');
     const progressBar = document.querySelector('#preloader .progress');
     const terminalText = document.querySelector('#preloader .terminal-text');
+    const pixelOverlay = document.querySelector('#preloader .pixel-overlay');
     let loadingProgress = 0;
+    
+    // Создаем пиксельный эффект для оверлея
+    function createPixelOverlay() {
+        if (!pixelOverlay) return;
+        
+        const gridSize = 4;
+        for (let i = 0; i < 32; i++) {
+            for (let j = 0; j < 6; j++) {
+                const pixel = document.createElement('div');
+                pixel.style.position = 'absolute';
+                pixel.style.width = gridSize + 'px';
+                pixel.style.height = gridSize + 'px';
+                pixel.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                pixel.style.left = (i * gridSize) + 'px';
+                pixel.style.top = (j * gridSize) + 'px';
+                pixel.style.opacity = Math.random() > 0.7 ? '0.5' : '0';
+                
+                // Случайная анимация мерцания
+                if (Math.random() > 0.5) {
+                    pixel.style.animation = `pixelFlicker ${(Math.random() * 3 + 1)}s infinite`;
+                }
+                
+                pixelOverlay.appendChild(pixel);
+            }
+        }
+    }
+    
+    // Вызываем создание пиксельного оверлея
+    createPixelOverlay();
     
     // Массив сообщений загрузки для имитации реального процесса
     const loadingMessages = [
@@ -20,7 +50,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Функция для обновления прогресса загрузки
     function updateProgress(progress) {
         loadingProgress = progress;
-        progressBar.style.width = `${Math.min(loadingProgress, 95)}%`;
+        // Используем steps для пиксельной анимации прогресса
+        progressBar.style.width = `${Math.floor(Math.min(loadingProgress, 95) / 5) * 5}%`;
         
         // Обновляем текст терминала в зависимости от прогресса
         const messageIndex = Math.floor((loadingProgress / 100) * loadingMessages.length);
@@ -56,20 +87,31 @@ document.addEventListener('DOMContentLoaded', function() {
     // Для скриптов и стилей используем интервал, симулирующий загрузку
     const progressInterval = setInterval(() => {
         if (loadingProgress < 75) {
-            updateProgress(loadingProgress + 1);
+            // Увеличиваем прогресс шагами по 5% для пиксельного эффекта
+            updateProgress(Math.ceil(loadingProgress / 5) * 5 + 5);
         } else {
             clearInterval(progressInterval);
         }
-    }, 100);
+    }, 250);
+    
+    // Добавляем CSS для анимации пикселей
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes pixelFlicker {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 0.5; }
+        }
+    `;
+    document.head.appendChild(style);
     
     // Скрываем прелоадер после начальной загрузки и показываем контент
     window.addEventListener('load', function() {
         // Добавляем задержку перед скрытием прелоадера для завершения загрузки модели (увеличена на 5 секунд)
         setTimeout(() => {
-            // Плавно завершаем загрузку от текущего значения до 100%
+            // Плавно завершаем загрузку от текущего значения до 100% шагами по 5%
             const completeInterval = setInterval(() => {
                 if (loadingProgress < 100) {
-                    updateProgress(loadingProgress + 1);
+                    updateProgress(Math.ceil(loadingProgress / 5) * 5 + 5);
                 } else {
                     clearInterval(completeInterval);
                     
@@ -84,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         document.body.style.overflow = 'auto';
                     }, 800);
                 }
-            }, 30);
+            }, 150);
         }, 6000);
     });
     
