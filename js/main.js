@@ -1,4 +1,21 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Определение сенсорных устройств
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+    const isMobile = window.innerWidth <= 768;
+    
+    // Добавляем класс к body в зависимости от типа устройства
+    if (isTouchDevice) {
+        document.body.classList.add('touch-device');
+    } else {
+        document.body.classList.add('no-touch');
+    }
+    
+    if (isMobile) {
+        document.body.classList.add('mobile-device');
+    } else {
+        document.body.classList.add('desktop-device');
+    }
+    
     // Получаем элемент прелоадера
     const preloader = document.getElementById('preloader');
     const progressBar = document.querySelector('#preloader .progress');
@@ -149,14 +166,113 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Мобильное меню
+    // Улучшенное мобильное меню
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-    const mainNav = document.querySelector('.main-nav');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
     
-    mobileMenuToggle.addEventListener('click', () => {
+    // Функция для переключения состояния мобильного меню
+    function toggleMobileMenu() {
         mobileMenuToggle.classList.toggle('active');
-        mainNav.classList.toggle('active');
+        mobileMenu.classList.toggle('active');
+        document.body.classList.toggle('no-scroll');
+        
+        // Добавляем анимацию затухания для фона
+        if (mobileMenu.classList.contains('active')) {
+            document.querySelectorAll('section').forEach(section => {
+                section.style.filter = 'blur(5px)';
+            });
+            
+            // Анимируем появление каждого пункта меню один за другим
+            mobileMenuLinks.forEach((link, index) => {
+                link.style.opacity = '0';
+                link.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    link.style.opacity = '1';
+                    link.style.transform = 'translateY(0)';
+                }, 100 + (index * 50));
+            });
+        } else {
+            document.querySelectorAll('section').forEach(section => {
+                section.style.filter = 'none';
+            });
+        }
+    }
+    
+    // Обработчик клика по кнопке мобильного меню
+    mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+    
+    // Закрытие мобильного меню при клике по ссылке
+    mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            toggleMobileMenu();
+            
+            // Добавляем небольшую задержку перед скроллом до секции
+            const targetId = link.getAttribute('href').substring(1);
+            setTimeout(() => {
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    const headerHeight = document.querySelector('.main-header').offsetHeight;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 300);
+        });
     });
+    
+    // Фиксированный хедер при скролле на мобильных устройствах
+    if (isMobile) {
+        const header = document.querySelector('.main-header');
+        let lastScrollTop = 0;
+        
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > 50) {
+                header.classList.add('scrolled');
+                
+                // Скрываем хедер при скролле вниз и показываем при скролле вверх
+                if (scrollTop > lastScrollTop) {
+                    header.style.transform = 'translateY(-100%)';
+                } else {
+                    header.style.transform = 'translateY(0)';
+                }
+            } else {
+                header.classList.remove('scrolled');
+                header.style.transform = 'translateY(0)';
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+    }
+    
+    // Добавление класса активной ссылки при скролле
+    const sections = document.querySelectorAll('section[id]');
+    
+    function highlightActiveSection() {
+        const scrollPosition = window.scrollY;
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 100;
+            const sectionHeight = section.offsetHeight;
+            const sectionId = section.getAttribute('id');
+            
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                document.querySelector(`.nav-link[href="#${sectionId}"]`)?.parentElement.classList.add('active');
+                document.querySelector(`.mobile-menu-link[href="#${sectionId}"]`)?.classList.add('active');
+            } else {
+                document.querySelector(`.nav-link[href="#${sectionId}"]`)?.parentElement.classList.remove('active');
+                document.querySelector(`.mobile-menu-link[href="#${sectionId}"]`)?.classList.remove('active');
+            }
+        });
+    }
+    
+    window.addEventListener('scroll', highlightActiveSection);
     
     // Плавная прокрутка к разделам при нажатии на ссылки навигации
     const navLinks = document.querySelectorAll('.nav-link');
@@ -175,9 +291,8 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             
             // Закрываем мобильное меню при клике на ссылку
-            if (mainNav.classList.contains('active')) {
-                mobileMenuToggle.classList.remove('active');
-                mainNav.classList.remove('active');
+            if (mobileMenu.classList.contains('active')) {
+                toggleMobileMenu();
             }
         });
     });
@@ -588,5 +703,37 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(adjustTextSpacing, 500);
     setTimeout(adjustTextSpacing, 1500);
     setTimeout(adjustTextSpacing, 3000); // Длительная задержка для гарантии
+
+    // Улучшенное взаимодействие с интерактивными элементами на сенсорных устройствах
+    if (isTouchDevice) {
+        const interactiveElements = document.querySelectorAll('.btn-primary, .btn-secondary, .nav-link, .filter-btn, .nft-card');
+        
+        interactiveElements.forEach(element => {
+            element.addEventListener('touchstart', function() {
+                this.classList.add('touch-active');
+            }, { passive: true });
+            
+            element.addEventListener('touchend', function() {
+                this.classList.remove('touch-active');
+            }, { passive: true });
+        });
+        
+        // Отключаем hover эффекты на сенсорных устройствах
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            .touch-device .nft-card:hover,
+            .touch-device .roadmap-item:hover,
+            .touch-device .nav-link:hover,
+            .touch-device .social-link:hover {
+                transform: none !important;
+            }
+            
+            .touch-device .touch-active {
+                transform: scale(0.98) !important;
+                transition: transform 0.1s ease !important;
+            }
+        `;
+        document.head.appendChild(styleSheet);
+    }
 });
 

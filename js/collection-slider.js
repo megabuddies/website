@@ -1,8 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
     const categories = ['all', 'common', 'rare', 'legendary'];
     let currentCategory = 'all';
-    let globalAnimationId = null;
     const initializedCategories = new Set(); // Отслеживаем, какие категории уже инициализированы
+    
+    // Проверка мобильного устройства
+    const isMobile = window.innerWidth <= 768;
+    
+    // Показываем или скрываем индикатор свайпа на мобильных устройствах
+    const swipeIndicator = document.querySelector('.swipe-indicator');
+    if (swipeIndicator) {
+        swipeIndicator.style.display = isMobile ? 'flex' : 'none';
+    }
     
     // Отложенная инициализация контейнеров
     function deferredInitialization() {
@@ -17,23 +25,18 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Инициализация контейнеров при загрузке страницы
     function initializeContainers() {
-        // Устанавливаем фиксированную высоту для всех контейнеров
-        const fixedHeight = 450;
-        
         // Применяем стили ко всем контейнерам
         document.querySelectorAll('.nft-grid').forEach(grid => {
-            grid.style.minHeight = `${fixedHeight}px`;
-            grid.style.height = `${fixedHeight}px`;
             grid.style.display = 'none';
             grid.style.opacity = '0';
         });
         
         // Загружаем только текущую активную категорию
         const activeCategory = document.querySelector('.filter-btn.active').getAttribute('data-filter') || 'all';
-        loadImagesForCategory(activeCategory, true); // Передаем флаг initialLoad = true
+        loadImagesForCategory(activeCategory, true);
     }
     
-    // Вызываем отложенную инициализацию вместо прямого вызова
+    // Вызываем отложенную инициализацию
     deferredInitialization();
     
     // Функция для подготовки контейнера карточками
@@ -44,8 +47,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Очищаем контейнер перед добавлением новых изображений
         container.innerHTML = '';
         
-        // Оптимизировано: добавляем только необходимое количество изображений (максимум 10)
-        const cardsCount = 10;
+        // Оптимизировано: добавляем только необходимое количество изображений в зависимости от устройства
+        const cardsCount = isMobile ? 5 : 10;
         const imgPath = 'images/nft1.jpg';
         
         // Создаем фрагмент для оптимизации DOM-операций
@@ -59,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const sliderTrack = document.createElement('div');
         sliderTrack.className = 'slider-track';
         
-        // Добавляем карточки в ленту слайдера
+        // Добавляем карточки в ленту слайдера (только один раз для мобильных)
         for (let i = 1; i <= cardsCount; i++) {
             const nftCard = document.createElement('div');
             nftCard.className = 'nft-card';
@@ -67,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             nftCard.innerHTML = `
                 <div class="nft-image-container">
-                    <img src="${imgPath}" alt="Mega Buddy #${i}" class="nft-image">
+                    <img src="${imgPath}" alt="Mega Buddy #${i}" class="nft-image" loading="lazy">
                 </div>
                 <div class="nft-info">
                     <h3 class="nft-name">${getNftName(category, i)}</h3>
@@ -79,24 +82,26 @@ document.addEventListener('DOMContentLoaded', function() {
             sliderTrack.appendChild(nftCard);
         }
         
-        // Добавляем только один набор дублирующих карточек (вместо трех)
-        for (let i = 1; i <= cardsCount; i++) {
-            const nftCard = document.createElement('div');
-            nftCard.className = 'nft-card';
-            nftCard.setAttribute('data-rarity', category === 'all' ? ['common', 'rare', 'legendary'][Math.floor(Math.random() * 3)] : category);
-            
-            nftCard.innerHTML = `
-                <div class="nft-image-container">
-                    <img src="${imgPath}" alt="Mega Buddy #${i}" class="nft-image">
-                </div>
-                <div class="nft-info">
-                    <h3 class="nft-name">${getNftName(category, i)}</h3>
-                    <p class="nft-rarity">${getRarityText(category === 'all' ? nftCard.getAttribute('data-rarity') : category)}</p>
-                    <p class="nft-price">${getNftPrice(category === 'all' ? nftCard.getAttribute('data-rarity') : category)}</p>
-                </div>
-            `;
-            
-            sliderTrack.appendChild(nftCard);
+        // Добавляем дублирующие карточки только для десктопной анимации
+        if (!isMobile) {
+            for (let i = 1; i <= cardsCount; i++) {
+                const nftCard = document.createElement('div');
+                nftCard.className = 'nft-card';
+                nftCard.setAttribute('data-rarity', category === 'all' ? ['common', 'rare', 'legendary'][Math.floor(Math.random() * 3)] : category);
+                
+                nftCard.innerHTML = `
+                    <div class="nft-image-container">
+                        <img src="${imgPath}" alt="Mega Buddy #${i}" class="nft-image" loading="lazy">
+                    </div>
+                    <div class="nft-info">
+                        <h3 class="nft-name">${getNftName(category, i)}</h3>
+                        <p class="nft-rarity">${getRarityText(category === 'all' ? nftCard.getAttribute('data-rarity') : category)}</p>
+                        <p class="nft-price">${getNftPrice(category === 'all' ? nftCard.getAttribute('data-rarity') : category)}</p>
+                    </div>
+                `;
+                
+                sliderTrack.appendChild(nftCard);
+            }
         }
         
         // Вставляем ленту в обертку, а обертку в фрагмент
@@ -110,8 +115,10 @@ document.addEventListener('DOMContentLoaded', function() {
         container.setAttribute('data-initialized', 'true');
         initializedCategories.add(category);
         
-        // Запускаем анимацию для этого контейнера
-        setupSliderAnimation(sliderTrack);
+        // Запускаем анимацию для этого контейнера только на десктопе
+        if (!isMobile) {
+            setupSliderAnimation(sliderTrack);
+        }
     }
     
     // Функция для загрузки изображений для каждой категории
@@ -121,12 +128,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Обновляем текущую категорию
         currentCategory = category;
-        
-        // Прекращаем глобальную анимацию, если она запущена
-        if (globalAnimationId) {
-            cancelAnimationFrame(globalAnimationId);
-            globalAnimationId = null;
-        }
         
         // Получаем все grid-контейнеры
         const allContainers = document.querySelectorAll('.nft-grid');
@@ -220,53 +221,70 @@ document.addEventListener('DOMContentLoaded', function() {
         return prices[rarity] || '0.1 ETH';
     }
     
-    // Оптимизированная функция анимации слайдера
+    // Оптимизированная функция анимации слайдера только для десктопов
     function setupSliderAnimation(sliderTrack) {
-        // Используем CSS анимацию для более эффективной анимации
-        const cardWidth = 250; // Ширина карточки в px из CSS
-        const gap = 25; // Расстояние между карточками в px из CSS
-        const totalWidth = 10 * (cardWidth + gap); // Ширина всех карточек
+        let position = 0;
+        const speed = 1;
         
-        // Устанавливаем стартовую позицию
-        sliderTrack.style.transform = 'translateX(0)';
-        
-        // Устанавливаем CSS-анимацию
-        sliderTrack.style.animation = 'none'; // Сначала сбрасываем любую предыдущую анимацию
-        
-        // Добавляем новую анимацию с небольшой задержкой, чтобы сброс успел применится
-        setTimeout(() => {
-            sliderTrack.style.animation = `slideAnimation ${totalWidth/50}s linear infinite`;
-        }, 10);
-        
-        // Остановка анимации при выходе со страницы для экономии ресурсов
-        document.addEventListener('visibilitychange', function() {
-            if (document.hidden) {
-                sliderTrack.style.animationPlayState = 'paused';
-            } else {
-                sliderTrack.style.animationPlayState = 'running';
+        function animate() {
+            position -= speed;
+            
+            // Когда достигаем половины трека, перескакиваем на начало
+            const cards = sliderTrack.querySelectorAll('.nft-card');
+            const halfWidth = (cards.length / 2) * cards[0].offsetWidth;
+            
+            if (Math.abs(position) >= halfWidth) {
+                position = 0;
             }
+            
+            sliderTrack.style.transform = `translateX(${position}px)`;
+            requestAnimationFrame(animate);
+        }
+        
+        // Запускаем анимацию
+        requestAnimationFrame(animate);
+        
+        // Останавливаем анимацию при наведении на трек
+        sliderTrack.addEventListener('mouseenter', () => {
+            sliderTrack.style.animationPlayState = 'paused';
+        });
+        
+        sliderTrack.addEventListener('mouseleave', () => {
+            sliderTrack.style.animationPlayState = 'running';
         });
     }
     
-    // Не инициализируем контейнеры напрямую здесь, так как используем deferredInitialization
-    // initializeContainers();
-    
     // Обрабатываем клики по кнопкам фильтра
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const newCategory = this.getAttribute('data-filter');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Предотвращаем многократные быстрые клики
+            if (this.classList.contains('active')) return;
             
-            // Если уже выбрана эта категория, ничего не делаем
-            if (newCategory === currentCategory) return;
+            // Убираем активный класс со всех кнопок
+            filterButtons.forEach(btn => btn.classList.remove('active'));
             
-            // Удаляем класс active у всех кнопок
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            
-            // Добавляем класс active текущей кнопке
+            // Добавляем активный класс на текущую кнопку
             this.classList.add('active');
             
             // Загружаем изображения для выбранной категории
-            loadImagesForCategory(newCategory);
+            const category = this.getAttribute('data-filter');
+            loadImagesForCategory(category);
         });
+    });
+    
+    // Обработчик изменения размера окна для адаптивности
+    window.addEventListener('resize', function() {
+        const newIsMobile = window.innerWidth <= 768;
+        
+        // Показываем или скрываем индикатор свайпа при изменении размера
+        if (swipeIndicator) {
+            swipeIndicator.style.display = newIsMobile ? 'flex' : 'none';
+        }
+        
+        // Если изменился статус мобильного устройства, перезагружаем страницу
+        if (newIsMobile !== isMobile) {
+            location.reload();
+        }
     });
 });

@@ -2,7 +2,8 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#121218">
     <title>Mega Buddies - Революция в мире NFT на MegaETH</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/neon.css">
@@ -37,7 +38,7 @@
     <header class="main-header">
         <div class="header-container">
             <a href="#" class="logo neon-text">
-                <img src="images/mega-buddies-logo.png" alt="Mega Buddies">
+                <img src="images/mega-buddies-logo.png" alt="Mega Buddies" loading="lazy">
                 MEGA BUDDIES
             </a>
             
@@ -58,6 +59,17 @@
             </div>
         </div>
     </header>
+    
+    <!-- Мобильное меню -->
+    <div class="mobile-menu">
+        <div class="mobile-menu-links">
+            <a href="#about" class="mobile-menu-link">О ПРОЕКТЕ</a>
+            <a href="#manifesto" class="mobile-menu-link">МАНИФЕСТ</a>
+            <a href="#collection" class="mobile-menu-link">КОЛЛЕКЦИЯ</a>
+            <a href="#roadmap" class="mobile-menu-link">ДОРОЖНАЯ КАРТА</a>
+            <a href="#community" class="mobile-menu-link">СООБЩЕСТВО</a>
+        </div>
+    </div>
     
     <!-- Герой секция -->
     <section class="hero" id="home">
@@ -147,8 +159,6 @@
     <!-- Коллекция -->
     <section id="collection" class="section">
         <div class="container collection-container">
-            <!-- Удаляем пиксельные декоративные элементы -->
-            
             <h2 class="section-heading neon-text">КОЛЛЕКЦИЯ</h2>
             <p class="collection-subtitle">Немного референсов для ознакомления</p>
             <div class="section-line"></div>
@@ -162,6 +172,11 @@
             <div class="nft-grid" data-category="common"></div>
             <div class="nft-grid" data-category="rare"></div>
             <div class="nft-grid" data-category="legendary"></div>
+            <!-- Индикатор свайпа для мобильных устройств -->
+            <div class="swipe-indicator">
+                <i class="fas fa-hand-pointer"></i>
+                <span>Свайпните для просмотра</span>
+            </div>
         </div>
     </section>
     
