@@ -56,17 +56,22 @@
     visibility: hidden;
 }
 
-/* Добавляем стили для заголовка прелоадера */
+/* Добавляем контейнер для прелоадера и заголовка */
+.preloader-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Обновляем стили для заголовка прелоадера */
 .preloader-title {
     font-family: var(--font-display);
     font-size: 24px;
-    margin-bottom: 20px;
-    color: var(--text-color);
-    text-shadow: 0 0 10px var(--secondary-glow-color),
-                 0 0 20px rgba(85, 85, 255, calc(var(--glow-intensity) * 0.5)),
-                 0 0 30px rgba(85, 85, 255, calc(var(--glow-intensity) * 0.3));
-    animation: titlePulse 2s infinite alternate;
+    color: var(--accent-color);
     letter-spacing: 2px;
+    text-align: center;
+    margin: 0;
 }
 
 /* Основной контейнер прелоадера с CRT эффектом */
