@@ -182,6 +182,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Обработчик для кнопки прокрутки вниз
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+    if (scrollIndicator) {
+        scrollIndicator.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href').substring(1);
+            const targetSection = document.getElementById(targetId);
+            
+            window.scrollTo({
+                top: targetSection.offsetTop - 100,
+                behavior: 'smooth'
+            });
+        });
+    }
+    
     // Обновленная функция активации пунктов меню при скролле - активация при прокрутке 70% раздела
     function setActiveNavItem() {
         const sections = document.querySelectorAll('section[id]');
@@ -376,33 +392,6 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(element);
     });
 
-    // Код для скролла вниз при нажатии на индикатор скролла
-    const scrollIndicator = document.querySelector('.scroll-indicator');
-    
-    if (scrollIndicator) {
-        scrollIndicator.addEventListener('click', function() {
-            const aboutSection = document.getElementById('about');
-            
-            if (aboutSection) {
-                window.scrollTo({
-                    top: aboutSection.offsetTop - 80,
-                    behavior: 'smooth'
-                });
-            }
-        });
-        
-        // Добавляем пульсирующий эффект для привлечения внимания
-        const scrollArrow = document.querySelector('.scroll-arrow');
-        if (scrollArrow) {
-            setInterval(function() {
-                scrollArrow.classList.add('pulse');
-                setTimeout(function() {
-                    scrollArrow.classList.remove('pulse');
-                }, 800);
-            }, 2000);
-        }
-    }
-    
     // Добавляем эффект для статистических показателей
     const statValues = document.querySelectorAll('.stat-value');
     
