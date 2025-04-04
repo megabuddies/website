@@ -152,7 +152,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Мобильное меню
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const navList = document.querySelector('.nav-list');
+    const navItems = document.querySelectorAll('.nav-item');
     const body = document.body;
+    
+    // Добавляем индексы для анимации элементов меню
+    navItems.forEach((item, index) => {
+        item.style.setProperty('--item-index', index);
+    });
     
     // Функция для определения, является ли устройство мобильным
     function isMobile() {
