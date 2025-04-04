@@ -633,5 +633,16 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(adjustTextSpacing, 500);
     setTimeout(adjustTextSpacing, 1500);
     setTimeout(adjustTextSpacing, 3000); // Длительная задержка для гарантии
+
+    // Обработка нажатий на плитки дорожной карты
+    const roadmapItems = document.querySelectorAll('.roadmap-item');
+    roadmapItems.forEach(item => {
+        item.addEventListener('click', function() {
+            // Удаляем активный класс у всех элементов
+            roadmapItems.forEach(i => i.classList.remove('active'));
+            // Добавляем активный класс к нажатому элементу
+            this.classList.add('active');
+        });
+    });
 });
 
