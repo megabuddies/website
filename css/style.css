@@ -1409,7 +1409,7 @@ body {
     left: 50%;
     width: 4px;
     margin-left: -2px;
-    background: linear-gradient(to bottom, var(--accent-color), var(--accent-color), var(--accent-color));
+    background: linear-gradient(to bottom, var(--accent-color) 95%, transparent);
     z-index: 1;
     overflow: visible;
 }
@@ -1429,17 +1429,9 @@ body {
     z-index: 2;
 }
 
+/* Убираем старое окончание линии */
 .roadmap-timeline::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 4px;
-    height: 30px;
-    background: linear-gradient(to bottom, var(--accent-color), transparent);
-    box-shadow: 0 0 10px var(--accent-glow-color);
-    z-index: 2;
+    display: none;
 }
 
 @keyframes timelinePulse {
@@ -1498,7 +1490,7 @@ body {
 }
 
 .roadmap-item:nth-child(odd):hover .roadmap-icon {
-    transform: translateX(70px) scale(1.1);
+    transform: translateX(-70px) scale(1.1);
     box-shadow: 0 0 15px rgba(146, 147, 151, 0.5);
 }
 
@@ -2456,10 +2448,10 @@ body {
 /* Добавляем точки продолжения в конце таймлайна */
 .roadmap-timeline .continuation-dots {
     position: absolute;
-    bottom: 30px;
+    bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    height: 80px;
+    height: 60px;
     width: 4px;
     z-index: 2;
     overflow: visible;
@@ -2471,8 +2463,8 @@ body {
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 16px;
-    height: 16px;
+    width: 12px;
+    height: 12px;
     background-color: var(--accent-color);
     border-radius: 50%;
     box-shadow: 0 0 10px var(--accent-glow-color);
@@ -2482,11 +2474,11 @@ body {
 .roadmap-timeline .continuation-dots::after {
     content: '';
     position: absolute;
-    top: 30px;
+    top: 25px;
     left: 50%;
     transform: translateX(-50%);
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     background-color: var(--accent-color);
     border-radius: 50%;
     box-shadow: 0 0 8px var(--accent-glow-color);
@@ -2496,11 +2488,11 @@ body {
 .roadmap-timeline .continuation-dots .small-dot {
     content: '';
     position: absolute;
-    top: 55px;
+    top: 45px;
     left: 50%;
     transform: translateX(-50%);
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
     background-color: var(--accent-color);
     border-radius: 50%;
     box-shadow: 0 0 6px var(--accent-glow-color);
@@ -2510,10 +2502,12 @@ body {
 @keyframes dotPulse {
     0% {
         opacity: 0.3;
+        transform: translateX(-50%) scale(0.8);
         box-shadow: 0 0 5px var(--accent-glow-color);
     }
     100% {
         opacity: 1;
+        transform: translateX(-50%) scale(1);
         box-shadow: 0 0 10px var(--accent-glow-color),
                     0 0 20px var(--accent-glow-color);
     }
