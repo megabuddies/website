@@ -222,70 +222,57 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Функция для добавления/удаления класса active для навигационных элементов при скролле
     function setActiveNavItem() {
-        const sections = document.querySelectorAll('section[id], .hero');
-        let currentSection = '';
-        const windowHeight = window.innerHeight;
+        const scrollPosition = window.scrollY;
         
-        // Проходим по всем секциям и проверяем их видимость
+        // Получаем все секции
+        const sections = document.querySelectorAll('section[id], .hero');
+        
+        // Проходим по всем секциям и проверяем их позицию относительно скроллинга
         sections.forEach(section => {
             const sectionId = section.getAttribute('id');
             if (!sectionId) return;
             
-            const sectionRect = section.getBoundingClientRect();
+            // Определяем верхнюю и нижнюю границы секции
+            const sectionHeight = section.offsetHeight;
+            const sectionTop = section.offsetTop - 100; // Отступ для хедера
+            const sectionBottom = sectionTop + sectionHeight;
             
-            // Вычисляем, сколько процентов секции видно на экране
-            const visibleHeight = Math.min(
-                windowHeight, 
-                sectionRect.bottom
-            ) - Math.max(0, sectionRect.top);
+            // Определяем высоту окна просмотра
+            const viewportHeight = window.innerHeight;
             
-            const totalHeight = sectionRect.height;
-            const visiblePercent = (visibleHeight / totalHeight) * 100;
+            // Вычисляем позицию 75% видимости секции
+            const trigger75Percent = sectionTop + (sectionHeight * 0.25);
             
-            // Вычисляем, в какой части окна находится секция
-            const sectionInViewport = (sectionRect.top <= windowHeight * 0.25) && 
-                                      (sectionRect.bottom >= windowHeight * 0.25);
-            
-            // Если видно более 75% секции или секция занимает большую часть экрана
-            if ((visiblePercent >= 75 && sectionInViewport) || 
-                (sectionRect.top <= 0 && sectionRect.bottom >= windowHeight)) {
-                currentSection = sectionId;
+            // Проверяем, пересекли ли мы точку 75% видимости секции
+            if (scrollPosition >= trigger75Percent && scrollPosition < sectionBottom) {
+                // Удаляем класс active у всех элементов навигации
+                navLinks.forEach(link => {
+                    link.parentElement.classList.remove('active');
+                });
+                
+                // Добавляем класс active к соответствующему элементу навигации
+                navLinks.forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href && href === `#${sectionId}`) {
+                        link.parentElement.classList.add('active');
+                    }
+                });
             }
-        });
-        
-        // Применяем класс active к соответствующему пункту меню
-        navLinks.forEach(link => {
-            const href = link.getAttribute('href');
-            const targetId = href ? href.substring(1) : '';
             
-            if (targetId === currentSection) {
-                link.parentElement.classList.add('active');
-            } else {
-                link.parentElement.classList.remove('active');
+            // Специальная обработка для первой секции (hero)
+            if (sectionId === 'home' && scrollPosition < sections[1].offsetTop - 100) {
+                navLinks.forEach(link => {
+                    link.parentElement.classList.remove('active');
+                    if (link.getAttribute('href') === '#home') {
+                        link.parentElement.classList.add('active');
+                    }
+                });
             }
         });
     }
     
-    // Оптимизируем вызов функции с помощью throttle для лучшей производительности
-    function throttle(func, delay) {
-        let lastCall = 0;
-        return function(...args) {
-            const now = new Date().getTime();
-            if (now - lastCall < delay) {
-                return;
-            }
-            lastCall = now;
-            return func(...args);
-        };
-    }
-    
-    // Используем throttle для оптимизации вызовов при скролле
-    const throttledSetActiveNavItem = throttle(setActiveNavItem, 100);
-    
-    // Вызываем функцию при скролле
-    window.addEventListener('scroll', throttledSetActiveNavItem);
-    
-    // Вызываем функцию при загрузке страницы
+    // Вызываем функцию при скролле и при загрузке страницы
+    window.addEventListener('scroll', setActiveNavItem);
     window.addEventListener('load', setActiveNavItem);
     
     // Обработка ориентации экрана для мобильных устройств
