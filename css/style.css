@@ -1285,12 +1285,12 @@ body {
 }
 
 @keyframes slideAnimation {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-2750px);
-  }
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(0); /* Отключаем смещение */
+    }
 }
 
 .nft-card {
