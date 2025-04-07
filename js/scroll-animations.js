@@ -9,6 +9,32 @@ document.addEventListener('DOMContentLoaded', function() {
         display: 'block'
     });
     
+    // Добавляем навигацию по скроллу - активное состояние пунктов меню
+    const sections = document.querySelectorAll('section[id]');
+    const navItems = document.querySelectorAll('.nav-link');
+    
+    sections.forEach(section => {
+        ScrollTrigger.create({
+            trigger: section,
+            start: 'top 50%', // Когда верх секции достигает середины экрана
+            end: 'bottom 50%', // Когда низ секции уходит с середины экрана
+            onEnter: () => setActiveNavItem(section.id),
+            onEnterBack: () => setActiveNavItem(section.id),
+            markers: false
+        });
+    });
+    
+    function setActiveNavItem(sectionId) {
+        navItems.forEach(item => {
+            const href = item.getAttribute('href').substring(1); // Удаляем # из href
+            if (href === sectionId) {
+                item.parentElement.classList.add('active');
+            } else {
+                item.parentElement.classList.remove('active');
+            }
+        });
+    }
+    
     // Анимация для секции "О проекте"
     gsap.timeline({
         scrollTrigger: {

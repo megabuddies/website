@@ -612,12 +612,31 @@ body {
 }
 
 .nav-item.active .nav-link {
-  color: var(--accent-color);
-  border-color: var(--accent-color);
-  box-shadow: 0 0 8px var(--accent-color),
-              0 0 15px rgba(146, 147, 151, 0.4);
-  text-shadow: 0 0 5px var(--accent-color), 
-               0 0 10px rgba(146, 147, 151, 0.6);
+  color: var(--secondary-color);
+  text-shadow: 0 0 8px var(--secondary-color);
+  position: relative;
+}
+
+.nav-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--secondary-color), transparent);
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.nav-item.active .nav-link::before {
+  width: 100%;
+  opacity: 1;
+}
+
+.nav-item.active .nav-link::after {
+  opacity: 1;
+  transform: scaleX(1);
 }
 
 .wallet-btn {
@@ -1236,14 +1255,14 @@ body {
   opacity: 0;
   position: relative;
   width: 100%;
-  overflow: hidden;
-  height: 450px;
+  overflow: visible; /* Changed from 'hidden' to 'visible' */
+  height: auto; /* Changed from fixed 450px to auto */
   min-height: 450px;
 }
 
 .slider-wrapper {
   width: 100%;
-  overflow: hidden;
+  overflow: visible; /* Changed from 'hidden' to 'visible' */
   position: relative;
   height: 100%;
 }
@@ -1265,20 +1284,17 @@ body {
 }
 
 .nft-card {
-  flex: 0 0 auto;
+  min-width: 250px;
   width: 250px;
-  height: 430px;
-  background: rgba(26, 26, 26, 0.8);
+  padding: 15px;
+  margin: 0 15px;
+  background-color: var(--card-background);
   border: 2px solid var(--accent-color);
-  border-radius: 0;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-  clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
-  contain: content;
-  display: flex;
-  flex-direction: column;
+  transition: all 0.3s ease;
   position: relative;
+  overflow: visible; /* Changed from hidden to visible */
+  transform: translateY(0) scale(1);
+  clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
 }
 
 .nft-card::before {
@@ -1364,149 +1380,147 @@ body {
 
 /* Секция "Дорожная карта" */
 .roadmap-container {
-  position: relative;
-  max-width: 800px;
-  margin: 0 auto;
+    position: relative;
+    padding: 40px 0;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .roadmap-timeline {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 30px;
-  width: 2px;
-  background-color: var(--accent-color);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 4px;
+    margin-left: -2px;
+    background: linear-gradient(to bottom, transparent, var(--accent-color), transparent);
+    z-index: 1;
 }
 
-.roadmap-timeline::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 20px;
-  height: 20px;
-  background-color: var(--accent-color);
-  border-radius: 0;
-  box-shadow: 0 0 10px rgba(146, 147, 151, 0.5);
-  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+.roadmap-items {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
 }
 
 .roadmap-item {
-  display: flex;
-  margin-bottom: 40px;
-  position: relative;
-  transform: translateZ(0);
-  transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
 }
 
-.roadmap-item:hover {
-  transform: translateX(10px);
+.roadmap-item:nth-child(odd) {
+    justify-content: flex-end;
+    padding-right: 50%;
+    padding-left: 20px;
+}
+
+.roadmap-item:nth-child(even) {
+    justify-content: flex-start;
+    padding-left: 50%;
+    padding-right: 20px;
 }
 
 .roadmap-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 0;
-  background: var(--terminal-bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 20px;
-  border: 2px solid var(--accent-color);
-  z-index: 2;
-  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-  transition: all 0.3s ease;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--background-color);
+    border: 3px solid var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    color: var(--accent-color);
+    font-size: 24px;
+    transition: all 0.3s ease;
 }
 
 .roadmap-item:hover .roadmap-icon {
-  transform: rotate(45deg);
-  border-color: var(--secondary-color);
-}
-
-.roadmap-icon i {
-  font-size: 24px;
-  color: var(--accent-color);
-  transition: all 0.3s ease;
-}
-
-.roadmap-item:hover .roadmap-icon i {
-  color: var(--secondary-color);
-  transform: rotate(-45deg);
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(146, 147, 151, 0.3);
 }
 
 .roadmap-content {
-  flex: 1;
-  padding: 20px;
-  border-radius: 0;
-  background: rgba(26, 26, 26, 0.7);
-  border: 2px solid var(--accent-color);
-  clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
+    flex: 1;
+    padding: 20px;
+    border-radius: 0;
+    background: rgba(26, 26, 26, 0.7);
+    border: 2px solid var(--accent-color);
+    clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
 }
 
 .roadmap-content::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(45deg, transparent, rgba(146, 147, 151, 0.1), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.5s ease;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(146, 147, 151, 0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+    z-index: -1;
 }
 
 .roadmap-item:hover .roadmap-content {
-  border-color: var(--secondary-color);
-  box-shadow: 0 5px 15px rgba(146, 147, 151, 0.2);
+    border-color: var(--secondary-color);
+    box-shadow: 0 5px 15px rgba(146, 147, 151, 0.2);
 }
 
 .roadmap-item:hover .roadmap-content::before {
-  transform: translateX(100%);
+    transform: translateX(100%);
 }
 
 .roadmap-date {
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  color: var(--accent-color);
-  margin-bottom: 10px;
-  transition: all 0.3s ease;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--accent-color);
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
 }
 
 .roadmap-item:hover .roadmap-date {
-  color: var(--secondary-color);
+    color: var(--secondary-color);
 }
 
 .roadmap-status {
-  display: inline-block;
-  padding: 5px 10px;
-  border-radius: 0;
-  font-size: 0.8rem;
-  margin-top: 10px;
-  clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
-  transition: all 0.3s ease;
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 0;
+    font-size: 0.8rem;
+    margin-top: 10px;
+    clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
+    transition: all 0.3s ease;
 }
 
 .roadmap-status.completed {
-  background-color: rgba(146, 147, 151, 0.2);
-  color: var(--accent-color);
+    background-color: rgba(146, 147, 151, 0.2);
+    color: var(--accent-color);
 }
 
 .roadmap-status.in-progress {
-  background-color: rgba(19, 145, 255, 0.2);
-  color: var(--tertiary-color);
+    background-color: rgba(19, 145, 255, 0.2);
+    color: var(--tertiary-color);
 }
 
 .roadmap-status.planned {
-  background-color: rgba(19, 145, 255, 0.2);
-  color: var(--secondary-color);
+    background-color: rgba(19, 145, 255, 0.2);
+    color: var(--secondary-color);
 }
 
 .roadmap-item:hover .roadmap-status {
-  transform: scale(1.05);
+    transform: scale(1.05);
 }
 
 /* Секция "Сообщество" */
@@ -2340,4 +2354,42 @@ body {
   .footer-nav-link a {
     font-size: 14px;
   }
+}
+
+.roadmap-filters {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 15px;
+}
+
+.roadmap-filters .filter-btn[data-filter="all"] {
+    background: rgba(26, 26, 26, 0.8);
+    padding: 10px 20px;
+    min-width: 120px;
+}
+
+.secondary-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+@media (max-width: 768px) {
+    .roadmap-timeline {
+        left: 30px;
+    }
+    
+    .roadmap-item:nth-child(odd),
+    .roadmap-item:nth-child(even) {
+        padding-left: 60px;
+        padding-right: 0;
+        justify-content: flex-start;
+    }
+    
+    .roadmap-icon {
+        left: 30px;
+    }
 }
