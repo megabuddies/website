@@ -237,9 +237,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const sectionTop = section.offsetTop - 100; // Отступ для хедера
             const sectionBottom = sectionTop + sectionHeight;
             
-            // Определяем высоту окна просмотра
-            const viewportHeight = window.innerHeight;
-            
             // Вычисляем позицию 75% видимости секции
             const trigger75Percent = sectionTop + (sectionHeight * 0.25);
             
