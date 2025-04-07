@@ -86,6 +86,26 @@ document.addEventListener('DOMContentLoaded', function() {
             sliderTrack.appendChild(nftCard);
         }
         
+        // Добавляем только один набор дублирующих карточек (вместо трех)
+        for (let i = 1; i <= cardsCount; i++) {
+            const nftCard = document.createElement('div');
+            nftCard.className = 'nft-card';
+            nftCard.setAttribute('data-rarity', category === 'all' ? ['common', 'rare', 'legendary'][Math.floor(Math.random() * 3)] : category);
+            
+            nftCard.innerHTML = `
+                <div class="nft-image-container">
+                    <img src="${imgPath}" alt="Mega Buddy #${i}" class="nft-image">
+                </div>
+                <div class="nft-info">
+                    <h3 class="nft-name">${getNftName(category, i)}</h3>
+                    <p class="nft-rarity">${getRarityText(category === 'all' ? nftCard.getAttribute('data-rarity') : category)}</p>
+                    <p class="nft-price">${getNftPrice(category === 'all' ? nftCard.getAttribute('data-rarity') : category)}</p>
+                </div>
+            `;
+            
+            sliderTrack.appendChild(nftCard);
+        }
+        
         // Вставляем ленту в обертку, а обертку в фрагмент
         sliderWrapper.appendChild(sliderTrack);
         fragment.appendChild(sliderWrapper);
@@ -97,8 +117,8 @@ document.addEventListener('DOMContentLoaded', function() {
         container.setAttribute('data-initialized', 'true');
         initializedCategories.add(category);
         
-        // Запускаем анимацию для этого контейнера (без скроллинга)
-        // setupSliderAnimation(sliderTrack);
+        // Запускаем анимацию для этого контейнера
+        setupSliderAnimation(sliderTrack);
     }
     
     // Функция для загрузки изображений для каждой категории
@@ -198,17 +218,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Функция для получения цены NFT
     function getNftPrice(rarity) {
-        const prices = {
-            'common': '',
-            'rare': '',
-            'legendary': ''
-        };
-        
-        return prices[rarity] || '';
+        return '';
     }
     
-    // Оптимизированная функция анимации слайдера - отключена
-    /*
+    // Оптимизированная функция анимации слайдера
     function setupSliderAnimation(sliderTrack) {
         // Используем CSS анимацию для более эффективной анимации
         const cardWidth = 250; // Ширина карточки в px из CSS
@@ -235,7 +248,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    */
     
     // Не инициализируем контейнеры напрямую здесь, так как используем deferredInitialization
     // initializeContainers();
