@@ -1289,7 +1289,7 @@ body {
         transform: translateX(0);
     }
     100% {
-        transform: translateX(0); /* Отключаем смещение */
+        transform: translateX(-2750px); /* 10 * (250px ширина карточки + 25px отступ) */
     }
 }
 
