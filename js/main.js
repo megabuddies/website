@@ -221,55 +221,60 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Заменяем оригинальную функцию setActiveNavItem
-    // Функция для добавления/удаления класса active для навигационных элементов при скролле
     function setActiveNavItem() {
+        // Получаем все ссылки навигации
+        const navLinks = document.querySelectorAll('.nav-link');
+        
         // Очищаем все активные классы сначала
         navLinks.forEach(link => {
             link.parentElement.classList.remove('active');
         });
         
-        // Текущая позиция скролла
-        const scrollY = window.scrollY;
+        // Получаем все секции с id
+        const sections = document.querySelectorAll('section[id], .hero');
+        const scrollPosition = window.scrollY;
+        const windowHeight = window.innerHeight;
         
-        // Получаем все секции
-        const sections = Array.from(document.querySelectorAll('section[id], .hero'));
-        
-        // Найдем секцию, которая сейчас в фокусе
-        let currentSection = null;
-        
-        // Проходим по секциям снизу вверх
+        // Проходим по секциям в обратном порядке (снизу вверх)
+        // чтобы найти первую видимую секцию
         for (let i = sections.length - 1; i >= 0; i--) {
             const section = sections[i];
             const sectionId = section.getAttribute('id');
             
             // Получаем координаты секции
             const rect = section.getBoundingClientRect();
+            
+            // Учитываем текущий скролл и координаты секции
             const sectionTop = rect.top + window.scrollY;
             const sectionHeight = rect.height;
             
-            // Расчет точки, когда секция должна стать активной (25% от начала)
-            const activationPoint = sectionTop + (sectionHeight * 0.25);
+            // Проверка для первой секции (hero) если мы в самом верху страницы
+            if (i === 0 && scrollPosition < 100) {
+                // Активируем первую ссылку
+                navLinks.forEach(link => {
+                    if (link.getAttribute('href') === `#${sectionId}`) {
+                        link.parentElement.classList.add('active');
+                    }
+                });
+                return;
+            }
+
+            // Проверка для остальных секций - секция считается активной,
+            // когда пользователь прокрутил примерно до 25% секции
+            const activationThreshold = 0.25;
+            const activationPoint = sectionTop + (sectionHeight * activationThreshold);
             
-            // Если прокрутили до точки активации
-            if (scrollY >= activationPoint) {
-                currentSection = sectionId;
+            if (scrollPosition >= activationPoint) {
+                // Находим соответствующую ссылку и делаем её активной
+                navLinks.forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href && href === `#${sectionId}`) {
+                        link.parentElement.classList.add('active');
+                    }
+                });
+                // Как только нашли активную секцию, прерываем цикл
                 break;
             }
-        }
-        
-        // Обрабатываем случай, когда мы в самом верху страницы
-        if (scrollY < 100 && sections.length > 0) {
-            currentSection = sections[0].getAttribute('id');
-        }
-        
-        // Если нашли активную секцию, выделяем соответствующую навигационную ссылку
-        if (currentSection) {
-            navLinks.forEach(link => {
-                const href = link.getAttribute('href');
-                if (href && href === `#${currentSection}`) {
-                    link.parentElement.classList.add('active');
-                }
-            });
         }
     }
     
