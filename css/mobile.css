@@ -5,25 +5,6 @@
   --mobile-header-height: 70px;
 }
 
-/* Desktop/Mobile display classes */
-.mobile-only {
-  display: none;
-}
-
-.desktop-only {
-  display: block;
-}
-
-@media (max-width: 768px) {
-  .mobile-only {
-    display: block;
-  }
-  
-  .desktop-only {
-    display: none;
-  }
-}
-
 /* Исправление проблемы с горизонтальным скроллом */
 html, body {
   width: 100%;
