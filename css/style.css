@@ -1210,7 +1210,8 @@ body {
 /* Секция "Коллекция" */
 .collection-filters {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   gap: 15px;
   margin-bottom: 30px;
 }
@@ -1222,6 +1223,15 @@ body {
   margin-top: 5px;
   margin-bottom: 15px;
   opacity: 0.8;
+}
+
+.filter-primary {
+  margin-bottom: 10px;
+}
+
+.filter-secondary {
+  display: flex;
+  gap: 15px;
 }
 
 .filter-btn {
@@ -1393,8 +1403,46 @@ body {
     left: 50%;
     width: 4px;
     margin-left: -2px;
-    background: linear-gradient(to bottom, transparent, var(--accent-color), transparent);
+    background: linear-gradient(to bottom, var(--accent-color), var(--accent-color), var(--accent-color));
     z-index: 1;
+}
+
+.roadmap-timeline::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 20px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    box-shadow: 0 0 15px var(--accent-glow-color);
+    animation: timelinePulse 2s infinite alternate;
+    z-index: 2;
+}
+
+.roadmap-timeline::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 30px;
+    background: linear-gradient(to bottom, var(--accent-color), transparent);
+    box-shadow: 0 0 10px var(--accent-glow-color);
+    z-index: 2;
+}
+
+@keyframes timelinePulse {
+    0% {
+        box-shadow: 0 0 5px var(--accent-glow-color);
+    }
+    100% {
+        box-shadow: 0 0 15px var(--accent-glow-color),
+                    0 0 30px var(--accent-glow-color);
+    }
 }
 
 .roadmap-items {
@@ -1442,9 +1490,14 @@ body {
     transition: all 0.3s ease;
 }
 
-.roadmap-item:hover .roadmap-icon {
-    transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(146, 147, 151, 0.3);
+.roadmap-item:nth-child(odd):hover .roadmap-icon {
+    transform: translateX(-70px) scale(1.1);
+    box-shadow: 0 0 15px rgba(146, 147, 151, 0.5);
+}
+
+.roadmap-item:nth-child(even):hover .roadmap-icon {
+    transform: translateX(70px) scale(1.1);
+    box-shadow: 0 0 15px rgba(146, 147, 151, 0.5);
 }
 
 .roadmap-content {
