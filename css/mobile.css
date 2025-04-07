@@ -47,9 +47,23 @@ html, body {
   
   /* Улучшенные отступы разделов */
   .section {
-    padding: 60px 0;
+    padding: 40px 0;
     width: 100%;
     overflow-x: hidden;
+  }
+  
+  /* На мобильной версии компактнее размещаем контент */
+  html.mobile .section {
+    padding: 30px 0;
+  }
+  
+  html.mobile .section-heading {
+    margin-bottom: 15px;
+    font-size: 28px;
+  }
+  
+  html.mobile .section-line {
+    margin-bottom: 20px;
   }
   
   /* Улучшенный хедер */
@@ -251,6 +265,45 @@ html, body {
   
   #hero-animation {
     display: none; /* Полностью скрываем 3D модель на мобильных устройствах */
+  }
+  
+  /* Стили для мобильной версии героя */
+  .mobile-hero {
+    padding-top: 20px;
+    min-height: 70vh; /* Уменьшаем высоту секции */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .mobile-hero-content {
+    padding-top: 0;
+    margin-top: 0;
+  }
+  
+  .mobile-hero .hero-title {
+    font-size: 42px;
+    margin: 5px 0;
+  }
+  
+  .mobile-hero .hero-subtitle {
+    font-size: 16px;
+    margin: 10px 0;
+  }
+  
+  .mobile-hero .hero-text {
+    margin: 10px 0;
+  }
+  
+  .mobile-hero .hero-description {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  
+  .mobile-scroll-indicator {
+    position: relative;
+    bottom: 10px;
+    margin-top: 15px;
   }
   
   /* Стиль для активных кнопок навигации */
