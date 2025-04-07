@@ -220,77 +220,63 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Заменяем оригинальную функцию setActiveNavItem
     // Функция для добавления/удаления класса active для навигационных элементов при скролле
     function setActiveNavItem() {
-        // Текущее положение скролла с учетом высоты окна
-        const scrollPosition = window.scrollY;
-        const windowHeight = window.innerHeight;
-        
-        // Получаем все секции
-        const sections = document.querySelectorAll('section[id], .hero');
-        let currentSectionId = null;
-        
-        // Для отладки при необходимости
-        console.log("Текущая позиция скролла:", scrollPosition);
-        
-        // Проходим по всем секциям и проверяем их позицию относительно скроллинга
-        sections.forEach((section, index) => {
-            const sectionId = section.getAttribute('id');
-            if (!sectionId) return;
-            
-            // Получаем точные метрики секции
-            const sectionTop = Math.floor(section.getBoundingClientRect().top + window.scrollY);
-            const sectionHeight = section.offsetHeight;
-            const sectionBottom = sectionTop + sectionHeight;
-            
-            // Точка срабатывания - когда прошли 25% секции
-            const triggerPoint = Math.floor(sectionTop + (sectionHeight * 0.25));
-            
-            console.log(`Секция ${sectionId}: top=${sectionTop}, bottom=${sectionBottom}, trigger=${triggerPoint}, scrollPos=${scrollPosition}`);
-            
-            // Проверяем, находимся ли мы в пределах секции или прошли точку триггера
-            if (scrollPosition >= triggerPoint && scrollPosition < sectionBottom) {
-                currentSectionId = sectionId;
-                console.log(`Активная секция: ${sectionId}`);
-            }
-            
-            // Специальная обработка для первой секции
-            if (index === 0 && scrollPosition < triggerPoint) {
-                currentSectionId = sectionId;
-                console.log(`Активная первая секция: ${sectionId}`);
-            }
+        // Очищаем все активные классы сначала
+        navLinks.forEach(link => {
+            link.parentElement.classList.remove('active');
         });
         
-        // Устанавливаем активный класс для соответствующего пункта меню
-        if (currentSectionId) {
+        // Текущая позиция скролла
+        const scrollY = window.scrollY;
+        
+        // Получаем все секции
+        const sections = Array.from(document.querySelectorAll('section[id], .hero'));
+        
+        // Найдем секцию, которая сейчас в фокусе
+        let currentSection = null;
+        
+        // Проходим по секциям снизу вверх
+        for (let i = sections.length - 1; i >= 0; i--) {
+            const section = sections[i];
+            const sectionId = section.getAttribute('id');
+            
+            // Получаем координаты секции
+            const rect = section.getBoundingClientRect();
+            const sectionTop = rect.top + window.scrollY;
+            const sectionHeight = rect.height;
+            
+            // Расчет точки, когда секция должна стать активной (25% от начала)
+            const activationPoint = sectionTop + (sectionHeight * 0.25);
+            
+            // Если прокрутили до точки активации
+            if (scrollY >= activationPoint) {
+                currentSection = sectionId;
+                break;
+            }
+        }
+        
+        // Обрабатываем случай, когда мы в самом верху страницы
+        if (scrollY < 100 && sections.length > 0) {
+            currentSection = sections[0].getAttribute('id');
+        }
+        
+        // Если нашли активную секцию, выделяем соответствующую навигационную ссылку
+        if (currentSection) {
             navLinks.forEach(link => {
-                const targetId = link.getAttribute('href')?.substring(1);
-                
-                if (targetId === currentSectionId) {
-                    if (!link.parentElement.classList.contains('active')) {
-                        console.log(`Активирую пункт меню: ${targetId}`);
-                        navLinks.forEach(l => l.parentElement.classList.remove('active'));
-                        link.parentElement.classList.add('active');
-                    }
+                const href = link.getAttribute('href');
+                if (href && href === `#${currentSection}`) {
+                    link.parentElement.classList.add('active');
                 }
             });
         }
     }
     
-    // Оптимизируем вызов функции с помощью debounce для лучшей производительности
-    function debounce(func, wait) {
-        let timeout;
-        return function() {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func.apply(this, arguments), wait);
-        };
-    }
+    // Вызываем функцию при скролле
+    window.addEventListener('scroll', setActiveNavItem);
     
-    // Используем debounce для оптимизации вызовов при скролле
-    const debouncedSetActiveNavItem = debounce(setActiveNavItem, 50);
-    
-    // Вызываем функцию при скролле и при загрузке страницы
-    window.addEventListener('scroll', debouncedSetActiveNavItem);
+    // Также вызываем функцию при загрузке страницы
     window.addEventListener('load', setActiveNavItem);
     
     // Обработка ориентации экрана для мобильных устройств
