@@ -1503,7 +1503,7 @@ body {
 }
 
 .roadmap-item:nth-child(even):hover .roadmap-icon {
-    transform: translateX(-70px) scale(1.1);
+    transform: translateX(70px) scale(1.1);
     box-shadow: 0 0 15px rgba(146, 147, 151, 0.5);
 }
 
@@ -2456,7 +2456,7 @@ body {
 /* Добавляем точки продолжения в конце таймлайна */
 .roadmap-timeline .continuation-dots {
     position: absolute;
-    bottom: 0;
+    bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
     height: 80px;
@@ -2468,7 +2468,7 @@ body {
 .roadmap-timeline .continuation-dots::before {
     content: '';
     position: absolute;
-    top: 10px;
+    top: 0;
     left: 50%;
     transform: translateX(-50%);
     width: 16px;
@@ -2482,7 +2482,7 @@ body {
 .roadmap-timeline .continuation-dots::after {
     content: '';
     position: absolute;
-    top: 40px;
+    top: 30px;
     left: 50%;
     transform: translateX(-50%);
     width: 10px;
@@ -2496,7 +2496,7 @@ body {
 .roadmap-timeline .continuation-dots .small-dot {
     content: '';
     position: absolute;
-    top: 65px;
+    top: 55px;
     left: 50%;
     transform: translateX(-50%);
     width: 6px;
