@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function initializeContainers() {
         // Устанавливаем фиксированную высоту для всех контейнеров
         const fixedHeight = 450;
-        const isMobile = window.innerWidth <= 768;
         
         // Применяем стили ко всем контейнерам
         document.querySelectorAll('.nft-grid').forEach(grid => {
@@ -27,12 +26,6 @@ document.addEventListener('DOMContentLoaded', function() {
             grid.style.height = `${fixedHeight}px`;
             grid.style.display = 'none';
             grid.style.opacity = '0';
-            
-            // Если мобильное устройство, изменяем стили контейнера
-            if (isMobile) {
-                grid.style.overflowX = 'auto';
-                grid.style.webkitOverflowScrolling = 'touch';
-            }
         });
         
         // Загружаем только текущую активную категорию
@@ -218,7 +211,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Функция для получения цены NFT
     function getNftPrice(rarity) {
-        return '';
+        const prices = {
+            'common': '0.1 ETH',
+            'rare': '0.3 ETH',
+            'legendary': '0.5 ETH'
+        };
+        
+        return prices[rarity] || '0.1 ETH';
     }
     
     // Оптимизированная функция анимации слайдера
