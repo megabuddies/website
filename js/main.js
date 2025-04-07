@@ -220,62 +220,73 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Заменяем оригинальную функцию setActiveNavItem
+    // Обновленная функция активации пунктов меню при скролле - активация при прокрутке 70% раздела
     function setActiveNavItem() {
-        // Получаем все ссылки навигации
-        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section[id], .hero[id]');
+        const scrollPosition = window.scrollY + 150; // Уменьшаем это значение для более точной активации
         
-        // Очищаем все активные классы сначала
-        navLinks.forEach(link => {
-            link.parentElement.classList.remove('active');
-        });
-        
-        // Получаем все секции с id
-        const sections = document.querySelectorAll('section[id], .hero');
-        const scrollPosition = window.scrollY;
-        const windowHeight = window.innerHeight;
-        
-        // Проходим по секциям в обратном порядке (снизу вверх)
-        // чтобы найти первую видимую секцию
-        for (let i = sections.length - 1; i >= 0; i--) {
-            const section = sections[i];
-            const sectionId = section.getAttribute('id');
+        // Обработка первой секции (hero)
+        const heroSection = document.querySelector('.hero');
+        if (heroSection && heroSection.id) {
+            const heroTop = heroSection.offsetTop;
+            const heroHeight = heroSection.offsetHeight;
             
-            // Получаем координаты секции
-            const rect = section.getBoundingClientRect();
-            
-            // Учитываем текущий скролл и координаты секции
-            const sectionTop = rect.top + window.scrollY;
-            const sectionHeight = rect.height;
-            
-            // Проверка для первой секции (hero) если мы в самом верху страницы
-            if (i === 0 && scrollPosition < 100) {
-                // Активируем первую ссылку
-                navLinks.forEach(link => {
-                    if (link.getAttribute('href') === `#${sectionId}`) {
-                        link.parentElement.classList.add('active');
-                    }
+            // Если мы в начале страницы, активируем первую секцию
+            if (scrollPosition < (heroTop + heroHeight * 0.7)) {
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active');
                 });
+                
+                const heroLink = document.querySelector(`.nav-item a[href="#${heroSection.id}"]`);
+                if (heroLink) {
+                    heroLink.parentElement.classList.add('active');
+                }
+                
+                // Выходим из функции, так как уже активировали нужный пункт
                 return;
             }
-
-            // Проверка для остальных секций - секция считается активной,
-            // когда пользователь прокрутил примерно до 25% секции
-            const activationThreshold = 0.25;
-            const activationPoint = sectionTop + (sectionHeight * activationThreshold);
-            
-            if (scrollPosition >= activationPoint) {
-                // Находим соответствующую ссылку и делаем её активной
-                navLinks.forEach(link => {
-                    const href = link.getAttribute('href');
-                    if (href && href === `#${sectionId}`) {
-                        link.parentElement.classList.add('active');
-                    }
-                });
-                // Как только нашли активную секцию, прерываем цикл
-                break;
-            }
         }
+        
+        // Основная логика для других секций
+        sections.forEach((section, index) => {
+            // Пропускаем hero секцию, так как уже обработали её выше
+            if (section.classList.contains('hero')) return;
+            
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            const sectionId = section.getAttribute('id');
+            
+            // Активируем следующий раздел, когда прокручено 70% текущего раздела (остается 30%)
+            // Точка, когда пользователь прокрутил 70% текущего раздела
+            const activationThreshold = sectionTop + (sectionHeight * 0.7);
+            
+            // Проверяем, находимся ли мы после точки активации, но до конца текущего раздела
+            if (scrollPosition >= activationThreshold && scrollPosition < (sectionTop + sectionHeight)) {
+                // Если мы в последних 30% раздела, активируем следующую кнопку
+                const nextSection = section.nextElementSibling;
+                if (nextSection && nextSection.id) {
+                    document.querySelectorAll('.nav-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    
+                    const activeLink = document.querySelector(`.nav-item a[href="#${nextSection.id}"]`);
+                    if (activeLink) {
+                        activeLink.parentElement.classList.add('active');
+                    }
+                }
+            } 
+            // Если мы не в последних 30% раздела, активируем текущую кнопку
+            else if (scrollPosition >= sectionTop && scrollPosition < activationThreshold) {
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                const activeLink = document.querySelector(`.nav-item a[href="#${sectionId}"]`);
+                if (activeLink) {
+                    activeLink.parentElement.classList.add('active');
+                }
+            }
+        });
     }
     
     // Вызываем функцию при скролле
