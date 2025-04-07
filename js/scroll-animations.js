@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
     sections.forEach(section => {
         ScrollTrigger.create({
             trigger: section,
-            start: 'top 50%', // Когда верх секции достигает середины экрана
-            end: 'bottom 50%', // Когда низ секции уходит с середины экрана
+            start: 'top 75%', // Когда верх секции достигает 75% высоты экрана
+            end: 'bottom 25%', // Когда низ секции уходит с 25% высоты экрана
             onEnter: () => setActiveNavItem(section.id),
             onEnterBack: () => setActiveNavItem(section.id),
             markers: false

@@ -633,46 +633,5 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(adjustTextSpacing, 500);
     setTimeout(adjustTextSpacing, 1500);
     setTimeout(adjustTextSpacing, 3000); // Длительная задержка для гарантии
-
-    // Обработка нажатий на плитки дорожной карты
-    const roadmapItems = document.querySelectorAll('.roadmap-item');
-    roadmapItems.forEach(item => {
-        item.addEventListener('click', function() {
-            // Удаляем активный класс у всех элементов
-            roadmapItems.forEach(i => i.classList.remove('active'));
-            // Добавляем активный класс к нажатому элементу
-            this.classList.add('active');
-        });
-    });
-
-    // Функционал фильтров для дорожной карты
-    const roadmapFilterButtons = document.querySelectorAll('.roadmap-filters .filter-btn');
-    const roadmapItemElements = document.querySelectorAll('.roadmap-item');
-    
-    // Обработчик клика на кнопку фильтра
-    roadmapFilterButtons.forEach(filter => {
-        filter.addEventListener('click', function() {
-            // Убираем класс active со всех кнопок
-            roadmapFilterButtons.forEach(btn => btn.classList.remove('active'));
-            
-            // Добавляем класс active текущей кнопке
-            this.classList.add('active');
-            
-            // Получаем значение фильтра
-            const filterValue = this.getAttribute('data-filter');
-            
-            // Фильтруем элементы
-            roadmapItemElements.forEach(item => {
-                // Если выбраны все элементы или у элемента есть соответствующий статус
-                if (filterValue === 'all' || item.querySelector(`.roadmap-status.${filterValue}`)) {
-                    item.style.display = 'flex';
-                    item.style.opacity = '1';
-                } else {
-                    item.style.display = 'none';
-                    item.style.opacity = '0';
-                }
-            });
-        });
-    });
 });
 
