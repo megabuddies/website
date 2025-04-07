@@ -264,8 +264,4 @@ document.addEventListener('DOMContentLoaded', function() {
         opacity: 0.5,
         ease: "none"
     });
-    
-    // ВАЖНО: Навигационная система подсветки пунктов меню 
-    // полностью реализована в js/main.js в функции setActiveNavItem().
-    // Не добавляйте здесь код, влияющий на классы .active в навигации!
 });
