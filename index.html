@@ -6,6 +6,7 @@
     <title>Mega Buddies - Революция в мире NFT на MegaETH</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/neon.css">
+    <link rel="stylesheet" href="css/mobile.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -153,10 +154,14 @@
             <p class="collection-subtitle">Немного референсов для ознакомления</p>
             <div class="section-line"></div>
             <div class="collection-filters">
-                <button class="filter-btn active" data-filter="all">ВСЕ</button>
-                <button class="filter-btn" data-filter="common">ОБЫЧНЫЕ</button>
-                <button class="filter-btn" data-filter="rare">РЕДКИЕ</button>
-                <button class="filter-btn" data-filter="legendary">ЛЕГЕНДАРНЫЕ</button>
+                <div class="filter-primary">
+                    <button class="filter-btn active" data-filter="all">ВСЕ</button>
+                </div>
+                <div class="filter-secondary">
+                    <button class="filter-btn" data-filter="common">ОБЫЧНЫЕ</button>
+                    <button class="filter-btn" data-filter="rare">РЕДКИЕ</button>
+                    <button class="filter-btn" data-filter="legendary">ЛЕГЕНДАРНЫЕ</button>
+                </div>
             </div>
             <div class="nft-grid" data-category="all"></div>
             <div class="nft-grid" data-category="common"></div>
@@ -172,7 +177,9 @@
             <div class="section-line"></div>
             
             <div class="roadmap-container">
-                <div class="roadmap-timeline"></div>
+                <div class="roadmap-timeline">
+                    <!-- Удаляем элемент с точками -->
+                </div>
                 
                 <div class="roadmap-items">
                     <div class="roadmap-item">
@@ -200,7 +207,7 @@
                     </div>
                     
                     <div class="roadmap-item">
-                        <div class="roadmap-icon">
+                        <div class="roadmap-icon neon-pulse">
                             <i class="fas fa-users"></i>
                         </div>
                         <div class="roadmap-content neon-glow">
@@ -212,7 +219,7 @@
                     </div>
                     
                     <div class="roadmap-item">
-                        <div class="roadmap-icon">
+                        <div class="roadmap-icon neon-pulse">
                             <i class="fas fa-globe"></i>
                         </div>
                         <div class="roadmap-content neon-glow">
@@ -320,9 +327,18 @@
         </div>
     </footer>
     
+    <!-- Кнопка быстрого перехода наверх для мобильных устройств -->
+    <div class="mobile-quick-actions">
+        <div id="scroll-top" class="quick-action-btn">
+            <i class="fas fa-arrow-up"></i>
+        </div>
+    </div>
+    
     <script src="js/main.js"></script>
+    <script src="js/mobile-optimize.js"></script>
     <script src="js/three-animation.js"></script>
     <script src="js/collection-slider.js"></script>
     <script src="js/scroll-animations.js"></script>
+    <script src="js/touch.js"></script>
 </body>
 </html>

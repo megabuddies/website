@@ -151,11 +151,44 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Мобильное меню
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-    const mainNav = document.querySelector('.main-nav');
+    const navList = document.querySelector('.nav-list');
+    const navItems = document.querySelectorAll('.nav-item');
+    const body = document.body;
     
+    // Добавляем индексы для анимации элементов меню
+    navItems.forEach((item, index) => {
+        item.style.setProperty('--item-index', index);
+    });
+    
+    // Функция для определения, является ли устройство мобильным
+    function isMobile() {
+        return window.innerWidth <= 768;
+    }
+    
+    // Улучшенная обработка мобильного меню
     mobileMenuToggle.addEventListener('click', () => {
         mobileMenuToggle.classList.toggle('active');
-        mainNav.classList.toggle('active');
+        navList.classList.toggle('active');
+        
+        // Блокируем прокрутку страницы при открытом меню
+        if (navList.classList.contains('active')) {
+            body.style.overflow = 'hidden';
+        } else {
+            body.style.overflow = 'auto';
+        }
+    });
+    
+    // Закрытие мобильного меню при клике за его пределами
+    document.addEventListener('click', (e) => {
+        if (isMobile() && 
+            navList.classList.contains('active') && 
+            !navList.contains(e.target) && 
+            !mobileMenuToggle.contains(e.target)) {
+            
+            mobileMenuToggle.classList.remove('active');
+            navList.classList.remove('active');
+            body.style.overflow = 'auto';
+        }
     });
     
     // Плавная прокрутка к разделам при нажатии на ссылки навигации
@@ -168,40 +201,57 @@ document.addEventListener('DOMContentLoaded', function() {
             const targetId = this.getAttribute('href').substring(1);
             const targetSection = document.getElementById(targetId);
             
-            // Одинаковое поведение для всех разделов, включая roadmap
-            window.scrollTo({
-                top: targetSection.offsetTop - 100, // Стандартный отступ для всех разделов
-                behavior: 'smooth'
-            });
+            if (targetSection) {
+                // Отступ с учетом мобильной версии
+                const offset = isMobile() ? 70 : 100;
+                
+                window.scrollTo({
+                    top: targetSection.offsetTop - offset,
+                    behavior: 'smooth'
+                });
+            }
             
             // Закрываем мобильное меню при клике на ссылку
-            if (mainNav.classList.contains('active')) {
+            if (isMobile() && navList.classList.contains('active')) {
                 mobileMenuToggle.classList.remove('active');
-                mainNav.classList.remove('active');
+                navList.classList.remove('active');
+                body.style.overflow = 'auto';
             }
         });
     });
     
-    // Обработчик для индикатора прокрутки
-    const scrollIndicator = document.getElementById('scroll-down');
-    if (scrollIndicator) {
-        scrollIndicator.addEventListener('click', function() {
-            const aboutSection = document.getElementById('about');
-            if (aboutSection) {
-                window.scrollTo({
-                    top: aboutSection.offsetTop - 100,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    }
-    
     // Обновленная функция активации пунктов меню при скролле - активация при прокрутке 70% раздела
     function setActiveNavItem() {
-        const sections = document.querySelectorAll('section[id]');
+        const sections = document.querySelectorAll('section[id], .hero[id]');
         const scrollPosition = window.scrollY + 150; // Уменьшаем это значение для более точной активации
         
-        sections.forEach(section => {
+        // Обработка первой секции (hero)
+        const heroSection = document.querySelector('.hero');
+        if (heroSection && heroSection.id) {
+            const heroTop = heroSection.offsetTop;
+            const heroHeight = heroSection.offsetHeight;
+            
+            // Если мы в начале страницы, активируем первую секцию
+            if (scrollPosition < (heroTop + heroHeight * 0.7)) {
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                const heroLink = document.querySelector(`.nav-item a[href="#${heroSection.id}"]`);
+                if (heroLink) {
+                    heroLink.parentElement.classList.add('active');
+                }
+                
+                // Выходим из функции, так как уже активировали нужный пункт
+                return;
+            }
+        }
+        
+        // Основная логика для других секций
+        sections.forEach((section, index) => {
+            // Пропускаем hero секцию, так как уже обработали её выше
+            if (section.classList.contains('hero')) return;
+            
             const sectionTop = section.offsetTop;
             const sectionHeight = section.offsetHeight;
             const sectionId = section.getAttribute('id');
@@ -239,9 +289,48 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Вызываем функцию при загрузке и скролле
-    setActiveNavItem();
+    // Вызываем функцию при скролле
     window.addEventListener('scroll', setActiveNavItem);
+    
+    // Также вызываем функцию при загрузке страницы
+    window.addEventListener('load', setActiveNavItem);
+    
+    // Обработка ориентации экрана для мобильных устройств
+    function handleOrientationChange() {
+        const html = document.documentElement;
+        
+        if (window.innerHeight < window.innerWidth) {
+            // Ландшафтная ориентация
+            html.classList.add('landscape');
+            html.classList.remove('portrait');
+        } else {
+            // Портретная ориентация
+            html.classList.add('portrait');
+            html.classList.remove('landscape');
+        }
+    }
+    
+    // Запускаем проверку ориентации при загрузке и изменении размера окна
+    window.addEventListener('load', handleOrientationChange);
+    window.addEventListener('resize', handleOrientationChange);
+    window.addEventListener('orientationchange', handleOrientationChange);
+    
+    // Обработчик для индикатора прокрутки
+    const scrollIndicator = document.getElementById('scroll-down');
+    if (scrollIndicator) {
+        scrollIndicator.addEventListener('click', function() {
+            const aboutSection = document.getElementById('about');
+            if (aboutSection) {
+                // Отступ с учетом мобильной версии
+                const offset = isMobile() ? 70 : 100;
+                
+                window.scrollTo({
+                    top: aboutSection.offsetTop - offset,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    }
     
     // Эффект печатающегося текста для терминала
     function typeWriter(element, text, speed = 50) {

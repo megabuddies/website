@@ -1,0 +1,1053 @@
+/* MOBILE.CSS - Дополнительные стили для мобильных устройств */
+/* Сохраняем тот же дизайн, но оптимизированный для мобильных */
+
+:root {
+  --mobile-header-height: 70px;
+}
+
+/* Исправление проблемы с горизонтальным скроллом */
+html, body {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden !important;
+  position: relative;
+}
+
+* {
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  max-width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* Базовые мобильные настройки для всех экранов меньше 992px */
+@media (max-width: 992px) {
+  html {
+    scroll-padding-top: var(--mobile-header-height);
+  }
+
+  /* Улучшенная адаптация изображений */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Улучшенная навигация для сенсорных устройств */
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Улучшенные отступы разделов */
+  .section {
+    padding: 60px 0;
+    width: 100%;
+    overflow-x: hidden;
+  }
+  
+  /* Улучшенный хедер */
+  .main-header {
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 1000;
+    height: var(--mobile-header-height);
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+    width: 100%;
+  }
+  
+  /* Манифест */
+  .terminal-content {
+    max-height: 400px;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) var(--background-color);
+    padding-right: 10px;
+  }
+  
+  .terminal-content::-webkit-scrollbar {
+    width: 5px;
+    display: block;
+  }
+  
+  .terminal-content::-webkit-scrollbar-track {
+    background: var(--background-color);
+    visibility: visible;
+  }
+  
+  .terminal-content::-webkit-scrollbar-thumb {
+    background-color: var(--accent-color);
+    border-radius: 5px;
+    visibility: visible;
+    opacity: 0.7;
+  }
+}
+
+/* Специфичные настройки для телефонов (768px и меньше) */
+@media (max-width: 768px) {
+  /* Настройки мобильного меню и навигации */
+  .mobile-menu-toggle {
+    margin-left: auto;
+    z-index: 1001;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+  
+  .mobile-menu-toggle span {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background-color: var(--accent-color);
+    margin: 3px 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 5px var(--accent-glow-color);
+  }
+  
+  .mobile-menu-toggle.active {
+    transform: rotate(180deg);
+  }
+  
+  .mobile-menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  
+  .mobile-menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .mobile-menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+  }
+  
+  .main-header .container {
+    position: relative;
+  }
+  
+  /* Улучшение анимации появления меню */
+  .nav-list {
+    top: 0;
+    right: -100%;
+    width: 80%;
+    height: 100vh;
+    padding-top: var(--mobile-header-height);
+    position: fixed;
+    background-color: var(--background-color);
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 80px 20px;
+    z-index: 1000;
+    transition: right 0.5s cubic-bezier(0.19, 1, 0.22, 1); /* Более плавная анимация */
+    background-image: 
+      linear-gradient(0deg, rgba(146, 147, 151, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(146, 147, 151, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    border-left: 2px solid var(--accent-color);
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+  }
+  
+  .nav-list::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(20, 20, 30, 0.7) 0%, rgba(10, 10, 15, 0.95) 70%);
+    z-index: -1;
+  }
+  
+  .nav-list.active {
+    right: 0;
+  }
+  
+  /* Анимация появления элементов меню */
+  .nav-item {
+    margin: 15px 0;
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    transition-delay: calc(var(--item-index, 0) * 0.05s);
+  }
+  
+  .nav-list.active .nav-item {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  .nav-link {
+    font-size: 18px;
+    padding: 12px;
+    display: block;
+  }
+  
+  /* Улучшенный герой раздел - поднят выше */
+  .hero {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 100vw;
+    overflow: hidden;
+    position: relative;
+    padding-top: var(--mobile-header-height);
+    min-height: calc(100vh - var(--mobile-header-height));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .hero-content {
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Уменьшаем отступы, поднимая контент выше */
+    padding-top: 40px;
+    padding-bottom: 120px;
+  }
+  
+  /* Исправление кнопок в герое */
+  .hero-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+  }
+  
+  .btn-primary, .btn-secondary {
+    margin: 5px 0;
+    width: 100%;
+    max-width: 300px;
+    white-space: normal;
+    height: auto;
+    min-height: 44px;
+    padding: 10px 15px;
+  }
+  
+  #hero-animation {
+    opacity: 0.5; /* Уменьшаем непрозрачность фона для лучшей читаемости текста */
+  }
+  
+  /* Стиль для активных кнопок навигации */
+  .nav-item.active .nav-link {
+    text-shadow: 0 0 10px var(--accent-glow-color),
+                 0 0 20px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.5));
+    position: relative;
+  }
+  
+  .nav-item.active .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30%;
+    height: 2px;
+    background-color: var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-glow-color);
+  }
+  
+  /* Фикс для контейнеров section */
+  .section .container {
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+  
+  /* Исправление для скролл-индикатора (прокрутите вниз) */
+  .scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    margin: 0 auto;
+  }
+  
+  .scroll-arrows {
+    margin-top: 10px;
+  }
+  
+  /* Полная переработка карточек коллекции */
+  .collection-container {
+    padding: 0 10px;
+    overflow: hidden;
+    width: 100%;
+  }
+  
+  /* Уменьшенный размер кнопок фильтров и оптимизация их расположения */
+  .collection-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .filter-btn {
+    font-size: 12px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    min-height: 36px;
+    margin: 0;
+  }
+  
+  /* Размещение кнопки "ВСЕ" отдельно сверху */
+  .filter-btn[data-filter="all"] {
+    width: 80%;
+    max-width: 250px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    padding: 10px;
+    order: -1;
+    flex-basis: 100%;
+  }
+  
+  .nft-grid {
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 10px 0;
+    margin: 0 -10px;
+    width: calc(100% + 20px);
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) var(--background-color);
+  }
+  
+  .nft-grid::-webkit-scrollbar {
+    height: 4px;
+  }
+  
+  .nft-grid::-webkit-scrollbar-track {
+    background: var(--background-color);
+  }
+  
+  .nft-grid::-webkit-scrollbar-thumb {
+    background-color: var(--accent-color);
+    border-radius: 4px;
+  }
+  
+  .nft-card {
+    flex: 0 0 auto;
+    width: 85%;
+    max-width: 280px;
+    margin-right: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    scroll-snap-align: start;
+  }
+  
+  .nft-image-container {
+    width: 100%;
+    position: relative;
+    padding-top: 100%; /* 1:1 Aspect Ratio */
+    overflow: hidden;
+  }
+  
+  .nft-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Индикатор прокрутки */
+  .collection-container::after {
+    content: '← прокрутите →';
+    display: block;
+    text-align: center;
+    font-size: 12px;
+    color: var(--accent-color);
+    margin-top: 10px;
+    opacity: 0.7;
+    animation: pulseText 1.5s infinite alternate ease-in-out;
+  }
+  
+  @keyframes pulseText {
+    0% { opacity: 0.3; }
+    100% { opacity: 0.7; }
+  }
+  
+  /* Оптимизированная дорожная карта, более похожая на десктопную версию */
+  .roadmap-container {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+  
+  .roadmap-timeline {
+    width: 2px;
+    left: 15px;
+    top: 15px;
+    bottom: 15px;
+    position: absolute;
+    background-color: var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-glow-color);
+    z-index: 1;
+  }
+  
+  .roadmap-items {
+    position: relative;
+    padding-left: 0;
+    margin-left: 0;
+  }
+  
+  .roadmap-item {
+    padding-left: 40px;
+    position: relative;
+    margin-bottom: 30px;
+    width: 100%;
+  }
+  
+  .roadmap-icon {
+    position: absolute;
+    left: 0;
+    top: 15px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-color);
+    border: 2px solid var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-glow-color);
+    border-radius: 50%;
+    z-index: 2;
+    font-size: 14px;
+  }
+  
+  /* Исправление выделения плиток дорожной карты */
+  .roadmap-content {
+    background-color: rgba(18, 18, 24, 0.8);
+    border: 1px solid var(--accent-color);
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 0 15px rgba(146, 147, 151, 0.1);
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  /* Добавляем активное состояние при нажатии - синее выделение */
+  .roadmap-content:active,
+  .roadmap-content.touch-active {
+    background-color: rgba(0, 120, 255, 0.15);
+    border-color: rgba(0, 120, 255, 0.7);
+    box-shadow: 0 0 15px rgba(0, 120, 255, 0.5);
+    transform: translateY(-3px);
+  }
+  
+  .roadmap-date {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: var(--accent-color);
+  }
+  
+  .roadmap-content h4 {
+    font-size: 18px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .roadmap-content p {
+    font-size: 14px;
+    line-height: 1.4;
+    margin-bottom: 15px;
+  }
+  
+  .roadmap-status {
+    display: inline-block;
+    padding: 3px 8px;
+    font-size: 10px;
+    border-radius: 4px;
+    background-color: rgba(18, 18, 24, 0.8);
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    position: relative;
+    float: right;
+    margin-top: -30px;
+  }
+  
+  .roadmap-status.completed {
+    background-color: rgba(0, 255, 0, 0.1);
+    border-color: #00ff00;
+    color: #00ff00;
+  }
+  
+  .roadmap-status.in-progress {
+    background-color: rgba(255, 165, 0, 0.1);
+    border-color: #ffa500;
+    color: #ffa500;
+  }
+  
+  /* Улучшенная подписка */
+  .newsletter-content {
+    margin: 0 auto;
+    max-width: 100%;
+  }
+  
+  /* Улучшенный футер */
+  .footer-nav-links {
+    margin-bottom: 20px;
+  }
+  
+  /* Делаем все интерактивные элементы более удобными для касания */
+  input[type="checkbox"],
+  input[type="radio"],
+  button,
+  .btn-primary,
+  .btn-secondary,
+  .social-link,
+  .nav-link,
+  .filter-btn,
+  a {
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  
+  /* Предотвращаем масштабирование страницы при двойном касании */
+  .nav-link,
+  .btn-primary,
+  .btn-secondary,
+  .community-btn,
+  button {
+    touch-action: manipulation;
+  }
+  
+  /* Стили для кнопки быстрого перехода наверх */
+  .mobile-quick-actions {
+    display: flex;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 900;
+  }
+  
+  .quick-action-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--background-color);
+    border: 2px solid var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-color);
+    font-size: 20px;
+    margin-left: 10px;
+    box-shadow: 0 0 10px var(--accent-glow-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: scale(0.5) translateY(20px);
+    pointer-events: none;
+  }
+  
+  .quick-action-btn.visible {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    pointer-events: auto;
+  }
+  
+  .quick-action-btn:hover,
+  .quick-action-btn:active {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px var(--accent-glow-color),
+                0 0 30px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.5));
+  }
+  
+  /* Анимация кнопки прокрутки наверх */
+  #scroll-top {
+    animation: pulse 2s infinite alternate;
+  }
+  
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 10px var(--accent-glow-color);
+    }
+    100% {
+      box-shadow: 0 0 20px var(--accent-glow-color),
+                  0 0 30px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.5));
+    }
+  }
+
+  /* Улучшенная адаптация плиток сообщества для мобильных устройств */
+  .community-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .twitter-feed, 
+  .discord-community {
+    width: 100%;
+    padding: 20px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .community-heading {
+    font-size: 20px;
+    margin-bottom: 15px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .social-icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+  }
+
+  .community-btn {
+    width: 100%;
+    max-width: 250px;
+    padding: 12px 15px;
+    margin-top: 15px;
+    font-size: 14px;
+  }
+}
+
+/* Малые мобильные устройства (576px и меньше) */
+@media (max-width: 576px) {
+  /* Еще более компактный заголовок */
+  .main-header {
+    padding: 10px 0;
+  }
+  
+  /* Более компактный заголовок секции */
+  .section-heading {
+    margin-bottom: 15px;
+  }
+  
+  /* Более компактный герой раздел */
+  .hero-content {
+    padding: 80px 15px 60px;
+  }
+  
+  /* Более плотное меню фильтров коллекции */
+  .collection-filters {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .filter-btn {
+    margin: 5px;
+  }
+  
+  /* Более компактная форма подписки */
+  .newsletter-form {
+    margin-top: 15px;
+  }
+  
+  /* Более компактный футер */
+  .footer-container {
+    padding: 30px 15px;
+  }
+  
+  .footer-bottom {
+    padding: 15px;
+  }
+  
+  /* Улучшаем видимость мелких элементов */
+  .terminal-text,
+  .roadmap-content p,
+  .newsletter-content p,
+  .footer-description {
+    line-height: 1.4;
+  }
+  
+  /* Touch-friendly размер соц. иконок */
+  .social-link {
+    margin: 0 8px;
+    width: 44px;
+    height: 44px;
+  }
+  
+  /* Еще более компактная дорожная карта */
+  .roadmap-item {
+    padding-left: 35px;
+  }
+  
+  .roadmap-icon {
+    width: 25px;
+    height: 25px;
+  }
+  
+  /* Корректировки для NFT карточек */
+  .nft-card {
+    width: 80%;
+    max-width: 250px;
+  }
+}
+
+/* Extra Small устройства (375px и меньше - iPhone SE, etc) */
+@media (max-width: 375px) {
+  /* Еще более компактный UI */
+  .hero-title-container {
+    margin-bottom: 15px;
+  }
+  
+  .hero-buttons {
+    margin-top: 20px;
+  }
+  
+  /* Уменьшаем размеры компонентов */
+  .terminal-container {
+    margin: 0 -10px;
+  }
+  
+  .about-item {
+    padding: 15px;
+  }
+  
+  /* Более компактные кнопки фильтров */
+  .filter-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  
+  /* Делаем карточки NFT на всю ширину */
+  .nft-card {
+    width: 90%;
+    max-width: 230px;
+  }
+
+  .community-heading {
+    font-size: 18px;
+  }
+
+  .social-icon {
+    font-size: 36px;
+  }
+
+  .community-btn {
+    max-width: 220px;
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  /* Специальные настройки для дорожной карты на сверхмалых экранах */
+  .roadmap-item {
+    padding-left: 28px;
+  }
+  
+  .roadmap-icon {
+    width: 22px;
+    height: 22px;
+    font-size: 11px;
+  }
+  
+  .roadmap-content {
+    padding: 12px;
+  }
+  
+  .roadmap-date {
+    font-size: 14px;
+  }
+  
+  .roadmap-content h4 {
+    font-size: 15px;
+  }
+}
+
+/* Оптимизация для ландшафтной ориентации на мобильных */
+@media (max-width: 896px) and (orientation: landscape) {
+  .hero {
+    min-height: auto;
+    height: auto;
+    padding-bottom: 30px;
+  }
+  
+  .hero-content {
+    padding: 80px 20px 60px;
+  }
+  
+  .hero-title {
+    font-size: 40px;
+  }
+  
+  /* Корректировка кнопок в ландшафтном режиме */
+  .hero-buttons {
+    flex-direction: row;
+    justify-content: center;
+    max-width: 100%;
+  }
+  
+  .hero-buttons .btn-primary,
+  .hero-buttons .btn-secondary {
+    margin: 0 10px;
+    max-width: 200px;
+  }
+  
+  .nav-list {
+    overflow-y: auto;
+    justify-content: flex-start;
+    padding-top: 100px;
+  }
+  
+  .nav-item {
+    margin: 10px 0;
+  }
+  
+  .terminal-content {
+    max-height: 200px;
+  }
+  
+  /* Адаптация дорожной карты для ландшафтного режима */
+  .roadmap-items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-left: 0;
+  }
+  
+  .roadmap-item {
+    width: 48%;
+    margin-bottom: 20px;
+    padding-left: 30px;
+  }
+  
+  .roadmap-timeline {
+    display: none;
+  }
+  
+  /* Адаптация коллекции для ландшафтного режима */
+  .nft-card {
+    width: 200px;
+    max-width: 200px;
+  }
+  
+  /* Размещение скролл-индикатора */
+  .scroll-indicator {
+    bottom: 10px;
+  }
+}
+
+/* Стили для различных ориентаций экрана */
+html.portrait .landscape-only {
+  display: none !important;
+}
+
+html.landscape .portrait-only {
+  display: none !important;
+}
+
+/* Дополнительная оптимизация для портретной ориентации */
+html.portrait {
+  /* Портретные стили, если понадобятся */
+}
+
+/* Специальная оптимизация для ландшафтной ориентации */
+html.landscape {
+  /* Ландшафтные стили, если понадобятся */
+}
+
+/* Стили для сенсорных устройств */
+.touch-device .nft-card.touch-active,
+.touch-device .about-item.touch-active,
+.touch-device .roadmap-item.touch-active,
+.touch-device .twitter-feed.touch-active,
+.touch-device .discord-community.touch-active {
+  transform: translateY(-5px);
+  box-shadow: 0 0 15px var(--accent-glow-color),
+              0 0 30px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.5)),
+              0 0 45px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.3));
+}
+
+.touch-device .nav-link.touch-active {
+  color: var(--accent-color);
+  text-shadow: 0 0 10px var(--accent-glow-color),
+               0 0 20px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.5));
+}
+
+.touch-device .social-link.touch-active {
+  color: var(--accent-color);
+  background-color: rgba(146, 147, 151, 0.1);
+  transform: translateY(-3px);
+}
+
+/* Стили для активных полей ввода */
+.touch-device .input-focused {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 10px var(--accent-glow-color);
+  outline: none;
+}
+
+/* Дополнительные улучшения доступности */
+.touch-device input, 
+.touch-device textarea, 
+.touch-device select, 
+.touch-device button {
+  -webkit-tap-highlight-color: rgba(146, 147, 151, 0.2);
+}
+
+/* Улучшения для сенсорных устройств */
+@media (hover: none) {
+  /* Показываем эффекты наведения по умолчанию для сенсорных устройств */
+  .nav-link::after,
+  .roadmap-icon,
+  .nft-card::before,
+  .about-item::before,
+  .newsletter-form button::before {
+    opacity: 0.7;
+  }
+  
+  /* Убираем эффекты наведения, которые могут мешать на сенсорных устройствах */
+  .nft-card:hover,
+  .about-item:hover,
+  .roadmap-item:hover,
+  .twitter-feed:hover,
+  .discord-community:hover {
+    transform: none;
+  }
+}
+
+/* Улучшения для пользователей с функциями доступности */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .scan-line,
+  .neon-pulse,
+  .neon-flicker {
+    animation: none !important;
+  }
+}
+
+/* Улучшения для тёмных тем (по умолчанию тёмная схема) */
+@media (prefers-color-scheme: dark) {
+  /* Сайт уже тёмный, но можно добавить дополнительные улучшения */
+  :root {
+    --glow-intensity: 0.9;
+  }
+}
+
+/* Улучшаем отображение на устройствах с высоким разрешением (Retina и выше) */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .loading-bar,
+  .terminal-container,
+  .neon-button,
+  .section-line {
+    background-size: 200% 200%;
+  }
+  
+  .nav-link::before,
+  .nav-link::after {
+    transform: scale(0.5);
+    transform-origin: center;
+  }
+}
+
+/* Стили для режима энергосбережения */
+html.reduce-animations * {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+html.reduce-animations .neon-glow,
+html.reduce-animations .neon-text,
+html.reduce-animations .neon-pulse,
+html.reduce-animations .neon-flicker,
+html.reduce-animations .neon-border {
+  text-shadow: none !important;
+  box-shadow: 0 0 5px rgba(146, 147, 151, 0.3) !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+html.reduce-animations .scan-line,
+html.reduce-animations #scroll-top {
+  display: none !important;
+}
+
+/* Стили для медленного соединения */
+html.slow-connection .fullscreen-bg,
+html.slow-connection #hero-animation,
+html.slow-connection #background-animation,
+html.slow-connection #star-field {
+  opacity: 0.3 !important;
+  filter: blur(1px);
+}
+
+html.slow-connection img {
+  filter: none !important;
+}
+
+/* Подъем MEGA BUDDIES выше для экономии места */
+@media (max-width: 768px) {
+  .hero-content {
+    padding-top: 80px;
+    padding-bottom: 60px;
+  }
+
+  .hero-title-container {
+    margin-bottom: 10px;
+  }
+
+  .hero-title {
+    font-size: 46px;
+    margin-bottom: 0;
+    line-height: 1.1;
+  }
+
+  .hero-subtitle {
+    margin-top: 5px;
+    font-size: 14px;
+  }
+
+  .hero-description {
+    margin-top: 15px;
+    margin-bottom: 25px;
+    font-size: 15px;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+} 

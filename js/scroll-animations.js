@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Инициализация GSAP ScrollTrigger
+    // Инициализация GSAP ScrollTrigger только для анимаций
     gsap.registerPlugin(ScrollTrigger);
     
     // Устанавливаем начальные состояния для всех секций
