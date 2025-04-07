@@ -219,12 +219,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Функция для получения цены NFT
     function getNftPrice(rarity) {
         const prices = {
-            'common': '0.1 ETH',
-            'rare': '0.3 ETH',
-            'legendary': '0.5 ETH'
+            'common': '',
+            'rare': '',
+            'legendary': ''
         };
         
-        return prices[rarity] || '0.1 ETH';
+        return prices[rarity] || '';
     }
     
     // Оптимизированная функция анимации слайдера
