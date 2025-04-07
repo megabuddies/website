@@ -2,7 +2,7 @@
 /* Сохраняем тот же дизайн, но оптимизированный для мобильных */
 
 :root {
-  --mobile-header-height: 70px;
+  --mobile-header-height: 50px;
 }
 
 /* Исправление проблемы с горизонтальным скроллом */
@@ -73,11 +73,25 @@ html, body {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     z-index: 1000;
-    height: var(--mobile-header-height);
+    height: 50px;
     display: flex;
     align-items: center;
     transition: all 0.3s ease;
     width: 100%;
+  }
+  
+  .header-container {
+    padding: 0 15px;
+  }
+  
+  .logo {
+    font-size: 16px;
+    padding: 8px 0;
+  }
+  
+  .logo img {
+    max-height: 30px;
+    margin-right: 5px;
   }
   
   /* Манифест */
@@ -220,12 +234,12 @@ html, body {
     max-width: 100vw;
     overflow: hidden;
     position: relative;
-    padding-top: var(--mobile-header-height);
-    min-height: calc(100vh - var(--mobile-header-height));
+    padding-top: 0;
+    min-height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
   }
   
   .hero-content {
@@ -238,9 +252,8 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Уменьшаем отступы, поднимая контент выше */
-    padding-top: 40px;
-    padding-bottom: 120px;
+    padding-top: 10px;
+    padding-bottom: 40px;
   }
   
   /* Исправление кнопок в герое */
@@ -269,41 +282,56 @@ html, body {
   
   /* Стили для мобильной версии героя */
   .mobile-hero {
-    padding-top: 20px;
-    min-height: 70vh; /* Уменьшаем высоту секции */
+    padding-top: 0;
+    min-height: auto;
+    height: auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
+    padding-bottom: 40px;
   }
   
   .mobile-hero-content {
     padding-top: 0;
     margin-top: 0;
+    padding-bottom: 20px;
+  }
+  
+  .mobile-hero .hero-header {
+    margin-top: 20px;
   }
   
   .mobile-hero .hero-title {
-    font-size: 42px;
-    margin: 5px 0;
+    font-size: 38px;
+    margin: 0;
+    line-height: 1;
   }
   
   .mobile-hero .hero-subtitle {
-    font-size: 16px;
-    margin: 10px 0;
+    font-size: 14px;
+    margin: 5px 0;
+    margin-bottom: 10px;
   }
   
   .mobile-hero .hero-text {
-    margin: 10px 0;
+    margin: 5px 0;
   }
   
   .mobile-hero .hero-description {
-    font-size: 14px;
-    line-height: 1.4;
+    font-size: 13px;
+    line-height: 1.3;
+    padding: 0 15px;
   }
   
   .mobile-scroll-indicator {
     position: relative;
-    bottom: 10px;
-    margin-top: 15px;
+    bottom: 0;
+    margin-top: 10px;
+  }
+  
+  /* Компактный вид подзаголовка и текста */
+  .hero-subtitle-container {
+    margin-bottom: 0;
   }
   
   /* Стиль для активных кнопок навигации */
@@ -335,7 +363,7 @@ html, body {
   /* Исправление для скролл-индикатора (прокрутите вниз) */
   .scroll-indicator {
     position: absolute;
-    bottom: 30px;
+    bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
@@ -347,8 +375,13 @@ html, body {
     margin: 0 auto;
   }
   
+  .scroll-text {
+    font-size: 12px;
+    margin-bottom: 3px;
+  }
+  
   .scroll-arrows {
-    margin-top: 10px;
+    margin-top: 3px;
   }
   
   /* Полная переработка карточек коллекции */
@@ -1076,29 +1109,30 @@ html.slow-connection img {
 /* Подъем MEGA BUDDIES выше для экономии места */
 @media (max-width: 768px) {
   .hero-content {
-    padding-top: 80px;
-    padding-bottom: 60px;
+    padding-top: 5px;
+    padding-bottom: 30px;
   }
 
   .hero-title-container {
-    margin-bottom: 10px;
+    margin-bottom: 0;
   }
 
   .hero-title {
-    font-size: 46px;
+    font-size: 36px;
     margin-bottom: 0;
-    line-height: 1.1;
+    line-height: 0.9;
   }
 
   .hero-subtitle {
     margin-top: 5px;
     font-size: 14px;
+    color: #0096ff;
   }
 
   .hero-description {
-    margin-top: 15px;
-    margin-bottom: 25px;
-    font-size: 15px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    font-size: 13px;
     max-width: 90%;
     margin-left: auto;
     margin-right: auto;
