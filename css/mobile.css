@@ -97,23 +97,33 @@ html, body {
   /* Манифест */
   .terminal-content {
     max-height: 400px;
-    overflow-y: scroll;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent-color) var(--background-color);
+    overflow-y: auto;
+    scrollbar-width: none;
     padding-right: 10px;
   }
   
+  /* Показываем скроллбар только для мобильных устройств */
+  html.mobile .terminal-content {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) var(--background-color);
+  }
+  
   .terminal-content::-webkit-scrollbar {
+    width: 0;
+    display: none;
+  }
+  
+  html.mobile .terminal-content::-webkit-scrollbar {
     width: 5px;
     display: block;
   }
   
-  .terminal-content::-webkit-scrollbar-track {
+  html.mobile .terminal-content::-webkit-scrollbar-track {
     background: var(--background-color);
     visibility: visible;
   }
   
-  .terminal-content::-webkit-scrollbar-thumb {
+  html.mobile .terminal-content::-webkit-scrollbar-thumb {
     background-color: var(--accent-color);
     border-radius: 5px;
     visibility: visible;
