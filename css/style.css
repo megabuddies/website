@@ -421,14 +421,15 @@ body {
   pointer-events: none;
 } */
 
+/* Общие стили для секций */
 .section {
-  padding: 50px 0;
+  padding: 60px 0;
   position: relative;
-  opacity: 1;
-  visibility: visible;
-  border: 4px solid transparent;
-  border-image: linear-gradient(to right, var(--accent-color), var(--secondary-color)) 1;
-  margin: 20px 0;
+  overflow: visible;
+}
+
+#manifesto {
+  overflow: visible;
 }
 
 .section-heading {
@@ -1007,10 +1008,15 @@ body {
 }
 
 /* Секция "О проекте" */
+#about {
+  overflow: visible;
+}
+
 .about-content {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 30px;
+  overflow: visible;
 }
 
 .about-item {
@@ -1182,6 +1188,14 @@ body {
 
 .terminal-content {
   line-height: 1.6;
+  overflow-y: visible;
+  overflow-x: hidden;
+  scrollbar-width: none; /* Firefox */
+}
+
+.terminal-content::-webkit-scrollbar {
+  width: 0;
+  display: none;
 }
 
 .terminal-text {
