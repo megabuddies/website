@@ -128,11 +128,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }, '-=0.5')
     .from('#roadmap .roadmap-item .roadmap-icon', {
         opacity: 0,
-        scale: 0,
+        scale: window.innerWidth < 768 ? 1 : 0,
+        x: window.innerWidth < 768 ? 0 : undefined,
+        y: window.innerWidth < 768 ? 0 : undefined,
         duration: 0.8,
         stagger: 0.3,
         ease: 'back.out(1.7)',
-        clearProps: 'all'
+        clearProps: window.innerWidth < 768 ? 'opacity' : 'all'
     }, '-=0.3');
     
     // Анимация для секции "Сообщество"
