@@ -62,17 +62,18 @@ document.addEventListener('DOMContentLoaded', function() {
         const roadmapItems = document.querySelectorAll('.roadmap-content');
         roadmapItems.forEach(item => {
             item.addEventListener('touchstart', () => {
-                item.classList.add('touch-active');
+                // Только подсвечиваем, без перемещения иконок
+                item.classList.add('touch-highlight');
             });
             
             item.addEventListener('touchend', () => {
                 setTimeout(() => {
-                    item.classList.remove('touch-active');
+                    item.classList.remove('touch-highlight');
                 }, 300);
             });
             
             item.addEventListener('touchcancel', () => {
-                item.classList.remove('touch-active');
+                item.classList.remove('touch-highlight');
             });
         });
         
