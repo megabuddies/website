@@ -342,6 +342,8 @@ html, body {
     position: relative;
     bottom: 0;
     margin-top: 10px;
+    pointer-events: none;
+    cursor: default;
   }
   
   /* Компактный вид подзаголовка и текста */

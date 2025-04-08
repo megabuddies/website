@@ -123,6 +123,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Оптимизация скролла для мобильных устройств
     function optimizeScroll() {
+        // Remove scroll indicator click handler
+        const scrollIndicator = document.getElementById('scroll-down');
+        if (scrollIndicator) {
+            scrollIndicator.style.pointerEvents = 'none';
+            scrollIndicator.style.cursor = 'default';
+        }
+        
         if (isMobile()) {
             let lastScrollTop = 0;
             
