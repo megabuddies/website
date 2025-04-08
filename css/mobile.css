@@ -27,6 +27,11 @@ html, body {
   overflow-x: hidden;
 }
 
+/* Скрываем бургер-кнопку в мобильной версии */
+.mobile-menu-toggle {
+  display: none !important;
+}
+
 /* Базовые мобильные настройки для всех экранов меньше 992px */
 @media (max-width: 992px) {
   html {
@@ -139,7 +144,7 @@ html, body {
     z-index: 1001;
     width: 44px;
     height: 44px;
-    display: flex;
+    display: none !important; /* Скрываем бургер кнопку на мобильных устройствах */
     flex-direction: column;
     justify-content: center;
     align-items: center;
