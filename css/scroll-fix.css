@@ -1,0 +1,45 @@
+/* CSS-fix для скроллбаров на десктопной версии */
+@media screen and (min-width: 992px) {
+    /* Глобальное правило для секций сайта */
+    html:not(.mobile) .section,
+    html:not(.mobile) #about,
+    html:not(.mobile) #manifesto,
+    html:not(.mobile) .about-content,
+    html:not(.mobile) .terminal-content,
+    html:not(.mobile) .terminal-container {
+        overflow: hidden !important;
+        overflow-x: hidden !important;
+        overflow-y: hidden !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+        -webkit-overflow-scrolling: auto !important;
+    }
+
+    /* Правила для элементов, где необходима фиксированная высота */
+    html:not(.mobile) .terminal-content {
+        max-height: none !important;
+    }
+
+    /* Для браузеров на Webkit (Chrome, Safari) */
+    html:not(.mobile) #about::-webkit-scrollbar,
+    html:not(.mobile) #manifesto::-webkit-scrollbar,
+    html:not(.mobile) .about-content::-webkit-scrollbar,
+    html:not(.mobile) .terminal-content::-webkit-scrollbar,
+    html:not(.mobile) .terminal-container::-webkit-scrollbar {
+        width: 0 !important;
+        height: 0 !important;
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        background: transparent !important;
+    }
+}
+
+/* Хак для Internet Explorer и Edge (устаревшие) */
+@media screen and (min-width: 992px) {
+    html:not(.mobile) .terminal-content,
+    html:not(.mobile) #about,
+    html:not(.mobile) #manifesto {
+        -ms-overflow-style: none;
+    }
+} 
