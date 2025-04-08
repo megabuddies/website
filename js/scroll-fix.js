@@ -2,6 +2,47 @@
 (function() {
     // Немедленно выполняемая функция, которая запускается до загрузки DOM
 
+    // Специальный хак для принудительного скрытия скроллбаров в Манифесте
+    var manifestoFixStyle = document.createElement('style');
+    manifestoFixStyle.id = 'manifesto-fix-styles';
+    manifestoFixStyle.innerHTML = `
+        @media screen and (min-width: 992px) {
+            /* Критический фикс только для манифеста */
+            #manifesto {
+                overflow: hidden !important;
+                overflow-x: hidden !important;
+                overflow-y: hidden !important;
+                height: auto !important;
+                min-height: auto !important;
+                max-height: none !important;
+            }
+            
+            #manifesto .terminal-container,
+            #manifesto .terminal-content {
+                overflow: hidden !important;
+                overflow-x: hidden !important;
+                overflow-y: hidden !important;
+                scrollbar-width: none !important;
+                -ms-overflow-style: none !important;
+                max-height: none !important;
+                height: auto !important;
+            }
+
+            /* Полное отключение скроллбаров */
+            .terminal-content::-webkit-scrollbar,
+            #manifesto::-webkit-scrollbar,
+            #manifesto *::-webkit-scrollbar {
+                width: 0 !important;
+                height: 0 !important;
+                display: none !important;
+                opacity: 0 !important;
+            }
+        }
+    `;
+    
+    // Вставляем стили в head до загрузки всего остального контента
+    document.head.insertBefore(manifestoFixStyle, document.head.firstChild);
+
     // Добавляем стили напрямую в head при первой загрузке скрипта
     var styleEl = document.createElement('style');
     styleEl.id = 'scroll-fix-styles';
@@ -62,6 +103,14 @@
             // Добавляем класс для дополнительного контроля
             el.classList.add('no-scroll-desktop');
         });
+        
+        // Специальная обработка для терминала манифеста
+        if (terminalContent) {
+            // Принудительно устанавливаем высоту контента равной его фактической высоте
+            var actualHeight = terminalContent.scrollHeight;
+            terminalContent.style.height = 'auto';
+            terminalContent.style.minHeight = actualHeight + 'px';
+        }
     }
     
     // Запускаем функцию до DOMContentLoaded
@@ -77,4 +126,22 @@
     setTimeout(applyStyles, 100);
     setTimeout(applyStyles, 500);
     setTimeout(applyStyles, 1000);
+    
+    // Хак для манифеста - переопределяем высоту после инициализации страницы
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            var terminalContent = document.querySelector('.terminal-content');
+            if (terminalContent && window.innerWidth > 992) {
+                terminalContent.style.height = 'auto';
+                terminalContent.style.overflow = 'hidden';
+                terminalContent.style.overflowY = 'hidden';
+                
+                // Проверяем наличие скроллбара и скрываем его
+                if (terminalContent.scrollHeight > terminalContent.clientHeight) {
+                    terminalContent.style.maxHeight = 'none';
+                    terminalContent.style.height = terminalContent.scrollHeight + 'px';
+                }
+            }
+        }, 300);
+    });
 })(); 
