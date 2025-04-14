@@ -37,14 +37,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Массив сообщений загрузки для имитации реального процесса
     const loadingMessages = [
-        'Загрузка 3D модели...',
-        'Инициализация окружения...',
-        'Подготовка визуальных эффектов...',
-        'Загрузка NFT коллекции...',
-        'Синхронизация с блокчейном...',
-        'Проверка безопасности соединения...',
-        'Запуск дополнительных ресурсов...',
-        'Почти готово...'
+        'Loading 3D model...',
+        'Initializing environment...',
+        'Preparing visual effects...',
+        'Loading NFT collection...',
+        'Synchronizing with blockchain...',
+        'Verifying connection security...',
+        'Launching additional resources...',
+        'Almost ready...'
     ];
     
     // Функция для обновления прогресса загрузки
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     clearInterval(completeInterval);
                     
                     // Отображаем финальное сообщение
-                    terminalText.innerHTML = '<span class="terminal-prompt" style="color: #5f5;">&gt;</span> <span style="color: #5f5;">Загрузка завершена. Запуск системы...</span>';
+                    terminalText.innerHTML = '<span class="terminal-prompt" style="color: #5f5;">&gt;</span> <span style="color: #5f5;">Loading complete. Launching system...</span>';
                     
                     setTimeout(() => {
                         preloader.classList.remove('active');

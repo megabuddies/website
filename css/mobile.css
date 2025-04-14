@@ -489,7 +489,7 @@ html, body {
   
   /* Индикатор прокрутки */
   .collection-container::after {
-    content: '← прокрутите →';
+    content: '← scroll →';
     display: block;
     text-align: center;
     font-size: 12px;
