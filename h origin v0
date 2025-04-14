@@ -1,5 +1,0 @@
-[33mcommit d038c66c96a1125b898be2f10cf6ec4b2ebf6a16[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mv0[m[33m)[m
-Author: Mega Buddies <megabuddies@example.com>
-Date:   Thu Mar 27 10:26:22 2025 +0100
-
-    Completely rewrote slideshow to use CSS transform for consistent animation
