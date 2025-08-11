@@ -679,3 +679,108 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(adjustTextSpacing, 3000); // Длительная задержка для гарантии
 });
 
+// ===============================================
+// DROPDOWN MENU FUNCTIONALITY
+// ===============================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    const dropdowns = document.querySelectorAll('.dropdown');
+    
+    dropdowns.forEach(dropdown => {
+        const toggle = dropdown.querySelector('.dropdown-toggle');
+        const menu = dropdown.querySelector('.dropdown-menu');
+        
+        if (toggle && menu) {
+            // Handle hover events for desktop
+            dropdown.addEventListener('mouseenter', function() {
+                menu.style.opacity = '1';
+                menu.style.visibility = 'visible';
+            });
+            
+            dropdown.addEventListener('mouseleave', function() {
+                menu.style.opacity = '0';
+                menu.style.visibility = 'hidden';
+            });
+            
+            // Handle click events for mobile
+            toggle.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    
+                    // Close all other dropdowns
+                    dropdowns.forEach(otherDropdown => {
+                        if (otherDropdown !== dropdown) {
+                            const otherMenu = otherDropdown.querySelector('.dropdown-menu');
+                            if (otherMenu) {
+                                otherMenu.style.opacity = '0';
+                                otherMenu.style.visibility = 'hidden';
+                            }
+                        }
+                    });
+                    
+                    // Toggle current dropdown
+                    const isVisible = menu.style.opacity === '1';
+                    menu.style.opacity = isVisible ? '0' : '1';
+                    menu.style.visibility = isVisible ? 'hidden' : 'visible';
+                }
+            });
+            
+            // Handle dropdown link clicks
+            const dropdownLinks = menu.querySelectorAll('.dropdown-link');
+            dropdownLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    // Close dropdown when a link is clicked
+                    menu.style.opacity = '0';
+                    menu.style.visibility = 'hidden';
+                });
+            });
+        }
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.dropdown')) {
+            dropdowns.forEach(dropdown => {
+                const menu = dropdown.querySelector('.dropdown-menu');
+                if (menu) {
+                    menu.style.opacity = '0';
+                    menu.style.visibility = 'hidden';
+                }
+            });
+        }
+    });
+});
+
+// ===============================================
+// ECOSYSTEM SECTION ANIMATIONS
+// ===============================================
+
+// Add scroll animations for ecosystem cards
+function initEcosystemAnimations() {
+    const ecosystemCards = document.querySelectorAll('.ecosystem-card');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }, index * 100);
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    ecosystemCards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = 'all 0.6s ease';
+        observer.observe(card);
+    });
+}
+
+// Initialize ecosystem animations when DOM is loaded
+document.addEventListener('DOMContentLoaded', initEcosystemAnimations);
+
