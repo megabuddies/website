@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Bots - Mega Buddies Ecosystem</title>
+    <link rel="stylesheet" href="css/scroll-fix.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/neon.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script src="js/device-detector.js"></script>
+</head>
+<body class="ecosystem-page">
+    <div class="scan-line"></div>
+    <div id="background-animation" class="fullscreen-bg"></div>
+    <div id="star-field" class="fullscreen-bg"></div>
+    
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <a href="index.html" class="logo neon-text">
+                <img src="images/mega-buddies-logo.png" alt="Mega Buddies">
+                MEGA BUDDIES
+            </a>
+            
+            <nav class="main-nav">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="index.html#about" class="nav-link">ABOUT</a></li>
+                    <li class="nav-item"><a href="index.html#manifesto" class="nav-link">MANIFESTO</a></li>
+                    <li class="nav-item dropdown active">
+                        <a href="index.html#ecosystem" class="nav-link dropdown-toggle">ECOSYSTEM</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="telegram-bots.html" class="dropdown-link active">
+                                <i class="fab fa-telegram"></i>
+                                <span>Telegram Bots</span>
+                            </a></li>
+                            <li><a href="zealy-quests.html" class="dropdown-link">
+                                <i class="fas fa-trophy"></i>
+                                <span>Zealy Quests</span>
+                            </a></li>
+                            <li><a href="ai-companions.html" class="dropdown-link">
+                                <i class="fas fa-robot"></i>
+                                <span>AI Companions</span>
+                            </a></li>
+                            <li><a href="buddy-runner.html" class="dropdown-link">
+                                <i class="fas fa-gamepad"></i>
+                                <span>Buddy Runner</span>
+                            </a></li>
+                            <li><a href="leaderboard.html" class="dropdown-link">
+                                <i class="fas fa-medal"></i>
+                                <span>Leaderboard</span>
+                            </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a href="index.html#collection" class="nav-link">COLLECTION</a></li>
+                    <li class="nav-item"><a href="https://mega-buddies.gitbook.io/mega-buddies-docs/" target="_blank" class="nav-link external-link">
+                        DOCS
+                        <i class="fas fa-external-link-alt"></i>
+                    </a></li>
+                    <li class="nav-item"><a href="index.html#roadmap" class="nav-link">ROADMAP</a></li>
+                    <li class="nav-item"><a href="index.html#community" class="nav-link">COMMUNITY</a></li>
+                </ul>
+            </nav>
+            
+            <div class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="page-hero">
+        <div class="container">
+            <div class="page-hero-content">
+                <div class="breadcrumbs">
+                    <a href="index.html">HOME</a>
+                    <span>/</span>
+                    <a href="index.html#ecosystem">ECOSYSTEM</a>
+                    <span>/</span>
+                    <span class="current">TELEGRAM BOTS</span>
+                </div>
+                <h1 class="page-title neon-text">TELEGRAM BOTS</h1>
+                <p class="page-subtitle">Gamified Community Platform</p>
+                <div class="page-description">
+                    <p>Transform your community engagement into an exciting game with our three powerful Telegram bots. Earn Stars, gain XP, unlock rewards, and climb the leaderboard!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Bots Overview -->
+    <section class="bots-overview section">
+        <div class="container">
+            <h2 class="section-heading neon-text">THE BOT ECOSYSTEM</h2>
+            <div class="section-line"></div>
+            
+            <div class="bots-grid">
+                <!-- Ambassador Bot -->
+                <div class="bot-card neon-glow" data-bot="ambassador">
+                    <div class="bot-header">
+                        <div class="bot-icon ambassador">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="bot-info">
+                            <h3>Ambassador Bot</h3>
+                            <span class="bot-status invite-only">INVITE ONLY</span>
+                        </div>
+                    </div>
+                    <div class="bot-description">
+                        <p>The core gamified experience where community members submit content and receive ratings from Buddy characters. Earn Stars, level up through roles, and unlock exclusive rewards.</p>
+                    </div>
+                    <div class="bot-features">
+                        <div class="feature">
+                            <i class="fas fa-star"></i>
+                            <span>Stars & XP System</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-level-up-alt"></i>
+                            <span>Role Progression</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-trophy"></i>
+                            <span>Quality Rating</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-gift"></i>
+                            <span>Rewards Shop</span>
+                        </div>
+                    </div>
+                    <a href="#ambassador-details" class="bot-btn neon-button">LEARN MORE</a>
+                </div>
+                
+                <!-- Influencer Bot -->
+                <div class="bot-card neon-glow" data-bot="influencer">
+                    <div class="bot-header">
+                        <div class="bot-icon influencer">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                        <div class="bot-info">
+                            <h3>Influencer Bot</h3>
+                            <span class="bot-status invite-only">INVITE ONLY</span>
+                        </div>
+                    </div>
+                    <div class="bot-description">
+                        <p>Designed for content creators and influencers to track their impact and earn whitelist rewards. Submit high-quality content and receive guaranteed WL spots based on your XP.</p>
+                    </div>
+                    <div class="bot-features">
+                        <div class="feature">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Impact Tracking</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-medal"></i>
+                            <span>WL Rewards</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-star"></i>
+                            <span>Quality Ratings</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Weekly Submissions</span>
+                        </div>
+                    </div>
+                    <a href="#influencer-details" class="bot-btn neon-button">LEARN MORE</a>
+                </div>
+                
+                <!-- WL Checker Bot -->
+                <div class="bot-card neon-glow" data-bot="checker">
+                    <div class="bot-header">
+                        <div class="bot-icon checker">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="bot-info">
+                            <h3>WL Checker Bot</h3>
+                            <span class="bot-status public">PUBLIC</span>
+                        </div>
+                    </div>
+                    <div class="bot-description">
+                        <p>Lightweight utility bot for instant whitelist verification. Check if your address is on the main or testnet whitelist with a simple click. Fast, transparent, and always available.</p>
+                    </div>
+                    <div class="bot-features">
+                        <div class="feature">
+                            <i class="fas fa-bolt"></i>
+                            <span>Instant Checking</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Main & Testnet</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-eye"></i>
+                            <span>Transparent</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-clock"></i>
+                            <span>24/7 Available</span>
+                        </div>
+                    </div>
+                    <a href="#checker-details" class="bot-btn neon-button">LEARN MORE</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Ambassador Bot Details -->
+    <section id="ambassador-details" class="bot-details section">
+        <div class="container">
+            <h2 class="section-heading neon-text">AMBASSADOR BOT</h2>
+            <div class="section-line"></div>
+            
+            <div class="bot-detail-content">
+                <div class="bot-explanation">
+                    <div class="explanation-block">
+                        <h3>Interactive Buddy Experience</h3>
+                        <p>The Ambassador Bot creates a rich interactive experience where Buddy characters actually respond to your submissions. Your content isn't just reviewed by algorithms - it's "seen" by your Buddy, who rates it from 1 to 10 stars and gives you personalized feedback.</p>
+                    </div>
+                    
+                    <div class="explanation-block">
+                        <h3>Stars & Rewards System</h3>
+                        <p>Earn unclaimed Stars based on your content's rating. When you're ready to claim them, there's a chance for a random multiplier - making it as exciting as opening a loot box! Stars can be spent in the bot's shop for invite codes, whitelist spots, and exclusive community rewards.</p>
+                    </div>
+                    
+                    <div class="explanation-block">
+                        <h3>Role Progression</h3>
+                        <p>Level up through community roles based on your XP and contributions. Start as a Newbie, become a Creator, and ultimately reach Visionary status. Each role brings new privileges and recognition in the community.</p>
+                    </div>
+                </div>
+                
+                <div class="role-progression">
+                    <h3>Community Roles</h3>
+                    <div class="roles-list">
+                        <div class="role-item">
+                            <div class="role-icon newbie">
+                                <i class="fas fa-seedling"></i>
+                            </div>
+                            <div class="role-info">
+                                <h4>Newbie</h4>
+                                <p>Starting role for new community members</p>
+                            </div>
+                        </div>
+                        <div class="role-item">
+                            <div class="role-icon creator">
+                                <i class="fas fa-paint-brush"></i>
+                            </div>
+                            <div class="role-info">
+                                <h4>Creator</h4>
+                                <p>Active contributors with quality content</p>
+                            </div>
+                        </div>
+                        <div class="role-item">
+                            <div class="role-icon visionary">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="role-info">
+                                <h4>Visionary</h4>
+                                <p>Top-tier community leaders and innovators</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Influencer Bot Details -->
+    <section id="influencer-details" class="bot-details section">
+        <div class="container">
+            <h2 class="section-heading neon-text">INFLUENCER BOT</h2>
+            <div class="section-line"></div>
+            
+            <div class="bot-detail-content">
+                <div class="xp-system">
+                    <h3>XP & Whitelist Rewards</h3>
+                    <p>The Influencer Bot tracks your impact through a sophisticated XP system. Submit quality content weekly and earn XP based on star ratings:</p>
+                    
+                    <div class="xp-table">
+                        <div class="xp-row">
+                            <span class="stars">1 star</span>
+                            <span class="xp-value">10 XP</span>
+                        </div>
+                        <div class="xp-row">
+                            <span class="stars">2 stars</span>
+                            <span class="xp-value">20 XP</span>
+                        </div>
+                        <div class="xp-row">
+                            <span class="stars">3 stars</span>
+                            <span class="xp-value">30 XP</span>
+                        </div>
+                        <div class="xp-row">
+                            <span class="stars">4 stars</span>
+                            <span class="xp-value">40 XP</span>
+                        </div>
+                        <div class="xp-row">
+                            <span class="stars">5 stars</span>
+                            <span class="xp-value">50 XP</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="wl-rewards">
+                    <h3>Whitelist Reward Tiers</h3>
+                    <div class="rewards-grid">
+                        <div class="reward-tier">
+                            <div class="tier-xp">50 XP</div>
+                            <div class="tier-reward">5 Raffle WL</div>
+                        </div>
+                        <div class="reward-tier">
+                            <div class="tier-xp">120 XP</div>
+                            <div class="tier-reward">1 Guaranteed + 3 Raffle WL</div>
+                        </div>
+                        <div class="reward-tier">
+                            <div class="tier-xp">200 XP</div>
+                            <div class="tier-reward">2 Guaranteed WL</div>
+                        </div>
+                        <div class="reward-tier highlight">
+                            <div class="tier-xp">1000 XP</div>
+                            <div class="tier-reward">10 Guaranteed + 5 Raffle WL</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- WL Checker Details -->
+    <section id="checker-details" class="bot-details section">
+        <div class="container">
+            <h2 class="section-heading neon-text">WHITELIST CHECKER</h2>
+            <div class="section-line"></div>
+            
+            <div class="bot-detail-content">
+                <div class="checker-features">
+                    <div class="feature-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-bolt"></i>
+                            <h4>Instant Results</h4>
+                            <p>Get immediate whitelist status for any address with a single click</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-network-wired"></i>
+                            <h4>Main & Testnet</h4>
+                            <p>Check both main and testnet whitelists with dedicated bot versions</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <h4>Secure & Private</h4>
+                            <p>Your address queries are processed securely without data retention</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-users"></i>
+                            <h4>Community First</h4>
+                            <p>Available to everyone, making the ecosystem transparent and accessible</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- How to Access -->
+    <section class="access-section section">
+        <div class="container">
+            <h2 class="section-heading neon-text">HOW TO ACCESS</h2>
+            <div class="section-line"></div>
+            
+            <div class="access-grid">
+                <div class="access-card ambassador-access">
+                    <h3>Ambassador Bot</h3>
+                    <div class="access-status">Invite Only</div>
+                    <p>Join our community and show your dedication to the "Build Different" philosophy. Active community members receive invitations.</p>
+                    <a href="https://discord.gg/megabuddies" target="_blank" class="access-btn neon-button">
+                        JOIN COMMUNITY
+                        <i class="fab fa-discord"></i>
+                    </a>
+                </div>
+                
+                <div class="access-card influencer-access">
+                    <h3>Influencer Bot</h3>
+                    <div class="access-status">Invite Only</div>
+                    <p>For content creators and influencers. DM Buddy on our social channels to request access and showcase your influence.</p>
+                    <a href="https://twitter.com/mega_buddies" target="_blank" class="access-btn neon-button">
+                        CONTACT BUDDY
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </div>
+                
+                <div class="access-card checker-access">
+                    <h3>WL Checker</h3>
+                    <div class="access-status public">Public Access</div>
+                    <p>Available to everyone! No registration needed. Simply start the bot and check your address status instantly.</p>
+                    <div class="checker-links">
+                        <a href="#" class="access-btn neon-button">
+                            MAIN WL CHECKER
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="#" class="access-btn neon-button">
+                            TESTNET CHECKER
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Back to Ecosystem -->
+    <section class="back-section">
+        <div class="container">
+            <a href="index.html#ecosystem" class="back-btn neon-button">
+                <i class="fas fa-arrow-left"></i>
+                BACK TO ECOSYSTEM
+            </a>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="images/mega-buddies-logo.png" alt="Mega Buddies">
+                <p class="footer-description">Mega Buddies - a revolutionary NFT project on MegaETH, bringing back the true spirit of cryptocurrencies and creating a movement of rebels against the system.</p>
+                
+                <div class="social-links">
+                    <a href="https://twitter.com/mega_buddies" class="social-link" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="https://discord.gg/megabuddies" class="social-link" target="_blank"><i class="fab fa-discord"></i></a>
+                    <a href="https://megaeth.com" class="social-link" target="_blank"><i class="fas fa-globe"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-nav">
+                <div class="footer-nav-section">
+                    <h3 class="footer-nav-title">Ecosystem</h3>
+                    <ul class="footer-nav-links">
+                        <li class="footer-nav-link"><a href="telegram-bots.html">Telegram Bots</a></li>
+                        <li class="footer-nav-link"><a href="zealy-quests.html">Zealy Quests</a></li>
+                        <li class="footer-nav-link"><a href="ai-companions.html">AI Companions</a></li>
+                        <li class="footer-nav-link"><a href="buddy-runner.html">Buddy Runner</a></li>
+                        <li class="footer-nav-link"><a href="leaderboard.html">Leaderboard</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-nav-section">
+                    <h3 class="footer-nav-title">Resources</h3>
+                    <ul class="footer-nav-links">
+                        <li class="footer-nav-link"><a href="https://mega-buddies.gitbook.io/mega-buddies-docs/" target="_blank">Documentation</a></li>
+                        <li class="footer-nav-link"><a href="#">FAQ</a></li>
+                        <li class="footer-nav-link"><a href="#">Guide</a></li>
+                        <li class="footer-nav-link"><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-nav-section">
+                    <h3 class="footer-nav-title">Legal Information</h3>
+                    <ul class="footer-nav-links">
+                        <li class="footer-nav-link"><a href="#">Terms of Use</a></li>
+                        <li class="footer-nav-link"><a href="#">Privacy Policy</a></li>
+                        <li class="footer-nav-link"><a href="#">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Mega Buddies. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script src="js/main.js"></script>
+    <script src="js/mobile-optimize.js"></script>
+    <script src="js/three-animation.js"></script>
+    <script src="js/scroll-animations.js"></script>
+    <script src="js/touch.js"></script>
+</body>
+</html>

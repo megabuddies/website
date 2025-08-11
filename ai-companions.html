@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Companions - Mega Buddies Ecosystem</title>
+    <link rel="stylesheet" href="css/scroll-fix.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/neon.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script src="js/device-detector.js"></script>
+</head>
+<body class="ecosystem-page">
+    <div class="scan-line"></div>
+    <div id="background-animation" class="fullscreen-bg"></div>
+    <div id="star-field" class="fullscreen-bg"></div>
+    
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <a href="index.html" class="logo neon-text">
+                <img src="images/mega-buddies-logo.png" alt="Mega Buddies">
+                MEGA BUDDIES
+            </a>
+            
+            <nav class="main-nav">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="index.html#about" class="nav-link">ABOUT</a></li>
+                    <li class="nav-item"><a href="index.html#manifesto" class="nav-link">MANIFESTO</a></li>
+                    <li class="nav-item dropdown active">
+                        <a href="index.html#ecosystem" class="nav-link dropdown-toggle">ECOSYSTEM</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="telegram-bots.html" class="dropdown-link">
+                                <i class="fab fa-telegram"></i>
+                                <span>Telegram Bots</span>
+                            </a></li>
+                            <li><a href="zealy-quests.html" class="dropdown-link">
+                                <i class="fas fa-trophy"></i>
+                                <span>Zealy Quests</span>
+                            </a></li>
+                            <li><a href="ai-companions.html" class="dropdown-link active">
+                                <i class="fas fa-robot"></i>
+                                <span>AI Companions</span>
+                            </a></li>
+                            <li><a href="buddy-runner.html" class="dropdown-link">
+                                <i class="fas fa-gamepad"></i>
+                                <span>Buddy Runner</span>
+                            </a></li>
+                            <li><a href="leaderboard.html" class="dropdown-link">
+                                <i class="fas fa-medal"></i>
+                                <span>Leaderboard</span>
+                            </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a href="index.html#collection" class="nav-link">COLLECTION</a></li>
+                    <li class="nav-item"><a href="https://mega-buddies.gitbook.io/mega-buddies-docs/" target="_blank" class="nav-link external-link">
+                        DOCS
+                        <i class="fas fa-external-link-alt"></i>
+                    </a></li>
+                    <li class="nav-item"><a href="index.html#roadmap" class="nav-link">ROADMAP</a></li>
+                    <li class="nav-item"><a href="index.html#community" class="nav-link">COMMUNITY</a></li>
+                </ul>
+            </nav>
+            
+            <div class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="page-hero">
+        <div class="container">
+            <div class="page-hero-content">
+                <div class="breadcrumbs">
+                    <a href="index.html">HOME</a>
+                    <span>/</span>
+                    <a href="index.html#ecosystem">ECOSYSTEM</a>
+                    <span>/</span>
+                    <span class="current">AI COMPANIONS</span>
+                </div>
+                <h1 class="page-title neon-text">AI COMPANIONS</h1>
+                <p class="page-subtitle">Your Buddy Comes Alive</p>
+                <div class="page-description">
+                    <p>Experience the magic of talking with your Buddy character one-on-one. Powered by Nectar AI, your NFT becomes a virtual friend who responds in real-time, in character.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Main Features -->
+    <section class="ai-features section">
+        <div class="container">
+            <h2 class="section-heading neon-text">REVOLUTIONARY AI EXPERIENCE</h2>
+            <div class="section-line"></div>
+            
+            <div class="features-showcase">
+                <div class="feature-showcase">
+                    <div class="feature-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Real-Time Conversations</h3>
+                    <p>Chat with your Buddy character in real-time. Ask about Mega Buddies lore, get crypto insights, or just have fun conversations. Your Buddy responds instantly with personality!</p>
+                </div>
+                
+                <div class="feature-showcase">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Character Personality</h3>
+                    <p>Each Buddy has its own unique personality and knowledge. From quirky takes on crypto news to deep lore discussions, every character brings something different to the conversation.</p>
+                </div>
+                
+                <div class="feature-showcase">
+                    <div class="feature-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3>Powered by Nectar AI</h3>
+                    <p>Built on MegaETH's innovative Nectar AI platform, this technology brings advanced AI language models directly to your NFTs, creating truly interactive digital companions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- How It Works -->
+    <section class="how-it-works section">
+        <div class="container">
+            <h2 class="section-heading neon-text">HOW IT WORKS</h2>
+            <div class="section-line"></div>
+            
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-number">01</div>
+                    <h3>Access the Web Interface</h3>
+                    <p>Visit our dedicated AI companion page where popular Buddy characters are available for conversation.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">02</div>
+                    <h3>Choose Your Buddy</h3>
+                    <p>Select from available Buddy characters, each with their own personality, knowledge base, and conversation style.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">03</div>
+                    <h3>Start Chatting</h3>
+                    <p>Begin your conversation! Ask questions, share thoughts, or explore the Mega Buddies universe through your Buddy's perspective.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">04</div>
+                    <h3>Build Relationships</h3>
+                    <p>Develop ongoing relationships with your AI companions. They remember context and grow more personalized over time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Chat Preview -->
+    <section class="chat-preview section">
+        <div class="container">
+            <h2 class="section-heading neon-text">CONVERSATION PREVIEW</h2>
+            <div class="section-line"></div>
+            
+            <div class="mock-chat">
+                <div class="chat-header">
+                    <div class="buddy-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="buddy-name">Pixel Buddy #1337</div>
+                    <div class="chat-status online">ONLINE</div>
+                </div>
+                
+                <div class="chat-messages">
+                    <div class="message buddy-message">
+                        <div class="message-content">
+                            Hey there! Welcome to the Mega Buddies universe! I'm one of the original pixels from the collection. What brings you to chat with me today?
+                        </div>
+                        <div class="message-time">2 minutes ago</div>
+                    </div>
+                    
+                    <div class="message user-message">
+                        <div class="message-content">
+                            Tell me about the "Build Different" philosophy
+                        </div>
+                        <div class="message-time">1 minute ago</div>
+                    </div>
+                    
+                    <div class="message buddy-message">
+                        <div class="message-content">
+                            Ah, you're asking about the heart of our movement! "Build Different" isn't just a slogan - it's our rebellion against the corporate takeover of crypto. We believe in returning to crypto's punk roots: innovation, freedom, and community-first development. No VCs, no corporate games, just pure authenticity! 🔥
+                        </div>
+                        <div class="message-time">Just now</div>
+                    </div>
+                    
+                    <div class="typing-indicator">
+                        <div class="typing-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <span class="typing-text">Pixel Buddy is typing...</span>
+                    </div>
+                </div>
+                
+                <div class="chat-input">
+                    <input type="text" placeholder="Type your message..." disabled>
+                    <button type="button" disabled>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Technical Details -->
+    <section class="tech-details section">
+        <div class="container">
+            <h2 class="section-heading neon-text">TECHNICAL INNOVATION</h2>
+            <div class="section-line"></div>
+            
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <h3>MegaETH Integration</h3>
+                    <p>Built natively on MegaETH's high-performance blockchain, ensuring fast response times and seamless user experience.</p>
+                </div>
+                
+                <div class="tech-item">
+                    <h3>Nectar AI Platform</h3>
+                    <p>Leveraging Nectar AI's advanced language models specifically designed for virtual companions and character interactions.</p>
+                </div>
+                
+                <div class="tech-item">
+                    <h3>Character Persistence</h3>
+                    <p>Your conversations and relationships with AI companions are preserved, creating ongoing, evolving interactions.</p>
+                </div>
+                
+                <div class="tech-item">
+                    <h3>Lore Integration</h3>
+                    <p>AI companions have deep knowledge of Mega Buddies lore, community history, and the broader MegaETH ecosystem.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Nostalgia Section -->
+    <section class="nostalgia section">
+        <div class="container">
+            <h2 class="section-heading neon-text">DIGITAL NOSTALGIA</h2>
+            <div class="section-line"></div>
+            
+            <div class="nostalgia-content">
+                <div class="nostalgia-text">
+                    <h3>Remember Virtual Pets?</h3>
+                    <p>This feature brings back the magic of early internet companions like Clippy and Tamagotchi, but with cutting-edge AI technology. It's nostalgia meets innovation - the perfect blend of retro charm and modern capabilities.</p>
+                    
+                    <h3>More Than Just Chat</h3>
+                    <p>Your AI Buddy isn't just a chatbot - it's a window into the Mega Buddies universe. Get crypto tips, learn about upcoming features, or dive deep into the lore that makes our community special.</p>
+                </div>
+                
+                <div class="retro-icons">
+                    <div class="retro-icon">
+                        <i class="fas fa-desktop"></i>
+                        <span>Classic Computing</span>
+                    </div>
+                    <div class="retro-icon">
+                        <i class="fas fa-gamepad"></i>
+                        <span>Retro Gaming</span>
+                    </div>
+                    <div class="retro-icon">
+                        <i class="fas fa-heart"></i>
+                        <span>Virtual Companions</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Coming Soon -->
+    <section class="coming-soon section">
+        <div class="container">
+            <h2 class="section-heading neon-text">LAUNCH STATUS</h2>
+            <div class="section-line"></div>
+            
+            <div class="launch-status">
+                <div class="status-card">
+                    <div class="status-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>In Development</h3>
+                    <p>Our AI Companions are currently in active development. We're working closely with the Nectar AI team to ensure the perfect blend of personality, accuracy, and entertainment.</p>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%"></div>
+                    </div>
+                    <span class="progress-text">75% Complete</span>
+                </div>
+                
+                <div class="timeline">
+                    <h4>Development Timeline</h4>
+                    <div class="timeline-item completed">
+                        <span class="timeline-date">Q4 2024</span>
+                        <span class="timeline-event">Nectar AI Partnership</span>
+                    </div>
+                    <div class="timeline-item completed">
+                        <span class="timeline-date">Q1 2025</span>
+                        <span class="timeline-event">Character Design & Personality</span>
+                    </div>
+                    <div class="timeline-item current">
+                        <span class="timeline-date">Q2 2025</span>
+                        <span class="timeline-event">Beta Testing Phase</span>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-date">Q3 2025</span>
+                        <span class="timeline-event">Public Launch</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Back to Ecosystem -->
+    <section class="back-section">
+        <div class="container">
+            <a href="index.html#ecosystem" class="back-btn neon-button">
+                <i class="fas fa-arrow-left"></i>
+                BACK TO ECOSYSTEM
+            </a>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="images/mega-buddies-logo.png" alt="Mega Buddies">
+                <p class="footer-description">Mega Buddies - a revolutionary NFT project on MegaETH, bringing back the true spirit of cryptocurrencies and creating a movement of rebels against the system.</p>
+                
+                <div class="social-links">
+                    <a href="https://twitter.com/mega_buddies" class="social-link" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="https://discord.gg/megabuddies" class="social-link" target="_blank"><i class="fab fa-discord"></i></a>
+                    <a href="https://megaeth.com" class="social-link" target="_blank"><i class="fas fa-globe"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-nav">
+                <div class="footer-nav-section">
+                    <h3 class="footer-nav-title">Ecosystem</h3>
+                    <ul class="footer-nav-links">
+                        <li class="footer-nav-link"><a href="telegram-bots.html">Telegram Bots</a></li>
+                        <li class="footer-nav-link"><a href="zealy-quests.html">Zealy Quests</a></li>
+                        <li class="footer-nav-link"><a href="ai-companions.html">AI Companions</a></li>
+                        <li class="footer-nav-link"><a href="buddy-runner.html">Buddy Runner</a></li>
+                        <li class="footer-nav-link"><a href="leaderboard.html">Leaderboard</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-nav-section">
+                    <h3 class="footer-nav-title">Resources</h3>
+                    <ul class="footer-nav-links">
+                        <li class="footer-nav-link"><a href="https://mega-buddies.gitbook.io/mega-buddies-docs/" target="_blank">Documentation</a></li>
+                        <li class="footer-nav-link"><a href="#">FAQ</a></li>
+                        <li class="footer-nav-link"><a href="#">Guide</a></li>
+                        <li class="footer-nav-link"><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-nav-section">
+                    <h3 class="footer-nav-title">Legal Information</h3>
+                    <ul class="footer-nav-links">
+                        <li class="footer-nav-link"><a href="#">Terms of Use</a></li>
+                        <li class="footer-nav-link"><a href="#">Privacy Policy</a></li>
+                        <li class="footer-nav-link"><a href="#">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Mega Buddies. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script src="js/main.js"></script>
+    <script src="js/mobile-optimize.js"></script>
+    <script src="js/three-animation.js"></script>
+    <script src="js/scroll-animations.js"></script>
+    <script src="js/touch.js"></script>
+</body>
+</html>
