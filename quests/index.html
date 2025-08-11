@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zealy Quests - Mega Buddies Ecosystem</title>
+    <link rel="stylesheet" href="../css/scroll-fix.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/neon.css">
+    <link rel="stylesheet" href="../css/mobile.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="../js/scroll-fix.js"></script>
+</head>
+<body>
+    <div class="scan-line"></div>
+    <div id="background-animation" class="fullscreen-bg"></div>
+    <div id="star-field" class="fullscreen-bg"></div>
+    
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <a href="../" class="logo neon-text">
+                <img src="../images/mega-buddies-logo.png" alt="Mega Buddies">
+                MEGA BUDDIES
+            </a>
+            
+            <nav class="main-nav">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="../#about" class="nav-link">ABOUT</a></li>
+                    <li class="nav-item"><a href="../#manifesto" class="nav-link">MANIFESTO</a></li>
+                    <li class="nav-item"><a href="../#collection" class="nav-link">COLLECTION</a></li>
+                    <li class="nav-item ecosystem-dropdown active">
+                        <a href="../#ecosystem" class="nav-link">ECOSYSTEM</a>
+                        <ul class="ecosystem-submenu">
+                            <li><a href="../bots/" class="ecosystem-link">TELEGRAM BOTS</a></li>
+                            <li><a href="./" class="ecosystem-link active">ZEALY QUESTS</a></li>
+                            <li><a href="../leaderboard/" class="ecosystem-link">LEADERBOARD</a></li>
+                            <li><a href="../game/" class="ecosystem-link">BUDDY RUNNER</a></li>
+                            <li><a href="../docs/" class="ecosystem-link">DOCUMENTATION</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a href="../#roadmap" class="nav-link">ROADMAP</a></li>
+                    <li class="nav-item"><a href="../#community" class="nav-link">COMMUNITY</a></li>
+                </ul>
+            </nav>
+            
+            <div class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Hero section -->
+    <section class="hero ecosystem-hero">
+        <div class="hero-content">
+            <div class="hero-header">
+                <div class="hero-title-container">
+                    <h1 class="hero-title ecosystem-title">ZEALY QUESTS</h1>
+                </div>
+                <div class="hero-subtitle-container">
+                    <p class="hero-subtitle">COMPLETE QUESTS, EARN REWARDS, CLIMB THE LEADERBOARD</p>
+                </div>
+            </div>
+            <div class="hero-text">
+                <p class="hero-description">Join our quest platform powered by Zealy and earn exclusive rewards, NFTs, and recognition in the Mega Buddies community. Every action counts towards your journey to becoming a legendary Buddy.</p>
+            </div>
+            <div class="hero-buttons">
+                <a href="https://zealy.io/c/megabuddies" class="neon-button" target="_blank">
+                    <i class="fas fa-rocket"></i>
+                    START QUESTING
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Quest Categories -->
+    <section class="section quest-categories">
+        <div class="container">
+            <h2 class="section-heading neon-text">QUEST CATEGORIES</h2>
+            <div class="section-line"></div>
+            
+            <div class="quest-tabs">
+                <button class="quest-tab active" data-category="daily">DAILY QUESTS</button>
+                <button class="quest-tab" data-category="weekly">WEEKLY CHALLENGES</button>
+                <button class="quest-tab" data-category="special">SPECIAL EVENTS</button>
+                <button class="quest-tab" data-category="community">COMMUNITY QUESTS</button>
+            </div>
+            
+            <div class="quest-content">
+                <!-- Daily Quests -->
+                <div class="quest-category-content active" data-category="daily">
+                    <div class="quests-grid">
+                        <div class="quest-card neon-glow">
+                            <div class="quest-header">
+                                <div class="quest-icon daily">
+                                    <i class="fas fa-calendar-day"></i>
+                                </div>
+                                <div class="quest-difficulty easy">EASY</div>
+                            </div>
+                            <h3 class="quest-title">Daily Check-in</h3>
+                            <p class="quest-description">Visit our Discord server and say hello to the community</p>
+                            <div class="quest-reward">
+                                <span class="reward-amount">+50 XP</span>
+                                <span class="reward-type">Experience Points</span>
+                            </div>
+                            <div class="quest-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 100%"></div>
+                                </div>
+                                <span class="progress-text">1/1 Complete</span>
+                            </div>
+                        </div>
+                        
+                        <div class="quest-card neon-glow">
+                            <div class="quest-header">
+                                <div class="quest-icon daily">
+                                    <i class="fab fa-twitter"></i>
+                                </div>
+                                <div class="quest-difficulty easy">EASY</div>
+                            </div>
+                            <h3 class="quest-title">Social Engagement</h3>
+                            <p class="quest-description">Like and retweet our latest Twitter post</p>
+                            <div class="quest-reward">
+                                <span class="reward-amount">+25 XP</span>
+                                <span class="reward-type">Experience Points</span>
+                            </div>
+                            <div class="quest-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                                <span class="progress-text">0/1 Complete</span>
+                            </div>
+                        </div>
+                        
+                        <div class="quest-card neon-glow">
+                            <div class="quest-header">
+                                <div class="quest-icon daily">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="quest-difficulty medium">MEDIUM</div>
+                            </div>
+                            <h3 class="quest-title">Bot Interaction</h3>
+                            <p class="quest-description">Use any of our Telegram bots to check your portfolio</p>
+                            <div class="quest-reward">
+                                <span class="reward-amount">+75 XP</span>
+                                <span class="reward-type">Experience Points</span>
+                            </div>
+                            <div class="quest-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                                <span class="progress-text">0/1 Complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Weekly Challenges -->
+                <div class="quest-category-content" data-category="weekly">
+                    <div class="quests-grid">
+                        <div class="quest-card neon-glow">
+                            <div class="quest-header">
+                                <div class="quest-icon weekly">
+                                    <i class="fas fa-calendar-week"></i>
+                                </div>
+                                <div class="quest-difficulty hard">HARD</div>
+                            </div>
+                            <h3 class="quest-title">Community Champion</h3>
+                            <p class="quest-description">Help 5 new members in Discord by answering their questions</p>
+                            <div class="quest-reward">
+                                <span class="reward-amount">+500 XP</span>
+                                <span class="reward-type">+ Exclusive Role</span>
+                            </div>
+                            <div class="quest-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 40%"></div>
+                                </div>
+                                <span class="progress-text">2/5 Complete</span>
+                            </div>
+                        </div>
+                        
+                        <div class="quest-card neon-glow">
+                            <div class="quest-header">
+                                <div class="quest-icon weekly">
+                                    <i class="fas fa-share-alt"></i>
+                                </div>
+                                <div class="quest-difficulty medium">MEDIUM</div>
+                            </div>
+                            <h3 class="quest-title">Spread the Word</h3>
+                            <p class="quest-description">Share Mega Buddies content 3 times across social platforms</p>
+                            <div class="quest-reward">
+                                <span class="reward-amount">+300 XP</span>
+                                <span class="reward-type">+ Mystery Reward</span>
+                            </div>
+                            <div class="quest-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                                <span class="progress-text">0/3 Complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Special Events -->
+                <div class="quest-category-content" data-category="special">
+                    <div class="quests-grid">
+                        <div class="quest-card neon-glow special-event">
+                            <div class="quest-header">
+                                <div class="quest-icon special">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="quest-difficulty legendary">LEGENDARY</div>
+                            </div>
+                            <h3 class="quest-title">NFT Holder Celebration</h3>
+                            <p class="quest-description">Special quest for verified Mega Buddies NFT holders - participate in community AMA</p>
+                            <div class="quest-reward">
+                                <span class="reward-amount">Exclusive NFT</span>
+                                <span class="reward-type">+ 1000 XP</span>
+                            </div>
+                            <div class="quest-timer">
+                                <i class="fas fa-clock"></i>
+                                <span>Ends in 5 days</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Community Quests -->
+                <div class="quest-category-content" data-category="community">
+                    <div class="quests-grid">
+                        <div class="quest-card neon-glow">
+                            <div class="quest-header">
+                                <div class="quest-icon community">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="quest-difficulty medium">MEDIUM</div>
+                            </div>
+                            <h3 class="quest-title">Invite Friends</h3>
+                            <p class="quest-description">Invite 3 friends to join our Discord community</p>
+                            <div class="quest-reward">
+                                <span class="reward-amount">+250 XP</span>
+                                <span class="reward-type">Per Friend</span>
+                            </div>
+                            <div class="quest-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 33%"></div>
+                                </div>
+                                <span class="progress-text">1/3 Complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Rewards System -->
+    <section class="section rewards-system">
+        <div class="container">
+            <h2 class="section-heading neon-text">REWARD SYSTEM</h2>
+            <div class="section-line"></div>
+            
+            <div class="rewards-grid">
+                <div class="reward-card neon-glow">
+                    <div class="reward-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>EXPERIENCE POINTS</h3>
+                    <p>Earn XP for every quest completed and level up your Buddy status</p>
+                    <div class="reward-examples">
+                        <span class="example">Daily Quest: 25-75 XP</span>
+                        <span class="example">Weekly Challenge: 300-500 XP</span>
+                        <span class="example">Special Event: 1000+ XP</span>
+                    </div>
+                </div>
+                
+                <div class="reward-card neon-glow">
+                    <div class="reward-icon">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h3>EXCLUSIVE NFTs</h3>
+                    <p>Unlock special edition NFTs and collectibles through quest achievements</p>
+                    <div class="reward-examples">
+                        <span class="example">Quest Completion Badges</span>
+                        <span class="example">Limited Edition Artwork</span>
+                        <span class="example">Animated Profile Pictures</span>
+                    </div>
+                </div>
+                
+                <div class="reward-card neon-glow">
+                    <div class="reward-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3>SPECIAL ROLES</h3>
+                    <p>Gain access to exclusive Discord roles and community privileges</p>
+                    <div class="reward-examples">
+                        <span class="example">Quest Master Role</span>
+                        <span class="example">Community Champion</span>
+                        <span class="example">Legendary Buddy Status</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Leaderboard Preview -->
+    <section class="section leaderboard-preview">
+        <div class="container">
+            <h2 class="section-heading neon-text">TOP QUESTERS</h2>
+            <div class="section-line"></div>
+            
+            <div class="leaderboard-container neon-glow">
+                <div class="leaderboard-header">
+                    <h3>THIS WEEK'S LEADERBOARD</h3>
+                    <a href="../leaderboard/" class="view-full-btn">VIEW FULL LEADERBOARD</a>
+                </div>
+                
+                <div class="leaderboard-list">
+                    <div class="leaderboard-item rank-1">
+                        <div class="rank-number">1</div>
+                        <div class="user-info">
+                            <div class="user-avatar">MB</div>
+                            <span class="username">MegaBuddy42</span>
+                        </div>
+                        <div class="user-stats">
+                            <span class="xp-amount">15,750 XP</span>
+                            <span class="quests-completed">28 Quests</span>
+                        </div>
+                    </div>
+                    
+                    <div class="leaderboard-item rank-2">
+                        <div class="rank-number">2</div>
+                        <div class="user-info">
+                            <div class="user-avatar">CQ</div>
+                            <span class="username">CryptoQuester</span>
+                        </div>
+                        <div class="user-stats">
+                            <span class="xp-amount">12,340 XP</span>
+                            <span class="quests-completed">22 Quests</span>
+                        </div>
+                    </div>
+                    
+                    <div class="leaderboard-item rank-3">
+                        <div class="rank-number">3</div>
+                        <div class="user-info">
+                            <div class="user-avatar">NR</div>
+                            <span class="username">NeonRebel</span>
+                        </div>
+                        <div class="user-stats">
+                            <span class="xp-amount">11,890 XP</span>
+                            <span class="quests-completed">21 Quests</span>
+                        </div>
+                    </div>
+                    
+                    <div class="leaderboard-item">
+                        <div class="rank-number">4</div>
+                        <div class="user-info">
+                            <div class="user-avatar">PH</div>
+                            <span class="username">PixelHunter</span>
+                        </div>
+                        <div class="user-stats">
+                            <span class="xp-amount">9,675 XP</span>
+                            <span class="quests-completed">18 Quests</span>
+                        </div>
+                    </div>
+                    
+                    <div class="leaderboard-item">
+                        <div class="rank-number">5</div>
+                        <div class="user-info">
+                            <div class="user-avatar">DG</div>
+                            <span class="username">DegenGamer</span>
+                        </div>
+                        <div class="user-stats">
+                            <span class="xp-amount">8,234 XP</span>
+                            <span class="quests-completed">16 Quests</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="../images/mega-buddies-logo.png" alt="Mega Buddies">
+                <p class="footer-description">Zealy Quests - Earn rewards and climb the leaderboard in the Mega Buddies ecosystem.</p>
+                
+                <div class="social-links">
+                    <a href="https://twitter.com/mega_buddies" class="social-link" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="https://discord.gg/megabuddies" class="social-link" target="_blank"><i class="fab fa-discord"></i></a>
+                    <a href="https://zealy.io/c/megabuddies" class="social-link" target="_blank"><i class="fas fa-trophy"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-nav">
+                <div class="footer-nav-section">
+                    <h3 class="footer-nav-title">Ecosystem</h3>
+                    <ul class="footer-nav-links">
+                        <li class="footer-nav-link"><a href="../bots/">Telegram Bots</a></li>
+                        <li class="footer-nav-link"><a href="../leaderboard/">Leaderboard</a></li>
+                        <li class="footer-nav-link"><a href="../game/">Buddy Runner</a></li>
+                        <li class="footer-nav-link"><a href="../docs/">Documentation</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-nav-section">
+                    <h3 class="footer-nav-title">Quests</h3>
+                    <ul class="footer-nav-links">
+                        <li class="footer-nav-link"><a href="https://zealy.io/c/megabuddies">Zealy Platform</a></li>
+                        <li class="footer-nav-link"><a href="#quest-categories">Quest Categories</a></li>
+                        <li class="footer-nav-link"><a href="#rewards-system">Rewards</a></li>
+                        <li class="footer-nav-link"><a href="../leaderboard/">Leaderboard</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-nav-section">
+                    <h3 class="footer-nav-title">Support</h3>
+                    <ul class="footer-nav-links">
+                        <li class="footer-nav-link"><a href="../docs/quest-guides/">Quest Guides</a></li>
+                        <li class="footer-nav-link"><a href="https://discord.gg/megabuddies">Get Help</a></li>
+                        <li class="footer-nav-link"><a href="../docs/faq/">FAQ</a></li>
+                        <li class="footer-nav-link"><a href="../docs/troubleshooting/">Troubleshooting</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Mega Buddies. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script src="../js/main.js"></script>
+    <script src="../js/mobile-optimize.js"></script>
+    <script src="../js/three-animation.js"></script>
+    <script>
+        // Quest tab functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const questTabs = document.querySelectorAll('.quest-tab');
+            const questContents = document.querySelectorAll('.quest-category-content');
+            
+            questTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    
+                    // Update active tab
+                    questTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update active content
+                    questContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.getAttribute('data-category') === category) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
