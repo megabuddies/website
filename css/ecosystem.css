@@ -1,0 +1,483 @@
+/* Ecosystem CSS - Mega Buddies */
+
+/* Hero Dashboard Styles */
+.hero-dashboard {
+    margin: 40px 0;
+    width: 100%;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dashboard-item {
+    background: rgba(0, 20, 40, 0.8);
+    border: 2px solid #00ffff;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
+    border-color: #ff00ff;
+}
+
+.dashboard-icon {
+    font-size: 2.5rem;
+    color: #00ffff;
+    margin-bottom: 15px;
+    transition: color 0.3s ease;
+}
+
+.dashboard-item:hover .dashboard-icon {
+    color: #ff00ff;
+}
+
+.dashboard-content h3 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1rem;
+    color: #ffffff;
+    margin-bottom: 8px;
+    text-shadow: 0 0 10px #00ffff;
+}
+
+.dashboard-content p {
+    color: #cccccc;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.dashboard-status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.dashboard-status.active {
+    background: linear-gradient(45deg, #00ff00, #00cc00);
+    color: #000;
+    animation: pulse 2s infinite;
+}
+
+.dashboard-status.coming-soon {
+    background: linear-gradient(45deg, #ff6600, #ff4400);
+    color: #fff;
+}
+
+.dashboard-counter {
+    color: #00ffff;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-shadow: 0 0 10px #00ffff;
+}
+
+/* Hero Buttons */
+.hero-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.hero-btn {
+    padding: 15px 30px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.9rem;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.hero-btn.primary {
+    background: linear-gradient(45deg, #00ffff, #0099cc);
+    color: #000;
+    border: none;
+}
+
+.hero-btn.secondary {
+    background: transparent;
+    color: #00ffff;
+    border: 2px solid #00ffff;
+}
+
+.hero-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(0, 255, 255, 0.5);
+}
+
+/* Navigation Dropdown */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: rgba(0, 20, 40, 0.95);
+    border: 2px solid #00ffff;
+    border-radius: 5px;
+    padding: 10px 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    min-width: 200px;
+}
+
+.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu li {
+    list-style: none;
+}
+
+.dropdown-link {
+    display: block;
+    padding: 10px 20px;
+    color: #cccccc;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.dropdown-link:hover {
+    background: rgba(0, 255, 255, 0.1);
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff;
+}
+
+/* Ecosystem Section */
+.ecosystem-subtitle {
+    text-align: center;
+    color: #cccccc;
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ecosystem-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.ecosystem-card {
+    background: rgba(0, 20, 40, 0.8);
+    border: 2px solid #00ffff;
+    border-radius: 15px;
+    padding: 30px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.ecosystem-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 255, 255, 0.3);
+    border-color: #ff00ff;
+}
+
+.ecosystem-card.coming-soon {
+    opacity: 0.8;
+    border-color: #666;
+}
+
+.ecosystem-card.coming-soon:hover {
+    border-color: #ff6600;
+}
+
+.ecosystem-icon {
+    font-size: 3rem;
+    color: #00ffff;
+    text-align: center;
+    margin-bottom: 20px;
+    transition: color 0.3s ease;
+}
+
+.ecosystem-card:hover .ecosystem-icon {
+    color: #ff00ff;
+}
+
+.ecosystem-content h3 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1.2rem;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px #00ffff;
+}
+
+.ecosystem-content p {
+    color: #cccccc;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.ecosystem-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.feature-tag {
+    background: rgba(0, 255, 255, 0.2);
+    color: #00ffff;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    border: 1px solid #00ffff;
+}
+
+.ecosystem-actions {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.ecosystem-btn {
+    padding: 12px 25px;
+    background: linear-gradient(45deg, #00ffff, #0099cc);
+    color: #000;
+    text-decoration: none;
+    border-radius: 5px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.ecosystem-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(0, 255, 255, 0.5);
+}
+
+.ecosystem-link {
+    color: #00ffff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.ecosystem-link:hover {
+    color: #ff00ff;
+    text-shadow: 0 0 5px #ff00ff;
+}
+
+.coming-soon-badge {
+    background: linear-gradient(45deg, #ff6600, #ff4400);
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.7rem;
+    animation: pulse 2s infinite;
+}
+
+/* Leaderboard Preview */
+.leaderboard-preview {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid #00ffff;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 20px 0;
+}
+
+.leaderboard-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.leaderboard-item:last-child {
+    border-bottom: none;
+}
+
+.rank {
+    color: #ff00ff;
+    font-weight: bold;
+    font-size: 0.9rem;
+    min-width: 30px;
+}
+
+.user {
+    color: #ffffff;
+    flex: 1;
+    text-align: left;
+    margin-left: 15px;
+}
+
+.score {
+    color: #00ffff;
+    font-weight: bold;
+    text-shadow: 0 0 5px #00ffff;
+}
+
+/* Documentation Section */
+.docs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.docs-category {
+    background: rgba(0, 20, 40, 0.8);
+    border: 2px solid #00ffff;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.docs-category:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
+    border-color: #ff00ff;
+}
+
+.docs-icon {
+    font-size: 2.5rem;
+    color: #00ffff;
+    margin-bottom: 15px;
+    transition: color 0.3s ease;
+}
+
+.docs-category:hover .docs-icon {
+    color: #ff00ff;
+}
+
+.docs-category h3 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1rem;
+    color: #ffffff;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px #00ffff;
+}
+
+.docs-category p {
+    color: #cccccc;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.docs-links {
+    list-style: none;
+    padding: 0;
+}
+
+.docs-links li {
+    margin-bottom: 8px;
+}
+
+.docs-link {
+    color: #00ffff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.docs-link:hover {
+    color: #ff00ff;
+    text-shadow: 0 0 5px #ff00ff;
+}
+
+/* Animations */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .ecosystem-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .docs-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .hero-btn {
+        width: 100%;
+        max-width: 300px;
+        text-align: center;
+    }
+    
+    .dropdown-menu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        margin-top: 10px;
+        border: none;
+        background: transparent;
+    }
+    
+    .ecosystem-card {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-item {
+        padding: 15px;
+    }
+    
+    .dashboard-icon {
+        font-size: 2rem;
+    }
+    
+    .ecosystem-icon {
+        font-size: 2.5rem;
+    }
+    
+    .ecosystem-content h3 {
+        font-size: 1rem;
+    }
+    
+    .hero-btn {
+        padding: 12px 20px;
+        font-size: 0.8rem;
+    }
+}

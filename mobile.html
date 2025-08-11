@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/neon.css">
     <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="css/ecosystem.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -51,8 +52,18 @@
             <nav class="main-nav">
                 <ul class="nav-list">
                     <li class="nav-item"><a href="#about" class="nav-link">ABOUT</a></li>
-                    <li class="nav-item"><a href="#manifesto" class="nav-link">MANIFESTO</a></li>
+                    <li class="nav-item dropdown">
+                        <a href="#ecosystem" class="nav-link dropdown-toggle">ECOSYSTEM</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#telegram-bots" class="dropdown-link">TELEGRAM BOTS</a></li>
+                            <li><a href="#zealy-quests" class="dropdown-link">ZEALY QUESTS</a></li>
+                            <li><a href="#leaderboard" class="dropdown-link">LEADERBOARD</a></li>
+                            <li><a href="#buddy-runner" class="dropdown-link">BUDDY RUNNER</a></li>
+                        </ul>
+                    </li>
                     <li class="nav-item"><a href="#collection" class="nav-link">COLLECTION</a></li>
+                    <li class="nav-item"><a href="#docs" class="nav-link">DOCS</a></li>
+                    <li class="nav-item"><a href="#manifesto" class="nav-link">MANIFESTO</a></li>
                     <li class="nav-item"><a href="#roadmap" class="nav-link">ROADMAP</a></li>
                     <li class="nav-item"><a href="#community" class="nav-link">COMMUNITY</a></li>
                 </ul>
@@ -81,9 +92,57 @@
                 <div class="hero-text">
                     <p class="hero-description">In an era where many projects become faceless and uniform, Mega Buddies challenges the traditional approach and creates a community united by the "Build Different" ideology—a philosophy of building a different, more open, and people-oriented crypto world.</p>
                 </div>
+                <div class="hero-dashboard">
+                    <div class="dashboard-grid">
+                        <div class="dashboard-item neon-glow" data-target="#telegram-bots">
+                            <div class="dashboard-icon">
+                                <i class="fab fa-telegram"></i>
+                            </div>
+                            <div class="dashboard-content">
+                                <h3>TELEGRAM BOTS</h3>
+                                <p>Community Ecosystem</p>
+                                <span class="dashboard-status active">ACTIVE</span>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-item neon-glow" data-target="#zealy-quests">
+                            <div class="dashboard-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="dashboard-content">
+                                <h3>ZEALY QUESTS</h3>
+                                <p>Complete Challenges</p>
+                                <span class="dashboard-counter" id="active-quests">12 Active</span>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-item neon-glow" data-target="#leaderboard">
+                            <div class="dashboard-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="dashboard-content">
+                                <h3>LEADERBOARD</h3>
+                                <p>Live Rankings</p>
+                                <span class="dashboard-counter" id="total-users">1,247 Users</span>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-item neon-glow" data-target="#buddy-runner">
+                            <div class="dashboard-icon">
+                                <i class="fas fa-gamepad"></i>
+                            </div>
+                            <div class="dashboard-content">
+                                <h3>BUDDY RUNNER</h3>
+                                <p>Play & Earn</p>
+                                <span class="dashboard-status coming-soon">COMING SOON</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="hero-buttons">
-                
+                <a href="#ecosystem" class="hero-btn primary neon-button">EXPLORE ECOSYSTEM</a>
+                <a href="#docs" class="hero-btn secondary neon-button-outline">READ DOCS</a>
             </div>
         </div>
         <div class="scroll-indicator mobile-scroll-indicator" id="scroll-down">
@@ -115,6 +174,172 @@
                 <div class="about-item neon-glow">
                     <h3>MORE THAN AN NFT</h3>
                     <p>Mega Buddies isn't just pixel art—it's an ideology, a social movement, and a community determined to restore crypto to its original purpose: fun, freedom, and authenticity.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Ecosystem -->
+    <section id="ecosystem" class="section">
+        <div class="container">
+            <h2 class="section-heading neon-text">ECOSYSTEM</h2>
+            <div class="section-line"></div>
+            <p class="ecosystem-subtitle">Explore the Mega Buddies universe of interconnected platforms and experiences</p>
+            
+            <div class="ecosystem-grid">
+                <!-- Telegram Bots -->
+                <div class="ecosystem-card neon-glow" id="telegram-bots">
+                    <div class="ecosystem-icon">
+                        <i class="fab fa-telegram"></i>
+                    </div>
+                    <div class="ecosystem-content">
+                        <h3>TELEGRAM BOTS</h3>
+                        <p>Complete ecosystem of community bots for engagement, moderation, and exclusive features. Connect with your Mega Buddies family through automated experiences.</p>
+                        <div class="ecosystem-features">
+                            <span class="feature-tag">Community Management</span>
+                            <span class="feature-tag">Auto Rewards</span>
+                            <span class="feature-tag">Member Verification</span>
+                        </div>
+                        <div class="ecosystem-actions">
+                            <a href="https://t.me/mega_buddies_bot" target="_blank" class="ecosystem-btn neon-button">LAUNCH BOT</a>
+                            <a href="#" class="ecosystem-link">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Zealy Quests -->
+                <div class="ecosystem-card neon-glow" id="zealy-quests">
+                    <div class="ecosystem-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="ecosystem-content">
+                        <h3>ZEALY QUESTS</h3>
+                        <p>Complete engaging challenges and quests to earn rewards, climb the leaderboards, and prove your dedication to the Mega Buddies movement.</p>
+                        <div class="ecosystem-features">
+                            <span class="feature-tag">Daily Quests</span>
+                            <span class="feature-tag">Weekly Challenges</span>
+                            <span class="feature-tag">Exclusive Rewards</span>
+                        </div>
+                        <div class="ecosystem-actions">
+                            <a href="https://zealy.io/c/megabuddies" target="_blank" class="ecosystem-btn neon-button">START QUESTS</a>
+                            <a href="#" class="ecosystem-link">View Leaderboard</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quacks Leaderboard -->
+                <div class="ecosystem-card neon-glow" id="leaderboard">
+                    <div class="ecosystem-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="ecosystem-content">
+                        <h3>QUACKS LEADERBOARD</h3>
+                        <p>Real-time rankings powered by Quacks API. Track your progress, compete with friends, and see who's leading the Mega Buddies revolution.</p>
+                        <div class="leaderboard-preview">
+                            <div class="leaderboard-item">
+                                <span class="rank">#1</span>
+                                <span class="user">CryptoPunk2025</span>
+                                <span class="score">15,420 XP</span>
+                            </div>
+                            <div class="leaderboard-item">
+                                <span class="rank">#2</span>
+                                <span class="user">BuddyMaster</span>
+                                <span class="score">14,890 XP</span>
+                            </div>
+                            <div class="leaderboard-item">
+                                <span class="rank">#3</span>
+                                <span class="user">PixelWarrior</span>
+                                <span class="score">13,750 XP</span>
+                            </div>
+                        </div>
+                        <div class="ecosystem-actions">
+                            <a href="#" class="ecosystem-btn neon-button">VIEW FULL LEADERBOARD</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buddy Runner Game -->
+                <div class="ecosystem-card neon-glow coming-soon" id="buddy-runner">
+                    <div class="ecosystem-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <div class="ecosystem-content">
+                        <h3>BUDDY RUNNER</h3>
+                        <p>An immersive pixel-art runner game where you control your Mega Buddy through challenging levels, collect rewards, and compete for high scores.</p>
+                        <div class="ecosystem-features">
+                            <span class="feature-tag">Pixel Art Graphics</span>
+                            <span class="feature-tag">NFT Integration</span>
+                            <span class="feature-tag">Play to Earn</span>
+                        </div>
+                        <div class="ecosystem-actions">
+                            <div class="coming-soon-badge">COMING SOON</div>
+                            <a href="#" class="ecosystem-link">Get Notified</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Documentation -->
+    <section id="docs" class="section">
+        <div class="container">
+            <h2 class="section-heading neon-text">DOCUMENTATION</h2>
+            <div class="section-line"></div>
+            
+            <div class="docs-content">
+                <div class="docs-grid">
+                    <div class="docs-category neon-glow">
+                        <div class="docs-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3>Getting Started</h3>
+                        <p>Learn the basics of Mega Buddies ecosystem and how to get involved.</p>
+                        <ul class="docs-links">
+                            <li><a href="#" class="docs-link">Introduction</a></li>
+                            <li><a href="#" class="docs-link">Wallet Setup</a></li>
+                            <li><a href="#" class="docs-link">First Steps</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="docs-category neon-glow">
+                        <div class="docs-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3>Bot Commands</h3>
+                        <p>Complete reference for all Telegram bot commands and features.</p>
+                        <ul class="docs-links">
+                            <li><a href="#" class="docs-link">Basic Commands</a></li>
+                            <li><a href="#" class="docs-link">Admin Functions</a></li>
+                            <li><a href="#" class="docs-link">API Reference</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="docs-category neon-glow">
+                        <div class="docs-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <h3>Game Guide</h3>
+                        <p>Master Buddy Runner and maximize your earning potential.</p>
+                        <ul class="docs-links">
+                            <li><a href="#" class="docs-link">Game Mechanics</a></li>
+                            <li><a href="#" class="docs-link">Scoring System</a></li>
+                            <li><a href="#" class="docs-link">Rewards Guide</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="docs-category neon-glow">
+                        <div class="docs-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3>Developer API</h3>
+                        <p>Technical documentation for developers and integrators.</p>
+                        <ul class="docs-links">
+                            <li><a href="#" class="docs-link">API Endpoints</a></li>
+                            <li><a href="#" class="docs-link">Authentication</a></li>
+                            <li><a href="#" class="docs-link">SDKs</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -369,5 +594,6 @@
     <script src="js/collection-slider.js"></script>
     <script src="js/scroll-animations.js"></script>
     <script src="js/touch.js"></script>
+    <script src="js/ecosystem.js"></script>
 </body>
 </html> 
