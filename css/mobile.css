@@ -1163,4 +1163,84 @@ html.slow-connection img {
     margin-left: auto;
     margin-right: auto;
   }
+}
+
+/* ===============================================
+   MOBILE DROPDOWN STYLES
+   =============================================== */
+
+@media (max-width: 768px) {
+  .dropdown-menu {
+    position: static;
+    transform: none;
+    background: rgba(18, 18, 24, 0.98);
+    border: none;
+    border-radius: 0;
+    box-shadow: inset 0 1px 0 rgba(146, 147, 151, 0.2);
+    margin-top: 0;
+    width: 100%;
+  }
+  
+  .dropdown-toggle i {
+    font-size: 8px;
+  }
+  
+  .dropdown-link {
+    padding: 10px 20px;
+    font-size: 11px;
+    border-bottom: 1px solid rgba(146, 147, 151, 0.1);
+  }
+  
+  .dropdown:hover .dropdown-menu {
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  /* Ecosystem mobile adjustments */
+  .ecosystem-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .ecosystem-card {
+    padding: 20px 15px;
+  }
+  
+  .ecosystem-icon {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .ecosystem-icon i {
+    font-size: 18px;
+  }
+  
+  .ecosystem-content h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .ecosystem-content p {
+    font-size: 12px;
+    margin-bottom: 15px;
+  }
+  
+  .ecosystem-features {
+    margin-bottom: 20px;
+  }
+  
+  .feature-tag {
+    font-size: 9px;
+    padding: 3px 8px;
+  }
+  
+  .ecosystem-btn {
+    padding: 10px 20px;
+    font-size: 11px;
+  }
+  
+  .section-subtitle {
+    font-size: 13px;
+    margin-bottom: 25px;
+  }
 } 
