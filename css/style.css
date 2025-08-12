@@ -2666,37 +2666,15 @@ body {
     position: relative;
 }
 
-.nav-item.dropdown .nav-link {
-    position: relative;
-}
 
-.nav-item.dropdown .nav-link::before {
-    content: '';
-    position: absolute;
-    left: -8px;
-    right: -8px;
-    top: -4px;
-    bottom: -4px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-    pointer-events: none;
-}
-
-.nav-item.dropdown:hover .nav-link::before {
-    border-color: var(--accent-color);
-    background: rgba(112, 135, 227, 0.05);
-    box-shadow: 0 0 10px rgba(112, 135, 227, 0.2);
-}
 
 .dropdown-toggle::after {
     content: '▼';
     font-size: 12px;
     margin-left: 8px;
     transition: transform 0.3s ease;
-    color: var(--accent-color);
-    text-shadow: 0 0 5px var(--accent-glow-color);
-    opacity: 0.8;
+    color: var(--text-color);
+    opacity: 1;
 }
 
 .dropdown:hover .dropdown-toggle::after {

@@ -196,6 +196,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
+            // Не блокируем внешние ссылки
+            if (this.classList.contains('external-link') || this.getAttribute('href').startsWith('http')) {
+                return;
+            }
+            
             e.preventDefault();
             
             const targetId = this.getAttribute('href').substring(1);
