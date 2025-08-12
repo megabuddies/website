@@ -677,5 +677,110 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(adjustTextSpacing, 500);
     setTimeout(adjustTextSpacing, 1500);
     setTimeout(adjustTextSpacing, 3000); // Длительная задержка для гарантии
+    
+    // Blockchain Network Selection Modal Functionality
+    const launchMissionBtn = document.getElementById('launch-mission-btn');
+    const blockchainModal = document.getElementById('blockchain-modal');
+    const closeModalBtn = document.getElementById('close-blockchain-modal');
+    const launchMissionOnNetworkBtn = document.getElementById('launch-mission-on-network');
+    const networkCards = document.querySelectorAll('.network-card');
+    
+    let selectedNetwork = 'monad'; // Default selected network
+    
+    // Show blockchain modal when Launch Mission button is clicked
+    if (launchMissionBtn) {
+        launchMissionBtn.addEventListener('click', function() {
+            blockchainModal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        });
+    }
+    
+    // Close modal functionality
+    function closeBlockchainModal() {
+        blockchainModal.classList.remove('active');
+        document.body.style.overflow = 'auto'; // Restore scrolling
+    }
+    
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', closeBlockchainModal);
+    }
+    
+    // Close modal when clicking outside
+    if (blockchainModal) {
+        blockchainModal.addEventListener('click', function(e) {
+            if (e.target === blockchainModal) {
+                closeBlockchainModal();
+            }
+        });
+    }
+    
+    // Network selection functionality (NO SCROLLING - as requested)
+    networkCards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Remove selected class from all cards
+            networkCards.forEach(c => c.classList.remove('selected'));
+            
+            // Add selected class to clicked card
+            this.classList.add('selected');
+            
+            // Update selected network
+            selectedNetwork = this.getAttribute('data-network');
+            
+            // Update launch button text and mission info
+            updateMissionInfo();
+        });
+    });
+    
+    // Update mission info based on selected network
+    function updateMissionInfo() {
+        const networkNames = {
+            'megaeth': 'MEGAETH TESTNET',
+            'base': 'BASE SEPOLIA',
+            'monad': 'MONAD TESTNET'
+        };
+        
+        const selectedNetworkName = networkNames[selectedNetwork];
+        
+        // Update mission info
+        const targetNetworkInfo = document.querySelector('.info-item .info-text');
+        if (targetNetworkInfo) {
+            targetNetworkInfo.textContent = `TARGET NETWORK: ${selectedNetworkName}`;
+        }
+        
+        // Update launch button text
+        if (launchMissionOnNetworkBtn) {
+            launchMissionOnNetworkBtn.textContent = `LAUNCH MISSION ON ${selectedNetworkName}`;
+        }
+    }
+    
+    // Launch mission on selected network - this will trigger wallet connection
+    if (launchMissionOnNetworkBtn) {
+        launchMissionOnNetworkBtn.addEventListener('click', function() {
+            // Close blockchain modal first
+            closeBlockchainModal();
+            
+            // Add delay and then trigger wallet connection
+            setTimeout(() => {
+                // This is where wallet connection (Privy) would be triggered
+                // For now, we'll show a placeholder message
+                alert(`Connecting to ${selectedNetwork.toUpperCase()} network...\n\nThis would normally trigger Privy wallet connection.`);
+                
+                // In real implementation, this would be something like:
+                // connectWallet(selectedNetwork);
+                // or
+                // window.privy.connectWallet({ network: selectedNetwork });
+            }, 300);
+        });
+    }
+    
+    // Initialize default network selection
+    updateMissionInfo();
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && blockchainModal.classList.contains('active')) {
+            closeBlockchainModal();
+        }
+    });
 });
 
