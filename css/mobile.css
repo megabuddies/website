@@ -722,6 +722,7 @@ html, body {
   }
 
   .twitter-feed, 
+  .telegram-feed,
   .discord-community {
     width: 100%;
     padding: 20px;
@@ -751,6 +752,18 @@ html, body {
     padding: 12px 15px;
     margin-top: 15px;
     font-size: 14px;
+  }
+
+  .telegram-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+    width: 100%;
+  }
+
+  .telegram-links .community-btn {
+    margin-top: 0;
   }
 }
 
@@ -990,6 +1003,7 @@ html.landscape {
 .touch-device .about-item.touch-active,
 .touch-device .roadmap-item.touch-active,
 .touch-device .twitter-feed.touch-active,
+.touch-device .telegram-feed.touch-active,
 .touch-device .discord-community.touch-active {
   transform: translateY(-5px);
   box-shadow: 0 0 15px var(--accent-glow-color),
@@ -1039,6 +1053,7 @@ html.landscape {
   .about-item:hover,
   .roadmap-item:hover,
   .twitter-feed:hover,
+  .telegram-feed:hover,
   .discord-community:hover {
     transform: none;
   }
