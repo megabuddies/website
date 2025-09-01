@@ -196,22 +196,27 @@ document.addEventListener('DOMContentLoaded', function() {
     
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            e.preventDefault();
+            const href = this.getAttribute('href');
             
-            const targetId = this.getAttribute('href').substring(1);
-            const targetSection = document.getElementById(targetId);
-            
-            if (targetSection) {
-                // Отступ с учетом мобильной версии
-                const offset = isMobile() ? 70 : 100;
+            // Обрабатываем только внутренние ссылки (начинающиеся с #)
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
                 
-                window.scrollTo({
-                    top: targetSection.offsetTop - offset,
-                    behavior: 'smooth'
-                });
+                const targetId = href.substring(1);
+                const targetSection = document.getElementById(targetId);
+                
+                if (targetSection) {
+                    // Отступ с учетом мобильной версии
+                    const offset = isMobile() ? 70 : 100;
+                    
+                    window.scrollTo({
+                        top: targetSection.offsetTop - offset,
+                        behavior: 'smooth'
+                    });
+                }
             }
             
-            // Закрываем мобильное меню при клике на ссылку
+            // Закрываем мобильное меню при клике на любую ссылку
             if (isMobile() && navList.classList.contains('active')) {
                 mobileMenuToggle.classList.remove('active');
                 navList.classList.remove('active');
