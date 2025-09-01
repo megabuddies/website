@@ -627,11 +627,7 @@ html, body {
     color: #ffa500;
   }
   
-  /* Улучшенная подписка */
-  .newsletter-content {
-    margin: 0 auto;
-    max-width: 100%;
-  }
+
   
   /* Улучшенный футер */
   .footer-nav-links {
@@ -785,10 +781,7 @@ html, body {
     margin: 5px;
   }
   
-  /* Более компактная форма подписки */
-  .newsletter-form {
-    margin-top: 15px;
-  }
+
   
   /* Более компактный футер */
   .footer-container {
@@ -802,7 +795,6 @@ html, body {
   /* Улучшаем видимость мелких элементов */
   .terminal-text,
   .roadmap-content p,
-  .newsletter-content p,
   .footer-description {
     line-height: 1.4;
   }
@@ -1038,8 +1030,7 @@ html.landscape {
   .nav-link::after,
   .roadmap-icon,
   .nft-card::before,
-  .about-item::before,
-  .newsletter-form button::before {
+  .about-item::before {
     opacity: 0.7;
   }
   

@@ -167,35 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
         duration: 0.8
     }, "-=0.8");
     
-    // Анимация для секции "Подписка"
-    gsap.timeline({
-        scrollTrigger: {
-            trigger: ".newsletter",
-            start: "top 80%",
-            end: "bottom 20%",
-            toggleActions: "play none none none"
-        }
-    })
-    .from(".newsletter .section-heading", {
-        y: 50,
-        opacity: 0,
-        duration: 0.8
-    })
-    .from(".newsletter .section-line", {
-        width: 0,
-        opacity: 0,
-        duration: 0.5
-    }, "-=0.3")
-    .from(".newsletter-content p", {
-        y: 30,
-        opacity: 0,
-        duration: 0.5
-    }, "-=0.2")
-    .from(".newsletter-form", {
-        y: 30,
-        opacity: 0,
-        duration: 0.5
-    }, "-=0.2");
+
     
     // Эффект появления для терминальных текстов
     const terminalTexts = document.querySelectorAll('.terminal-text');

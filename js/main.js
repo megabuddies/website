@@ -411,22 +411,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Форма подписки на рассылку
-    const newsletterForm = document.querySelector('.newsletter-form');
-    
-    if (newsletterForm) {
-        newsletterForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const email = newsletterForm.querySelector('input[type="email"]').value;
-            
-            if (email) {
-                // Здесь будет код для отправки email на сервер
-                alert('Спасибо за подписку! Мы будем держать вас в курсе последних новостей о революции Mega Buddies.');
-                newsletterForm.reset();
-            }
-        });
-    }
+
     
     // Добавляем "хакерский" эффект для кнопки подключения кошелька
     const walletBtn = document.querySelector('.wallet-btn');
