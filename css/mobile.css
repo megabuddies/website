@@ -1639,9 +1639,47 @@ html.slow-connection img {
     height: auto !important;
   }
   
+  /* Обертка для слайдера collection */
+  .collection-mobile-slider-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    height: auto;
+    margin-top: 20px;
+  }
+  
+  .collection-mobile-slider-track {
+    display: flex;
+    gap: 20px;
+    backface-visibility: hidden;
+    height: 100%;
+    animation: collectionSlideAnimation 40s linear infinite;
+  }
+  
+  /* Анимация для коллекции */
+  @keyframes collectionSlideAnimation {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  
+  /* Стили для карточек коллекции в автопрокрутке */
+  .collection-mobile-slider-track .nft-card {
+    min-width: 250px !important;
+    width: 250px !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    padding: 15px !important;
+    height: auto !important;
+  }
+  
   /* Останавливаем анимацию при потере фокуса страницы */
   .ecosystem-slider-track.paused,
-  .partnerships-slider-track.paused {
+  .partnerships-slider-track.paused,
+  .collection-mobile-slider-track.paused {
     animation-play-state: paused;
   }
   
@@ -1652,6 +1690,11 @@ html.slow-connection img {
       min-width: 280px !important;
       width: 280px !important;
     }
+    
+    .collection-mobile-slider-track .nft-card {
+      min-width: 220px !important;
+      width: 220px !important;
+    }
   }
   
   @media (max-width: 360px) {
@@ -1659,6 +1702,11 @@ html.slow-connection img {
     .partnerships-slider-track .partnership-card {
       min-width: 260px !important;
       width: 260px !important;
+    }
+    
+    .collection-mobile-slider-track .nft-card {
+      min-width: 200px !important;
+      width: 200px !important;
     }
   }
 } 

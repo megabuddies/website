@@ -112,6 +112,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Запускаем анимацию для этого контейнера
         setupSliderAnimation(sliderTrack);
+        
+        // Инициализируем мобильную автопрокрутку, если доступна
+        if (typeof window.initializeMobileCollectionAutoScroll === 'function') {
+            window.initializeMobileCollectionAutoScroll();
+        }
     }
     
     // Функция для загрузки изображений для каждой категории
@@ -178,6 +183,13 @@ document.addEventListener('DOMContentLoaded', function() {
             // Добавляем небольшую задержку перед показом для более плавного перехода
             setTimeout(() => {
                 container.style.opacity = '1';
+                
+                // Инициализируем мобильную автопрокрутку после показа контейнера
+                setTimeout(() => {
+                    if (typeof window.initializeMobileCollectionAutoScroll === 'function') {
+                        window.initializeMobileCollectionAutoScroll();
+                    }
+                }, 100);
             }, 50);
         }, 300);
     }

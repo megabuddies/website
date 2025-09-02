@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" class="mobile">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test All Mobile Autoscroll</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { 
+            background: #111; 
+            color: white; 
+            padding: 20px; 
+            font-family: 'VT323', monospace;
+            line-height: 1.6;
+        }
+        .test-section { 
+            margin: 40px 0; 
+            border: 2px solid #0096ff; 
+            padding: 30px; 
+            border-radius: 12px;
+            background: rgba(0, 150, 255, 0.05);
+        }
+        h1 { 
+            color: #0096ff; 
+            text-align: center; 
+            font-size: 2.5em; 
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px #0096ff;
+        }
+        h2 { 
+            color: #00ff88; 
+            margin-bottom: 20px; 
+            font-size: 1.8em;
+            text-shadow: 0 0 8px #00ff88;
+        }
+        .status { 
+            background: #333; 
+            padding: 10px; 
+            border-radius: 8px; 
+            margin: 20px 0;
+            border-left: 4px solid #0096ff;
+        }
+        .debug-info {
+            background: #222;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 14px;
+            color: #00ff88;
+        }
+        
+        /* Скрываем оригинальные сетки на мобильных устройствах для демонстрации */
+        @media (max-width: 768px) {
+            .ecosystem-grid:not(.ecosystem-grid[data-autoscroll-initialized]),
+            .partnerships-grid:not(.partnerships-grid[data-autoscroll-initialized]),
+            .nft-grid:not(.nft-grid[data-mobile-autoscroll-initialized]) {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 MOBILE AUTOSCROLL TEST</h1>
+    <div class="debug-info">
+        <div>Window Width: <span id="window-width"></span>px</div>
+        <div>Is Mobile: <span id="is-mobile"></span></div>
+        <div>User Agent: <span id="user-agent"></span></div>
+    </div>
+    
+    <div class="status">
+        <p>📱 Resize window to mobile width (&lt; 768px) to see autoscroll effect</p>
+        <p>🎯 All three sections should have smooth horizontal autoscroll</p>
+    </div>
+    
+    <div class="test-section">
+        <h2>🎮 ECOSYSTEM Test</h2>
+        <section id="ecosystem" class="section">
+            <div class="container">
+                <div class="ecosystem-grid">
+                    <div class="ecosystem-card neon-glow" data-feature="telegram">
+                        <div class="ecosystem-icon">
+                            <i class="fab fa-telegram"></i>
+                        </div>
+                        <h3>Telegram Bots</h3>
+                        <p>Gamified community platform with Ambassador Bot and Influencer Bot.</p>
+                    </div>
+                    
+                    <div class="ecosystem-card neon-glow" data-feature="zealy">
+                        <div class="ecosystem-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h3>Zealy Quests</h3>
+                        <p>Complete challenges, solve riddles, and participate in community missions.</p>
+                    </div>
+                    
+                    <div class="ecosystem-card neon-glow" data-feature="ai">
+                        <div class="ecosystem-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3>AI Companions</h3>
+                        <p>Chat with your Buddy character one-on-one! Powered by Nectar AI.</p>
+                    </div>
+                    
+                    <div class="ecosystem-card neon-glow" data-feature="leaderboard">
+                        <div class="ecosystem-icon">
+                            <i class="fas fa-medal"></i>
+                        </div>
+                        <h3>Quacks Leaderboard</h3>
+                        <p>Track community rankings, see top contributors, and compete for positions.</p>
+                    </div>
+                    
+                    <div class="ecosystem-card neon-glow" data-feature="buddy-runner">
+                        <div class="ecosystem-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <h3>Buddy Runner</h3>
+                        <p>An on-chain game on MegaETH that demonstrates incredible speed.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <div class="test-section">
+        <h2>🤝 MEGAMAFIA & MEGAFORGE FAM Test</h2>
+        <section id="partnerships" class="section">
+            <div class="container">
+                <div class="partnerships-grid">
+                    <div class="partnership-card neon-glow" data-family="megamafia">
+                        <div class="partnership-badge megamafia">MEGAMAFIA</div>
+                        <h3>Showdown</h3>
+                        <p class="partnership-description">A real-time poker game on MegaETH currently in alpha stage.</p>
+                    </div>
+
+                    <div class="partnership-card neon-glow" data-family="megamafia">
+                        <div class="partnership-badge megamafia">MEGAMAFIA</div>
+                        <h3>Avon</h3>
+                        <p class="partnership-description">A real-time lending market on MegaETH stack.</p>
+                    </div>
+                    
+                    <div class="partnership-card neon-glow" data-family="megaforge">
+                        <div class="partnership-badge megaforge">MEGAFORGE</div>
+                        <h3>Project Alpha</h3>
+                        <p class="partnership-description">Revolutionary DeFi protocol on MegaETH blockchain.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <div class="test-section">
+        <h2>🎨 COLLECTION Test</h2>
+        <section id="collection" class="section">
+            <div class="container collection-container">
+                <h3 class="section-heading neon-text">COLLECTION</h3>
+                <div class="section-line"></div>
+                
+                <div class="collection-filters">
+                    <div class="filter-primary">
+                        <button class="filter-btn active" data-filter="all">ALL</button>
+                    </div>
+                    <div class="filter-secondary">
+                        <button class="filter-btn" data-filter="common">COMMON</button>
+                        <button class="filter-btn" data-filter="rare">RARE</button>
+                        <button class="filter-btn" data-filter="legendary">LEGENDARY</button>
+                    </div>
+                </div>
+                
+                <div class="nft-grid" data-category="all" style="display: flex; opacity: 1;"></div>
+                <div class="nft-grid" data-category="common" style="display: none; opacity: 0;"></div>
+                <div class="nft-grid" data-category="rare" style="display: none; opacity: 0;"></div>
+                <div class="nft-grid" data-category="legendary" style="display: none; opacity: 0;"></div>
+            </div>
+        </section>
+    </div>
+    
+    <script src="js/collection-slider.js"></script>
+    <script src="js/mobile-sections-slider.js"></script>
+    <script>
+        // Debug info
+        function updateDebugInfo() {
+            document.getElementById('window-width').textContent = window.innerWidth;
+            document.getElementById('is-mobile').textContent = window.innerWidth <= 768 ? 'YES' : 'NO';
+            document.getElementById('user-agent').textContent = navigator.userAgent.substring(0, 50) + '...';
+        }
+        
+        updateDebugInfo();
+        
+        window.addEventListener('resize', function() {
+            updateDebugInfo();
+            console.log('Window resized to:', window.innerWidth);
+        });
+        
+        // Log initialization
+        window.addEventListener('load', function() {
+            console.log('Page loaded, initializing autoscroll...');
+            setTimeout(() => {
+                const ecosystemWrapper = document.querySelector('.ecosystem-slider-wrapper');
+                const partnershipsWrapper = document.querySelector('.partnerships-slider-wrapper');
+                const collectionWrapper = document.querySelector('.collection-mobile-slider-wrapper');
+                
+                console.log('Ecosystem autoscroll initialized:', !!ecosystemWrapper);
+                console.log('Partnerships autoscroll initialized:', !!partnershipsWrapper);
+                console.log('Collection autoscroll initialized:', !!collectionWrapper);
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

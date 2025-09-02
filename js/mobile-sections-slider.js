@@ -72,6 +72,113 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Специальная функция для инициализации автопрокрутки коллекции
+    function initializeCollectionAutoScroll(retryCount = 0) {
+        // Проверяем, что мы на мобильном устройстве
+        if (!isMobile()) return;
+        
+        const section = document.getElementById('collection');
+        if (!section) return;
+        
+        // Ищем активный nft-grid контейнер (который отображается)
+        let activeGrid = null;
+        const grids = section.querySelectorAll('.nft-grid');
+        for (let grid of grids) {
+            const computedStyle = window.getComputedStyle(grid);
+            if (computedStyle.display !== 'none' && computedStyle.opacity !== '0') {
+                activeGrid = grid;
+                break;
+            }
+        }
+        
+        // Если не нашли активный grid, пробуем повторить через некоторое время
+        if (!activeGrid) {
+            if (retryCount < 5) {
+                setTimeout(() => initializeCollectionAutoScroll(retryCount + 1), 500);
+            }
+            return;
+        }
+        
+        // Проверяем, не была ли уже инициализирована автопрокрутка
+        if (activeGrid.hasAttribute('data-mobile-autoscroll-initialized')) return;
+        
+        // Ищем slider-wrapper внутри активного grid
+        const sliderWrapper = activeGrid.querySelector('.slider-wrapper');
+        if (!sliderWrapper) {
+            // Если не нашли slider-wrapper, возможно контент еще не загружен
+            if (retryCount < 5) {
+                setTimeout(() => initializeCollectionAutoScroll(retryCount + 1), 500);
+            }
+            return;
+        }
+        
+        const sliderTrack = sliderWrapper.querySelector('.slider-track');
+        if (!sliderTrack) {
+            if (retryCount < 5) {
+                setTimeout(() => initializeCollectionAutoScroll(retryCount + 1), 500);
+            }
+            return;
+        }
+        
+        const cards = sliderTrack.querySelectorAll('.nft-card');
+        if (cards.length === 0) {
+            if (retryCount < 5) {
+                setTimeout(() => initializeCollectionAutoScroll(retryCount + 1), 500);
+            }
+            return;
+        }
+        
+        // Создаем мобильную обертку для слайдера
+        const mobileSliderWrapper = document.createElement('div');
+        mobileSliderWrapper.className = 'collection-mobile-slider-wrapper';
+        
+        // Создаем мобильный трек слайдера
+        const mobileSliderTrack = document.createElement('div');
+        mobileSliderTrack.className = 'collection-mobile-slider-track';
+        
+        // Клонируем все карточки в мобильный трек
+        cards.forEach(card => {
+            const cardClone = card.cloneNode(true);
+            mobileSliderTrack.appendChild(cardClone);
+        });
+        
+        // Добавляем дубликаты карточек для бесконечной прокрутки
+        cards.forEach(card => {
+            const cardClone = card.cloneNode(true);
+            cardClone.classList.add('duplicate');
+            mobileSliderTrack.appendChild(cardClone);
+        });
+        
+        // Вставляем мобильный трек в мобильную обертку
+        mobileSliderWrapper.appendChild(mobileSliderTrack);
+        
+        // Скрываем оригинальный слайдер и показываем мобильный
+        sliderWrapper.style.display = 'none';
+        activeGrid.appendChild(mobileSliderWrapper);
+        activeGrid.setAttribute('data-mobile-autoscroll-initialized', 'true');
+        
+        // Добавляем обработчик для паузы анимации при потере фокуса
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                mobileSliderTrack.classList.add('paused');
+            } else {
+                mobileSliderTrack.classList.remove('paused');
+            }
+        });
+        
+        // Добавляем обработчик изменения размера окна
+        window.addEventListener('resize', function() {
+            // Если переключились на десктоп, показываем оригинальный слайдер
+            if (!isMobile()) {
+                sliderWrapper.style.display = 'flex';
+                mobileSliderWrapper.style.display = 'none';
+            } else {
+                sliderWrapper.style.display = 'none';
+                mobileSliderWrapper.style.display = 'block';
+            }
+        });
+    }
+    
     // Функция для инициализации всех слайдеров
     function initializeAllSliders() {
         // Инициализируем слайдер для секции ECOSYSTEM
@@ -91,6 +198,9 @@ document.addEventListener('DOMContentLoaded', function() {
             'partnerships-slider-wrapper',
             'partnerships-slider-track'
         );
+        
+        // Инициализируем слайдер для секции COLLECTION
+        initializeCollectionAutoScroll();
     }
     
     // Отложенная инициализация для обеспечения полной загрузки страницы
@@ -111,10 +221,13 @@ document.addEventListener('DOMContentLoaded', function() {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(function() {
             // Перезапускаем инициализацию при изменении размера
-            const existingWrappers = document.querySelectorAll('.ecosystem-slider-wrapper, .partnerships-slider-wrapper');
+            const existingWrappers = document.querySelectorAll('.ecosystem-slider-wrapper, .partnerships-slider-wrapper, .collection-mobile-slider-wrapper');
             existingWrappers.forEach(wrapper => wrapper.remove());
             
             initializeAllSliders();
         }, 250);
     });
+    
+    // Экспортируем функцию для использования в collection-slider.js
+    window.initializeMobileCollectionAutoScroll = initializeCollectionAutoScroll;
 });
