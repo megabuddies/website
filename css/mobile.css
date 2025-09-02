@@ -195,8 +195,8 @@
   
   /* Исправление позиции Twitter embed */
   .twitter-embed-container {
-    margin-top: 15px !important;
-    padding-top: 10px !important;
+    margin-top: 5px !important;
+    padding-top: 0px !important;
     width: 100% !important;
     overflow: visible !important;
     position: relative !important;
