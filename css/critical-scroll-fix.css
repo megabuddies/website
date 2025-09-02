@@ -1,0 +1,74 @@
+/* Критический CSS для немедленного предотвращения скроллбаров */
+/* Загружается в самом начале для предотвращения мигания скроллбаров */
+
+@media screen and (min-width: 992px) {
+    /* Глобальные правила для всех проблемных секций */
+    #about,
+    #manifesto, 
+    #partnerships,
+    #community,
+    .section,
+    .about-content,
+    .terminal-content,
+    .terminal-container,
+    .partnerships-grid,
+    .partnership-card,
+    .community-content,
+    .twitter-feed,
+    .telegram-feed {
+        overflow: hidden !important;
+        overflow-x: hidden !important;
+        overflow-y: hidden !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+        height: auto !important;
+        max-height: none !important;
+        min-height: auto !important;
+    }
+
+    /* Скрытие webkit скроллбаров */
+    #about::-webkit-scrollbar,
+    #manifesto::-webkit-scrollbar,
+    #partnerships::-webkit-scrollbar,
+    #community::-webkit-scrollbar,
+    .section::-webkit-scrollbar,
+    .about-content::-webkit-scrollbar,
+    .terminal-content::-webkit-scrollbar,
+    .terminal-container::-webkit-scrollbar,
+    .partnerships-grid::-webkit-scrollbar,
+    .partnership-card::-webkit-scrollbar,
+    .community-content::-webkit-scrollbar,
+    .twitter-feed::-webkit-scrollbar,
+    .telegram-feed::-webkit-scrollbar,
+    #partnerships *::-webkit-scrollbar,
+    #community *::-webkit-scrollbar,
+    #manifesto *::-webkit-scrollbar {
+        width: 0 !important;
+        height: 0 !important;
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        background: transparent !important;
+    }
+    
+    /* Дополнительные правила для предотвращения переполнения */
+    .partnership-card,
+    .twitter-feed,
+    .telegram-feed {
+        contain: layout style !important;
+    }
+}
+
+/* Принудительное скрытие скроллбаров для всех элементов */
+@media screen and (min-width: 992px) {
+    html:not(.mobile) * {
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+    }
+    
+    html:not(.mobile) *::-webkit-scrollbar {
+        width: 0 !important;
+        height: 0 !important;
+        display: none !important;
+    }
+}

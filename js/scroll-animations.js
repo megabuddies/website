@@ -3,10 +3,16 @@ document.addEventListener('DOMContentLoaded', function() {
     gsap.registerPlugin(ScrollTrigger);
     
     // Устанавливаем начальные состояния для всех секций
-    gsap.set(['#manifesto', '#collection', '#roadmap'], {
+    gsap.set(['#manifesto', '#collection', '#roadmap', '#partnerships', '#community'], {
         opacity: 1,
         visibility: 'visible',
         display: 'block'
+    });
+    
+    // Немедленно показываем основные элементы секций для предотвращения мигания
+    gsap.set(['.section-heading', '.section-line', '.partnership-card', '.twitter-feed', '.telegram-feed'], {
+        opacity: 1,
+        visibility: 'visible'
     });
     
     // Анимация для секции "О проекте"
@@ -19,87 +25,87 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     })
     .from("#about .section-heading", {
-        y: 50,
+        y: 30,
         opacity: 0,
-        duration: 0.8
+        duration: 0.4
     })
     .from("#about .section-line", {
         width: 0,
         opacity: 0,
-        duration: 0.5
-    }, "-=0.3")
+        duration: 0.3
+    }, "-=0.2")
     .from(".about-item", {
-        y: 50,
+        y: 30,
         opacity: 0,
-        stagger: 0.2,
-        duration: 0.8
-    }, "-=0.2");
+        stagger: 0.1,
+        duration: 0.4
+    }, "-=0.1");
     
-    // Анимация для секции манифеста
+    // Анимация для секции манифеста - ускоренная
     gsap.timeline({
         scrollTrigger: {
             trigger: '#manifesto',
-            start: 'top center',
+            start: 'top 85%',
             toggleActions: 'play none none none',
             once: true
         }
     })
     .from('#manifesto .terminal-container', {
         opacity: 0,
-        y: 50,
-        duration: 1,
+        y: 30,
+        duration: 0.5,
         ease: 'power2.out',
         clearProps: 'all'
     })
     .from('#manifesto .terminal-content', {
         opacity: 0,
-        y: 30,
-        duration: 1,
+        y: 20,
+        duration: 0.4,
         ease: 'power2.out',
         clearProps: 'all'
-    }, '-=0.5')
+    }, '-=0.3')
     .from('#manifesto .terminal-line', {
         opacity: 0,
-        y: 20,
-        duration: 0.8,
-        stagger: 0.1,
+        y: 15,
+        duration: 0.3,
+        stagger: 0.05,
         ease: 'power2.out',
         clearProps: 'all'
-    }, '-=0.3');
+    }, '-=0.2');
     
-    // Анимация для секции коллекции
+    // Анимация для секции коллекции - ускоренная
     gsap.timeline({
         scrollTrigger: {
             trigger: '#collection',
-            start: 'top center',
+            start: 'top 85%',
             toggleActions: 'play none none none',
             once: true
         }
     })
     .from('#collection .nft-card', {
         opacity: 0,
-        y: 50,
-        duration: 1,
-        stagger: 0.2,
+        y: 30,
+        duration: 0.5,
+        stagger: 0.1,
         ease: 'power2.out',
         clearProps: 'all'
     })
     .from('#collection .nft-card .nft-image', {
         opacity: 0,
-        scale: 0.8,
-        duration: 1,
-        stagger: 0.2,
+        scale: 0.9,
+        duration: 0.4,
+        stagger: 0.1,
         ease: 'power2.out',
         clearProps: 'all'
-    }, '-=0.5')
+    }, '-=0.3')
     .from('#collection .nft-card .nft-info', {
         opacity: 0,
-        y: 20,
-        duration: 0.8,
-        stagger: 0.2,
+        y: 15,
+        duration: 0.3,
+        stagger: 0.1,
         ease: 'power2.out',
         clearProps: 'all'
-    }, '-=0.3');
+    }, '-=0.2');
     
     // Анимация для секции дорожной карты - ускоренная версия
     gsap.timeline({
@@ -137,79 +143,80 @@ document.addEventListener('DOMContentLoaded', function() {
         clearProps: window.innerWidth < 768 ? 'opacity' : 'all'
     }, '-=0.2');
     
-    // Анимация для секции партнерств
+    // Анимация для секции партнерств - ускоренная
     gsap.timeline({
         scrollTrigger: {
             trigger: '#partnerships',
-            start: 'top center',
+            start: 'top 85%',
             toggleActions: 'play none none none',
             once: true
         }
     })
     .from('#partnerships .section-heading', {
-        y: 50,
+        y: 30,
         opacity: 0,
-        duration: 1,
+        duration: 0.4,
         ease: 'power2.out',
         clearProps: 'all'
     })
     .from('#partnerships .section-line', {
         scaleX: 0,
-        duration: 0.8,
+        duration: 0.3,
         ease: 'power2.out',
         clearProps: 'all'
-    }, '-=0.5')
+    }, '-=0.2')
     .from('.partnership-card', {
         opacity: 0,
-        y: 50,
-        duration: 1,
-        stagger: 0.3,
+        y: 30,
+        duration: 0.5,
+        stagger: 0.15,
         ease: 'power2.out',
         clearProps: 'all'
-    }, '-=0.3')
+    }, '-=0.2')
     .from('.partnership-badge', {
         opacity: 0,
         scale: 0,
-        duration: 0.8,
-        stagger: 0.2,
+        duration: 0.4,
+        stagger: 0.1,
         ease: 'back.out(1.7)',
         clearProps: 'all'
-    }, '-=0.5')
+    }, '-=0.3')
     .from('.twitter-preview', {
         opacity: 0,
-        y: 20,
-        duration: 0.8,
-        stagger: 0.2,
+        y: 15,
+        duration: 0.4,
+        stagger: 0.1,
         ease: 'power2.out',
         clearProps: 'all'
-    }, '-=0.3');
+    }, '-=0.2');
     
-    // Анимация для секции "Сообщество"
+    // Анимация для секции "Сообщество" - ускоренная
     gsap.timeline({
         scrollTrigger: {
             trigger: "#community",
-            start: "top 80%",
+            start: "top 85%",
             end: "bottom 20%",
-            toggleActions: "play none none none"
+            toggleActions: "play none none none",
+            once: true
         }
     })
     .from("#community .section-heading", {
-        y: 50,
+        y: 30,
         opacity: 0,
-        duration: 0.8
+        duration: 0.4
     })
     .from("#community .section-line", {
         width: 0,
         opacity: 0,
-        duration: 0.5
-    }, "-=0.3")
+        duration: 0.3
+    }, "-=0.2")
     .from(".twitter-feed, .telegram-feed", {
-        y: 30,
+        y: 20,
         opacity: 0,
-        duration: 0.6,
-        stagger: 0.2,
+        duration: 0.4,
+        stagger: 0.1,
         ease: 'power2.out'
-    }, "-=0.2");
+    }, "-=0.1");
     
 
     
@@ -232,7 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     } else {
                         clearInterval(typeInterval);
                     }
-                }, 20);
+                }, 10);
             },
             once: true
         });
