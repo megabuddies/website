@@ -2766,6 +2766,40 @@ body {
     transform: rotate(180deg);
 }
 
+/* Ensure dropdown-toggle inherits nav-link hover effects */
+.dropdown-toggle {
+    position: relative;
+}
+
+.dropdown-toggle::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.dropdown:hover .dropdown-toggle,
+.dropdown-toggle:hover {
+    color: var(--accent-color);
+    text-shadow: 0 0 5px var(--accent-color), 
+                 0 0 10px rgba(146, 147, 151, 0.5);
+    transform: translateY(-2px);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 5px var(--accent-color),
+                0 0 10px rgba(146, 147, 151, 0.3);
+}
+
+.dropdown:hover .dropdown-toggle::before,
+.dropdown-toggle:hover::before {
+    transform: scaleX(1);
+}
+
 .dropdown-menu {
     position: absolute;
     top: 100%;
