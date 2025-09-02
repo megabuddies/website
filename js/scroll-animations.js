@@ -137,6 +137,53 @@ document.addEventListener('DOMContentLoaded', function() {
         clearProps: window.innerWidth < 768 ? 'opacity' : 'all'
     }, '-=0.3');
     
+    // Анимация для секции партнерств
+    gsap.timeline({
+        scrollTrigger: {
+            trigger: '#partnerships',
+            start: 'top center',
+            toggleActions: 'play none none none',
+            once: true
+        }
+    })
+    .from('#partnerships .section-heading', {
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        ease: 'power2.out',
+        clearProps: 'all'
+    })
+    .from('#partnerships .section-line', {
+        scaleX: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+        clearProps: 'all'
+    }, '-=0.5')
+    .from('.partnership-card', {
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        stagger: 0.3,
+        ease: 'power2.out',
+        clearProps: 'all'
+    }, '-=0.3')
+    .from('.partnership-badge', {
+        opacity: 0,
+        scale: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: 'back.out(1.7)',
+        clearProps: 'all'
+    }, '-=0.5')
+    .from('.twitter-preview', {
+        opacity: 0,
+        y: 20,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: 'power2.out',
+        clearProps: 'all'
+    }, '-=0.3');
+    
     // Анимация для секции "Сообщество"
     gsap.timeline({
         scrollTrigger: {
