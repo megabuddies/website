@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Функция для инициализации автопрокрутки для секции
-    function initializeAutoScroll(sectionId, gridSelector, cardSelector, sliderWrapperClass, sliderTrackClass) {
+    function initializeAutoScroll(sectionId, gridSelector, cardSelector, sliderWrapperClass, sliderTrackClass, animationName, animationDuration) {
         // Проверяем, что мы на мобильном устройстве
         if (!isMobile()) return;
         
@@ -50,12 +50,15 @@ document.addEventListener('DOMContentLoaded', function() {
         grid.parentNode.insertBefore(sliderWrapper, grid.nextSibling);
         grid.setAttribute('data-autoscroll-initialized', 'true');
         
+        // Запускаем CSS анимацию для автопрокрутки
+        setupSliderAnimation(sliderTrack, animationName, animationDuration);
+        
         // Добавляем обработчик для паузы анимации при потере фокуса
         document.addEventListener('visibilitychange', function() {
             if (document.hidden) {
-                sliderTrack.classList.add('paused');
+                sliderTrack.style.animationPlayState = 'paused';
             } else {
-                sliderTrack.classList.remove('paused');
+                sliderTrack.style.animationPlayState = 'running';
             }
         });
         
@@ -72,6 +75,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Функция для настройки CSS анимации слайдера
+    function setupSliderAnimation(sliderTrack, animationName, duration) {
+        // Сбрасываем любую предыдущую анимацию
+        sliderTrack.style.animation = 'none';
+        
+        // Добавляем новую анимацию с небольшой задержкой
+        setTimeout(() => {
+            sliderTrack.style.animation = `${animationName} ${duration}s linear infinite`;
+        }, 10);
+    }
+    
     // Функция для инициализации всех слайдеров
     function initializeAllSliders() {
         // Инициализируем слайдер для секции ECOSYSTEM
@@ -80,7 +94,9 @@ document.addEventListener('DOMContentLoaded', function() {
             '.ecosystem-grid',
             '.ecosystem-card',
             'ecosystem-slider-wrapper',
-            'ecosystem-slider-track'
+            'ecosystem-slider-track',
+            'ecosystemSlideAnimation',
+            30
         );
         
         // Инициализируем слайдер для секции PARTNERSHIPS (MEGAMAFIA & MEGAFORGE FAM)
@@ -89,7 +105,9 @@ document.addEventListener('DOMContentLoaded', function() {
             '.partnerships-grid',
             '.partnership-card',
             'partnerships-slider-wrapper',
-            'partnerships-slider-track'
+            'partnerships-slider-track',
+            'partnershipsSlideAnimation',
+            25
         );
     }
     

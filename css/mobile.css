@@ -129,32 +129,13 @@
     display: none !important;
   }
   
-  /* Горизонтальный скролл для partnerships */
+  /* Убираем горизонтальный скролл для partnerships - теперь используем автопрокрутку */
   .partnerships-grid {
-    display: flex !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
     gap: 20px !important;
     padding: 10px 0 20px 0 !important;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent-color) transparent;
     width: 100%;
-  }
-  
-  .partnerships-grid::-webkit-scrollbar {
-    height: 4px;
-  }
-  
-  .partnerships-grid::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  
-  .partnerships-grid::-webkit-scrollbar-thumb {
-    background-color: var(--accent-color);
-    border-radius: 2px;
-    opacity: 0.7;
   }
   
   .partnership-card {
@@ -806,16 +787,10 @@ html, body {
     animation: pulseText 1.5s infinite alternate ease-in-out;
   }
   
-  /* Индикатор прокрутки для partnerships */
-  #partnerships .container::after {
-    content: '← swipe to see more →';
-    display: block;
-    text-align: center;
-    font-size: 12px;
-    color: var(--accent-color);
-    margin-top: 15px;
-    opacity: 0.7;
-    animation: pulseText 1.5s infinite alternate ease-in-out;
+  /* Убираем индикатор прокрутки для partnerships и ecosystem - теперь используем автопрокрутку */
+  #partnerships .container::after,
+  #ecosystem .container::after {
+    display: none;
   }
   
   @keyframes pulseText {
@@ -1515,32 +1490,13 @@ html.slow-connection img {
 
   /* Стили для автопрокрутки карточек в секциях ECOSYSTEM и PARTNERSHIPS */
   
-  /* Добавляем стили для мобильной версии ecosystem-grid */
+  /* Убираем горизонтальный скролл для ecosystem - теперь используем автопрокрутку */
   .ecosystem-grid {
-    display: flex !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
     gap: 20px !important;
     padding: 10px 0 20px 0 !important;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent-color) transparent;
     width: 100%;
-  }
-  
-  .ecosystem-grid::-webkit-scrollbar {
-    height: 4px;
-  }
-  
-  .ecosystem-grid::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  
-  .ecosystem-grid::-webkit-scrollbar-thumb {
-    background-color: var(--accent-color);
-    border-radius: 2px;
-    opacity: 0.7;
   }
   
   .ecosystem-card {
@@ -1564,14 +1520,17 @@ html.slow-connection img {
     position: relative;
     height: auto;
     margin-top: 20px;
+    padding: 0 !important;
   }
   
   .ecosystem-slider-track {
-    display: flex;
+    display: flex !important;
     gap: 20px;
     backface-visibility: hidden;
     height: 100%;
-    animation: ecosystemSlideAnimation 30s linear infinite;
+    width: max-content;
+    padding: 0 !important;
+    margin: 0 !important;
   }
   
   /* Дублируем карточки для бесконечной прокрутки */
@@ -1586,14 +1545,17 @@ html.slow-connection img {
     position: relative;
     height: auto;
     margin-top: 20px;
+    padding: 0 !important;
   }
   
   .partnerships-slider-track {
-    display: flex;
+    display: flex !important;
     gap: 20px;
     backface-visibility: hidden;
     height: 100%;
-    animation: partnershipsSlideAnimation 25s linear infinite;
+    width: max-content;
+    padding: 0 !important;
+    margin: 0 !important;
   }
   
   /* Дублируем карточки для бесконечной прокрутки */
@@ -1628,6 +1590,10 @@ html.slow-connection img {
     margin: 0 !important;
     padding: 20px !important;
     height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    position: relative !important;
   }
   
   .partnerships-slider-track .partnership-card {
@@ -1637,6 +1603,10 @@ html.slow-connection img {
     margin: 0 !important;
     padding: 20px !important;
     height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    position: relative !important;
   }
   
   /* Останавливаем анимацию при потере фокуса страницы */
