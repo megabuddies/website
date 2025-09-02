@@ -2556,6 +2556,200 @@ body {
     font-size: 14px;
 }
 
+/* Partnership Section Styles */
+.partnerships-subtitle {
+    text-align: center;
+    color: var(--text-color);
+    opacity: 0.8;
+    margin-bottom: 40px;
+    font-size: 18px;
+}
+
+.partnerships-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-top: 40px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.partnership-card {
+    background: linear-gradient(135deg, rgba(18, 18, 24, 0.9) 0%, rgba(25, 25, 35, 0.8) 100%);
+    border: 1px solid var(--accent-color);
+    border-radius: 8px;
+    padding: 25px;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+.partnership-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(112, 135, 227, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.partnership-card:hover::before {
+    left: 100%;
+}
+
+.partnership-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--secondary-color);
+    box-shadow: 0 10px 30px rgba(112, 135, 227, 0.3);
+}
+
+.partnership-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.partnership-badge.megamafia {
+    background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+    color: #000;
+    box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+}
+
+.partnership-badge.megaforge {
+    background: linear-gradient(45deg, #4ecdc4, #45b7aa);
+    color: #000;
+    box-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
+}
+
+.partnership-card h3 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    color: var(--text-color);
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 30px;
+}
+
+.partnership-description {
+    color: var(--text-color);
+    opacity: 0.9;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-size: 14px;
+    flex-grow: 1;
+}
+
+
+
+.partnership-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0;
+}
+
+.partnership-links {
+    margin-top: 25px;
+}
+
+.partnership-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 25px;
+    background: linear-gradient(45deg, var(--accent-color), var(--secondary-color));
+    color: #000;
+    text-decoration: none;
+    border-radius: 5px;
+    font-family: var(--font-display);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.partnership-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(112, 135, 227, 0.5);
+}
+
+.partnership-btn.twitter-link {
+    background: linear-gradient(45deg, #1da1f2, #0d8bd9);
+}
+
+.partnership-btn.twitter-link:hover {
+    box-shadow: 0 0 20px rgba(29, 161, 242, 0.5);
+}
+
+.twitter-embed-container {
+    margin: 20px 0;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.twitter-embed-container .twitter-tweet {
+    margin: 0 auto !important;
+    max-width: 100% !important;
+    min-height: 200px;
+}
+
+/* Responsive design for partnerships */
+@media (max-width: 768px) {
+    .partnerships-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .partnership-card {
+        padding: 20px;
+        min-height: auto;
+    }
+    
+    .partnership-card h3 {
+        font-size: 20px;
+        margin-top: 20px;
+    }
+    
+    .partnership-features {
+        justify-content: center;
+    }
+    
+    .partnership-description {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+    .partnerships-grid {
+        gap: 20px;
+    }
+    
+    .partnership-card {
+        padding: 20px;
+        min-height: 450px;
+    }
+}
+
 /* Dropdown навигация */
 .nav-item.dropdown {
     position: relative;
