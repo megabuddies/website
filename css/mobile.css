@@ -167,7 +167,7 @@
     justify-content: flex-start !important;
     padding: 20px !important;
     height: auto !important;
-    min-height: 400px !important;
+    min-height: auto !important;
     position: relative !important;
   }
   
@@ -201,6 +201,10 @@
     overflow: visible !important;
     position: relative !important;
     z-index: 1 !important;
+    /* Убираем вертикальное центрирование и flex-grow для позиционирования сразу после описания */
+    align-items: flex-start !important;
+    flex-grow: 0 !important;
+    display: block !important;
   }
   
   .twitter-embed-container .twitter-tweet {
