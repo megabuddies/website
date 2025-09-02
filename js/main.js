@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             clearInterval(progressInterval);
         }
-    }, 250);
+    }, 150);
     
     // Добавляем CSS для анимации пикселей
     const style = document.createElement('style');
@@ -124,10 +124,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         // Разрешаем скролл после скрытия прелоадера
                         document.body.style.overflow = 'auto';
-                    }, 800);
+                    }, 400);
                 }
             }, 150);
-        }, 6000);
+        }, 3000);
     });
     
     // Запрещаем скролл пока прелоадер активен

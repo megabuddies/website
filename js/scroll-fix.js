@@ -51,9 +51,16 @@
         @media screen and (min-width: 992px) {
             #about, 
             #manifesto,
+            #partnerships,
+            #community,
             .about-content,
             .terminal-content,
-            .terminal-container {
+            .terminal-container,
+            .partnerships-grid,
+            .partnership-card,
+            .community-content,
+            .twitter-feed,
+            .telegram-feed {
                 overflow: hidden !important;
                 overflow-x: hidden !important;
                 overflow-y: hidden !important;
@@ -64,9 +71,16 @@
             
             #about::-webkit-scrollbar,
             #manifesto::-webkit-scrollbar,
+            #partnerships::-webkit-scrollbar,
+            #community::-webkit-scrollbar,
             .about-content::-webkit-scrollbar,
             .terminal-content::-webkit-scrollbar,
-            .terminal-container::-webkit-scrollbar {
+            .terminal-container::-webkit-scrollbar,
+            .partnerships-grid::-webkit-scrollbar,
+            .partnership-card::-webkit-scrollbar,
+            .community-content::-webkit-scrollbar,
+            .twitter-feed::-webkit-scrollbar,
+            .telegram-feed::-webkit-scrollbar {
                 width: 0 !important;
                 height: 0 !important;
                 display: none !important;
@@ -84,11 +98,25 @@
         
         var aboutSection = document.getElementById('about');
         var manifestoSection = document.getElementById('manifesto');
+        var partnershipsSection = document.getElementById('partnerships');
+        var communitySection = document.getElementById('community');
         var terminalContent = document.querySelector('.terminal-content');
         var terminalContainer = document.querySelector('.terminal-container');
         var aboutContent = document.querySelector('.about-content');
+        var partnershipsGrid = document.querySelector('.partnerships-grid');
+        var communityContent = document.querySelector('.community-content');
+        var partnershipCards = document.querySelectorAll('.partnership-card');
+        var twitterFeed = document.querySelector('.twitter-feed');
+        var telegramFeed = document.querySelector('.telegram-feed');
         
-        var elements = [aboutSection, manifestoSection, terminalContent, terminalContainer, aboutContent];
+        var elements = [aboutSection, manifestoSection, partnershipsSection, communitySection, 
+                       terminalContent, terminalContainer, aboutContent, partnershipsGrid, 
+                       communityContent, twitterFeed, telegramFeed];
+        
+        // Добавляем карточки партнерств
+        partnershipCards.forEach(function(card) {
+            elements.push(card);
+        });
         
         elements.forEach(function(el) {
             if (!el) return;

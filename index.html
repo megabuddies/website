@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Немедленное применение критических стилей -->
+    <style>
+        @media screen and (min-width: 992px) {
+            #partnerships, #community, #manifesto, .partnerships-grid, .partnership-card, 
+            .community-content, .twitter-feed, .telegram-feed {
+                overflow: hidden !important;
+                scrollbar-width: none !important;
+                -ms-overflow-style: none !important;
+            }
+            #partnerships *::-webkit-scrollbar, #community *::-webkit-scrollbar,
+            #manifesto *::-webkit-scrollbar { display: none !important; width: 0 !important; }
+        }
+    </style>
+    <!-- Critical CSS для немедленного предотвращения скроллбаров -->
+    <link rel="stylesheet" href="css/critical-scroll-fix.css">
     <!-- Script for immediate fixing of scrollbar in manifesto -->
     <script src="js/manifesto-fix.js"></script>
     <meta charset="UTF-8">
@@ -343,13 +358,13 @@
     </section>
     
     <!-- MEGAMAFIA & MEGAFORGE FAM -->
-    <section id="partnerships" class="section">
+    <section id="partnerships" class="section" style="overflow: hidden !important; overflow-y: hidden !important; scrollbar-width: none !important;">
         <div class="container">
             <h2 class="section-heading neon-text">MEGAMAFIA & MEGAFORGE FAM</h2>
             <div class="section-line"></div>
 
             
-            <div class="partnerships-grid">
+            <div class="partnerships-grid" style="overflow: hidden !important; overflow-y: hidden !important; scrollbar-width: none !important;">
                 <div class="partnership-card neon-glow" data-family="megamafia">
                     <div class="partnership-badge megamafia">MEGAMAFIA</div>
                     <h3>Showdown</h3>
@@ -437,13 +452,13 @@
     </section>
     
     <!-- Community -->
-    <section id="community" class="section">
+    <section id="community" class="section" style="overflow: hidden !important; overflow-y: hidden !important; scrollbar-width: none !important;">
         <div class="container">
             <h2 class="section-heading neon-text">COMMUNITY</h2>
             <div class="section-line"></div>
             
-            <div class="community-content">
-                <div class="twitter-feed neon-glow">
+            <div class="community-content" style="overflow: hidden !important; overflow-y: hidden !important; scrollbar-width: none !important;">
+                <div class="twitter-feed neon-glow" style="overflow: hidden !important; overflow-y: hidden !important; scrollbar-width: none !important;">
                     <h3 class="community-heading">FOLLOW US ON X (EX. TWITTER)</h3>
                     <div class="social-icon"><i class="fab fa-twitter"></i></div>
                     <p>Join our X for updates, announcements, and behind-the-scenes insights into the Mega Buddies movement.</p>
@@ -452,7 +467,7 @@
                     </div>
                 </div>
                 
-                <div class="telegram-feed neon-glow">
+                <div class="telegram-feed neon-glow" style="overflow: hidden !important; overflow-y: hidden !important; scrollbar-width: none !important;">
                     <h3 class="community-heading">FOLLOW US ON TELEGRAM</h3>
                     <div class="social-icon"><i class="fab fa-telegram"></i></div>
                     <p>Join our Telegram channels for announcements, discussions, and community updates.</p>
