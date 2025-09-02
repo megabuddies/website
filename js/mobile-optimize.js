@@ -210,6 +210,51 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Мобильная навигация
+    function initMobileNavigation() {
+        const navItems = document.querySelectorAll('.mobile-nav-item');
+        const sections = document.querySelectorAll('.section');
+        
+        // Функция для определения активной секции
+        function updateActiveNavItem() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === '#' + current) {
+                    item.classList.add('active');
+                }
+            });
+        }
+        
+        // Плавная прокрутка при клике на навигацию
+        navItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Обновляем активный элемент при скролле
+        window.addEventListener('scroll', updateActiveNavItem);
+        updateActiveNavItem(); // Инициальное обновление
+    }
+    
     // Запуск инициализации
     init();
+    initMobileNavigation();
 }); 
