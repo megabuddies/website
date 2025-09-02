@@ -2567,20 +2567,26 @@ body {
 
 .partnerships-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: 1fr 1fr;
     gap: 30px;
     margin-top: 40px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .partnership-card {
     background: linear-gradient(135deg, rgba(18, 18, 24, 0.9) 0%, rgba(25, 25, 35, 0.8) 100%);
     border: 1px solid var(--accent-color);
     border-radius: 8px;
-    padding: 30px;
-    text-align: left;
+    padding: 25px;
+    text-align: center;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
 }
 
 .partnership-card::before {
@@ -2629,59 +2635,26 @@ body {
     box-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
 }
 
-.partnership-icon {
-    width: 60px;
-    height: 60px;
-    margin: 0 0 20px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(45deg, var(--accent-color), var(--secondary-color));
-    border-radius: 50%;
-    font-size: 24px;
-    color: #000;
-}
-
 .partnership-card h3 {
     font-family: var(--font-display);
-    font-size: 28px;
+    font-size: 24px;
     color: var(--text-color);
     margin-bottom: 15px;
     text-transform: uppercase;
     letter-spacing: 1px;
+    margin-top: 30px;
 }
 
 .partnership-description {
     color: var(--text-color);
     opacity: 0.9;
     line-height: 1.6;
-    margin-bottom: 25px;
-    font-size: 16px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    flex-grow: 1;
 }
 
-.partnership-details {
-    background: rgba(112, 135, 227, 0.1);
-    border-left: 3px solid var(--accent-color);
-    padding: 20px;
-    margin: 20px 0;
-    border-radius: 0 5px 5px 0;
-}
 
-.partnership-details h4 {
-    font-family: var(--font-display);
-    color: var(--accent-color);
-    margin-bottom: 10px;
-    font-size: 16px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.partnership-details p {
-    color: var(--text-color);
-    opacity: 0.9;
-    line-height: 1.6;
-    margin: 0;
-}
 
 .partnership-features {
     display: flex;
@@ -2726,42 +2699,18 @@ body {
     box-shadow: 0 0 20px rgba(29, 161, 242, 0.5);
 }
 
-.twitter-preview {
-    margin-top: 20px;
-    padding: 15px;
-    background: rgba(29, 161, 242, 0.1);
-    border: 1px solid rgba(29, 161, 242, 0.3);
-    border-radius: 8px;
-}
-
-.twitter-card {
-    background: #15202b;
-    border-radius: 8px;
-    padding: 15px;
-    border: 1px solid #38444d;
-}
-
-.twitter-header {
+.twitter-embed-container {
+    margin: 20px 0;
+    flex-grow: 1;
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-    color: #1da1f2;
-    font-weight: bold;
 }
 
-.twitter-header i {
-    font-size: 16px;
-}
-
-.twitter-content {
-    color: #ffffff;
-    line-height: 1.4;
-}
-
-.twitter-content p {
-    margin: 5px 0;
-    font-size: 14px;
+.twitter-embed-container .twitter-tweet {
+    margin: 0 auto !important;
+    max-width: 100% !important;
+    min-height: 200px;
 }
 
 /* Responsive design for partnerships */
@@ -2773,14 +2722,31 @@ body {
     
     .partnership-card {
         padding: 20px;
+        min-height: auto;
     }
     
     .partnership-card h3 {
-        font-size: 24px;
+        font-size: 20px;
+        margin-top: 20px;
     }
     
     .partnership-features {
         justify-content: center;
+    }
+    
+    .partnership-description {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+    .partnerships-grid {
+        gap: 20px;
+    }
+    
+    .partnership-card {
+        padding: 20px;
+        min-height: 450px;
     }
 }
 
