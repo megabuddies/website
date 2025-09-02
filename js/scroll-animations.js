@@ -101,41 +101,41 @@ document.addEventListener('DOMContentLoaded', function() {
         clearProps: 'all'
     }, '-=0.3');
     
-    // Анимация для секции дорожной карты
+    // Анимация для секции дорожной карты - ускоренная версия
     gsap.timeline({
         scrollTrigger: {
             trigger: '#roadmap',
-            start: 'top center',
+            start: 'top 80%',
             toggleActions: 'play none none none',
             once: true
         }
     })
     .from('#roadmap .roadmap-item', {
         opacity: 0,
-        x: -50,
-        duration: 1,
-        stagger: 0.3,
+        x: -30,
+        duration: 0.4,
+        stagger: 0.1,
         ease: 'power2.out',
         clearProps: 'all'
     })
     .from('#roadmap .roadmap-content', {
         opacity: 0,
-        y: 30,
-        duration: 1,
-        stagger: 0.3,
+        y: 20,
+        duration: 0.4,
+        stagger: 0.1,
         ease: 'power2.out',
         clearProps: 'all'
-    }, '-=0.5')
+    }, '-=0.3')
     .from('#roadmap .roadmap-item .roadmap-icon', {
         opacity: 0,
-        scale: window.innerWidth < 768 ? 1 : 0,
+        scale: window.innerWidth < 768 ? 1 : 0.8,
         x: window.innerWidth < 768 ? 0 : undefined,
         y: window.innerWidth < 768 ? 0 : undefined,
-        duration: 0.8,
-        stagger: 0.3,
+        duration: 0.3,
+        stagger: 0.1,
         ease: 'back.out(1.7)',
         clearProps: window.innerWidth < 768 ? 'opacity' : 'all'
-    }, '-=0.3');
+    }, '-=0.2');
     
     // Анимация для секции партнерств
     gsap.timeline({
@@ -203,16 +203,13 @@ document.addEventListener('DOMContentLoaded', function() {
         opacity: 0,
         duration: 0.5
     }, "-=0.3")
-    .from(".twitter-feed", {
-        x: -50,
+    .from(".twitter-feed, .telegram-feed", {
+        y: 30,
         opacity: 0,
-        duration: 0.8
-    }, "-=0.2")
-    .from(".discord-community", {
-        x: 50,
-        opacity: 0,
-        duration: 0.8
-    }, "-=0.8");
+        duration: 0.6,
+        stagger: 0.2,
+        ease: 'power2.out'
+    }, "-=0.2");
     
 
     
