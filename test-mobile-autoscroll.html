@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Mobile Autoscroll</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <style>
+        body { 
+            background: #111; 
+            color: white; 
+            padding: 20px; 
+            font-family: Arial, sans-serif;
+        }
+        .test-section { 
+            margin: 40px 0; 
+            border: 1px solid #333; 
+            padding: 20px; 
+            border-radius: 8px;
+        }
+        h2 { color: #0096ff; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Test Mobile Autoscroll</h1>
+    <p>Resize window to mobile width (< 768px) to see autoscroll effect</p>
+    
+    <div class="test-section">
+        <h2>ECOSYSTEM Test</h2>
+        <section id="ecosystem" class="section">
+            <div class="container">
+                <div class="ecosystem-grid">
+                    <div class="ecosystem-card neon-glow">
+                        <div class="ecosystem-icon">
+                            <i class="fab fa-telegram"></i>
+                        </div>
+                        <h3>Telegram Bots</h3>
+                        <p>Gamified community platform with Ambassador Bot and Influencer Bot.</p>
+                    </div>
+                    
+                    <div class="ecosystem-card neon-glow">
+                        <div class="ecosystem-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h3>Zealy Quests</h3>
+                        <p>Complete challenges, solve riddles, and participate in community missions.</p>
+                    </div>
+                    
+                    <div class="ecosystem-card neon-glow">
+                        <div class="ecosystem-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3>AI Companions</h3>
+                        <p>Chat with your Buddy character one-on-one! Powered by Nectar AI.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <div class="test-section">
+        <h2>PARTNERSHIPS Test</h2>
+        <section id="partnerships" class="section">
+            <div class="container">
+                <div class="partnerships-grid">
+                    <div class="partnership-card neon-glow">
+                        <div class="partnership-badge megamafia">MEGAMAFIA</div>
+                        <h3>Showdown</h3>
+                        <p class="partnership-description">A real-time poker game on MegaETH currently in alpha stage.</p>
+                    </div>
+
+                    <div class="partnership-card neon-glow">
+                        <div class="partnership-badge megamafia">MEGAMAFIA</div>
+                        <h3>Avon</h3>
+                        <p class="partnership-description">A real-time lending market on MegaETH stack.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script src="js/mobile-sections-slider.js"></script>
+    <script>
+        // Debug info
+        window.addEventListener('resize', function() {
+            console.log('Window width:', window.innerWidth);
+        });
+        console.log('Initial window width:', window.innerWidth);
+    </script>
+</body>
+</html>
