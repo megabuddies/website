@@ -38,9 +38,40 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
             
-            // Закрытие меню при клике на пункт меню
-            const navLinks = document.querySelectorAll('.nav-link');
+            // Обработка dropdown меню
+            const dropdownItems = document.querySelectorAll('.nav-item.dropdown');
+            dropdownItems.forEach(dropdown => {
+                const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+                if (dropdownToggle) {
+                    dropdownToggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        dropdown.classList.toggle('active');
+                        
+                        // Закрываем другие dropdown
+                        dropdownItems.forEach(otherDropdown => {
+                            if (otherDropdown !== dropdown) {
+                                otherDropdown.classList.remove('active');
+                            }
+                        });
+                    });
+                }
+            });
+
+            // Закрытие меню при клике на пункт меню (кроме dropdown toggle)
+            const navLinks = document.querySelectorAll('.nav-link:not(.dropdown-toggle)');
             navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (isMobile() && navList.classList.contains('active')) {
+                        mobileMenuToggle.classList.remove('active');
+                        navList.classList.remove('active');
+                        body.style.overflow = 'auto';
+                    }
+                });
+            });
+            
+            // Закрытие меню при клике на dropdown link
+            const dropdownLinks = document.querySelectorAll('.dropdown-link');
+            dropdownLinks.forEach(link => {
                 link.addEventListener('click', function() {
                     if (isMobile() && navList.classList.contains('active')) {
                         mobileMenuToggle.classList.remove('active');

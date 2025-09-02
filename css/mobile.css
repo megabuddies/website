@@ -2,10 +2,10 @@
 /* Сохраняем тот же дизайн, но оптимизированный для мобильных */
 
 :root {
-  --mobile-header-height: 50px;
+  --mobile-header-height: 0px; /* Убираем основной хедер на мобильных */
   --mobile-nav-height: 70px;
   --mobile-sticky-title-height: 50px;
-  --total-mobile-top-offset: 100px; /* header + sticky title */
+  --total-mobile-top-offset: 50px; /* только sticky title */
 }
 
 /* Mobile Bottom Navigation */
@@ -62,20 +62,21 @@
 /* Фиксированный заголовок для мобильной версии */
 .mobile-sticky-title {
   position: fixed;
-  top: var(--mobile-header-height);
+  top: 0;
   left: 0;
   right: 0;
-  background: rgba(18, 18, 24, 0.9);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--accent-color);
-  padding: 10px 0;
-  z-index: 999;
+  background: rgba(18, 18, 24, 0.95);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: 2px solid var(--accent-color);
+  padding: 12px 0;
+  z-index: 1000;
   text-align: center;
   height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .sticky-title-text {
@@ -86,6 +87,16 @@
   margin: 0;
   letter-spacing: 2px;
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.sticky-title-text::before {
+  content: '🐰';
+  font-size: 20px;
+  filter: drop-shadow(0 0 8px var(--accent-glow-color));
 }
 
 /* Скрываем feature-tags в ecosystem карточках на мобильных */
@@ -94,17 +105,26 @@
     display: none !important;
   }
   
-  /* Горизонтальный скролл для partnerships */
+  /* Автопрокрутка для partnerships как в коллекции */
   .partnerships-grid {
     display: flex !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
+    overflow: hidden !important;
     gap: 20px !important;
     padding: 10px 0 20px 0 !important;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent-color) transparent;
+    position: relative;
+    width: 100%;
+  }
+  
+  .partnerships-grid .slider-wrapper {
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .partnerships-grid .slider-track {
+    display: flex;
+    gap: 20px;
+    animation: partnershipSlide 20s linear infinite;
+    width: max-content;
   }
   
   .partnerships-grid::-webkit-scrollbar {
@@ -126,11 +146,51 @@
     max-width: 280px !important;
     flex-shrink: 0 !important;
     margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    padding: 20px !important;
+  }
+  
+  /* Исправление позиции Twitter embed */
+  .twitter-embed-container {
+    margin-top: auto !important;
+    padding-top: 15px !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    position: relative !important;
+    min-height: 200px !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+  }
+  
+  .twitter-embed-container .twitter-tweet {
+    margin: 0 auto !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    position: relative !important;
+    top: 0 !important;
+    transform: none !important;
+  }
+  
+  /* Дополнительные стили для корректного отображения Twitter виджетов */
+  .partnership-card .twitter-tweet iframe {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+  
+  /* Адаптация partnership-description */
+  .partnership-description {
+    flex-grow: 1 !important;
+    margin-bottom: 15px !important;
   }
   
   /* Отступ для hero секции чтобы не перекрывалась фиксированным заголовком */
   .hero {
     padding-top: var(--total-mobile-top-offset) !important;
+    margin-top: 0 !important;
   }
   
   /* Корректируем отступы для всех секций */
@@ -162,9 +222,23 @@ html, body {
   overflow-x: hidden;
 }
 
-/* Скрываем бургер-кнопку в мобильной версии */
+/* Показываем улучшенную бургер-кнопку в мобильной версии */
 .mobile-menu-toggle {
-  display: none !important;
+  display: flex !important;
+  position: fixed;
+  top: 10px;
+  right: 15px;
+  z-index: 1002;
+  width: 44px;
+  height: 44px;
+  background: rgba(18, 18, 24, 0.9);
+  border: 2px solid var(--accent-color);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 0 15px var(--accent-glow-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 /* Базовые мобильные настройки для всех экранов меньше 992px */
@@ -206,18 +280,9 @@ html, body {
     margin-bottom: 20px;
   }
   
-  /* Улучшенный хедер */
+  /* Скрываем основной хедер на мобильных */
   .main-header {
-    position: sticky;
-    top: 0;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    z-index: 1000;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    transition: all 0.3s ease;
-    width: 100%;
+    display: none !important;
   }
   
   .header-container {
@@ -288,12 +353,13 @@ html, body {
   
   .mobile-menu-toggle span {
     display: block;
-    width: 25px;
+    width: 20px;
     height: 2px;
     background-color: var(--accent-color);
-    margin: 3px 0;
+    margin: 2px 0;
     transition: all 0.3s ease;
     box-shadow: 0 0 5px var(--accent-glow-color);
+    border-radius: 1px;
   }
   
   .mobile-menu-toggle.active {
@@ -316,27 +382,31 @@ html, body {
     position: relative;
   }
   
-  /* Улучшение анимации появления меню */
+  /* Улучшенное боковое меню */
   .nav-list {
     top: 0;
     right: -100%;
-    width: 80%;
+    width: 85%;
+    max-width: 320px;
     height: 100vh;
-    padding-top: var(--mobile-header-height);
     position: fixed;
-    background-color: var(--background-color);
+    background: rgba(12, 12, 18, 0.98);
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding: 80px 20px;
-    z-index: 1000;
-    transition: right 0.5s cubic-bezier(0.19, 1, 0.22, 1); /* Более плавная анимация */
+    padding: 80px 15px 20px 15px;
+    z-index: 1001;
+    transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     background-image: 
-      linear-gradient(0deg, rgba(146, 147, 151, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(146, 147, 151, 0.05) 1px, transparent 1px);
-    background-size: 20px 20px;
-    border-left: 2px solid var(--accent-color);
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+      linear-gradient(0deg, rgba(146, 147, 151, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(146, 147, 151, 0.08) 1px, transparent 1px);
+    background-size: 15px 15px;
+    border-left: 3px solid var(--accent-color);
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
   
   .nav-list::before {
@@ -354,15 +424,15 @@ html, body {
     right: 0;
   }
   
-  /* Анимация появления элементов меню */
+  /* Улучшенные элементы меню */
   .nav-item {
-    margin: 15px 0;
+    margin: 8px 0;
     width: 100%;
     text-align: center;
     opacity: 0;
     transform: translateX(20px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
-    transition-delay: calc(var(--item-index, 0) * 0.05s);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition-delay: calc(var(--item-index, 0) * 0.04s);
   }
   
   .nav-list.active .nav-item {
@@ -371,9 +441,75 @@ html, body {
   }
   
   .nav-link {
-    font-size: 18px;
-    padding: 12px;
+    font-size: 16px;
+    padding: 12px 15px;
     display: block;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    color: var(--text-color);
+    text-decoration: none;
+    border: 1px solid transparent;
+    margin: 2px 0;
+  }
+  
+  .nav-link:hover,
+  .nav-link:active {
+    background: rgba(146, 147, 151, 0.1);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    text-shadow: 0 0 10px var(--accent-glow-color);
+  }
+  
+  /* Улучшенный dropdown для мобильных */
+  .nav-item.dropdown {
+    position: relative;
+  }
+  
+  .dropdown-menu {
+    position: static !important;
+    width: 100%;
+    background: rgba(8, 8, 12, 0.9);
+    border: 1px solid var(--accent-color);
+    border-radius: 6px;
+    margin-top: 8px;
+    padding: 8px 0;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    transform: translateY(-10px);
+  }
+  
+  .nav-item.dropdown.active .dropdown-menu,
+  .nav-item.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    max-height: 300px;
+    transform: translateY(0);
+  }
+  
+  .dropdown-link {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    font-size: 14px;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    margin: 2px 8px;
+  }
+  
+  .dropdown-link:hover,
+  .dropdown-link:active {
+    background: rgba(146, 147, 151, 0.15);
+    color: var(--accent-color);
+    text-shadow: 0 0 8px var(--accent-glow-color);
+  }
+  
+  .dropdown-link i {
+    margin-right: 8px;
+    width: 16px;
+    text-align: center;
   }
   
   /* Улучшенный герой раздел - поднят выше */
@@ -637,6 +773,32 @@ html, body {
   @keyframes pulseText {
     0% { opacity: 0.3; }
     100% { opacity: 0.7; }
+  }
+  
+  /* Анимация для автопрокрутки partnerships */
+  @keyframes partnershipSlide {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-600px); /* 2 карточки * 300px */}
+  }
+  
+  /* Дополнительные стили для partnerships слайдера */
+  .partnerships-slider-active .slider-wrapper {
+    width: 100% !important;
+    overflow: hidden !important;
+    position: relative !important;
+  }
+  
+  .partnerships-slider-active .slider-track {
+    display: flex !important;
+    gap: 20px !important;
+    animation: partnershipSlide 15s linear infinite !important;
+    width: max-content !important;
+  }
+  
+  .partnerships-slider-active .partnership-card {
+    min-width: 280px !important;
+    max-width: 280px !important;
+    flex-shrink: 0 !important;
   }
   
   /* Оптимизированная дорожная карта, более похожая на десктопную версию */
@@ -1276,7 +1438,7 @@ html.slow-connection img {
 /* Подъем MEGA BUDDIES выше для экономии места */
 @media (max-width: 768px) {
   .hero-content {
-    padding-top: 5px;
+    padding-top: 15px;
     padding-bottom: 30px;
   }
 
