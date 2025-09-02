@@ -1566,6 +1566,11 @@ html.slow-connection img {
     margin-top: 20px;
   }
   
+  /* Отключаем ручную прокрутку когда включена автопрокрутка */
+  .ecosystem-grid[data-autoscroll-initialized="true"] {
+    overflow: hidden !important;
+  }
+  
   .ecosystem-slider-track {
     display: flex;
     gap: 20px;
@@ -1586,6 +1591,11 @@ html.slow-connection img {
     position: relative;
     height: auto;
     margin-top: 20px;
+  }
+  
+  /* Отключаем ручную прокрутку когда включена автопрокрутка */
+  .partnerships-grid[data-autoscroll-initialized="true"] {
+    overflow: hidden !important;
   }
   
   .partnerships-slider-track {
