@@ -4,17 +4,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let globalAnimationId = null;
     const initializedCategories = new Set(); // Отслеживаем, какие категории уже инициализированы
     
-    // Отложенная инициализация контейнеров
-    function deferredInitialization() {
-        // Проверяем, загружена ли страница полностью
-        if (document.readyState === 'complete') {
-            initializeContainers();
-        } else {
-            // Если страница еще загружается, откладываем инициализацию
-            setTimeout(deferredInitialization, 1000);
-        }
-    }
-    
     // Инициализация контейнеров при загрузке страницы
     function initializeContainers() {
         // Устанавливаем фиксированную высоту для всех контейнеров
@@ -33,8 +22,8 @@ document.addEventListener('DOMContentLoaded', function() {
         loadImagesForCategory(activeCategory, true); // Передаем флаг initialLoad = true
     }
     
-    // Вызываем отложенную инициализацию вместо прямого вызова
-    deferredInitialization();
+    // Немедленная инициализация контейнеров
+    initializeContainers();
     
     // Функция для подготовки контейнера карточками
     function prepareContainerWithCards(container, category) {
@@ -248,8 +237,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Не инициализируем контейнеры напрямую здесь, так как используем deferredInitialization
-    // initializeContainers();
+
     
     // Обрабатываем клики по кнопкам фильтра
     document.querySelectorAll('.filter-btn').forEach(btn => {
