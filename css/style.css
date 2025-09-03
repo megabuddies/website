@@ -1307,6 +1307,46 @@ body {
     }
 }
 
+/* Auto-scroll animation for ecosystem section */
+@keyframes ecosystemSlideAnimation {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-2660px); /* 7 cards * (350px width + 30px gap) */
+    }
+}
+
+/* Auto-scroll animation for partnerships section */
+@keyframes partnershipsSlideAnimation {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-780px); /* 2 cards * (350px width + 40px gap) */
+    }
+}
+
+/* Desktop overrides - disable auto-scroll on desktop */
+@media (min-width: 769px) {
+    .ecosystem-slider, .partnerships-slider {
+        position: static !important;
+        overflow: visible !important;
+    }
+    
+    .ecosystem-track, .partnerships-track {
+        animation: none !important;
+        position: static !important;
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)) !important;
+        gap: 30px !important;
+    }
+    
+    .partnerships-track {
+        grid-template-columns: 1fr 1fr !important;
+    }
+}
+
 .nft-card {
   min-width: 250px;
   width: 250px;

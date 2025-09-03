@@ -129,18 +129,32 @@
     display: none !important;
   }
   
-  /* Горизонтальный скролл для partnerships */
+  /* Auto-scroll для partnerships только на мобильных */
   .partnerships-grid {
-    display: flex !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    gap: 20px !important;
-    padding: 10px 0 20px 0 !important;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent-color) transparent;
+    overflow: hidden !important;
     width: 100%;
+    height: 500px !important;
+    position: relative;
+  }
+  
+  .partnerships-slider {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .partnerships-track {
+    display: flex !important;
+    gap: 40px !important;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  
+  .partnerships-track:hover {
+    animation-play-state: paused;
   }
   
   .partnerships-grid::-webkit-scrollbar {
@@ -158,16 +172,16 @@
   }
   
   .partnership-card {
-    min-width: 300px !important;
-    max-width: 300px !important;
+    min-width: 350px !important;
+    max-width: 350px !important;
     flex-shrink: 0 !important;
     margin: 0 !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start !important;
     padding: 20px !important;
-    height: auto !important;
-    min-height: auto !important;
+    height: 460px !important;
+    min-height: 460px !important;
     position: relative !important;
   }
   
@@ -223,18 +237,32 @@
     position: relative !important;
   }
   
-  /* Горизонтальный скролл для ecosystem */
+  /* Auto-scroll для ecosystem только на мобильных */
   .ecosystem-grid {
-    display: flex !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    gap: 20px !important;
-    padding: 10px 0 20px 0 !important;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent-color) transparent;
+    overflow: hidden !important;
     width: 100%;
+    height: 400px !important;
+    position: relative;
+  }
+  
+  .ecosystem-slider {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .ecosystem-track {
+    display: flex !important;
+    gap: 30px !important;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  
+  .ecosystem-track:hover {
+    animation-play-state: paused;
   }
   
   .ecosystem-grid::-webkit-scrollbar {
@@ -252,16 +280,16 @@
   }
   
   .ecosystem-card {
-    min-width: 300px !important;
-    max-width: 300px !important;
+    min-width: 350px !important;
+    max-width: 350px !important;
     flex-shrink: 0 !important;
     margin: 0 !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start !important;
     padding: 20px !important;
-    height: auto !important;
-    min-height: auto !important;
+    height: 360px !important;
+    min-height: 360px !important;
     position: relative !important;
   }
   
