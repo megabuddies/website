@@ -2764,14 +2764,15 @@ body {
     position: relative;
 }
 
-.dropdown-toggle::after {
-    content: '▼';
+/* Dropdown arrow using a span element instead of ::after */
+.dropdown-toggle .dropdown-arrow {
     font-size: 10px;
     margin-left: 8px;
     transition: transform 0.3s ease;
+    display: inline-block;
 }
 
-.dropdown:hover .dropdown-toggle::after {
+.dropdown:hover .dropdown-toggle .dropdown-arrow {
     transform: rotate(180deg);
 }
 
@@ -2929,7 +2930,7 @@ body {
         backdrop-filter: none;
     }
     
-    .dropdown-toggle::after {
+    .dropdown-toggle .dropdown-arrow {
         display: none;
     }
     
