@@ -12,7 +12,6 @@
     html:not(.mobile) .partnerships-grid,
     html:not(.mobile) .partnership-card,
     html:not(.mobile) .ecosystem-grid,
-    html:not(.mobile) .ecosystem-card,
     html:not(.mobile) .community-content,
     html:not(.mobile) .twitter-feed,
     html:not(.mobile) .telegram-feed {
@@ -22,6 +21,11 @@
         scrollbar-width: none !important;
         -ms-overflow-style: none !important;
         -webkit-overflow-scrolling: auto !important;
+    }
+
+    /* Позволяем ecosystem-card выходить за границы для hover эффекта */
+    html:not(.mobile) .ecosystem-card {
+        overflow: visible !important;
     }
 
     /* Правила для элементов, где необходима фиксированная высота */
@@ -40,7 +44,6 @@
     html:not(.mobile) .partnerships-grid::-webkit-scrollbar,
     html:not(.mobile) .partnership-card::-webkit-scrollbar,
     html:not(.mobile) .ecosystem-grid::-webkit-scrollbar,
-    html:not(.mobile) .ecosystem-card::-webkit-scrollbar,
     html:not(.mobile) .community-content::-webkit-scrollbar,
     html:not(.mobile) .twitter-feed::-webkit-scrollbar,
     html:not(.mobile) .telegram-feed::-webkit-scrollbar {
@@ -92,7 +95,6 @@
     #partnerships .partnerships-grid,
     #partnerships .partnership-card,
     #ecosystem .ecosystem-grid,
-    #ecosystem .ecosystem-card,
     #community .community-content,
     #community .twitter-feed,
     #community .telegram-feed {
@@ -122,7 +124,6 @@
     html:not(.mobile) .partnerships-grid,
     html:not(.mobile) .partnership-card,
     html:not(.mobile) .ecosystem-grid,
-    html:not(.mobile) .ecosystem-card,
     html:not(.mobile) .community-content,
     html:not(.mobile) .twitter-feed,
     html:not(.mobile) .telegram-feed {
