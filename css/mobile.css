@@ -1685,4 +1685,44 @@ html.slow-connection img {
   .ecosystem-grid.user-interacting .auto-scroll-track {
     animation-play-state: paused !important;
   }
+
+  /* Новые стили для бесшовной автопрокрутки */
+  .mobile-scroll-wrapper {
+    width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    position: relative !important;
+    scroll-behavior: smooth !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: var(--accent-color) transparent !important;
+  }
+  
+  /* Стили скроллбара для wrapper */
+  .mobile-scroll-wrapper::-webkit-scrollbar {
+    height: 4px !important;
+  }
+  
+  .mobile-scroll-wrapper::-webkit-scrollbar-track {
+    background: transparent !important;
+  }
+  
+  .mobile-scroll-wrapper::-webkit-scrollbar-thumb {
+    background-color: var(--accent-color) !important;
+    border-radius: 2px !important;
+    opacity: 0.7 !important;
+  }
+  
+  .mobile-scroll-track {
+    display: flex !important;
+    gap: 20px !important;
+    will-change: transform !important;
+    backface-visibility: hidden !important;
+  }
+
+  /* CSS анимация для бесшовной автопрокрутки */
+  @keyframes mobileAutoScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
 } 

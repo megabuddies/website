@@ -1,11 +1,11 @@
-// Автопрокрутка для мобильной версии - улучшенная версия
+// Автопрокрутка для мобильной версии - бесшовная как в COLLECTION
 (function() {
     'use strict';
     
     // Проверка мобильного устройства
     if (window.innerWidth > 768) return;
     
-    console.log('🚀 Инициализация автопрокрутки для мобильных устройств');
+    console.log('🚀 Инициализация бесшовной автопрокрутки');
     
     // Добавляем CSS анимации
     const style = document.createElement('style');
@@ -15,64 +15,44 @@
             100% { transform: translateX(-50%); }
         }
         
-        .mobile-autoscroll-wrapper {
+        .mobile-scroll-wrapper {
             width: 100% !important;
-            overflow-x: auto !important;
-            overflow-y: hidden !important;
+            overflow: hidden !important;
             position: relative !important;
-            scroll-behavior: smooth !important;
-            -webkit-overflow-scrolling: touch !important;
         }
         
-        .mobile-autoscroll-track {
+        .mobile-scroll-track {
             display: flex !important;
             gap: 20px !important;
             backface-visibility: hidden !important;
             will-change: transform !important;
         }
-        
-        .mobile-autoscroll-track.auto-mode {
-            overflow-x: visible !important;
-        }
-        
-        .mobile-autoscroll-track.manual-mode {
-            animation-play-state: paused !important;
-            transform: none !important;
-            animation: none !important;
-        }
     `;
     document.head.appendChild(style);
     
-    // Функция создания автопрокрутки с поддержкой ручной прокрутки
-    function setupAdvancedAutoScroll(selector, duration) {
+    // Функция создания бесшовной автопрокрутки (как в COLLECTION)
+    function setupSeamlessAutoScroll(selector, duration) {
         function trySetup() {
             const container = document.querySelector(selector);
             
-            if (!container) {
-                console.log('❌ Контейнер не найден:', selector);
-                return false;
-            }
+            if (!container) return false;
             
             const cards = Array.from(container.children);
+            if (cards.length === 0) return false;
             
-            if (cards.length === 0) {
-                console.log('❌ Нет карточек в:', selector);
-                return false;
-            }
+            console.log('✅ Настройка для:', selector, 'карточек:', cards.length);
             
-            console.log('✅ Настройка автопрокрутки:', selector, 'карточек:', cards.length);
-            
-            // Создаем wrapper с поддержкой ручной прокрутки
+            // Создаем структуру (точно как в collection-slider.js)
             const wrapper = document.createElement('div');
-            wrapper.className = 'mobile-autoscroll-wrapper';
+            wrapper.className = 'mobile-scroll-wrapper';
             
             const track = document.createElement('div');
-            track.className = 'mobile-autoscroll-track auto-mode';
+            track.className = 'mobile-scroll-track';
             
             // Добавляем оригинальные карточки
             cards.forEach(card => track.appendChild(card));
             
-            // Добавляем копии для бесшовной автопрокрутки
+            // Добавляем копии для бесшовности
             cards.forEach(card => {
                 const copy = card.cloneNode(true);
                 track.appendChild(copy);
@@ -83,124 +63,53 @@
             container.innerHTML = '';
             container.appendChild(wrapper);
             
-            // Переменные для управления режимами
-            let isAutoMode = true;
-            let autoScrollTimer;
-            let manualScrollTimer;
-            let isUserScrolling = false;
+            // Применяем анимацию (точно как в collection-slider.js)
+            track.style.transform = 'translateX(0)';
+            track.style.animation = 'none';
             
-            // Функция запуска автопрокрутки
-            function startAutoScroll() {
-                if (!isAutoMode) return;
-                
-                track.style.transform = 'translateX(0)';
-                track.style.animation = 'none';
-                track.offsetHeight; // Принудительный reflow
-                
-                setTimeout(() => {
-                    if (isAutoMode) {
-                        track.style.animation = `mobileAutoScroll ${duration}s linear infinite`;
-                        console.log('🎬 Автопрокрутка запущена:', selector);
-                    }
-                }, 50);
-            }
+            setTimeout(() => {
+                track.style.animation = `mobileAutoScroll ${duration}s linear infinite`;
+                console.log('🎬 Автопрокрутка запущена:', selector);
+            }, 10);
             
-            // Функция переключения в ручной режим
-            function switchToManualMode() {
-                isAutoMode = false;
-                track.classList.remove('auto-mode');
-                track.classList.add('manual-mode');
-                wrapper.style.overflowX = 'auto';
-                track.style.animation = 'none';
-                track.style.transform = 'translateX(0)';
-                console.log('👆 Переключение в ручной режим:', selector);
-            }
-            
-            // Функция переключения в автоматический режим
-            function switchToAutoMode() {
-                isAutoMode = true;
-                track.classList.remove('manual-mode');
-                track.classList.add('auto-mode');
-                wrapper.style.overflowX = 'hidden';
-                startAutoScroll();
-                console.log('🤖 Переключение в авто режим:', selector);
-            }
-            
-            // Обработчики для определения ручной прокрутки
-            wrapper.addEventListener('touchstart', function(e) {
-                isUserScrolling = true;
-                clearTimeout(autoScrollTimer);
-                clearTimeout(manualScrollTimer);
-                
-                if (isAutoMode) {
-                    switchToManualMode();
-                }
+            // Простая обработка касаний (как в COLLECTION)
+            let pauseTimeout;
+            wrapper.addEventListener('touchstart', () => {
+                track.style.animationPlayState = 'paused';
+                clearTimeout(pauseTimeout);
             });
             
-            wrapper.addEventListener('touchmove', function(e) {
-                isUserScrolling = true;
-                clearTimeout(autoScrollTimer);
-                clearTimeout(manualScrollTimer);
+            wrapper.addEventListener('touchend', () => {
+                pauseTimeout = setTimeout(() => {
+                    track.style.animationPlayState = 'running';
+                }, 1500);
             });
             
-            wrapper.addEventListener('touchend', function() {
-                // Возвращаемся к автопрокрутке через 4 секунды
-                manualScrollTimer = setTimeout(() => {
-                    isUserScrolling = false;
-                    switchToAutoMode();
-                }, 4000);
-            });
-            
-            // Обработчик прокрутки для ручного режима
-            wrapper.addEventListener('scroll', function() {
-                if (isUserScrolling) {
-                    clearTimeout(autoScrollTimer);
-                    clearTimeout(manualScrollTimer);
-                    
-                    // Возвращаемся к автопрокрутке через 3 секунды после остановки прокрутки
-                    manualScrollTimer = setTimeout(() => {
-                        isUserScrolling = false;
-                        switchToAutoMode();
-                    }, 3000);
-                }
-            });
-            
-            // Пауза при смене вкладки
+            // Пауза при смене вкладки (как в collection-slider.js)
             document.addEventListener('visibilitychange', () => {
                 if (document.hidden) {
                     track.style.animationPlayState = 'paused';
-                } else if (isAutoMode && !isUserScrolling) {
+                } else {
                     track.style.animationPlayState = 'running';
                 }
             });
             
-            // Запускаем автопрокрутку
-            setTimeout(startAutoScroll, 500);
-            
             return true;
         }
         
-        // Пробуем настроить с несколькими попытками
+        // Пробуем настроить
         let attempts = 0;
-        const maxAttempts = 5;
-        
         function attemptSetup() {
             attempts++;
-            
-            if (trySetup()) {
-                return;
-            }
-            
-            if (attempts < maxAttempts) {
-                setTimeout(attemptSetup, 1000);
-            }
+            if (trySetup() || attempts >= 5) return;
+            setTimeout(attemptSetup, 1000);
         }
         
         setTimeout(attemptSetup, 2000);
     }
     
-    // Запуск для обеих секций с быстрой скоростью (как в COLLECTION)
-    setupAdvancedAutoScroll('#ecosystem .ecosystem-grid', 12); // Быстрая скорость для 7 карточек
-    setupAdvancedAutoScroll('#partnerships .partnerships-grid', 8); // Очень быстрая для 2 карточек
+    // Запуск для обеих секций с быстрой скоростью
+    setupSeamlessAutoScroll('#ecosystem .ecosystem-grid', 12);
+    setupSeamlessAutoScroll('#partnerships .partnerships-grid', 8);
     
 })();
