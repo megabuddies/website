@@ -3187,6 +3187,52 @@ body {
     letter-spacing: 1px;
 }
 
+/* Twitter Embed Section */
+.twitter-embed-section {
+    margin-top: 50px;
+}
+
+.twitter-embed-section h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    color: var(--accent-color);
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.twitter-embed-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(18, 18, 24, 0.3);
+    border: 1px solid rgba(112, 135, 227, 0.2);
+    border-radius: 10px;
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+.twitter-embed-container .twitter-tweet {
+    margin: 0 !important;
+}
+
+/* Dark theme for Twitter embed */
+.twitter-embed-container iframe {
+    border-radius: 8px;
+}
+
+/* Mobile responsive for Twitter embed */
+@media (max-width: 768px) {
+    .twitter-embed-section {
+        margin-top: 30px;
+    }
+    
+    .twitter-embed-container {
+        padding: 15px;
+        max-width: 100%;
+    }
+}
+
 .roles-list {
     display: grid;
     gap: 20px;
