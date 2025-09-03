@@ -6,7 +6,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Кеширование DOM элементов
     const body = document.body;
-    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    // const mobileMenuToggle = document.querySelector('.mobile-menu-toggle'); // отключено
     const navList = document.querySelector('.nav-list');
     const filterButtons = document.querySelectorAll('.filter-btn');
     const nftGrids = document.querySelectorAll('.nft-grid');
@@ -17,8 +17,10 @@ document.addEventListener('DOMContentLoaded', function() {
         return window.innerWidth <= 992;
     }
     
-    // Инициализация улучшенного мобильного меню
+    // Инициализация улучшенного мобильного меню - отключено
     function initMobileMenu() {
+        // Функция отключена, так как мобильное меню удалено
+        /*
         if (mobileMenuToggle && navList) {
             // Улучшенное плавное открытие меню
             mobileMenuToggle.addEventListener('click', function() {
@@ -94,6 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
+        */
     }
     
     // Инициализация фильтров коллекции

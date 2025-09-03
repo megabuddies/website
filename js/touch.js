@@ -224,13 +224,13 @@ document.addEventListener('DOMContentLoaded', function() {
                             behavior: 'smooth'
                         });
                         
-                        // Закрываем мобильное меню если оно открыто
+                        // Закрываем мобильное меню если оно открыто - отключено
                         const navList = document.querySelector('.nav-list');
-                        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+                        // const mobileMenuToggle = document.querySelector('.mobile-menu-toggle'); // отключено
                         
                         if (navList && navList.classList.contains('active')) {
                             navList.classList.remove('active');
-                            mobileMenuToggle.classList.remove('active');
+                            // mobileMenuToggle.classList.remove('active'); // отключено
                             document.body.style.overflow = 'auto';
                         }
                     }
