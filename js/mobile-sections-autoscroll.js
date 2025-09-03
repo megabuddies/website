@@ -9,16 +9,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Настройки автопрокрутки
     const scrollSettings = {
         pauseOnInteraction: 4000, // Пауза после взаимодействия пользователя (мс)
-        resetDelay: 200 // Задержка перед возобновлением анимации (мс)
+        quickTapPause: 2000 // Пауза для быстрых тапов (мс)
     };
 
     // Функция для создания слайдера с автопрокруткой
-    function createAutoScrollSlider(container, sliderClass, trackClass, animationClass) {
+    function createAutoScrollSlider(container, wrapperClass, trackClass) {
         if (!container) return null;
 
         // Создаем wrapper для слайдера
         const sliderWrapper = document.createElement('div');
-        sliderWrapper.className = sliderClass;
+        sliderWrapper.className = wrapperClass;
         
         // Создаем track для карточек
         const sliderTrack = document.createElement('div');
@@ -39,55 +39,65 @@ document.addEventListener('DOMContentLoaded', function() {
         // Добавляем track в wrapper
         sliderWrapper.appendChild(sliderTrack);
         
-        // Добавляем wrapper в контейнер
+        // Очищаем контейнер и добавляем wrapper
+        container.innerHTML = '';
         container.appendChild(sliderWrapper);
         
-        return { wrapper: sliderWrapper, track: sliderTrack };
+        return { wrapper: sliderWrapper, track: sliderTrack, originalCards: cards };
     }
 
     // Функция для запуска CSS анимации
-    function startCSSAnimation(track, animationClass) {
+    function startAnimation(track, animationName, duration) {
         if (!track) return;
-        track.classList.add('animating');
-        track.classList.remove('paused');
-    }
-
-    // Функция для паузы CSS анимации
-    function pauseCSSAnimation(track) {
-        if (!track) return;
-        track.classList.add('paused');
-    }
-
-    // Функция для остановки CSS анимации
-    function stopCSSAnimation(track) {
-        if (!track) return;
-        track.classList.remove('animating', 'paused');
-    }
-
-    // Функция для возобновления анимации после взаимодействия
-    function resumeAnimationAfterInteraction(track, customPause = null) {
-        pauseCSSAnimation(track);
         
-        const pauseDuration = customPause || scrollSettings.pauseOnInteraction;
+        // Сбрасываем анимацию
+        track.style.animation = 'none';
+        track.style.transform = 'translateX(0)';
         
+        // Запускаем новую анимацию с небольшой задержкой
         setTimeout(() => {
-            setTimeout(() => {
-                startCSSAnimation(track);
-            }, scrollSettings.resetDelay);
-        }, pauseDuration);
+            track.style.animation = `${animationName} ${duration}s linear infinite`;
+        }, 10);
     }
 
-    // Функция для включения/выключения ручной прокрутки
-    function toggleManualScroll(container, enable) {
-        if (!container) return;
+    // Функция для остановки CSS анимации и включения ручной прокрутки
+    function enableManualScroll(container, track) {
+        if (!container || !track) return;
         
-        if (enable) {
-            container.classList.remove('auto-scroll');
-            container.style.overflowX = 'auto';
-        } else {
-            container.classList.add('auto-scroll');
-            container.style.overflowX = 'hidden';
-        }
+        // Останавливаем CSS анимацию
+        track.style.animation = 'none';
+        track.style.transform = 'translateX(0)';
+        
+        // Включаем обычную прокрутку для контейнера
+        container.style.overflowX = 'auto';
+        container.style.scrollBehavior = 'smooth';
+    }
+
+    // Функция для отключения ручной прокрутки и включения автоанимации
+    function enableAutoScroll(container, track, animationName, duration) {
+        if (!container || !track) return;
+        
+        // Отключаем ручную прокрутку
+        container.style.overflowX = 'hidden';
+        container.scrollLeft = 0;
+        
+        // Запускаем CSS анимацию
+        startAnimation(track, animationName, duration);
+    }
+
+    // Функция для обработки пользовательского взаимодействия
+    function handleUserInteraction(container, track, animationName, duration, pauseDuration = null) {
+        if (!container || !track) return;
+        
+        // Включаем ручную прокрутку
+        enableManualScroll(container, track);
+        
+        const pause = pauseDuration || scrollSettings.pauseOnInteraction;
+        
+        // Возобновляем автопрокрутку через указанное время
+        setTimeout(() => {
+            enableAutoScroll(container, track, animationName, duration);
+        }, pause);
     }
 
     // Инициализация автопрокрутки для ECOSYSTEM
@@ -104,32 +114,28 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (!slider) return;
 
-        let userInteracted = false;
+        let isUserInteracting = false;
         let interactionTimeout = null;
 
-        // Функция для обработки взаимодействия пользователя
-        function handleUserInteraction(customPause = null) {
-            userInteracted = true;
-            
-            // Включаем ручную прокрутку
-            toggleManualScroll(ecosystemContainer, true);
-            stopCSSAnimation(slider.track);
-            
-            // Очищаем предыдущий таймаут
+        // Функция для обработки взаимодействия
+        function onUserInteraction(pauseDuration = null) {
             if (interactionTimeout) {
                 clearTimeout(interactionTimeout);
             }
             
-            const pauseDuration = customPause || scrollSettings.pauseOnInteraction;
+            isUserInteracting = true;
+            handleUserInteraction(
+                ecosystemContainer, 
+                slider.track, 
+                'ecosystemSlideAnimation', 
+                20, 
+                pauseDuration
+            );
             
-            // Устанавливаем новый таймаут для возобновления
+            // Сбрасываем флаг взаимодействия
             interactionTimeout = setTimeout(() => {
-                userInteracted = false;
-                toggleManualScroll(ecosystemContainer, false);
-                setTimeout(() => {
-                    startCSSAnimation(slider.track);
-                }, scrollSettings.resetDelay);
-            }, pauseDuration);
+                isUserInteracting = false;
+            }, pauseDuration || scrollSettings.pauseOnInteraction);
         }
 
         // Добавляем обработчики событий
@@ -137,30 +143,19 @@ document.addEventListener('DOMContentLoaded', function() {
         
         ecosystemContainer.addEventListener('touchstart', (e) => {
             touchStartTime = Date.now();
-            handleUserInteraction();
+            onUserInteraction();
         }, { passive: true });
 
         ecosystemContainer.addEventListener('touchmove', (e) => {
-            handleUserInteraction();
+            if (!isUserInteracting) {
+                onUserInteraction();
+            }
         }, { passive: true });
 
         ecosystemContainer.addEventListener('touchend', (e) => {
             const touchDuration = Date.now() - touchStartTime;
-            if (touchDuration < 200) {
-                // Быстрый тап - меньшая пауза
-                handleUserInteraction(2000);
-            }
-        }, { passive: true });
-
-        // Обработчик для обычной прокрутки
-        let scrollTimeout;
-        ecosystemContainer.addEventListener('scroll', () => {
-            if (!userInteracted) {
-                clearTimeout(scrollTimeout);
-                scrollTimeout = setTimeout(() => {
-                    handleUserInteraction();
-                }, 100);
-            }
+            const pauseDuration = touchDuration < 200 ? scrollSettings.quickTapPause : scrollSettings.pauseOnInteraction;
+            onUserInteraction(pauseDuration);
         }, { passive: true });
 
         // Запускаем автопрокрутку после загрузки
@@ -169,15 +164,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
             
             if (isVisible) {
-                toggleManualScroll(ecosystemContainer, false);
-                startCSSAnimation(slider.track);
+                enableAutoScroll(ecosystemContainer, slider.track, 'ecosystemSlideAnimation', 20);
             } else {
                 // Используем Intersection Observer для запуска при появлении
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
-                        if (entry.isIntersecting && !userInteracted) {
-                            toggleManualScroll(ecosystemContainer, false);
-                            startCSSAnimation(slider.track);
+                        if (entry.isIntersecting && !isUserInteracting) {
+                            enableAutoScroll(ecosystemContainer, slider.track, 'ecosystemSlideAnimation', 20);
                             observer.unobserve(entry.target);
                         }
                     });
@@ -204,32 +197,28 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (!slider) return;
 
-        let userInteracted = false;
+        let isUserInteracting = false;
         let interactionTimeout = null;
 
-        // Функция для обработки взаимодействия пользователя
-        function handleUserInteraction(customPause = null) {
-            userInteracted = true;
-            
-            // Включаем ручную прокрутку
-            toggleManualScroll(partnershipsContainer, true);
-            stopCSSAnimation(slider.track);
-            
-            // Очищаем предыдущий таймаут
+        // Функция для обработки взаимодействия
+        function onUserInteraction(pauseDuration = null) {
             if (interactionTimeout) {
                 clearTimeout(interactionTimeout);
             }
             
-            const pauseDuration = customPause || scrollSettings.pauseOnInteraction;
+            isUserInteracting = true;
+            handleUserInteraction(
+                partnershipsContainer, 
+                slider.track, 
+                'partnershipsSlideAnimation', 
+                12, 
+                pauseDuration
+            );
             
-            // Устанавливаем новый таймаут для возобновления
+            // Сбрасываем флаг взаимодействия
             interactionTimeout = setTimeout(() => {
-                userInteracted = false;
-                toggleManualScroll(partnershipsContainer, false);
-                setTimeout(() => {
-                    startCSSAnimation(slider.track);
-                }, scrollSettings.resetDelay);
-            }, pauseDuration);
+                isUserInteracting = false;
+            }, pauseDuration || scrollSettings.pauseOnInteraction);
         }
 
         // Добавляем обработчики событий
@@ -237,30 +226,19 @@ document.addEventListener('DOMContentLoaded', function() {
         
         partnershipsContainer.addEventListener('touchstart', (e) => {
             touchStartTime = Date.now();
-            handleUserInteraction();
+            onUserInteraction();
         }, { passive: true });
 
         partnershipsContainer.addEventListener('touchmove', (e) => {
-            handleUserInteraction();
+            if (!isUserInteracting) {
+                onUserInteraction();
+            }
         }, { passive: true });
 
         partnershipsContainer.addEventListener('touchend', (e) => {
             const touchDuration = Date.now() - touchStartTime;
-            if (touchDuration < 200) {
-                // Быстрый тап - меньшая пауза
-                handleUserInteraction(2000);
-            }
-        }, { passive: true });
-
-        // Обработчик для обычной прокрутки
-        let scrollTimeout;
-        partnershipsContainer.addEventListener('scroll', () => {
-            if (!userInteracted) {
-                clearTimeout(scrollTimeout);
-                scrollTimeout = setTimeout(() => {
-                    handleUserInteraction();
-                }, 100);
-            }
+            const pauseDuration = touchDuration < 200 ? scrollSettings.quickTapPause : scrollSettings.pauseOnInteraction;
+            onUserInteraction(pauseDuration);
         }, { passive: true });
 
         // Запускаем автопрокрутку после загрузки
@@ -269,15 +247,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
             
             if (isVisible) {
-                toggleManualScroll(partnershipsContainer, false);
-                startCSSAnimation(slider.track);
+                enableAutoScroll(partnershipsContainer, slider.track, 'partnershipsSlideAnimation', 12);
             } else {
                 // Используем Intersection Observer для запуска при появлении
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
-                        if (entry.isIntersecting && !userInteracted) {
-                            toggleManualScroll(partnershipsContainer, false);
-                            startCSSAnimation(slider.track);
+                        if (entry.isIntersecting && !isUserInteracting) {
+                            enableAutoScroll(partnershipsContainer, slider.track, 'partnershipsSlideAnimation', 12);
                             observer.unobserve(entry.target);
                         }
                     });
@@ -297,17 +273,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Остановка анимаций при скрытии страницы для экономии ресурсов
     document.addEventListener('visibilitychange', function() {
         if (document.hidden) {
-            if (ecosystemSlider) pauseCSSAnimation(ecosystemSlider.track);
-            if (partnershipsSlider) pauseCSSAnimation(partnershipsSlider.track);
+            if (ecosystemSlider) ecosystemSlider.track.style.animationPlayState = 'paused';
+            if (partnershipsSlider) partnershipsSlider.track.style.animationPlayState = 'paused';
         } else {
             // Возобновляем анимации при возвращении на страницу
             setTimeout(() => {
-                if (ecosystemSlider && ecosystemSlider.track.classList.contains('animating')) {
-                    startCSSAnimation(ecosystemSlider.track);
-                }
-                if (partnershipsSlider && partnershipsSlider.track.classList.contains('animating')) {
-                    startCSSAnimation(partnershipsSlider.track);
-                }
+                if (ecosystemSlider) ecosystemSlider.track.style.animationPlayState = 'running';
+                if (partnershipsSlider) partnershipsSlider.track.style.animationPlayState = 'running';
             }, 500);
         }
     });
@@ -317,18 +289,12 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             if (isMobile()) {
                 // Перезапускаем анимации после изменения размера
-                if (ecosystemSlider && ecosystemSlider.track.classList.contains('animating')) {
-                    stopCSSAnimation(ecosystemSlider.track);
-                    setTimeout(() => {
-                        startCSSAnimation(ecosystemSlider.track);
-                    }, 300);
+                if (ecosystemSlider) {
+                    enableAutoScroll(ecosystemSlider.wrapper.parentElement, ecosystemSlider.track, 'ecosystemSlideAnimation', 20);
                 }
                 
-                if (partnershipsSlider && partnershipsSlider.track.classList.contains('animating')) {
-                    stopCSSAnimation(partnershipsSlider.track);
-                    setTimeout(() => {
-                        startCSSAnimation(partnershipsSlider.track);
-                    }, 500);
+                if (partnershipsSlider) {
+                    enableAutoScroll(partnershipsSlider.wrapper.parentElement, partnershipsSlider.track, 'partnershipsSlideAnimation', 12);
                 }
             }
         }, 500);

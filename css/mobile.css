@@ -1600,16 +1600,6 @@ html.slow-connection img {
   }
 
   /* Автопрокрутка для секций ECOSYSTEM и MEGAMAFIA & MEGAFORGE */
-  .ecosystem-grid.auto-scroll,
-  .partnerships-grid.auto-scroll {
-    overflow-x: hidden !important; /* Скрываем скроллбар во время анимации */
-    transition: all 0.3s ease; /* Плавный переход между режимами */
-  }
-
-  .ecosystem-grid,
-  .partnerships-grid {
-    transition: all 0.3s ease; /* Плавный переход между режимами */
-  }
 
   .ecosystem-slider-wrapper,
   .partnerships-slider-wrapper {
@@ -1650,17 +1640,5 @@ html.slow-connection img {
     }
   }
 
-  .ecosystem-slider-track.animating {
-    animation: ecosystemSlideAnimation 20s linear infinite;
-  }
-
-  .partnerships-slider-track.animating {
-    animation: partnershipsSlideAnimation 12s linear infinite;
-  }
-
-  /* Паузим анимацию при взаимодействии */
-  .ecosystem-slider-track.paused,
-  .partnerships-slider-track.paused {
-    animation-play-state: paused;
-  }
+  /* CSS анимации будут применяться через JavaScript напрямую к style.animation */
 } 
