@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const body = document.body;
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const navList = document.querySelector('.nav-list');
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const nftGrids = document.querySelectorAll('.nft-grid');
     const scrollTopBtn = document.getElementById('scroll-top');
     
     // Проверка на мобильное устройство
@@ -96,38 +94,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Инициализация фильтров коллекции
+    // Инициализация фильтров коллекции отключена - используется collection-slider.js
     function initCollectionFilters() {
-        if (filterButtons.length > 0) {
-            filterButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const filter = this.getAttribute('data-filter');
-                    
-                    // Удаляем активный класс со всех кнопок
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
-                    
-                    // Добавляем активный класс нажатой кнопке
-                    this.classList.add('active');
-                    
-                    // Скрываем все сетки
-                    nftGrids.forEach(grid => {
-                        grid.style.display = 'none';
-                    });
-                    
-                    // Показываем нужную сетку
-                    const targetGrid = document.querySelector(`.nft-grid[data-category="${filter}"]`);
-                    if (targetGrid) {
-                        targetGrid.style.display = 'flex';
-                    }
-                });
-            });
-            
-            // По умолчанию показываем "ВСЕ"
-            const allButton = document.querySelector('.filter-btn[data-filter="all"]');
-            if (allButton) {
-                allButton.click();
-            }
-        }
+        // Функциональность фильтров коллекции полностью обрабатывается в collection-slider.js
+        // Эта функция оставлена пустой во избежание конфликтов
     }
     
     // Инициализация дорожной карты
