@@ -24,9 +24,22 @@
                window.location.pathname.lastIndexOf('/') === window.location.pathname.length - 1;
     }
 
+    // Определяем, открыта ли страница экосистемы (telegram-bots, ai-companions, etc.)
+    function isOnEcosystemPage() {
+        return window.location.pathname.indexOf('telegram-bots.html') !== -1 ||
+               window.location.pathname.indexOf('ai-companions.html') !== -1 ||
+               window.location.pathname.indexOf('zealy-quests.html') !== -1 ||
+               window.location.pathname.indexOf('leaderboard.html') !== -1;
+    }
+
     // Функция переадресации
     function redirectIfNeeded() {
         var isMobile = isMobileDevice();
+        
+        // Не переадресовываем, если пользователь на странице экосистемы
+        if (isOnEcosystemPage()) {
+            return;
+        }
         
         // Если устройство мобильное, но пользователь не на мобильной версии
         if (isMobile && !isOnMobilePage()) {
