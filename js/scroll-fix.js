@@ -110,8 +110,24 @@
         var telegramFeed = document.querySelector('.telegram-feed');
         
         var elements = [aboutSection, manifestoSection, partnershipsSection, communitySection, 
-                       terminalContent, terminalContainer, aboutContent, partnershipsGrid, 
+                       terminalContent, terminalContainer, aboutContent, 
                        communityContent, twitterFeed, telegramFeed];
+        
+        // Специальная обработка для partnerships-grid
+        if (partnershipsGrid) {
+            if (window.innerWidth >= 992) {
+                // Desktop: разрешаем overflow для hover эффектов
+                partnershipsGrid.style.overflow = 'visible';
+                partnershipsGrid.style.overflowX = 'visible';
+                partnershipsGrid.style.overflowY = 'visible';
+            } else {
+                // Mobile: включаем горизонтальную прокрутку
+                partnershipsGrid.style.overflow = '';
+                partnershipsGrid.style.overflowX = '';
+                partnershipsGrid.style.overflowY = '';
+                // Убираем inline стили, чтобы работали CSS правила
+            }
+        }
         
         // Добавляем карточки партнерств
         partnershipCards.forEach(function(card) {
@@ -121,15 +137,18 @@
         elements.forEach(function(el) {
             if (!el) return;
             
-            el.style.overflow = 'hidden';
-            el.style.overflowX = 'hidden';
-            el.style.overflowY = 'hidden';
-            el.style.maxHeight = 'none';
-            el.style.scrollbarWidth = 'none';
-            el.style.msOverflowStyle = 'none';
-            
-            // Добавляем класс для дополнительного контроля
-            el.classList.add('no-scroll-desktop');
+            // Применяем overflow: hidden только на desktop устройствах
+            if (window.innerWidth >= 992) {
+                el.style.overflow = 'hidden';
+                el.style.overflowX = 'hidden';
+                el.style.overflowY = 'hidden';
+                el.style.maxHeight = 'none';
+                el.style.scrollbarWidth = 'none';
+                el.style.msOverflowStyle = 'none';
+                
+                // Добавляем класс для дополнительного контроля
+                el.classList.add('no-scroll-desktop');
+            }
         });
         
         // Специальная обработка для терминала манифеста
@@ -154,6 +173,11 @@
     setTimeout(applyStyles, 100);
     setTimeout(applyStyles, 500);
     setTimeout(applyStyles, 1000);
+    
+    // Обработчик изменения размера окна для корректной работы при повороте устройства
+    window.addEventListener('resize', function() {
+        applyStyles();
+    });
     
     // Хак для манифеста - переопределяем высоту после инициализации страницы
     window.addEventListener('load', function() {

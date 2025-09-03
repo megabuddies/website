@@ -130,7 +130,7 @@
   }
   
   /* Горизонтальный скролл для partnerships */
-  .partnerships-grid {
+  #partnerships .partnerships-grid {
     display: flex !important;
     overflow-x: auto !important;
     overflow-y: hidden !important;
@@ -144,21 +144,21 @@
     scrollbar-color: var(--accent-color) transparent;
   }
   
-  .partnerships-grid::-webkit-scrollbar {
+  #partnerships .partnerships-grid::-webkit-scrollbar {
     height: 4px;
   }
   
-  .partnerships-grid::-webkit-scrollbar-track {
+  #partnerships .partnerships-grid::-webkit-scrollbar-track {
     background: transparent;
   }
   
-  .partnerships-grid::-webkit-scrollbar-thumb {
+  #partnerships .partnerships-grid::-webkit-scrollbar-thumb {
     background-color: var(--accent-color);
     border-radius: 2px;
     opacity: 0.7;
   }
   
-  .partnership-card {
+  #partnerships .partnership-card {
     min-width: 300px !important;
     max-width: 300px !important;
     flex-shrink: 0 !important;
@@ -172,11 +172,11 @@
     position: relative !important;
   }
   
-  .partnership-card:first-child {
+  #partnerships .partnership-card:first-child {
     margin-left: 15px !important;
   }
   
-  .partnership-card:last-child {
+  #partnerships .partnership-card:last-child {
     margin-right: 15px !important;
   }
   
