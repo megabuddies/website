@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html><head><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{background:#000;color:white;padding:20px}
+.ecosystem-grid{display:flex;gap:20px;overflow:hidden;padding:20px 0;border:2px solid #0096ff}
+.ecosystem-card{min-width:250px;height:100px;background:#0096ff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0}
+@keyframes test{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+</style></head><body>
+<h1>Быстрый тест (ширина:  + + px)</h1>
+<section id="ecosystem"><div class="ecosystem-grid">
+<div class="ecosystem-card">Card 1</div><div class="ecosystem-card">Card 2</div><div class="ecosystem-card">Card 3</div>
+</div></section>
+<script>
+setTimeout(()=>{
+const c=document.querySelector("#ecosystem .ecosystem-grid");
+const w=document.createElement("div");w.style.cssText="width:100%;overflow:hidden";
+const t=document.createElement("div");t.style.cssText="display:flex;gap:20px;animation:test 10s linear infinite";
+Array.from(c.children).forEach(card=>{t.appendChild(card);t.appendChild(card.cloneNode(true))});
+c.innerHTML="";w.appendChild(t);c.appendChild(w);
+console.log("Автопрокрутка запущена");
+},1000);
+</script></body></html>
