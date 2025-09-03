@@ -129,7 +129,7 @@
     display: none !important;
   }
   
-  /* Горизонтальный скролл для partnerships */
+  /* Горизонтальный скролл для partnerships с автопрокруткой */
   .partnerships-grid {
     display: flex !important;
     overflow-x: auto !important;
@@ -141,6 +141,9 @@
     scrollbar-width: thin;
     scrollbar-color: var(--accent-color) transparent;
     width: 100%;
+    /* Улучшения для автопрокрутки */
+    scroll-snap-type: none; /* Отключаем snap для плавной автопрокрутки */
+    overscroll-behavior-x: contain; /* Предотвращаем переполнение */
   }
   
   .partnerships-grid::-webkit-scrollbar {
@@ -223,7 +226,7 @@
     position: relative !important;
   }
   
-  /* Горизонтальный скролл для ecosystem */
+  /* Горизонтальный скролл для ecosystem с автопрокруткой */
   .ecosystem-grid {
     display: flex !important;
     overflow-x: auto !important;
@@ -235,6 +238,9 @@
     scrollbar-width: thin;
     scrollbar-color: var(--accent-color) transparent;
     width: 100%;
+    /* Улучшения для автопрокрутки */
+    scroll-snap-type: none; /* Отключаем snap для плавной автопрокрутки */
+    overscroll-behavior-x: contain; /* Предотвращаем переполнение */
   }
   
   .ecosystem-grid::-webkit-scrollbar {
@@ -1597,5 +1603,38 @@ html.slow-connection img {
     max-width: 90%;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  /* Дополнительные стили для автопрокрутки */
+  .partnerships-grid.auto-scrolling,
+  .ecosystem-grid.auto-scrolling {
+    /* Плавность автопрокрутки */
+    transition: scroll-behavior 0.3s ease;
+  }
+
+  /* Индикатор автопрокрутки для пользователей */
+  .partnerships-grid::before,
+  .ecosystem-grid::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+    opacity: 0.3;
+    animation: scrollIndicator 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes scrollIndicator {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+  }
+
+  /* Скрываем индикатор при взаимодействии пользователя */
+  .partnerships-grid.user-interacting::before,
+  .ecosystem-grid.user-interacting::before {
+    opacity: 0;
   }
 } 
