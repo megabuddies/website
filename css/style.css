@@ -695,7 +695,7 @@ body {
 
 /* Мобильное меню */
 .mobile-menu-toggle {
-  display: none;
+  display: none !important;
   flex-direction: column;
   justify-content: space-between;
   width: 30px;
@@ -1857,7 +1857,7 @@ body {
   }
   
   .mobile-menu-toggle {
-    display: flex;
+    display: flex !important;
   }
   
   .hero-title {
