@@ -89,13 +89,35 @@
         display: block !important;
     }
     
-    #partnerships .partnerships-grid,
     #partnerships .partnership-card,
     #ecosystem .ecosystem-grid,
-    #ecosystem .ecosystem-card,
     #community .community-content,
     #community .twitter-feed,
     #community .telegram-feed {
+        height: auto !important;
+        max-height: none !important;
+        overflow: hidden !important;
+    }
+    
+    /* Allow ecosystem cards to extend beyond bounds during hover */
+    #ecosystem .ecosystem-grid {
+        overflow: visible !important;
+    }
+    
+    #ecosystem .ecosystem-card {
+        height: auto !important;
+        max-height: none !important;
+        overflow: hidden !important;
+    }
+    
+    /* Allow partnerships cards to extend beyond bounds during hover */
+    #partnerships .partnerships-grid {
+        overflow: visible !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+    }
+    
+    #partnerships .partnership-card {
         height: auto !important;
         max-height: none !important;
         overflow: hidden !important;
