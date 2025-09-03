@@ -110,11 +110,13 @@
         overflow: hidden !important;
     }
     
-    /* Allow partnerships cards to extend beyond bounds during hover */
-    #partnerships .partnerships-grid {
-        overflow: visible !important;
-        overflow-x: visible !important;
-        overflow-y: visible !important;
+    /* Allow partnerships cards to extend beyond bounds during hover - desktop only */
+    @media (min-width: 992px) {
+        #partnerships .partnerships-grid {
+            overflow: visible !important;
+            overflow-x: visible !important;
+            overflow-y: visible !important;
+        }
     }
     
     #partnerships .partnership-card {

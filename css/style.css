@@ -4123,15 +4123,17 @@ body {
     }
 }
 
-/* Override inline overflow styles for partnerships section */
-#partnerships.section {
-    overflow: visible !important;
-}
+/* Override inline overflow styles for partnerships section - desktop only */
+@media (min-width: 992px) {
+    #partnerships.section {
+        overflow: visible !important;
+    }
 
-#partnerships .partnerships-grid {
-    overflow: visible !important;
-    overflow-x: visible !important;
-    overflow-y: visible !important;
+    #partnerships .partnerships-grid {
+        overflow: visible !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+    }
 }
 
 /* Planned/Disabled ecosystem card styles */
