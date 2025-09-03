@@ -2574,6 +2574,7 @@ body {
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
+    padding-top: 10px; /* Add padding to accommodate hover translateY effect */
 }
 
 .partnership-card {
@@ -4043,6 +4044,17 @@ body {
     .chat-input {
         padding: 10px 15px;
     }
+}
+
+/* Override inline overflow styles for partnerships section */
+#partnerships.section {
+    overflow: visible !important;
+}
+
+#partnerships .partnerships-grid {
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
 }
 
 /* Planned/Disabled ecosystem card styles */
