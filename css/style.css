@@ -2764,14 +2764,17 @@ body {
     position: relative;
 }
 
-.dropdown-toggle::after {
-    content: '▼';
+/* Dropdown arrow using a span element instead of ::after */
+.dropdown-toggle .dropdown-arrow {
     font-size: 10px;
     margin-left: 8px;
     transition: transform 0.3s ease;
+    display: inline-block;
+    position: relative;
+    z-index: 1;
 }
 
-.dropdown:hover .dropdown-toggle::after {
+.dropdown:hover .dropdown-toggle .dropdown-arrow {
     transform: rotate(180deg);
 }
 
@@ -2791,8 +2794,15 @@ body {
     border: 1px solid var(--accent-color);
     border-radius: 2px;
     background: rgba(146, 147, 151, 0.05);
-    overflow: hidden;
+    overflow: visible;
     box-shadow: 0 0 3px rgba(146, 147, 151, 0.2);
+    z-index: 2;
+}
+
+/* Ensure text content is above background effects */
+.dropdown-toggle > * {
+    position: relative;
+    z-index: 3;
 }
 
 .dropdown-toggle::before {
@@ -2808,23 +2818,6 @@ body {
     transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-.dropdown-toggle::after {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    border-radius: 4px;
-    background: linear-gradient(45deg, 
-                               var(--accent-color), 
-                               transparent, 
-                               var(--accent-color));
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: -1;
-}
-
 .dropdown:hover .dropdown-toggle,
 .dropdown-toggle:hover {
     color: var(--accent-color);
@@ -2834,16 +2827,15 @@ body {
     border-color: var(--accent-color);
     box-shadow: 0 0 5px var(--accent-color),
                 0 0 10px rgba(146, 147, 151, 0.3);
+    background: linear-gradient(45deg, 
+                               rgba(112, 135, 227, 0.15), 
+                               rgba(112, 135, 227, 0.08), 
+                               rgba(112, 135, 227, 0.15));
 }
 
 .dropdown:hover .dropdown-toggle::before,
 .dropdown-toggle:hover::before {
     transform: scaleX(1);
-}
-
-.dropdown:hover .dropdown-toggle::after,
-.dropdown-toggle:hover::after {
-    opacity: 0.3;
 }
 
 .dropdown-menu {
@@ -2929,7 +2921,7 @@ body {
         backdrop-filter: none;
     }
     
-    .dropdown-toggle::after {
+    .dropdown-toggle .dropdown-arrow {
         display: none;
     }
     
