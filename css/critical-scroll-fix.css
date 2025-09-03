@@ -6,6 +6,7 @@
     #about,
     #manifesto, 
     #partnerships,
+    #ecosystem,
     #community,
     .section,
     .about-content,
@@ -13,6 +14,8 @@
     .terminal-container,
     .partnerships-grid,
     .partnership-card,
+    .ecosystem-grid,
+    .ecosystem-card,
     .community-content,
     .twitter-feed,
     .telegram-feed {
@@ -30,6 +33,7 @@
     #about::-webkit-scrollbar,
     #manifesto::-webkit-scrollbar,
     #partnerships::-webkit-scrollbar,
+    #ecosystem::-webkit-scrollbar,
     #community::-webkit-scrollbar,
     .section::-webkit-scrollbar,
     .about-content::-webkit-scrollbar,
@@ -37,10 +41,13 @@
     .terminal-container::-webkit-scrollbar,
     .partnerships-grid::-webkit-scrollbar,
     .partnership-card::-webkit-scrollbar,
+    .ecosystem-grid::-webkit-scrollbar,
+    .ecosystem-card::-webkit-scrollbar,
     .community-content::-webkit-scrollbar,
     .twitter-feed::-webkit-scrollbar,
     .telegram-feed::-webkit-scrollbar,
     #partnerships *::-webkit-scrollbar,
+    #ecosystem *::-webkit-scrollbar,
     #community *::-webkit-scrollbar,
     #manifesto *::-webkit-scrollbar {
         width: 0 !important;
