@@ -4043,3 +4043,66 @@ body {
         padding: 10px 15px;
     }
 }
+
+/* Planned/Disabled ecosystem card styles */
+.ecosystem-card.planned {
+    opacity: 0.6;
+    filter: grayscale(0.7);
+}
+
+.ecosystem-card.planned:hover {
+    transform: none;
+    border-color: var(--accent-color);
+    box-shadow: none;
+}
+
+.ecosystem-card.planned::before {
+    display: none;
+}
+
+.ecosystem-card.planned .ecosystem-icon {
+    background: linear-gradient(45deg, #666, #888);
+    opacity: 0.7;
+}
+
+.ecosystem-card.planned h3 {
+    color: #888;
+}
+
+.ecosystem-card.planned p {
+    opacity: 0.6;
+}
+
+.planned-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 25px;
+    background: rgba(100, 100, 100, 0.3);
+    color: rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    font-family: var(--font-display);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid rgba(100, 100, 100, 0.5);
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.planned-btn i {
+    font-size: 14px;
+}
+
+/* Dropdown planned styles */
+.dropdown-link.planned {
+    opacity: 0.5;
+    color: #888 !important;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.dropdown-link.planned:hover {
+    background: none !important;
+    color: #888 !important;
+}
