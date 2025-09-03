@@ -703,6 +703,13 @@ body {
   cursor: pointer;
 }
 
+/* Скрываем бургер меню на десктопе */
+@media (min-width: 993px) {
+  .mobile-menu-toggle {
+    display: none !important;
+  }
+}
+
 .mobile-menu-toggle span {
   display: block;
   width: 100%;
