@@ -371,9 +371,9 @@ html, body {
   overflow-x: hidden;
 }
 
-/* Показываем улучшенную бургер-кнопку в мобильной версии */
+/* Скрываем бургер-кнопку - не должна отображаться */
 .mobile-menu-toggle {
-  display: flex !important;
+  display: none !important;
   position: fixed;
   top: 10px;
   right: 15px;

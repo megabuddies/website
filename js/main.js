@@ -149,8 +149,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Мобильное меню
-    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    // Мобильное меню - отключено
+    // const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const navList = document.querySelector('.nav-list');
     const navItems = document.querySelectorAll('.nav-item');
     const body = document.body;
@@ -165,7 +165,8 @@ document.addEventListener('DOMContentLoaded', function() {
         return window.innerWidth <= 768;
     }
     
-    // Улучшенная обработка мобильного меню
+    // Улучшенная обработка мобильного меню - отключено
+    /*
     mobileMenuToggle.addEventListener('click', () => {
         mobileMenuToggle.classList.toggle('active');
         navList.classList.toggle('active');
@@ -190,6 +191,7 @@ document.addEventListener('DOMContentLoaded', function() {
             body.style.overflow = 'auto';
         }
     });
+    */
     
     // Плавная прокрутка к разделам при нажатии на ссылки навигации
     const navLinks = document.querySelectorAll('.nav-link');

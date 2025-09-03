@@ -693,9 +693,9 @@ body {
   100% { transform: translate(0); }
 }
 
-/* Мобильное меню */
+/* Мобильное меню - полностью скрыто */
 .mobile-menu-toggle {
-  display: none;
+  display: none !important;
   flex-direction: column;
   justify-content: space-between;
   width: 30px;
@@ -1857,7 +1857,7 @@ body {
   }
   
   .mobile-menu-toggle {
-    display: flex;
+    display: none !important;
   }
   
   .hero-title {
@@ -2100,7 +2100,7 @@ body {
   }
   
   .mobile-menu-toggle {
-    display: flex;
+    display: none !important;
     z-index: 1001;
   }
   
