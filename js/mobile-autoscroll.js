@@ -4,8 +4,8 @@ function setupMobileAutoscroll() {
     if (!isMobileEnv) return;
 
     var targets = [
-        { selector: '#ecosystem .ecosystem-grid', speed: 30, duplicate: true },
-        { selector: '#partnerships .partnerships-grid', speed: 20, duplicate: false }
+        { selector: '#ecosystem .ecosystem-grid', speed: 24 },
+        { selector: '#partnerships .partnerships-grid', speed: 18 }
     ];
 
     targets.forEach(function(cfg) {
@@ -15,10 +15,8 @@ function setupMobileAutoscroll() {
         // Force horizontal scrollability even if inline styles tried to disable it
         ensureScrollable(container);
 
-        var hasHeavyEmbeds = !!container.querySelector('.twitter-embed-container, iframe, blockquote.twitter-tweet');
         enableAutoScroll(container, {
-            speedPxPerSecond: cfg.speed,
-            duplicate: cfg.duplicate && !hasHeavyEmbeds
+            speedPxPerSecond: cfg.speed
         });
     });
 
@@ -39,67 +37,42 @@ function setupMobileAutoscroll() {
     }
 
     function enableAutoScroll(container, options) {
-        var speedPxPerSecond = options.speedPxPerSecond || 25;
-        var shouldDuplicate = !!options.duplicate;
+        var speedPxPerSecond = options.speedPxPerSecond || 20;
 
         var rafId = null;
         var lastTs = null;
         var paused = false;
-        var resetThreshold = 0;
+        var userInteracting = false;
+        var edgeRight = 0;
+        var direction = 1; // 1 -> right, -1 -> left
 
-        function computeThreshold() {
-            if (shouldDuplicate) {
-                // When duplicating, loop after the original width
-                var originalWidth = 0;
-                // We stored it in data attribute if already computed
-                var stored = container.getAttribute('data-original-width');
-                if (stored) {
-                    originalWidth = parseFloat(stored) || 0;
-                } else {
-                    originalWidth = container.scrollWidth;
-                    container.setAttribute('data-original-width', String(originalWidth));
-                }
-                resetThreshold = Math.max(1, originalWidth);
-            } else {
-                resetThreshold = Math.max(0, container.scrollWidth - container.clientWidth - 1);
-            }
+        function computeEdges() {
+            var overflow = container.scrollWidth - container.clientWidth;
+            edgeRight = Math.max(0, overflow);
         }
 
-        // Duplicate children once for seamless loop if allowed
-        if (shouldDuplicate) {
-            try {
-                var originalWidthBefore = container.scrollWidth;
-                var fragment = document.createDocumentFragment();
-                Array.prototype.slice.call(container.children).forEach(function(child) {
-                    fragment.appendChild(child.cloneNode(true));
-                });
-                container.appendChild(fragment);
-                container.setAttribute('data-original-width', String(originalWidthBefore));
-            } catch (e) {
-                shouldDuplicate = false;
-            }
+        computeEdges();
+        if (edgeRight <= 1) {
+            return; // nothing to scroll
         }
-
-        computeThreshold();
 
         function step(ts) {
-            if (paused) return;
+            if (paused || userInteracting) return;
             if (lastTs == null) lastTs = ts;
             var dt = Math.min(48, ts - lastTs);
             lastTs = ts;
 
-            var delta = (speedPxPerSecond * dt) / 1000;
-            container.scrollLeft += delta;
+            var delta = (speedPxPerSecond * dt) / 1000 * direction;
+            var next = container.scrollLeft + delta;
 
-            if (shouldDuplicate) {
-                if (container.scrollLeft >= resetThreshold) {
-                    container.scrollLeft -= resetThreshold;
-                }
+            if (next >= edgeRight) {
+                container.scrollLeft = edgeRight;
+                direction = -1;
+            } else if (next <= 0) {
+                container.scrollLeft = 0;
+                direction = 1;
             } else {
-                var threshold = Math.max(0, container.scrollWidth - container.clientWidth - 1);
-                if (container.scrollLeft >= threshold) {
-                    container.scrollLeft = 0;
-                }
+                container.scrollLeft = next;
             }
 
             rafId = requestAnimationFrame(step);
@@ -123,44 +96,50 @@ function setupMobileAutoscroll() {
             play();
         }
 
-        // Pause on user interaction and resume after inactivity
-        var interactionTimeout;
-        function interactionPause() {
-            pause();
-            if (interactionTimeout) clearTimeout(interactionTimeout);
-            interactionTimeout = setTimeout(function() {
+        // Interaction handling: pause immediately on user action, resume after idle
+        var idleTimer;
+        function startIdleTimer() {
+            if (idleTimer) clearTimeout(idleTimer);
+            idleTimer = setTimeout(function() {
+                userInteracting = false;
                 resume();
-            }, 2000);
+            }, 2500);
         }
 
-        container.addEventListener('touchstart', interactionPause, { passive: true });
-        container.addEventListener('touchmove', interactionPause, { passive: true });
-        container.addEventListener('wheel', interactionPause, { passive: true });
-        container.addEventListener('mousedown', interactionPause);
+        function onUserInteract() {
+            userInteracting = true;
+            pause();
+            startIdleTimer();
+        }
+
+        container.addEventListener('touchstart', onUserInteract, { passive: true });
+        container.addEventListener('touchmove', onUserInteract, { passive: true });
+        container.addEventListener('touchend', onUserInteract, { passive: true });
+        container.addEventListener('wheel', onUserInteract, { passive: true });
+        container.addEventListener('mousedown', onUserInteract);
+        container.addEventListener('scroll', onUserInteract, { passive: true });
 
         document.addEventListener('visibilitychange', function() {
             if (document.hidden) {
                 pause();
-            } else {
+            } else if (!userInteracting) {
                 resume();
             }
         });
 
-        // Recompute on resize/orientation
         window.addEventListener('resize', function() {
-            computeThreshold();
+            computeEdges();
         });
         window.addEventListener('orientationchange', function() {
-            setTimeout(computeThreshold, 300);
+            setTimeout(computeEdges, 300);
         });
 
-        // Initial play
         resume();
 
         container._autoScrollControl = {
             pause: pause,
             resume: resume,
-            recalc: computeThreshold,
+            recalc: computeEdges,
             destroy: function() { pause(); }
         };
     }
