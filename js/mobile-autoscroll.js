@@ -1,199 +1,128 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Проверяем, что мы на мобильном устройстве
-    function isMobileDevice() {
-        return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    }
+// Автопрокрутка для мобильной версии - надежная реализация
+(function() {
+    'use strict';
     
-    // Функция для создания плавной непрерывной автопрокрутки
-    function setupSmoothAutoScroll(container, options = {}) {
-        if (!container || !isMobileDevice()) return;
+    // Проверка мобильного устройства
+    if (window.innerWidth > 768) return;
+    
+    console.log('🚀 Инициализация автопрокрутки для мобильных устройств');
+    
+    // Добавляем CSS анимации
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes mobileAutoScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
         
-        const {
-            duration = 40, // продолжительность полного цикла в секундах
-            pauseOnTouch = true // пауза при касании
-        } = options;
+        .mobile-autoscroll-wrapper {
+            width: 100% !important;
+            overflow: hidden !important;
+            position: relative !important;
+        }
         
-        let wrapper = null;
-        let userInteracted = false;
-        let touchTimeout = null;
-        
-        // Подготовка контейнера для CSS анимации
-        function prepareContainer() {
-            // Проверяем, не создана ли уже обертка
-            if (container.querySelector('.auto-scroll-wrapper')) {
-                return container.querySelector('.auto-scroll-wrapper');
+        .mobile-autoscroll-track {
+            display: flex !important;
+            gap: 20px !important;
+            backface-visibility: hidden !important;
+            will-change: transform !important;
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Функция создания автопрокрутки
+    function setupMobileAutoScroll(selector, duration) {
+        function trySetup() {
+            const container = document.querySelector(selector);
+            
+            if (!container) {
+                console.log('❌ Контейнер не найден:', selector);
+                return false;
             }
             
-            // Создаем обертку для анимации
-            const newWrapper = document.createElement('div');
-            newWrapper.className = 'auto-scroll-wrapper';
-            
-            // Перемещаем все карточки в обертку
             const cards = Array.from(container.children);
-            cards.forEach(card => newWrapper.appendChild(card));
             
-            // Дублируем контент для бесшовной прокрутки
+            if (cards.length === 0) {
+                console.log('❌ Нет карточек в:', selector);
+                return false;
+            }
+            
+            console.log('✅ Настройка автопрокрутки:', selector, 'карточек:', cards.length);
+            
+            // Создаем структуру
+            const wrapper = document.createElement('div');
+            wrapper.className = 'mobile-autoscroll-wrapper';
+            
+            const track = document.createElement('div');
+            track.className = 'mobile-autoscroll-track';
+            
+            // Добавляем оригинальные карточки
+            cards.forEach(card => track.appendChild(card));
+            
+            // Добавляем копии
             cards.forEach(card => {
-                const clone = card.cloneNode(true);
-                newWrapper.appendChild(clone);
+                const copy = card.cloneNode(true);
+                track.appendChild(copy);
             });
             
-            // Очищаем контейнер и добавляем обертку
+            // Заменяем содержимое
+            wrapper.appendChild(track);
             container.innerHTML = '';
-            container.appendChild(newWrapper);
+            container.appendChild(wrapper);
             
-            return newWrapper;
-        }
-        
-        // Запуск автопрокрутки
-        function startAutoScroll() {
-            if (!wrapper) {
-                wrapper = prepareContainer();
-            }
+            // Применяем анимацию (как в collection-slider.js)
+            track.style.transform = 'translateX(0)';
+            track.style.animation = 'none';
             
-            // Добавляем класс для CSS стилей
-            container.classList.add('auto-scrolling');
+            // Запускаем анимацию с задержкой
+            setTimeout(() => {
+                track.style.animation = `mobileAutoScroll ${duration}s linear infinite`;
+                console.log('🎬 Анимация запущена для:', selector);
+            }, 100);
             
-            // Применяем CSS анимацию
-            wrapper.style.animation = 'none'; // Сброс
-            wrapper.offsetHeight; // Принудительный reflow
-            wrapper.style.animation = `smoothAutoScroll ${duration}s linear infinite`;
+            // Обработчики касаний
+            let pauseTimer;
             
-            // console.log('Плавная автопрокрутка запущена для:', container.className);
-        }
-        
-        // Остановка автопрокрутки
-        function stopAutoScroll() {
-            if (wrapper) {
-                wrapper.style.animationPlayState = 'paused';
-            }
-        }
-        
-        // Возобновление автопрокрутки
-        function resumeAutoScroll() {
-            if (wrapper) {
-                wrapper.style.animationPlayState = 'running';
-            }
-        }
-        
-        // Обработчики событий для паузы при взаимодействии пользователя
-        if (pauseOnTouch) {
-            // Пауза при касании
-            container.addEventListener('touchstart', (e) => {
-                userInteracted = true;
-                container.classList.add('user-interacting');
-                stopAutoScroll();
-                
-                // Очищаем предыдущий таймаут
-                if (touchTimeout) {
-                    clearTimeout(touchTimeout);
-                }
+            container.addEventListener('touchstart', () => {
+                track.style.animationPlayState = 'paused';
+                clearTimeout(pauseTimer);
             });
             
             container.addEventListener('touchend', () => {
-                // Возобновляем через 3 секунды после окончания касания
-                touchTimeout = setTimeout(() => {
-                    userInteracted = false;
-                    container.classList.remove('user-interacting');
-                    resumeAutoScroll();
-                }, 3000);
+                pauseTimer = setTimeout(() => {
+                    track.style.animationPlayState = 'running';
+                }, 2000);
             });
             
-            // Пауза когда страница не видна
-            document.addEventListener('visibilitychange', () => {
-                if (document.hidden) {
-                    stopAutoScroll();
-                } else if (!userInteracted) {
-                    resumeAutoScroll();
-                }
-            });
+            return true;
         }
         
-        // Запускаем автопрокрутку с задержкой
-        setTimeout(() => {
-            startAutoScroll();
-        }, 2000);
+        // Пробуем настроить с несколькими попытками
+        let attempts = 0;
+        const maxAttempts = 10;
         
-        // Возвращаем методы управления
-        return {
-            start: startAutoScroll,
-            stop: stopAutoScroll,
-            resume: resumeAutoScroll
-        };
-    }
-    
-    // Инициализация автопрокрутки для секции ECOSYSTEM
-    const ecosystemGrid = document.querySelector('#ecosystem .ecosystem-grid');
-    if (ecosystemGrid) {
-        const initEcosystem = () => {
-            if (!isMobileDevice()) {
-                // console.log('Автопрокрутка ECOSYSTEM отключена для десктопа');
+        function attemptSetup() {
+            attempts++;
+            
+            if (trySetup()) {
+                console.log('✅ Автопрокрутка успешно настроена:', selector);
                 return;
             }
             
-            // console.log('Инициализация плавной автопрокрутки ECOSYSTEM для мобильных устройств');
-            const ecosystemAutoScroll = setupSmoothAutoScroll(ecosystemGrid, {
-                duration: 35, // медленная прокрутка для 7 карточек
-                pauseOnTouch: true
-            });
-            
-            window.ecosystemAutoScroll = ecosystemAutoScroll;
-        };
-        
-        // Инициализация с задержкой
-        if (document.readyState === 'complete') {
-            setTimeout(initEcosystem, 1000);
-        } else {
-            window.addEventListener('load', () => setTimeout(initEcosystem, 1000));
+            if (attempts < maxAttempts) {
+                console.log(`🔄 Попытка ${attempts}/${maxAttempts} для:`, selector);
+                setTimeout(attemptSetup, 1000);
+            } else {
+                console.log('❌ Не удалось настроить автопрокрутку для:', selector);
+            }
         }
+        
+        // Начинаем попытки через 2 секунды
+        setTimeout(attemptSetup, 2000);
     }
     
-    // Инициализация автопрокрутки для секции PARTNERSHIPS
-    const partnershipsGrid = document.querySelector('#partnerships .partnerships-grid');
-    if (partnershipsGrid) {
-        const initPartnerships = () => {
-            if (!isMobileDevice()) {
-                // console.log('Автопрокрутка PARTNERSHIPS отключена для десктопа');
-                return;
-            }
-            
-            // console.log('Инициализация плавной автопрокрутки PARTNERSHIPS для мобильных устройств');
-            const partnershipsAutoScroll = setupSmoothAutoScroll(partnershipsGrid, {
-                duration: 25, // быстрее для 2 карточек
-                pauseOnTouch: true
-            });
-            
-            window.partnershipsAutoScroll = partnershipsAutoScroll;
-        };
-        
-        // Инициализация с задержкой
-        if (document.readyState === 'complete') {
-            setTimeout(initPartnerships, 1500);
-        } else {
-            window.addEventListener('load', () => setTimeout(initPartnerships, 1500));
-        }
-    }
+    // Запуск для обеих секций
+    setupMobileAutoScroll('#ecosystem .ecosystem-grid', 35);
+    setupMobileAutoScroll('#partnerships .partnerships-grid', 25);
     
-    // Обработка изменения размера окна
-    window.addEventListener('resize', () => {
-        // Останавливаем автопрокрутку на десктопе
-        if (!isMobileDevice()) {
-            if (window.ecosystemAutoScroll) {
-                window.ecosystemAutoScroll.stop();
-            }
-            if (window.partnershipsAutoScroll) {
-                window.partnershipsAutoScroll.stop();
-            }
-        } else {
-            // Перезапускаем на мобильных устройствах
-            setTimeout(() => {
-                if (window.ecosystemAutoScroll) {
-                    window.ecosystemAutoScroll.start();
-                }
-                if (window.partnershipsAutoScroll) {
-                    window.partnershipsAutoScroll.start();
-                }
-            }, 500);
-        }
-    });
-});
+})();

@@ -146,6 +146,12 @@
     overscroll-behavior-x: contain; /* Предотвращаем переполнение */
   }
   
+  /* Переопределяем для автопрокрутки */
+  .partnerships-grid.has-autoscroll,
+  .ecosystem-grid.has-autoscroll {
+    overflow: hidden !important;
+  }
+  
   .partnerships-grid::-webkit-scrollbar {
     height: 4px;
   }
@@ -241,6 +247,11 @@
     /* Улучшения для автопрокрутки */
     scroll-snap-type: none; /* Отключаем snap для плавной автопрокрутки */
     overscroll-behavior-x: contain; /* Предотвращаем переполнение */
+  }
+  
+  /* Переопределяем для автопрокрутки */
+  .ecosystem-grid.has-autoscroll {
+    overflow: hidden !important;
   }
   
   .ecosystem-grid::-webkit-scrollbar {
@@ -1633,7 +1644,7 @@ html.slow-connection img {
   }
 
   /* Плавная автопрокрутка - основная анимация */
-  @keyframes smoothAutoScroll {
+  @keyframes autoScrollMove {
     0% {
       transform: translateX(0);
     }
@@ -1642,21 +1653,19 @@ html.slow-connection img {
     }
   }
 
-  /* Стили для обертки автопрокрутки */
-  .auto-scroll-wrapper {
+  /* Стили для автопрокрутки */
+  .autoscroll-wrapper {
+    width: 100% !important;
+    overflow: hidden !important;
+    position: relative !important;
+  }
+  
+  .autoscroll-track {
     display: flex !important;
     gap: 20px !important;
     will-change: transform;
     backface-visibility: hidden;
-    /* Отключаем прокрутку на обертке */
     overflow: visible !important;
-    /* Убираем возможность взаимодействия с дублированными элементами */
-    pointer-events: none;
-  }
-  
-  /* Возвращаем взаимодействие для оригинальных карточек */
-  .auto-scroll-wrapper > *:nth-child(-n+10) {
-    pointer-events: auto;
   }
 
   /* Обновляем стили контейнеров для поддержки CSS анимации */
@@ -1672,8 +1681,8 @@ html.slow-connection img {
   }
 
   /* Пауза анимации при взаимодействии */
-  .partnerships-grid.user-interacting .auto-scroll-wrapper,
-  .ecosystem-grid.user-interacting .auto-scroll-wrapper {
+  .partnerships-grid.user-interacting .auto-scroll-track,
+  .ecosystem-grid.user-interacting .auto-scroll-track {
     animation-play-state: paused !important;
   }
 } 
