@@ -14,7 +14,6 @@
     .terminal-container,
     .partnerships-grid,
     .partnership-card,
-    .ecosystem-grid,
     .ecosystem-card,
     .community-content,
     .twitter-feed,
@@ -27,6 +26,13 @@
         height: auto !important;
         max-height: none !important;
         min-height: auto !important;
+    }
+    
+    /* Allow ecosystem grid to have visible overflow for hover effects */
+    .ecosystem-grid {
+        overflow: visible !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
     }
 
     /* Скрытие webkit скроллбаров */
@@ -41,7 +47,6 @@
     .terminal-container::-webkit-scrollbar,
     .partnerships-grid::-webkit-scrollbar,
     .partnership-card::-webkit-scrollbar,
-    .ecosystem-grid::-webkit-scrollbar,
     .ecosystem-card::-webkit-scrollbar,
     .community-content::-webkit-scrollbar,
     .twitter-feed::-webkit-scrollbar,

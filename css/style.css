@@ -2434,6 +2434,7 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 30px;
     margin-top: 40px;
+    padding-top: 10px; /* Add padding to accommodate hover translateY effect */
 }
 
 .ecosystem-card {

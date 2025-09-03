@@ -92,10 +92,20 @@
     #partnerships .partnerships-grid,
     #partnerships .partnership-card,
     #ecosystem .ecosystem-grid,
-    #ecosystem .ecosystem-card,
     #community .community-content,
     #community .twitter-feed,
     #community .telegram-feed {
+        height: auto !important;
+        max-height: none !important;
+        overflow: hidden !important;
+    }
+    
+    /* Allow ecosystem cards to extend beyond bounds during hover */
+    #ecosystem .ecosystem-grid {
+        overflow: visible !important;
+    }
+    
+    #ecosystem .ecosystem-card {
         height: auto !important;
         max-height: none !important;
         overflow: hidden !important;
