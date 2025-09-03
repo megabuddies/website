@@ -3233,10 +3233,6 @@ body {
 .twitter-embed-container {
     display: flex;
     justify-content: center;
-    padding: 20px;
-    background: rgba(18, 18, 24, 0.3);
-    border: 1px solid rgba(112, 135, 227, 0.2);
-    border-radius: 10px;
     margin: 0 auto;
     max-width: 600px;
 }
@@ -3257,7 +3253,6 @@ body {
     }
     
     .twitter-embed-container {
-        padding: 15px;
         max-width: 100%;
     }
 }
