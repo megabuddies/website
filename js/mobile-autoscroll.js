@@ -1,9 +1,8 @@
-document.addEventListener('DOMContentLoaded', function() {
+function setupMobileAutoscroll() {
     // Enable only on mobile screens or explicitly mobile HTML
-    var isMobile = window.matchMedia('(max-width: 992px)').matches || document.documentElement.classList.contains('mobile');
-    if (!isMobile) return;
+    var isMobileEnv = window.matchMedia('(max-width: 992px)').matches || document.documentElement.classList.contains('mobile');
+    if (!isMobileEnv) return;
 
-    // Targets: Ecosystem and Partnerships sections
     var targets = [
         { selector: '#ecosystem .ecosystem-grid', speed: 30, duplicate: true },
         { selector: '#partnerships .partnerships-grid', speed: 20, duplicate: false }
@@ -12,13 +11,32 @@ document.addEventListener('DOMContentLoaded', function() {
     targets.forEach(function(cfg) {
         var container = document.querySelector(cfg.selector);
         if (!container) return;
-        // Avoid duplicating heavy embedded content (e.g., Twitter iframes)
+
+        // Force horizontal scrollability even if inline styles tried to disable it
+        ensureScrollable(container);
+
         var hasHeavyEmbeds = !!container.querySelector('.twitter-embed-container, iframe, blockquote.twitter-tweet');
         enableAutoScroll(container, {
             speedPxPerSecond: cfg.speed,
             duplicate: cfg.duplicate && !hasHeavyEmbeds
         });
     });
+
+    function ensureScrollable(container) {
+        try {
+            container.style.setProperty('display', 'flex', 'important');
+            container.style.setProperty('flex-wrap', 'nowrap', 'important');
+            container.style.setProperty('overflow-x', 'auto', 'important');
+            container.style.setProperty('overflow-y', 'hidden', 'important');
+            container.style.setProperty('-webkit-overflow-scrolling', 'touch', 'important');
+            container.style.setProperty('scroll-behavior', 'auto', 'important');
+            container.style.setProperty('scroll-snap-type', 'none', 'important');
+            // Ensure children do not wrap and keep fixed min-width
+            Array.prototype.slice.call(container.children).forEach(function(child) {
+                child.style.setProperty('flex', '0 0 auto', 'important');
+            });
+        } catch (e) {}
+    }
 
     function enableAutoScroll(container, options) {
         var speedPxPerSecond = options.speedPxPerSecond || 25;
@@ -29,42 +47,45 @@ document.addEventListener('DOMContentLoaded', function() {
         var paused = false;
         var resetThreshold = 0;
 
-        // If we duplicate, capture the original scrollWidth first, then duplicate children once
+        function computeThreshold() {
+            if (shouldDuplicate) {
+                // When duplicating, loop after the original width
+                var originalWidth = 0;
+                // We stored it in data attribute if already computed
+                var stored = container.getAttribute('data-original-width');
+                if (stored) {
+                    originalWidth = parseFloat(stored) || 0;
+                } else {
+                    originalWidth = container.scrollWidth;
+                    container.setAttribute('data-original-width', String(originalWidth));
+                }
+                resetThreshold = Math.max(1, originalWidth);
+            } else {
+                resetThreshold = Math.max(0, container.scrollWidth - container.clientWidth - 1);
+            }
+        }
+
+        // Duplicate children once for seamless loop if allowed
         if (shouldDuplicate) {
-            // Measure original content width before duplication
-            var originalWidth = container.scrollWidth;
             try {
+                var originalWidthBefore = container.scrollWidth;
                 var fragment = document.createDocumentFragment();
                 Array.prototype.slice.call(container.children).forEach(function(child) {
                     fragment.appendChild(child.cloneNode(true));
                 });
                 container.appendChild(fragment);
-                resetThreshold = originalWidth; // loop after one original-width
+                container.setAttribute('data-original-width', String(originalWidthBefore));
             } catch (e) {
-                // Fallback: if cloning fails for any reason, don't duplicate
                 shouldDuplicate = false;
             }
         }
 
-        if (!shouldDuplicate) {
-            resetThreshold = Math.max(0, container.scrollWidth - container.clientWidth - 1);
-        }
-
-        var io = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) {
-                    resume();
-                } else {
-                    pause();
-                }
-            });
-        }, { threshold: 0.1 });
-        io.observe(container);
+        computeThreshold();
 
         function step(ts) {
             if (paused) return;
             if (lastTs == null) lastTs = ts;
-            var dt = Math.min(64, ts - lastTs); // cap to avoid large jumps
+            var dt = Math.min(48, ts - lastTs);
             lastTs = ts;
 
             var delta = (speedPxPerSecond * dt) / 1000;
@@ -72,13 +93,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (shouldDuplicate) {
                 if (container.scrollLeft >= resetThreshold) {
-                    // seamless wrap by subtracting one original-width
                     container.scrollLeft -= resetThreshold;
                 }
             } else {
                 var threshold = Math.max(0, container.scrollWidth - container.clientWidth - 1);
                 if (container.scrollLeft >= threshold) {
-                    // reset to start when we reach the end
                     container.scrollLeft = 0;
                 }
             }
@@ -100,7 +119,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function resume() {
-            if (!paused) return;
             paused = false;
             play();
         }
@@ -128,15 +146,29 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Initial play
-        play();
+        // Recompute on resize/orientation
+        window.addEventListener('resize', function() {
+            computeThreshold();
+        });
+        window.addEventListener('orientationchange', function() {
+            setTimeout(computeThreshold, 300);
+        });
 
-        // Expose simple controls on element for potential future use
+        // Initial play
+        resume();
+
         container._autoScrollControl = {
             pause: pause,
             resume: resume,
-            destroy: function() { pause(); io.disconnect(); }
+            recalc: computeThreshold,
+            destroy: function() { pause(); }
         };
     }
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupMobileAutoscroll);
+} else {
+    setupMobileAutoscroll();
+}
 
