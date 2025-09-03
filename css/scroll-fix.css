@@ -11,6 +11,8 @@
     html:not(.mobile) .terminal-container,
     html:not(.mobile) .partnerships-grid,
     html:not(.mobile) .partnership-card,
+    html:not(.mobile) .ecosystem-grid,
+    html:not(.mobile) .ecosystem-card,
     html:not(.mobile) .community-content,
     html:not(.mobile) .twitter-feed,
     html:not(.mobile) .telegram-feed {
@@ -37,6 +39,8 @@
     html:not(.mobile) .terminal-container::-webkit-scrollbar,
     html:not(.mobile) .partnerships-grid::-webkit-scrollbar,
     html:not(.mobile) .partnership-card::-webkit-scrollbar,
+    html:not(.mobile) .ecosystem-grid::-webkit-scrollbar,
+    html:not(.mobile) .ecosystem-card::-webkit-scrollbar,
     html:not(.mobile) .community-content::-webkit-scrollbar,
     html:not(.mobile) .twitter-feed::-webkit-scrollbar,
     html:not(.mobile) .telegram-feed::-webkit-scrollbar {
@@ -76,8 +80,9 @@
         height: 0 !important;
     }
     
-    /* Дополнительные правила для секций partnerships и community */
+    /* Дополнительные правила для секций partnerships, ecosystem и community */
     #partnerships,
+    #ecosystem,
     #community {
         height: auto !important;
         min-height: auto !important;
@@ -86,6 +91,8 @@
     
     #partnerships .partnerships-grid,
     #partnerships .partnership-card,
+    #ecosystem .ecosystem-grid,
+    #ecosystem .ecosystem-card,
     #community .community-content,
     #community .twitter-feed,
     #community .telegram-feed {
@@ -94,8 +101,9 @@
         overflow: hidden !important;
     }
     
-    /* Скрываем скроллбары полностью в partnerships и community */
+    /* Скрываем скроллбары полностью в partnerships, ecosystem и community */
     #partnerships *::-webkit-scrollbar,
+    #ecosystem *::-webkit-scrollbar,
     #community *::-webkit-scrollbar {
         display: none !important;
         width: 0 !important;
@@ -109,9 +117,12 @@
     html:not(.mobile) #about,
     html:not(.mobile) #manifesto,
     html:not(.mobile) #partnerships,
+    html:not(.mobile) #ecosystem,
     html:not(.mobile) #community,
     html:not(.mobile) .partnerships-grid,
     html:not(.mobile) .partnership-card,
+    html:not(.mobile) .ecosystem-grid,
+    html:not(.mobile) .ecosystem-card,
     html:not(.mobile) .community-content,
     html:not(.mobile) .twitter-feed,
     html:not(.mobile) .telegram-feed {
