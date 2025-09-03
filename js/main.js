@@ -1,6 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Получаем элемент прелоадера
+    // Проверяем, является ли это мобильной версией
+    const isMobilePage = window.location.pathname.includes('mobile.html');
+    
+    // Получаем элемент прелоадера (может отсутствовать на мобильной версии)
     const preloader = document.getElementById('preloader');
+    
+    // Если нет прелоадера (мобильная версия), разрешаем скролл и выходим
+    if (!preloader) {
+        document.body.style.overflow = 'auto';
+        return;
+    }
+    
     const progressBar = document.querySelector('#preloader .progress');
     const terminalText = document.querySelector('#preloader .terminal-text');
     const pixelOverlay = document.querySelector('#preloader .pixel-overlay');
@@ -104,9 +114,12 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
     document.head.appendChild(style);
     
+    // Запрещаем скролл пока прелоадер активен
+    document.body.style.overflow = 'hidden';
+    
     // Скрываем прелоадер после начальной загрузки и показываем контент
     window.addEventListener('load', function() {
-        // Добавляем задержку перед скрытием прелоадера для завершения загрузки модели (увеличена на 5 секунд)
+        // Добавляем задержку перед скрытием прелоадера для завершения загрузки модели (3.5 секунд максимум)
         setTimeout(() => {
             // Плавно завершаем загрузку от текущего значения до 100% шагами по 5%
             const completeInterval = setInterval(() => {
@@ -127,11 +140,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     }, 400);
                 }
             }, 150);
-        }, 3000);
+        }, 2000);
     });
-    
-    // Запрещаем скролл пока прелоадер активен
-    document.body.style.overflow = 'hidden';
     
     // Добавляем сканирующую линию для эффекта старого монитора
     const scanLine = document.createElement('div');
