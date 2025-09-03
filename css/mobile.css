@@ -371,23 +371,32 @@ html, body {
   overflow-x: hidden;
 }
 
-/* Показываем улучшенную бургер-кнопку в мобильной версии */
-.mobile-menu-toggle {
-  display: flex !important;
-  position: fixed;
-  top: 10px;
-  right: 15px;
-  z-index: 1002;
-  width: 44px;
-  height: 44px;
-  background: rgba(18, 18, 24, 0.9);
-  border: 2px solid var(--accent-color);
-  border-radius: 8px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 0 15px var(--accent-glow-color);
-  cursor: pointer;
-  transition: all 0.3s ease;
+/* Показываем улучшенную бургер-кнопку только в мобильной версии */
+@media (max-width: 992px) {
+  .mobile-menu-toggle {
+    display: flex !important;
+    position: fixed;
+    top: 10px;
+    right: 15px;
+    z-index: 1002;
+    width: 44px;
+    height: 44px;
+    background: rgba(18, 18, 24, 0.9);
+    border: 2px solid var(--accent-color);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 0 15px var(--accent-glow-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+}
+
+/* Принудительно скрываем на десктопе */
+@media (min-width: 993px) {
+  .mobile-menu-toggle {
+    display: none !important;
+  }
 }
 
 /* Базовые мобильные настройки для всех экранов меньше 992px */
