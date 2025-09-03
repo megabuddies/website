@@ -1632,9 +1632,48 @@ html.slow-connection img {
     50% { opacity: 0.7; }
   }
 
+  /* Плавная автопрокрутка - основная анимация */
+  @keyframes smoothAutoScroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%); /* Прокручиваем на половину ширины (так как контент дублирован) */
+    }
+  }
+
+  /* Стили для обертки автопрокрутки */
+  .auto-scroll-wrapper {
+    display: flex !important;
+    gap: 20px !important;
+    will-change: transform;
+    backface-visibility: hidden;
+    /* Отключаем прокрутку на обертке */
+    overflow: visible !important;
+    /* Убираем возможность взаимодействия с дублированными элементами */
+    pointer-events: none;
+  }
+  
+  /* Возвращаем взаимодействие для оригинальных карточек */
+  .auto-scroll-wrapper > *:nth-child(-n+10) {
+    pointer-events: auto;
+  }
+
+  /* Обновляем стили контейнеров для поддержки CSS анимации */
+  .partnerships-grid.auto-scrolling,
+  .ecosystem-grid.auto-scrolling {
+    overflow: hidden !important; /* Скрываем переполнение для плавной анимации */
+  }
+
   /* Скрываем индикатор при взаимодействии пользователя */
   .partnerships-grid.user-interacting::before,
   .ecosystem-grid.user-interacting::before {
     opacity: 0;
+  }
+
+  /* Пауза анимации при взаимодействии */
+  .partnerships-grid.user-interacting .auto-scroll-wrapper,
+  .ecosystem-grid.user-interacting .auto-scroll-wrapper {
+    animation-play-state: paused !important;
   }
 } 
