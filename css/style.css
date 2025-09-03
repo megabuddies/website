@@ -2778,6 +2778,21 @@ body {
 /* Ensure dropdown-toggle inherits nav-link hover effects */
 .dropdown-toggle {
     position: relative;
+    /* Наследуем все базовые стили от nav-link */
+    font-family: var(--font-mono);
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 5px 8px;
+    transition: all 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+    letter-spacing: 1px;
+    display: inline-block;
+    text-shadow: 0 0 5px rgba(146, 147, 151, 0.5);
+    border: 1px solid var(--accent-color);
+    border-radius: 2px;
+    background: rgba(146, 147, 151, 0.05);
+    overflow: hidden;
+    box-shadow: 0 0 3px rgba(146, 147, 151, 0.2);
 }
 
 .dropdown-toggle::before {
@@ -2791,6 +2806,23 @@ body {
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.dropdown-toggle::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 4px;
+    background: linear-gradient(45deg, 
+                               var(--accent-color), 
+                               transparent, 
+                               var(--accent-color));
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
 }
 
 .dropdown:hover .dropdown-toggle,
@@ -2807,6 +2839,11 @@ body {
 .dropdown:hover .dropdown-toggle::before,
 .dropdown-toggle:hover::before {
     transform: scaleX(1);
+}
+
+.dropdown:hover .dropdown-toggle::after,
+.dropdown-toggle:hover::after {
+    opacity: 0.3;
 }
 
 .dropdown-menu {
