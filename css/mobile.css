@@ -679,6 +679,7 @@ html, body {
     overflow: hidden;
     position: relative;
     padding-top: 0;
+    padding-bottom: 5rem;
     min-height: auto;
     display: flex;
     flex-direction: column;
