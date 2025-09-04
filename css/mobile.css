@@ -679,6 +679,7 @@ html, body {
     overflow: hidden;
     position: relative;
     padding-top: 0;
+    padding-bottom: 5rem;
     min-height: auto;
     display: flex;
     flex-direction: column;
@@ -808,8 +809,8 @@ html, body {
   
   /* Исправление для скролл-индикатора (прокрутите вниз) */
   .scroll-indicator {
-    position: absolute;
-    bottom: 10px;
+    position: fixed;
+    bottom: 1rem;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
@@ -818,6 +819,7 @@ html, body {
     align-items: center;
     justify-content: center;
     width: auto;
+    z-index: 1000;
     margin: 0 auto;
   }
   
@@ -1452,7 +1454,7 @@ html, body {
   
   /* Размещение скролл-индикатора */
   .scroll-indicator {
-    bottom: 10px;
+    bottom: 1rem;
   }
 }
 
