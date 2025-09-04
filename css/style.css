@@ -727,7 +727,10 @@ body {
   justify-content: center;
   overflow: hidden;
   padding-top: 60px;
+  padding-bottom: clamp(3rem, 10vh, 6rem);
   max-height: 100vh;
+  /* Обеспечиваем место для кнопки скролла */
+  box-sizing: border-box;
 }
 
 .hero-content {
@@ -738,6 +741,11 @@ body {
   margin: 0 auto;
   padding: 2rem;
   margin-top: 15vh;
+  /* Обеспечиваем место для кнопки скролла */
+  margin-bottom: clamp(1rem, 5vh, 3rem);
+  /* Предотвращаем переполнение */
+  max-height: calc(100vh - 10rem);
+  overflow: visible;
 }
 
 .hero-title-container {
@@ -896,7 +904,7 @@ body {
 
 .scroll-indicator {
   position: absolute;
-  bottom: 7rem;
+  bottom: clamp(2rem, 8vh, 5rem);
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -907,6 +915,8 @@ body {
   opacity: 0.9;
   transition: all 0.3s ease;
   cursor: pointer;
+  /* Предотвращаем наложение на контент */
+  margin-top: auto;
 }
 
 .scroll-indicator:hover {
@@ -965,6 +975,37 @@ body {
   }
 }
 
+/* Стили для высоких экранов */
+@media (min-height: 900px) {
+  .scroll-indicator {
+    bottom: clamp(3rem, 8vh, 6rem);
+  }
+  
+  .hero {
+    padding-bottom: clamp(4rem, 12vh, 8rem);
+  }
+  
+  .hero-content {
+    margin-bottom: clamp(2rem, 8vh, 4rem);
+  }
+}
+
+/* Дополнительные стили для предотвращения наложения */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .scroll-indicator {
+    bottom: clamp(1.5rem, 6vh, 4rem);
+  }
+  
+  .hero {
+    padding-bottom: clamp(2rem, 8vh, 5rem);
+  }
+  
+  .hero-content {
+    margin-bottom: clamp(1.5rem, 6vh, 3.5rem);
+    padding: 1.5rem;
+  }
+}
+
 @media (max-width: 768px) {
   .hero-title-container {
     flex-direction: column;
@@ -996,11 +1037,16 @@ body {
     bottom: auto;
     left: auto;
     transform: none;
-    margin: 4vh auto 0;
+    margin: clamp(2rem, 6vh, 4rem) auto 0;
+    /* Увеличиваем отступ от контента */
   }
   
   .scroll-indicator:hover {
     transform: translateY(-5px);
+  }
+  
+  .hero {
+    padding-bottom: clamp(1rem, 4vh, 3rem);
   }
 }
 
@@ -1011,6 +1057,11 @@ body {
   
   .hero-description {
     font-size: 0.9rem;
+  }
+  
+  .scroll-indicator {
+    margin: clamp(1.5rem, 5vh, 3rem) auto 0 !important;
+    /* Дополнительное пространство для маленьких экранов */
   }
 }
 
