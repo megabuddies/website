@@ -895,15 +895,15 @@ body {
 }
 
 .scroll-indicator {
-  position: absolute;
-  bottom: 7rem;
+  position: fixed;
+  bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: clamp(0.5rem, 1vh, 1rem);
-  z-index: 3;
+  z-index: 1000;
   opacity: 0.9;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -992,15 +992,16 @@ body {
   }
   
   .scroll-indicator {
-    position: relative;
-    bottom: auto;
-    left: auto;
-    transform: none;
-    margin: 4vh auto 0;
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    z-index: 1000;
   }
   
   .scroll-indicator:hover {
-    transform: translateY(-5px);
+    transform: translateX(-50%) translateY(-5px);
   }
 }
 
