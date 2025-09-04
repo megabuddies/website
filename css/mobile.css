@@ -684,6 +684,9 @@ html, body {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    /* Обеспечиваем место для кнопки скролла */
+    padding-bottom: clamp(60px, 8vh, 100px);
+    box-sizing: border-box;
   }
   
   .hero-content {
@@ -697,7 +700,10 @@ html, body {
     flex-direction: column;
     align-items: center;
     padding-top: 10px;
-    padding-bottom: 40px;
+    padding-bottom: 20px;
+    /* Обеспечиваем место для кнопки скролла */
+    margin-bottom: clamp(20px, 6vh, 50px);
+    flex: 1;
   }
   
   /* Исправление кнопок в герое */
@@ -809,7 +815,7 @@ html, body {
   /* Исправление для скролл-индикатора (прокрутите вниз) */
   .scroll-indicator {
     position: absolute;
-    bottom: 10px;
+    bottom: clamp(15px, 4vh, 30px);
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
@@ -819,6 +825,8 @@ html, body {
     justify-content: center;
     width: auto;
     margin: 0 auto;
+    /* Обеспечиваем достаточное расстояние от контента */
+    z-index: 10;
   }
   
   .scroll-text {
@@ -1302,6 +1310,20 @@ html, body {
     margin-top: 20px;
   }
   
+  /* Дополнительные отступы для кнопки скролла на очень маленьких экранах */
+  .scroll-indicator {
+    bottom: clamp(20px, 5vh, 35px) !important;
+    margin: clamp(25px, 6vh, 40px) auto 0 !important;
+  }
+  
+  .hero {
+    padding-bottom: clamp(70px, 10vh, 110px) !important;
+  }
+  
+  .hero-content {
+    margin-bottom: clamp(25px, 7vh, 55px) !important;
+  }
+  
   /* Уменьшаем размеры компонентов */
   .terminal-container {
     margin: 0 -10px;
@@ -1452,7 +1474,8 @@ html, body {
   
   /* Размещение скролл-индикатора */
   .scroll-indicator {
-    bottom: 10px;
+    bottom: clamp(20px, 5vh, 40px);
+    /* Увеличиваем отступ в ландшафтном режиме */
   }
 }
 
