@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ease: 'back.out(1.7)',
         clearProps: 'all'
     }, '-=0.3')
-    .from('.twitter-preview', {
+    .from('.twitter-embed-container', {
         opacity: 0,
         y: 15,
         duration: 0.4,

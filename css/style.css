@@ -2587,7 +2587,7 @@ body {
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
-    padding-top: 10px; /* Add padding to accommodate hover translateY effect */
+    /* Убираем padding-top чтобы карточки начинались от верха */
 }
 
 .partnership-card {
@@ -2720,12 +2720,16 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    /* Увеличиваем ширину для desktop */
+    width: 100%;
 }
 
 .twitter-embed-container .twitter-tweet {
     margin: 0 auto !important;
     max-width: 100% !important;
     min-height: 200px;
+    /* Принудительно устанавливаем ширину для desktop */
+    width: 100% !important;
 }
 
 /* Responsive design for partnerships */
@@ -2762,6 +2766,29 @@ body {
     .partnership-card {
         padding: 20px;
         min-height: 450px;
+    }
+}
+
+/* Стили для desktop версии - делаем Twitter встраивания шире */
+@media (min-width: 992px) {
+    .twitter-embed-container {
+        width: 100%;
+        max-width: none;
+        padding: 0;
+    }
+    
+    .twitter-embed-container .twitter-tweet {
+        width: 100% !important;
+        max-width: none !important;
+        /* Увеличиваем минимальную ширину для desktop */
+        min-width: 400px !important;
+    }
+    
+    /* Убеждаемся что iframe внутри Twitter встраивания тоже широкий */
+    .twitter-embed-container .twitter-tweet iframe {
+        width: 100% !important;
+        max-width: none !important;
+        min-width: 400px !important;
     }
 }
 
