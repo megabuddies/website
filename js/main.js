@@ -117,30 +117,37 @@ document.addEventListener('DOMContentLoaded', function() {
     // Запрещаем скролл пока прелоадер активен
     document.body.style.overflow = 'hidden';
     
-    // Скрываем прелоадер после начальной загрузки и показываем контент
+    // Принудительно скрываем прелоудер через 3 секунды
+    const forceHidePreloader = () => {
+        // Плавно завершаем загрузку до 100%
+        const completeInterval = setInterval(() => {
+            if (loadingProgress < 100) {
+                updateProgress(Math.ceil(loadingProgress / 5) * 5 + 5);
+            } else {
+                clearInterval(completeInterval);
+                
+                // Отображаем финальное сообщение
+                terminalText.innerHTML = '<span class="terminal-prompt" style="color: #5f5;">&gt;</span> <span style="color: #5f5;">Loading complete. Launching system...</span>';
+                
+                setTimeout(() => {
+                    preloader.classList.remove('active');
+                    preloader.classList.add('hidden');
+                    
+                    // Разрешаем скролл после скрытия прелоадера
+                    document.body.style.overflow = 'auto';
+                }, 400);
+            }
+        }, 150);
+    };
+
+    // Устанавливаем принудительный таймаут в 3 секунды
+    const forceTimeout = setTimeout(forceHidePreloader, 3000);
+
+    // Скрываем прелоудер после загрузки страницы, но не позднее 3 секунд
     window.addEventListener('load', function() {
-        // Добавляем задержку перед скрытием прелоадера для завершения загрузки модели (3.5 секунд максимум)
-        setTimeout(() => {
-            // Плавно завершаем загрузку от текущего значения до 100% шагами по 5%
-            const completeInterval = setInterval(() => {
-                if (loadingProgress < 100) {
-                    updateProgress(Math.ceil(loadingProgress / 5) * 5 + 5);
-                } else {
-                    clearInterval(completeInterval);
-                    
-                    // Отображаем финальное сообщение
-                    terminalText.innerHTML = '<span class="terminal-prompt" style="color: #5f5;">&gt;</span> <span style="color: #5f5;">Loading complete. Launching system...</span>';
-                    
-                    setTimeout(() => {
-                        preloader.classList.remove('active');
-                        preloader.classList.add('hidden');
-                        
-                        // Разрешаем скролл после скрытия прелоадера
-                        document.body.style.overflow = 'auto';
-                    }, 400);
-                }
-            }, 150);
-        }, 2000);
+        // Если страница загрузилась раньше 3 секунд, скрываем прелоудер
+        clearTimeout(forceTimeout);
+        forceHidePreloader();
     });
     
     // Добавляем сканирующую линию для эффекта старого монитора

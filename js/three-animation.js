@@ -7,6 +7,8 @@ let clock = new THREE.Clock();
 let leftEarPivot, rightEarPivot;
 let resourcesLoaded = false;
 let animationPaused = false;
+let lastFrameTime = 0;
+let targetFPS = 60; // Целевой FPS
 
 function initThree() {
     // Сразу инициализируем фон для быстрого отображения
@@ -16,7 +18,19 @@ function initThree() {
         console.error("Ошибка инициализации фона Three.js:", error);
     }
     
-    // Загружаем 3D модель с задержкой, чтобы приоритет был у загрузки страницы
+    // Проверяем производительность устройства
+    const isLowEndDevice = () => {
+        return navigator.hardwareConcurrency <= 2 || 
+               navigator.deviceMemory <= 2 || 
+               /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    };
+
+    // Устанавливаем адаптивный FPS
+    targetFPS = isLowEndDevice() ? 30 : 60; // 30 FPS для слабых устройств, 60 FPS для мощных
+
+    // Загружаем 3D модель с увеличенной задержкой для лучшей производительности
+    const modelLoadDelay = isLowEndDevice() ? 3000 : 2000; // 3 сек для слабых устройств, 2 сек для мощных
+    
     setTimeout(() => {
         // Создаем менеджер загрузки для трекинга загрузки ресурсов
         const loadingManager = new THREE.LoadingManager();
@@ -52,7 +66,7 @@ function initThree() {
         setTimeout(() => {
             loadingManager.itemEnd("model");
         }, 100);
-    }, 1500);  // Задержка в 1.5 секунды для приоритизации загрузки страницы
+    }, modelLoadDelay);  // Адаптивная задержка в зависимости от производительности устройства
     
     // Запускаем анимацию сразу (для фона)
     animate();
@@ -77,14 +91,22 @@ function initFullscreenBackground() {
     backgroundCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     backgroundCamera.position.z = 5;
     
-    // Рендерер для фона на весь экран
+    // Проверяем производительность для настройки качества рендеринга
+    const isLowEndDevice = navigator.hardwareConcurrency <= 2 || 
+                          navigator.deviceMemory <= 2 || 
+                          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    // Рендерер для фона на весь экран с адаптивными настройками
     backgroundRenderer = new THREE.WebGLRenderer({ 
         alpha: true, 
-        antialias: true,
-        powerPreference: "high-performance"
+        antialias: !isLowEndDevice, // Отключаем антиалиасинг на слабых устройствах
+        powerPreference: "high-performance",
+        stencil: false, // Отключаем стенсил буфер для экономии памяти
+        depth: false    // Отключаем depth буфер для фона
     });
     backgroundRenderer.setSize(window.innerWidth, window.innerHeight);
-    backgroundRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // Ограничиваем pixel ratio для слабых устройств
+    backgroundRenderer.setPixelRatio(Math.min(window.devicePixelRatio, isLowEndDevice ? 1 : 2));
     
     // Находим элемент заднего фона или создаем новый
     let backgroundElement = document.getElementById('background-animation');
@@ -131,14 +153,21 @@ function initModelInContainer() {
     camera = new THREE.PerspectiveCamera(75, containerWidth / containerHeight, 0.1, 1000);
     camera.position.z = 7; // Увеличиваем расстояние, чтобы модель была визуально меньше
     
-    // Рендерер для 3D модели в контейнере
+    // Проверяем производительность для настройки качества рендеринга
+    const isLowEndDevice = navigator.hardwareConcurrency <= 2 || 
+                          navigator.deviceMemory <= 2 || 
+                          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    // Рендерер для 3D модели в контейнере с адаптивными настройками
     renderer = new THREE.WebGLRenderer({ 
         alpha: true, 
-        antialias: true,
-        powerPreference: "high-performance"
+        antialias: !isLowEndDevice, // Отключаем антиалиасинг на слабых устройствах
+        powerPreference: "high-performance",
+        stencil: false // Отключаем стенсил буфер для экономии памяти
     });
     renderer.setSize(containerWidth, containerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // Ограничиваем pixel ratio для слабых устройств
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isLowEndDevice ? 1 : 2));
     
     // Очищаем существующее содержимое
     while (heroAnimationContainer.firstChild) {
@@ -413,6 +442,16 @@ function onWindowResize() {
 }
 
 function animate() {
+    // Ограничиваем FPS для лучшей производительности
+    const now = performance.now();
+    const frameInterval = 1000 / targetFPS;
+    
+    if (now - lastFrameTime < frameInterval) {
+        requestAnimationFrame(animate);
+        return;
+    }
+    
+    lastFrameTime = now;
     requestAnimationFrame(animate);
     
     // Если анимация приостановлена, пропускаем отрисовку для экономии ресурсов
@@ -497,12 +536,16 @@ function animate() {
     }
 }
 
-// Инициализация Three.js при загрузке страницы
-document.addEventListener('DOMContentLoaded', function() {
-    try {
-        initThree();
-    } catch (error) {
-        console.error("Ошибка инициализации Three.js:", error);
-        createFallbackAnimation();
-    }
+// Оптимизированная инициализация Three.js
+// Ждем полной загрузки страницы, а не только DOM
+window.addEventListener('load', function() {
+    // Дополнительная задержка для завершения всех процессов загрузки
+    setTimeout(() => {
+        try {
+            initThree();
+        } catch (error) {
+            console.error("Ошибка инициализации Three.js:", error);
+            createFallbackAnimation();
+        }
+    }, 500); // Задержка в 500мс после полной загрузки страницы
 });
