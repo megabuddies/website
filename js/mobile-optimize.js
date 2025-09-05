@@ -130,20 +130,32 @@ document.addEventListener('DOMContentLoaded', function() {
             scrollIndicator.style.pointerEvents = 'none';
             scrollIndicator.style.cursor = 'default';
             
-            // Обработчик скролла для скрытия кнопки scroll-down на мобильных
+            // Обработчик скролла для скрытия кнопки scroll-down и pixel revolution text на мобильных
             function handleMobileScrollIndicatorVisibility() {
                 const heroSection = document.getElementById('home');
-                if (heroSection && scrollIndicator) {
+                const pixelRevolutionText = document.querySelector('.pixel-revolution-text');
+                
+                if (heroSection && (scrollIndicator || pixelRevolutionText)) {
                     const heroHeight = heroSection.offsetHeight;
                     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                     
-                    // Скрываем кнопку, если прокрутили больше чем на 70% от высоты героической секции
+                    // Скрываем элементы, если прокрутили больше чем на 70% от высоты героической секции
                     const hideThreshold = heroHeight * 0.7;
                     
                     if (scrollTop > hideThreshold) {
-                        scrollIndicator.style.opacity = '0';
+                        if (scrollIndicator) {
+                            scrollIndicator.style.opacity = '0';
+                        }
+                        if (pixelRevolutionText) {
+                            pixelRevolutionText.style.opacity = '0';
+                        }
                     } else {
-                        scrollIndicator.style.opacity = '0.9';
+                        if (scrollIndicator) {
+                            scrollIndicator.style.opacity = '0.9';
+                        }
+                        if (pixelRevolutionText) {
+                            pixelRevolutionText.style.opacity = '0.9';
+                        }
                     }
                 }
             }

@@ -346,22 +346,36 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Обработчик скролла для скрытия кнопки scroll-down
+        // Обработчик скролла для скрытия кнопки scroll-down и pixel revolution text
         function handleScrollIndicatorVisibility() {
             const heroSection = document.getElementById('home');
-            if (heroSection && scrollIndicator) {
+            const pixelRevolutionText = document.querySelector('.pixel-revolution-text');
+            
+            if (heroSection && (scrollIndicator || pixelRevolutionText)) {
                 const heroHeight = heroSection.offsetHeight;
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                 
-                // Скрываем кнопку, если прокрутили больше чем на 80% от высоты героической секции
+                // Скрываем элементы, если прокрутили больше чем на 80% от высоты героической секции
                 const hideThreshold = heroHeight * 0.8;
                 
                 if (scrollTop > hideThreshold) {
-                    scrollIndicator.style.opacity = '0';
-                    scrollIndicator.style.pointerEvents = 'none';
+                    if (scrollIndicator) {
+                        scrollIndicator.style.opacity = '0';
+                        scrollIndicator.style.pointerEvents = 'none';
+                    }
+                    if (pixelRevolutionText) {
+                        pixelRevolutionText.style.opacity = '0';
+                        pixelRevolutionText.style.pointerEvents = 'none';
+                    }
                 } else {
-                    scrollIndicator.style.opacity = '0.9';
-                    scrollIndicator.style.pointerEvents = 'auto';
+                    if (scrollIndicator) {
+                        scrollIndicator.style.opacity = '0.9';
+                        scrollIndicator.style.pointerEvents = 'auto';
+                    }
+                    if (pixelRevolutionText) {
+                        pixelRevolutionText.style.opacity = '0.9';
+                        pixelRevolutionText.style.pointerEvents = 'auto';
+                    }
                 }
             }
         }
