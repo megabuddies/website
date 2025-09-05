@@ -10,6 +10,19 @@ ErrorDocument 404 /404.html
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
+    
+    # Убираем расширение .html из URL
+    # Перенаправляем с .html на чистый URL
+    RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
+    RewriteRule ^ /%1? [NC,L,R=301]
+    
+    # Позволяем доступ к файлам без расширения
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME}.html -f
+    RewriteRule ^([^.]+)$ $1.html [L]
+    
+    # Существующее правило для изображений
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^images/(.*)$ /images/placeholder.php?name=$1 [L]
