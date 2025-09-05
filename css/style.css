@@ -948,6 +948,44 @@ body {
   animation-delay: 0.3s;
 }
 
+/* Pixel Revolution Text Styles */
+.pixel-revolution-text {
+  position: absolute;
+  bottom: 6rem; /* Расположить выше кнопки scroll-down (которая на bottom: 2rem) */
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  max-width: 800px;
+  padding: 0 2rem;
+  z-index: 1000;
+  opacity: 0.9;
+  transition: all 0.3s ease, opacity 0.5s ease;
+}
+
+.pixel-title {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2.5vw, 1.6rem);
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--secondary-color);
+  text-shadow: 0 0 15px rgba(18, 18, 24, 0.9), 
+               0 0 10px rgba(19, 145, 255, 0.8),
+               0 0 20px rgba(19, 145, 255, 0.5),
+               0 0 30px rgba(19, 145, 255, 0.3);
+}
+
+.pixel-description {
+  font-family: var(--font-mono);
+  font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+  line-height: 1.6;
+  color: var(--text-color);
+  margin: 0;
+  text-shadow: 0 0 10px rgba(18, 18, 24, 0.9),
+               0 0 5px rgba(223, 217, 217, 0.5);
+  opacity: 0.85;
+}
+
 @keyframes arrowPulse {
   0% {
     opacity: 0.4;
@@ -1052,6 +1090,24 @@ body {
   .scroll-indicator:hover {
     transform: translateX(-50%) translateY(-5px);
   }
+  
+  /* Pixel Revolution Text - Mobile */
+  .pixel-revolution-text {
+    bottom: 5rem; /* Над кнопкой scroll-down которая на bottom: 1rem */
+    max-width: 90%;
+    padding: 0 1rem;
+  }
+  
+  .pixel-title {
+    font-size: clamp(1rem, 4vw, 1.5rem);
+    letter-spacing: 2px;
+    margin-bottom: 0.8rem;
+  }
+  
+  .pixel-description {
+    font-size: clamp(0.7rem, 2vw, 0.9rem);
+    line-height: 1.5;
+  }
 }
 
 @media (max-width: 576px) {
@@ -1061,6 +1117,24 @@ body {
   
   .hero-description {
     font-size: 0.9rem;
+  }
+  
+  /* Pixel Revolution Text - Small Mobile */
+  .pixel-revolution-text {
+    bottom: 5rem; /* Над кнопкой scroll-down которая на bottom: 1rem */
+    max-width: 95%;
+    padding: 0 0.5rem;
+  }
+  
+  .pixel-title {
+    font-size: clamp(0.9rem, 5vw, 1.2rem);
+    letter-spacing: 1px;
+    margin-bottom: 0.6rem;
+  }
+  
+  .pixel-description {
+    font-size: clamp(0.6rem, 3vw, 0.8rem);
+    line-height: 1.4;
   }
 }
 
@@ -4230,6 +4304,30 @@ body {
     border: 1px solid rgba(100, 100, 100, 0.5);
     cursor: not-allowed;
     pointer-events: none;
+}
+
+/* Large screens optimization */
+@media (min-width: 1200px) {
+  .pixel-revolution-text {
+    bottom: 10rem; /* Над кнопкой scroll-down которая на bottom: 2rem */
+    max-width: 1000px;
+    padding: 0 3rem;
+  }
+  
+  .pixel-title {
+    font-size: clamp(1.8rem, 2.5vw, 2.5rem);
+    letter-spacing: 4px;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 0 20px rgba(18, 18, 24, 0.9), 
+                 0 0 15px rgba(19, 145, 255, 0.9),
+                 0 0 30px rgba(19, 145, 255, 0.6),
+                 0 0 45px rgba(19, 145, 255, 0.4);
+  }
+  
+  .pixel-description {
+    font-size: clamp(1rem, 1.2vw, 1.2rem);
+    line-height: 1.7;
+  }
 }
 
 .planned-btn i {
