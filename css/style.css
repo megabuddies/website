@@ -993,9 +993,9 @@ body {
   font-family: var(--font-mono);
   font-size: clamp(1rem, 1.8vw, 1.4rem);
   font-weight: bold;
-  color: var(--accent-color);
+  color: var(--secondary-color);
   letter-spacing: 2px;
-  text-shadow: 0 0 12px rgba(146, 147, 151, 0.8);
+  text-shadow: 0 0 12px rgba(19, 145, 255, 0.8);
   margin: 0;
   line-height: 1.2;
 }
