@@ -782,7 +782,7 @@ html, body {
   /* Pixel Revolution Text - Mobile Version */
   .pixel-revolution-text {
     position: absolute;
-    bottom: 12rem; /* Расположить выше мобильной кнопки scroll-down */
+    bottom: 14rem; /* Расположить выше мобильной кнопки scroll-down (которая на bottom: 8rem) */
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
