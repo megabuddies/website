@@ -204,7 +204,7 @@
   }
   
   .partnership-description {
-    margin: 10px 0 5px 0 !important;
+    margin: 10px 0 3px 0 !important;
     font-size: 14px !important;
     line-height: 1.4 !important;
     color: var(--text-color) !important;
@@ -213,8 +213,8 @@
   
   /* Исправление позиции Twitter embed */
   .twitter-embed-container {
-    margin-top: 5px !important;
-    padding-top: 3px !important;
+    margin-top: 3px !important;
+    padding-top: 0px !important;
     width: 100% !important;
     overflow: visible !important;
     position: relative !important;
