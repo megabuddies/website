@@ -405,6 +405,11 @@ html, body {
     scroll-padding-top: var(--total-mobile-top-offset);
   }
 
+  /* Скрываем desktop-only элементы на мобильных */
+  .desktop-only {
+    display: none !important;
+  }
+
   /* Улучшенная адаптация изображений */
   img {
     max-width: 100%;

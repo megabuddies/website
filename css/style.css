@@ -966,6 +966,56 @@ body {
   }
 }
 
+/* Revolution text section - positioned above scroll indicator */
+.revolution-text-section {
+  position: absolute;
+  bottom: 8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.8rem, 1.5vh, 1.2rem);
+  z-index: 999;
+  opacity: 0.9;
+  transition: all 0.3s ease, opacity 0.5s ease;
+  text-align: center;
+  max-width: 700px;
+  padding: 0 2rem;
+}
+
+.revolution-text-section:hover {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-3px);
+}
+
+.revolution-title {
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 1.8vw, 1.4rem);
+  font-weight: bold;
+  color: var(--accent-color);
+  letter-spacing: 2px;
+  text-shadow: 0 0 12px rgba(146, 147, 151, 0.8);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.revolution-description {
+  font-family: var(--font-mono);
+  font-size: clamp(0.8rem, 1.2vw, 1rem);
+  color: rgba(146, 147, 151, 0.9);
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 8px rgba(146, 147, 151, 0.5);
+  margin: 0;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* Desktop only visibility */
+.desktop-only {
+  display: block;
+}
+
 /* Bottom text indicator - positioned between scroll button and 3D model */
 .bottom-text-indicator {
   position: absolute;
