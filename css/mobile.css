@@ -1333,6 +1333,14 @@ html, body {
   /* Еще более компактный UI */
   .hero-title-container {
     margin-bottom: 15px;
+    padding: 0 1rem;
+    max-width: calc(100vw - 2rem);
+  }
+  
+  .hero-title.mega,
+  .hero-title.buddies {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
   }
   
   .hero-buttons {
@@ -1666,7 +1674,16 @@ html.slow-connection img {
   .hero-title {
     font-size: 36px;
     margin-bottom: 0;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
     line-height: 0.9;
+  }
+  
+  /* Убираем любые боковые отступы на мобильных */
+  .hero-title.mega,
+  .hero-title.buddies {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
   }
 
   .hero-subtitle {

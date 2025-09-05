@@ -657,18 +657,24 @@ document.addEventListener('DOMContentLoaded', function() {
             // Вычисляем целевое расстояние (max + небольшой запас)
             const targetDistance = Math.max(distanceToMegaEnd, distanceToBuddiesStart) + 20;
             
-            // Корректируем отступы для достижения равных расстояний
-            if (distanceToMegaEnd < targetDistance) {
-                const newMegaMargin = currentMegaMargin + (targetDistance - distanceToMegaEnd);
-                megaTitle.style.marginRight = `${newMegaMargin}px`;
-                console.log('Новый отступ MEGA:', newMegaMargin);
-            }
-            
-            if (distanceToBuddiesStart < targetDistance) {
-                const newBuddiesMargin = currentBuddiesMargin + (targetDistance - distanceToBuddiesStart);
-                buddiesTitle.style.marginLeft = `${newBuddiesMargin}px`;
-                console.log('Новый отступ BUDDIES:', newBuddiesMargin);
-            }
+                    // Корректируем отступы для достижения равных расстояний с проверкой на переполнение
+        if (distanceToMegaEnd < targetDistance) {
+            const newMegaMargin = currentMegaMargin + (targetDistance - distanceToMegaEnd);
+            // Проверяем, что заголовок не выйдет за границы экрана
+            const maxAllowedMargin = Math.max(0, (viewportWidth - megaRect.width) / 2 - 50);
+            const safeMargin = Math.min(newMegaMargin, maxAllowedMargin);
+            megaTitle.style.marginRight = `${safeMargin}px`;
+            console.log('Новый отступ MEGA:', safeMargin, '(ограничен до', maxAllowedMargin, ')');
+        }
+        
+        if (distanceToBuddiesStart < targetDistance) {
+            const newBuddiesMargin = currentBuddiesMargin + (targetDistance - distanceToBuddiesStart);
+            // Проверяем, что заголовок не выйдет за границы экрана
+            const maxAllowedMargin = Math.max(0, (viewportWidth - buddiesRect.width) / 2 - 50);
+            const safeMargin = Math.min(newBuddiesMargin, maxAllowedMargin);
+            buddiesTitle.style.marginLeft = `${safeMargin}px`;
+            console.log('Новый отступ BUDDIES:', safeMargin, '(ограничен до', maxAllowedMargin, ')');
+        }
             
             // Проверяем результаты корректировки
             setTimeout(() => {
