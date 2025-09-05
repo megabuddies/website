@@ -69,15 +69,13 @@
 /* Обновляем стили для заголовка прелоадера */
 .preloader-title {
     font-family: var(--font-display);
-    font-size: clamp(18px, 5vw, 24px);
+    font-size: clamp(16px, 4vw, 22px);
     color: var(--accent-color);
-    letter-spacing: clamp(1px, 0.5vw, 2px);
+    letter-spacing: clamp(0.5px, 0.3vw, 1.5px);
     text-align: center;
     margin: 0;
     max-width: 100%;
-    overflow: hidden;
     white-space: nowrap;
-    text-overflow: ellipsis;
 }
 
 /* Основной контейнер прелоадера с CRT эффектом */
@@ -781,10 +779,10 @@ body {
 
 .hero-title {
   font-family: var(--font-display);
-  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-size: clamp(2rem, 5vw, 4rem);
   margin: 0;
   text-transform: uppercase;
-  letter-spacing: 5px;
+  letter-spacing: clamp(2px, 0.5vw, 5px);
   color: var(--accent-color);
   text-shadow: 0 0 15px rgba(18, 18, 24, 0.9), 
                0 0 10px rgba(146, 147, 151, 0.8),
@@ -2166,12 +2164,10 @@ body {
   }
   
   .logo {
-    font-size: clamp(16px, 4vw, 20px);
+    font-size: clamp(14px, 3.5vw, 20px);
     z-index: 1001;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: calc(100vw - 100px); /* Оставляем место для гамбургер-меню */
+    max-width: calc(100vw - 80px); /* Увеличиваем доступное пространство */
   }
   
   .logo img {
@@ -2398,8 +2394,8 @@ body {
   }
   
   .logo {
-    font-size: clamp(14px, 5vw, 18px);
-    max-width: calc(100vw - 80px);
+    font-size: clamp(12px, 3vw, 16px);
+    max-width: calc(100vw - 60px);
   }
   
   .logo img {
@@ -4332,4 +4328,33 @@ body {
 .dropdown-link.planned:hover {
     background: none !important;
     color: #888 !important;
+}
+
+/* Extra small devices (320px and smaller) */
+@media (max-width: 320px) {
+  .logo {
+    font-size: clamp(10px, 4vw, 14px) !important;
+    max-width: calc(100vw - 50px) !important;
+    letter-spacing: 1px;
+  }
+  
+  .logo img {
+    max-width: 30px !important;
+    margin-right: 3px !important;
+  }
+  
+  .preloader-title {
+    font-size: clamp(14px, 5vw, 18px) !important;
+    letter-spacing: clamp(0px, 0.2vw, 1px) !important;
+  }
+  
+  .preloader-content {
+    width: clamp(200px, 95vw, 240px) !important;
+    padding: clamp(8px, 2vw, 12px) !important;
+  }
+  
+  .hero-title {
+    font-size: clamp(20px, 7vw, 28px) !important;
+    letter-spacing: clamp(1px, 0.3vw, 2px) !important;
+  }
 }
