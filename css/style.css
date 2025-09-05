@@ -2758,9 +2758,14 @@ body {
     color: var(--text-color);
     opacity: 0.9;
     line-height: 1.6;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     font-size: 14px;
-    flex-grow: 1;
+    flex-grow: 0;
+}
+
+.partnership-card .twitter-embed-container {
+    margin: 5px 0 0 0;
+    flex-grow: 0;
 }
 
 
@@ -2809,11 +2814,11 @@ body {
 }
 
 .twitter-embed-container {
-    margin: 20px 0;
-    flex-grow: 1;
+    margin: 10px 0;
+    flex-grow: 0;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .twitter-embed-container .twitter-tweet {
@@ -3330,12 +3335,7 @@ body {
     letter-spacing: 1px;
 }
 
-.twitter-embed-container {
-    display: flex;
-    justify-content: center;
-    margin: 0 auto;
-    max-width: 600px;
-}
+/* Duplicate .twitter-embed-container definition removed - using the one above with proper spacing */
 
 .twitter-embed-container .twitter-tweet {
     margin: 0 !important;
