@@ -966,6 +966,50 @@ body {
   }
 }
 
+/* Bottom text indicator - positioned between scroll button and 3D model */
+.bottom-text-indicator {
+  position: absolute;
+  bottom: 8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.5rem, 1vh, 1rem);
+  z-index: 1000;
+  opacity: 0.9;
+  transition: all 0.3s ease, opacity 0.5s ease;
+  text-align: center;
+  max-width: 600px;
+  padding: 0 2rem;
+}
+
+.bottom-text-indicator:hover {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-5px);
+}
+
+.bottom-text-title {
+  font-family: var(--font-mono);
+  font-size: clamp(0.7rem, 1vw, 1rem);
+  font-weight: bold;
+  color: var(--accent-color);
+  letter-spacing: 1px;
+  text-shadow: 0 0 8px rgba(146, 147, 151, 0.7);
+  margin-bottom: 10px;
+}
+
+.bottom-text-description {
+  font-family: var(--font-mono);
+  font-size: clamp(0.6rem, 0.8vw, 0.9rem);
+  color: var(--secondary-color);
+  letter-spacing: 1px;
+  opacity: 0.85;
+  line-height: 1.4;
+  text-shadow: 0 0 8px rgba(146, 147, 151, 0.5);
+  margin: 0;
+}
+
 @media (max-width: 768px) {
   .hero {
     padding-bottom: 6rem;
