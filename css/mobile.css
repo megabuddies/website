@@ -1683,4 +1683,201 @@ html.slow-connection img {
     margin-left: auto;
     margin-right: auto;
   }
+
+  /* Стили для автопрокрутки карточек в секциях ECOSYSTEM и PARTNERSHIPS */
+  
+  /* Добавляем стили для мобильной версии ecosystem-grid */
+  .ecosystem-grid {
+    display: flex !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    gap: 20px !important;
+    padding: 10px 0 20px 0 !important;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) transparent;
+    width: 100%;
+  }
+  
+  .ecosystem-grid::-webkit-scrollbar {
+    height: 4px;
+  }
+  
+  .ecosystem-grid::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .ecosystem-grid::-webkit-scrollbar-thumb {
+    background-color: var(--accent-color);
+    border-radius: 2px;
+    opacity: 0.7;
+  }
+  
+  .ecosystem-card {
+    min-width: 300px !important;
+    max-width: 300px !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    padding: 20px !important;
+    height: auto !important;
+    min-height: auto !important;
+    position: relative !important;
+  }
+  
+  /* Обертка для слайдера ecosystem */
+  .ecosystem-slider-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    height: auto;
+    margin-top: 20px;
+  }
+  
+  .ecosystem-slider-track {
+    display: flex;
+    gap: 20px;
+    backface-visibility: hidden;
+    height: 100%;
+    animation: ecosystemSlideAnimation 30s linear infinite;
+  }
+  
+  /* Дублируем карточки для бесконечной прокрутки */
+  .ecosystem-card.duplicate {
+    opacity: 1;
+  }
+  
+  /* Обертка для слайдера partnerships */
+  .partnerships-slider-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    height: auto;
+    margin-top: 20px;
+  }
+  
+  .partnerships-slider-track {
+    display: flex;
+    gap: 20px;
+    backface-visibility: hidden;
+    height: 100%;
+    animation: partnershipsSlideAnimation 25s linear infinite;
+  }
+  
+  /* Дублируем карточки для бесконечной прокрутки */
+  .partnership-card.duplicate {
+    opacity: 1;
+  }
+  
+  /* Анимации для автопрокрутки */
+  @keyframes ecosystemSlideAnimation {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  
+  @keyframes partnershipsSlideAnimation {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  
+  /* Стили для карточек в автопрокрутке */
+  .ecosystem-slider-track .ecosystem-card {
+    min-width: 300px !important;
+    width: 300px !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    padding: 20px !important;
+    height: auto !important;
+  }
+  
+  .partnerships-slider-track .partnership-card {
+    min-width: 300px !important;
+    width: 300px !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    padding: 20px !important;
+    height: auto !important;
+  }
+  
+  /* Обертка для слайдера collection */
+  .collection-mobile-slider-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    height: auto;
+    margin-top: 20px;
+  }
+  
+  .collection-mobile-slider-track {
+    display: flex;
+    gap: 20px;
+    backface-visibility: hidden;
+    height: 100%;
+    animation: collectionSlideAnimation 40s linear infinite;
+  }
+  
+  /* Анимация для коллекции */
+  @keyframes collectionSlideAnimation {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  
+  /* Стили для карточек коллекции в автопрокрутке */
+  .collection-mobile-slider-track .nft-card {
+    min-width: 250px !important;
+    width: 250px !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    padding: 15px !important;
+    height: auto !important;
+  }
+  
+  /* Останавливаем анимацию при потере фокуса страницы */
+  .ecosystem-slider-track.paused,
+  .partnerships-slider-track.paused,
+  .collection-mobile-slider-track.paused {
+    animation-play-state: paused;
+  }
+  
+  /* Медиа-запросы для разных размеров экрана */
+  @media (max-width: 480px) {
+    .ecosystem-slider-track .ecosystem-card,
+    .partnerships-slider-track .partnership-card {
+      min-width: 280px !important;
+      width: 280px !important;
+    }
+    
+    .collection-mobile-slider-track .nft-card {
+      min-width: 220px !important;
+      width: 220px !important;
+    }
+  }
+  
+  @media (max-width: 360px) {
+    .ecosystem-slider-track .ecosystem-card,
+    .partnerships-slider-track .partnership-card {
+      min-width: 260px !important;
+      width: 260px !important;
+    }
+    
+    .collection-mobile-slider-track .nft-card {
+      min-width: 200px !important;
+      width: 200px !important;
+    }
+  }
 } 
