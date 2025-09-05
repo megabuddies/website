@@ -1,0 +1,43 @@
+# Enable mod_rewrite
+Options +FollowSymLinks
+RewriteEngine On
+
+# Set custom error documents
+ErrorDocument 404 /404.html
+
+# CORS headers
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    Header set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept"
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    # Remove trailing slash from directories (optional)
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)/$ /$1 [R=301,L]
+    
+    # Remove .html extension from URLs (redirect)
+    RewriteCond %{THE_REQUEST} \s/+([^.]+)\.html[\s?] [NC]
+    RewriteRule ^ /%1? [R=301,L]
+    
+    # Add .html extension internally for extensionless URLs
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME}.html -f
+    RewriteRule ^([^./]+)/?$ $1.html [L]
+    
+    # Specific rules for ecosystem pages
+    RewriteCond %{REQUEST_URI} ^/ai-companions/?$
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^.*$ /ai-companions.html [L]
+    
+    RewriteCond %{REQUEST_URI} ^/telegram-bots/?$
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^.*$ /telegram-bots.html [L]
+    
+    # Images placeholder rule (keep existing)
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^images/(.*)$ /images/placeholder.php?name=$1 [L]
+</IfModule>

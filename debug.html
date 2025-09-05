@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug - Mega Buddies</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+    </style>
+</head>
+<body>
+    <h1>Debug Page - Mega Buddies</h1>
+    <p>This page is for debugging URL rewriting issues.</p>
+    
+    <h2>Test Links:</h2>
+    <ul>
+        <li><a href="/ai-companions">AI Companions (clean URL)</a></li>
+        <li><a href="/ai-companions.html">AI Companions (.html)</a></li>
+        <li><a href="/telegram-bots">Telegram Bots (clean URL)</a></li>
+        <li><a href="/telegram-bots.html">Telegram Bots (.html)</a></li>
+        <li><a href="/test-rewrite">Test Rewrite (clean URL)</a></li>
+        <li><a href="/test-rewrite.html">Test Rewrite (.html)</a></li>
+    </ul>
+    
+    <h2>Direct File Checks:</h2>
+    <div class="info">
+        <p>If you can access this page, the server is working.</p>
+        <p>Current URL: <span id="current-url"></span></p>
+        <p>User Agent: <span id="user-agent"></span></p>
+    </div>
+    
+    <h2>Instructions:</h2>
+    <ol>
+        <li>Try clicking the links above</li>
+        <li>Check if .html versions work</li>
+        <li>Check if clean URLs work</li>
+        <li>If clean URLs don't work, mod_rewrite may not be enabled</li>
+    </ol>
+    
+    <script>
+        document.getElementById('current-url').textContent = window.location.href;
+        document.getElementById('user-agent').textContent = navigator.userAgent;
+    </script>
+</body>
+</html>
