@@ -1,0 +1,195 @@
+/* Исправления для проблем со скроллом и добавление индикаторов */
+
+/* Исправляем проблемы с overflow в разделах ECOSYSTEM и PARTNERSHIPS */
+@media screen and (min-width: 992px) {
+    /* Разрешаем нормальное отображение контента в разделах */
+    #ecosystem,
+    #partnerships {
+        overflow: visible !important;
+        overflow-y: visible !important;
+        height: auto !important;
+        max-height: none !important;
+        min-height: auto !important;
+    }
+    
+    /* Разрешаем скролл для сеток */
+    .ecosystem-grid,
+    .partnerships-grid {
+        overflow: visible !important;
+        overflow-y: visible !important;
+        height: auto !important;
+        max-height: none !important;
+        min-height: auto !important;
+    }
+    
+    /* Исправляем карточки */
+    .ecosystem-card,
+    .partnership-card {
+        overflow: visible !important;
+        overflow-y: visible !important;
+        height: auto !important;
+        max-height: none !important;
+        min-height: auto !important;
+    }
+}
+
+/* Стили для индикаторов скролла в разделах */
+.section-scroll-indicator {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-top: 30px;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.section-scroll-indicator:hover {
+    opacity: 1;
+    transform: translateY(-3px);
+}
+
+.section-scroll-text {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--accent-color);
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px rgba(146, 147, 151, 0.7);
+    margin-bottom: 3px;
+}
+
+.section-scroll-arrows {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-scroll-arrow {
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-right: 2px solid var(--accent-color);
+    border-bottom: 2px solid var(--accent-color);
+    transform: rotate(45deg);
+    animation: sectionArrowPulse 2s infinite;
+    outline: 1px solid rgba(19, 145, 255, 0.3);
+    box-shadow: 0 0 5px var(--accent-glow-color);
+}
+
+.section-scroll-arrow:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.section-scroll-arrow:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes sectionArrowPulse {
+    0% {
+        opacity: 0.3;
+        transform: rotate(45deg) scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: rotate(45deg) scale(1);
+    }
+    100% {
+        opacity: 0.3;
+        transform: rotate(45deg) scale(0.8);
+    }
+}
+
+/* Горизонтальные индикаторы для широких разделов */
+.horizontal-scroll-indicator {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.horizontal-scroll-indicator:hover {
+    opacity: 1;
+}
+
+.horizontal-scroll-text {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--accent-color);
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px rgba(146, 147, 151, 0.7);
+}
+
+.horizontal-scroll-arrows {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.horizontal-scroll-arrow {
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid var(--accent-color);
+    border-bottom: 2px solid var(--accent-color);
+    transform: rotate(-45deg);
+    animation: horizontalArrowPulse 2s infinite;
+    outline: 1px solid rgba(19, 145, 255, 0.3);
+    box-shadow: 0 0 5px var(--accent-glow-color);
+}
+
+.horizontal-scroll-arrow:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.horizontal-scroll-arrow:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes horizontalArrowPulse {
+    0% {
+        opacity: 0.3;
+        transform: rotate(-45deg) scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: rotate(-45deg) scale(1);
+    }
+    100% {
+        opacity: 0.3;
+        transform: rotate(-45deg) scale(0.8);
+    }
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 991px) {
+    .section-scroll-indicator,
+    .horizontal-scroll-indicator {
+        display: none;
+    }
+}
+
+/* Дополнительные исправления для мобильных устройств */
+@media (max-width: 991px) {
+    #ecosystem,
+    #partnerships,
+    .ecosystem-grid,
+    .partnerships-grid,
+    .ecosystem-card,
+    .partnership-card {
+        overflow: visible !important;
+        overflow-y: visible !important;
+        height: auto !important;
+        max-height: none !important;
+        min-height: auto !important;
+    }
+}
