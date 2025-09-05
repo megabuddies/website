@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" class="mobile">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Autoscroll Demo - Mega Buddies</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/neon.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background: #000;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+        }
+        .demo-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
+            border-radius: 10px;
+        }
+        .demo-header h1 {
+            color: #4ecdc4;
+            margin: 0 0 10px 0;
+            font-size: 24px;
+        }
+        .demo-header p {
+            color: #ccc;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-working { background: #4ecdc4; }
+        .status-manual { background: #ff6b6b; }
+        .instructions {
+            background: #1a1a1a;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid #4ecdc4;
+        }
+        .instructions h3 {
+            margin: 0 0 10px 0;
+            color: #4ecdc4;
+        }
+        .section-demo {
+            margin: 50px 0;
+            border: 2px solid #333;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .section-demo h2 {
+            background: #333;
+            margin: 0;
+            padding: 15px;
+            text-align: center;
+        }
+        .section-content {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-header">
+        <h1>🚀 Mobile Autoscroll Demo</h1>
+        <p>Демонстрация автопрокрутки карточек для мобильной версии</p>
+        <p>Ширина экрана: <span id="screen-width"></span>px | Устройство: <span id="device-type"></span></p>
+        <div style="margin-top: 15px;">
+            <div><span class="status-indicator status-working"></span>Автопрокрутка активна</div>
+            <div><span class="status-indicator status-manual"></span>Только ручная прокрутка</div>
+        </div>
+    </div>
+
+    <div class="instructions">
+        <h3>📱 Инструкции для тестирования:</h3>
+        <ul>
+            <li>На мобильных устройствах (ширина ≤ 768px) карточки автоматически прокручиваются</li>
+            <li>На десктопе карточки остаются в статичной сетке</li>
+            <li>Автопрокрутка приостанавливается при потере фокуса страницы</li>
+            <li>Вы можете изменить размер окна браузера для тестирования</li>
+        </ul>
+    </div>
+
+    <!-- ECOSYSTEM Section -->
+    <div class="section-demo">
+        <h2>🌐 ECOSYSTEM Section</h2>
+        <div class="section-content">
+            <section id="ecosystem" class="section">
+                <div class="container">
+                    <div class="ecosystem-grid">
+                        <div class="ecosystem-card neon-glow" data-feature="telegram">
+                            <div class="ecosystem-icon">
+                                <i class="fab fa-telegram"></i>
+                            </div>
+                            <h3>Telegram Bots</h3>
+                            <p>Gamified community platform with Ambassador Bot and Influencer Bot.</p>
+                            <div class="ecosystem-features">
+                                <span class="feature-tag">Stars & XP</span>
+                                <span class="feature-tag">Rewards</span>
+                            </div>
+                        </div>
+                        
+                        <div class="ecosystem-card neon-glow" data-feature="zealy">
+                            <div class="ecosystem-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <h3>Zealy Quests</h3>
+                            <p>Complete challenges, solve riddles, and participate in community missions.</p>
+                            <div class="ecosystem-features">
+                                <span class="feature-tag">Challenges</span>
+                                <span class="feature-tag">Riddles</span>
+                            </div>
+                        </div>
+                        
+                        <div class="ecosystem-card neon-glow" data-feature="ai">
+                            <div class="ecosystem-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <h3>AI Companions</h3>
+                            <p>Chat with your Buddy character one-on-one! Powered by Nectar AI.</p>
+                            <div class="ecosystem-features">
+                                <span class="feature-tag">Real-time Chat</span>
+                                <span class="feature-tag">AI Powered</span>
+                            </div>
+                        </div>
+
+                        <div class="ecosystem-card neon-glow" data-feature="leaderboard">
+                            <div class="ecosystem-icon">
+                                <i class="fas fa-medal"></i>
+                            </div>
+                            <h3>Quacks Leaderboard</h3>
+                            <p>Track community rankings and compete for the highest positions.</p>
+                            <div class="ecosystem-features">
+                                <span class="feature-tag">Rankings</span>
+                                <span class="feature-tag">Achievements</span>
+                            </div>
+                        </div>
+                        
+                        <div class="ecosystem-card neon-glow" data-feature="buddy-runner">
+                            <div class="ecosystem-icon">
+                                <i class="fas fa-gamepad"></i>
+                            </div>
+                            <h3>Buddy Runner</h3>
+                            <p>An on-chain game on MegaETH that demonstrates incredible speed.</p>
+                            <div class="ecosystem-features">
+                                <span class="feature-tag">On-chain Gaming</span>
+                                <span class="feature-tag">MegaETH</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- PARTNERSHIPS Section -->
+    <div class="section-demo">
+        <h2>🤝 MEGAMAFIA & MEGAFORGE FAM Section</h2>
+        <div class="section-content">
+            <section id="partnerships" class="section">
+                <div class="container">
+                    <div class="partnerships-grid">
+                        <div class="partnership-card neon-glow" data-family="megamafia">
+                            <div class="partnership-badge megamafia">MEGAMAFIA</div>
+                            <h3>Showdown</h3>
+                            <p class="partnership-description">A real-time poker game on MegaETH currently in alpha stage. Experience the future of on-chain gaming.</p>
+                        </div>
+
+                        <div class="partnership-card neon-glow" data-family="megamafia">
+                            <div class="partnership-badge megamafia">MEGAMAFIA</div>
+                            <h3>Avon</h3>
+                            <p class="partnership-description">A real-time lending market on MegaETH stack. Experience the future of decentralized finance.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div class="instructions" style="margin-top: 40px;">
+        <h3>🔧 Техническая информация:</h3>
+        <div id="tech-info">
+            <p><strong>Статус инициализации:</strong></p>
+            <div id="init-status">Проверка...</div>
+        </div>
+    </div>
+
+    <script>
+        // Update device info
+        const width = window.innerWidth;
+        const isMobile = width <= 768;
+        
+        document.getElementById('screen-width').textContent = width;
+        document.getElementById('device-type').textContent = isMobile ? 'Мобильное' : 'Десктоп';
+        
+        // Monitor autoscroll status
+        function updateStatus() {
+            const statusDiv = document.getElementById('init-status');
+            const ecosystemGrid = document.querySelector('#ecosystem .ecosystem-grid');
+            const partnershipsGrid = document.querySelector('#partnerships .partnerships-grid');
+            
+            let statusHTML = '';
+            
+            // Check ecosystem
+            const ecoWrapper = document.querySelector('.ecosystem-slider-wrapper');
+            const ecoInitialized = ecosystemGrid && ecosystemGrid.hasAttribute('data-autoscroll-initialized');
+            
+            statusHTML += `<div>ECOSYSTEM: `;
+            if (ecoWrapper && ecoInitialized) {
+                statusHTML += `<span class="status-indicator status-working"></span>Автопрокрутка активна`;
+            } else if (ecoInitialized) {
+                statusHTML += `<span class="status-indicator status-manual"></span>Инициализирован, но без автопрокрутки`;
+            } else {
+                statusHTML += `<span class="status-indicator status-manual"></span>Только ручная прокрутка`;
+            }
+            statusHTML += `</div>`;
+            
+            // Check partnerships
+            const partWrapper = document.querySelector('.partnerships-slider-wrapper');
+            const partInitialized = partnershipsGrid && partnershipsGrid.hasAttribute('data-autoscroll-initialized');
+            
+            statusHTML += `<div>PARTNERSHIPS: `;
+            if (partWrapper && partInitialized) {
+                statusHTML += `<span class="status-indicator status-working"></span>Автопрокрутка активна`;
+            } else if (partInitialized) {
+                statusHTML += `<span class="status-indicator status-manual"></span>Инициализирован, но без автопрокрутки`;
+            } else {
+                statusHTML += `<span class="status-indicator status-manual"></span>Только ручная прокрутка`;
+            }
+            statusHTML += `</div>`;
+            
+            statusHTML += `<div style="margin-top: 10px;"><small>Проверка каждые 2 секунды...</small></div>`;
+            
+            statusDiv.innerHTML = statusHTML;
+        }
+        
+        // Update status periodically
+        setInterval(updateStatus, 2000);
+        setTimeout(updateStatus, 1000);
+        
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            setTimeout(() => {
+                location.reload();
+            }, 500);
+        });
+    </script>
+    
+    <script src="js/mobile-sections-slider.js"></script>
+</body>
+</html>
