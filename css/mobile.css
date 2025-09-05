@@ -1683,4 +1683,47 @@ html.slow-connection img {
     margin-left: auto;
     margin-right: auto;
   }
+
+  /* Автопрокрутка для секций ECOSYSTEM и MEGAMAFIA & MEGAFORGE */
+
+  .ecosystem-slider-wrapper,
+  .partnerships-slider-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    height: 100%;
+  }
+
+  .ecosystem-slider-track,
+  .partnerships-slider-track {
+    display: flex;
+    gap: 20px;
+    backface-visibility: hidden;
+    height: 100%;
+    width: fit-content;
+    will-change: transform; /* Оптимизация для GPU */
+    transform: translateZ(0); /* Принудительное включение аппаратного ускорения */
+  }
+
+  /* Анимация для секции ECOSYSTEM */
+  @keyframes ecosystemSlideAnimation {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-2240px); /* 7 карточек * (300px + 20px gap) */
+    }
+  }
+
+  /* Анимация для секции MEGAMAFIA & MEGAFORGE */
+  @keyframes partnershipsSlideAnimation {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-640px); /* 2 карточки * (300px + 20px gap) */
+    }
+  }
+
+  /* CSS анимации будут применяться через JavaScript напрямую к style.animation */
 } 
