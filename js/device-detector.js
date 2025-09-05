@@ -28,7 +28,6 @@
     function isOnEcosystemPage() {
         return window.location.pathname.indexOf('telegram-bots.html') !== -1 ||
                window.location.pathname.indexOf('ai-companions.html') !== -1 ||
-               window.location.pathname.indexOf('zealy-quests.html') !== -1 ||
                window.location.pathname.indexOf('leaderboard.html') !== -1;
     }
 
