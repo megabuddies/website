@@ -751,6 +751,9 @@ body {
   padding: 0 2rem;
   position: relative;
   z-index: 2;
+  max-width: 100%;
+  overflow: visible;
+  box-sizing: border-box;
 }
 
 #hero-animation {
@@ -2080,12 +2083,12 @@ body {
 
 /* Увеличиваем отступы для текста, чтобы дать больше места модели */
 .hero-title.mega {
-  margin-right: 300px; /* Базовый отступ, который JavaScript может уточнить */
+  margin-right: clamp(50px, 20vw, 300px); /* Адаптивный отступ от 50px до 300px */
   transition: margin 0.3s ease;
 }
 
 .hero-title.buddies {
-  margin-left: 300px; /* Базовый отступ, который JavaScript может уточнить */
+  margin-left: clamp(50px, 20vw, 300px); /* Адаптивный отступ от 50px до 300px */
   transition: margin 0.3s ease;
 }
 
@@ -2234,8 +2237,16 @@ body {
   
   .hero-title {
     font-size: 50px;
-    margin-right: 0;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
     margin-bottom: 10px;
+  }
+  
+  /* На мобильных убираем боковые отступы полностью */
+  .hero-title.mega,
+  .hero-title.buddies {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
   }
   
   .hero-subtitle {
@@ -2378,6 +2389,17 @@ body {
   
   .hero-title {
     font-size: 32px;
+  }
+  
+  .hero-title.mega,
+  .hero-title.buddies {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  
+  .hero-title-container {
+    padding: 0 1rem;
+    max-width: calc(100vw - 2rem);
   }
   
   .hero-subtitle {
