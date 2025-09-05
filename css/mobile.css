@@ -769,11 +769,14 @@ html, body {
   }
   
   .mobile-scroll-indicator {
-    position: relative;
-    bottom: 0;
-    margin-top: 10px;
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 0;
     pointer-events: none;
     cursor: default;
+    transition: opacity 0.5s ease;
   }
   
   /* Компактный вид подзаголовка и текста */
@@ -809,7 +812,7 @@ html, body {
   
   /* Исправление для скролл-индикатора (прокрутите вниз) */
   .scroll-indicator {
-    position: fixed;
+    position: absolute;
     bottom: 1rem;
     left: 50%;
     transform: translateX(-50%);

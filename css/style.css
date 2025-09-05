@@ -896,7 +896,7 @@ body {
 }
 
 .scroll-indicator {
-  position: fixed;
+  position: absolute;
   bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
@@ -906,7 +906,7 @@ body {
   gap: clamp(0.5rem, 1vh, 1rem);
   z-index: 1000;
   opacity: 0.9;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease, opacity 0.5s ease;
   cursor: pointer;
 }
 
@@ -997,7 +997,7 @@ body {
   }
   
   .scroll-indicator {
-    position: fixed;
+    position: absolute;
     bottom: 1rem;
     left: 50%;
     transform: translateX(-50%);

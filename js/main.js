@@ -345,6 +345,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         });
+
+        // Обработчик скролла для скрытия кнопки scroll-down
+        function handleScrollIndicatorVisibility() {
+            const heroSection = document.getElementById('home');
+            if (heroSection && scrollIndicator) {
+                const heroHeight = heroSection.offsetHeight;
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // Скрываем кнопку, если прокрутили больше чем на 80% от высоты героической секции
+                const hideThreshold = heroHeight * 0.8;
+                
+                if (scrollTop > hideThreshold) {
+                    scrollIndicator.style.opacity = '0';
+                    scrollIndicator.style.pointerEvents = 'none';
+                } else {
+                    scrollIndicator.style.opacity = '0.9';
+                    scrollIndicator.style.pointerEvents = 'auto';
+                }
+            }
+        }
+
+        // Добавляем обработчик скролла
+        window.addEventListener('scroll', handleScrollIndicatorVisibility);
+        
+        // Вызываем функцию при загрузке для корректной инициализации
+        handleScrollIndicatorVisibility();
     }
     
     // Эффект печатающегося текста для терминала

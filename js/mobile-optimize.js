@@ -129,6 +129,30 @@ document.addEventListener('DOMContentLoaded', function() {
         if (scrollIndicator) {
             scrollIndicator.style.pointerEvents = 'none';
             scrollIndicator.style.cursor = 'default';
+            
+            // Обработчик скролла для скрытия кнопки scroll-down на мобильных
+            function handleMobileScrollIndicatorVisibility() {
+                const heroSection = document.getElementById('home');
+                if (heroSection && scrollIndicator) {
+                    const heroHeight = heroSection.offsetHeight;
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    
+                    // Скрываем кнопку, если прокрутили больше чем на 70% от высоты героической секции
+                    const hideThreshold = heroHeight * 0.7;
+                    
+                    if (scrollTop > hideThreshold) {
+                        scrollIndicator.style.opacity = '0';
+                    } else {
+                        scrollIndicator.style.opacity = '0.9';
+                    }
+                }
+            }
+
+            // Добавляем обработчик скролла для мобильных
+            window.addEventListener('scroll', handleMobileScrollIndicatorVisibility, { passive: true });
+            
+            // Вызываем функцию при загрузке для корректной инициализации
+            handleMobileScrollIndicatorVisibility();
         }
         
         if (isMobile()) {
