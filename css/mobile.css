@@ -770,7 +770,7 @@ html, body {
   
   .mobile-scroll-indicator {
     position: absolute;
-    bottom: 1rem;
+    bottom: 8rem;
     left: 50%;
     transform: translateX(-50%);
     margin-top: 0;
@@ -782,7 +782,7 @@ html, body {
   /* Mobile bottom text indicator */
   .mobile-bottom-text-indicator {
     position: absolute;
-    bottom: 4rem;
+    bottom: 1rem;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
