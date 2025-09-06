@@ -1661,12 +1661,20 @@ html.slow-connection img {
 
   .hero-title-container {
     margin-bottom: 0;
+    padding: 0 1rem;
   }
 
   .hero-title {
-    font-size: 36px;
+    font-size: clamp(1.8rem, 5vw, 2.25rem);
     margin-bottom: 0;
     line-height: 0.9;
+    letter-spacing: 2px;
+  }
+
+  .hero-title.mega,
+  .hero-title.buddies {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
   }
 
   .hero-subtitle {
