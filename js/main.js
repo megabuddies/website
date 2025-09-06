@@ -654,20 +654,31 @@ document.addEventListener('DOMContentLoaded', function() {
             
             console.log('Текущие отступы: MEGA:', currentMegaMargin, 'BUDDIES:', currentBuddiesMargin);
             
+            // Определяем максимальные отступы в зависимости от размера экрана
+            let maxMargin = 300; // По умолчанию для средних больших экранов
+            if (viewportWidth >= 1600) maxMargin = 320; // Очень большие экраны
+            else if (viewportWidth >= 1400) maxMargin = 280; // Большие экраны
+            else if (viewportWidth >= 1200) maxMargin = 220; // Средние экраны
+            else if (viewportWidth >= 1024) maxMargin = 180; // Планшеты
+            else if (viewportWidth >= 900) maxMargin = 120;  // Маленькие планшеты
+            else if (viewportWidth >= 769) maxMargin = 80;   // Большие мобильные
+            
+            console.log('Максимальный отступ для данного разрешения:', maxMargin);
+            
             // Вычисляем целевое расстояние (max + небольшой запас)
             const targetDistance = Math.max(distanceToMegaEnd, distanceToBuddiesStart) + 20;
             
-            // Корректируем отступы для достижения равных расстояний
+            // Корректируем отступы для достижения равных расстояний, но не превышаем максимум
             if (distanceToMegaEnd < targetDistance) {
-                const newMegaMargin = currentMegaMargin + (targetDistance - distanceToMegaEnd);
+                const newMegaMargin = Math.min(currentMegaMargin + (targetDistance - distanceToMegaEnd), maxMargin);
                 megaTitle.style.marginRight = `${newMegaMargin}px`;
-                console.log('Новый отступ MEGA:', newMegaMargin);
+                console.log('Новый отступ MEGA:', newMegaMargin, '(ограничен максимумом:', maxMargin, ')');
             }
             
             if (distanceToBuddiesStart < targetDistance) {
-                const newBuddiesMargin = currentBuddiesMargin + (targetDistance - distanceToBuddiesStart);
+                const newBuddiesMargin = Math.min(currentBuddiesMargin + (targetDistance - distanceToBuddiesStart), maxMargin);
                 buddiesTitle.style.marginLeft = `${newBuddiesMargin}px`;
-                console.log('Новый отступ BUDDIES:', newBuddiesMargin);
+                console.log('Новый отступ BUDDIES:', newBuddiesMargin, '(ограничен максимумом:', maxMargin, ')');
             }
             
             // Проверяем результаты корректировки
