@@ -45,15 +45,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Вызываем создание пиксельного оверлея
     createPixelOverlay();
     
-    // Массив сообщений загрузки для имитации реального процесса
+    // Оптимизированные сообщения загрузки для быстрого UX
     const loadingMessages = [
         'Loading 3D model...',
         'Initializing environment...',
         'Preparing visual effects...',
-        'Loading NFT collection...',
-        'Synchronizing with blockchain...',
-        'Verifying connection security...',
-        'Launching additional resources...',
+        'Finalizing setup...',
         'Almost ready...'
     ];
     
@@ -73,36 +70,47 @@ document.addEventListener('DOMContentLoaded', function() {
     // Начальное значение прогресса
     updateProgress(5);
     
-    // Отслеживаем прогресс загрузки ресурсов
-    const resourcesTotal = document.images.length + document.scripts.length + document.styleSheets.length;
-    let resourcesLoaded = 0;
+    // Оптимизированное отслеживание только критических ресурсов
+    let criticalResourcesLoaded = 0;
+    const criticalResourcesTotal = 3; // CSS, основные изображения, критические скрипты
     
-    // Функция для увеличения счетчика загруженных ресурсов
-    function incrementResourcesLoaded() {
-        resourcesLoaded++;
-        const percentLoaded = Math.min(75, Math.floor((resourcesLoaded / resourcesTotal) * 75));
+    // Функция для увеличения счетчика критических ресурсов
+    function incrementCriticalResources() {
+        criticalResourcesLoaded++;
+        const percentLoaded = Math.min(85, Math.floor((criticalResourcesLoaded / criticalResourcesTotal) * 85));
         updateProgress(percentLoaded);
     }
     
-    // Обработчики загрузки изображений
-    Array.from(document.images).forEach(img => {
-        if (img.complete) {
-            incrementResourcesLoaded();
-        } else {
-            img.addEventListener('load', incrementResourcesLoaded);
-            img.addEventListener('error', incrementResourcesLoaded);
-        }
-    });
+    // Отслеживаем только критические изображения (логотип и основные элементы)
+    const criticalImages = Array.from(document.images).filter(img => 
+        img.src.includes('mega-buddies-logo.png') || 
+        img.src.includes('nft1.jpg') ||
+        img.classList.contains('critical')
+    );
     
-    // Для скриптов и стилей используем интервал, симулирующий загрузку
+    if (criticalImages.length > 0) {
+        criticalImages.forEach(img => {
+            if (img.complete) {
+                incrementCriticalResources();
+            } else {
+                img.addEventListener('load', incrementCriticalResources);
+                img.addEventListener('error', incrementCriticalResources);
+            }
+        });
+    } else {
+        // Если нет критических изображений, сразу засчитываем их как загруженные
+        incrementCriticalResources();
+    }
+    
+    // Быстрая симуляция загрузки для визуального эффекта
     const progressInterval = setInterval(() => {
-        if (loadingProgress < 75) {
+        if (loadingProgress < 80) {
             // Увеличиваем прогресс шагами по 5% для пиксельного эффекта
             updateProgress(Math.ceil(loadingProgress / 5) * 5 + 5);
         } else {
             clearInterval(progressInterval);
         }
-    }, 150);
+    }, 120); // Ускоряем анимацию прогресса
     
     // Добавляем CSS для анимации пикселей
     const style = document.createElement('style');
@@ -117,30 +125,51 @@ document.addEventListener('DOMContentLoaded', function() {
     // Запрещаем скролл пока прелоадер активен
     document.body.style.overflow = 'hidden';
     
-    // Скрываем прелоадер после начальной загрузки и показываем контент
+    // Улучшенная логика скрытия прелоадера для лучшего UX
+    let preloaderHidden = false;
+    
+    // Функция для скрытия прелоадера
+    function hidePreloader() {
+        if (preloaderHidden) return;
+        preloaderHidden = true;
+        
+        // Плавно завершаем загрузку от текущего значения до 100% шагами по 5%
+        const completeInterval = setInterval(() => {
+            if (loadingProgress < 100) {
+                updateProgress(Math.ceil(loadingProgress / 5) * 5 + 5);
+            } else {
+                clearInterval(completeInterval);
+                
+                // Отображаем финальное сообщение
+                terminalText.innerHTML = '<span class="terminal-prompt" style="color: #5f5;">&gt;</span> <span style="color: #5f5;">Loading complete. Launching system...</span>';
+                
+                setTimeout(() => {
+                    preloader.classList.remove('active');
+                    preloader.classList.add('hidden');
+                    
+                    // Разрешаем скролл после скрытия прелоадера
+                    document.body.style.overflow = 'auto';
+                }, 400);
+            }
+        }, 100); // Ускоряем финальную анимацию
+    }
+    
+    // Оптимизированная логика: скрываем прелоадер быстрее для лучшего UX
+    // 1. Скрываем через 1.2 секунды после DOMContentLoaded (критические ресурсы загружены)
+    setTimeout(() => {
+        hidePreloader();
+    }, 1200);
+    
+    // 2. Максимальное время показа прелоадера - 2.5 секунды (защита от зависания)
+    setTimeout(() => {
+        hidePreloader();
+    }, 2500);
+    
+    // 3. Дополнительная проверка после полной загрузки страницы (если она произошла быстро)
     window.addEventListener('load', function() {
-        // Добавляем задержку перед скрытием прелоадера для завершения загрузки модели (3.5 секунд максимум)
         setTimeout(() => {
-            // Плавно завершаем загрузку от текущего значения до 100% шагами по 5%
-            const completeInterval = setInterval(() => {
-                if (loadingProgress < 100) {
-                    updateProgress(Math.ceil(loadingProgress / 5) * 5 + 5);
-                } else {
-                    clearInterval(completeInterval);
-                    
-                    // Отображаем финальное сообщение
-                    terminalText.innerHTML = '<span class="terminal-prompt" style="color: #5f5;">&gt;</span> <span style="color: #5f5;">Loading complete. Launching system...</span>';
-                    
-                    setTimeout(() => {
-                        preloader.classList.remove('active');
-                        preloader.classList.add('hidden');
-                        
-                        // Разрешаем скролл после скрытия прелоадера
-                        document.body.style.overflow = 'auto';
-                    }, 400);
-                }
-            }, 150);
-        }, 2000);
+            hidePreloader();
+        }, 800); // Уменьшено с 2000 до 800 мс
     });
     
     // Добавляем сканирующую линию для эффекта старого монитора
