@@ -1106,11 +1106,34 @@ body {
 
 @media (max-width: 576px) {
   .hero-title {
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    letter-spacing: 2px;
   }
   
   .hero-description {
     font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: clamp(1.3rem, 3.5vw, 1.8rem);
+    letter-spacing: 1px;
+  }
+  
+  .hero-title-container {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero-title {
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    letter-spacing: 0.5px;
+  }
+  
+  .hero-title-container {
+    padding: 0 0.5rem;
   }
 }
 
@@ -2087,6 +2110,99 @@ body {
 .hero-title.buddies {
   margin-left: 300px; /* Базовый отступ, который JavaScript может уточнить */
   transition: margin 0.3s ease;
+}
+
+/* Адаптивные отступы для заголовка MEGA BUDDIES с учетом отступов от краев */
+@media (min-width: 1600px) {
+  .hero-title.mega {
+    margin-right: 320px; /* Увеличиваем для очень больших экранов */
+  }
+  
+  .hero-title.buddies {
+    margin-left: 320px;
+  }
+  
+  .hero-title-container {
+    padding: 0 3rem; /* Дополнительный отступ от краев */
+  }
+}
+
+@media (max-width: 1599px) and (min-width: 1400px) {
+  .hero-title.mega {
+    margin-right: 280px;
+  }
+  
+  .hero-title.buddies {
+    margin-left: 280px;
+  }
+  
+  .hero-title-container {
+    padding: 0 2.5rem;
+  }
+}
+
+@media (max-width: 1399px) and (min-width: 1200px) {
+  .hero-title.mega {
+    margin-right: 220px;
+  }
+  
+  .hero-title.buddies {
+    margin-left: 220px;
+  }
+  
+  .hero-title-container {
+    padding: 0 2rem;
+  }
+}
+
+@media (max-width: 1199px) and (min-width: 1024px) {
+  .hero-title.mega {
+    margin-right: 180px;
+  }
+  
+  .hero-title.buddies {
+    margin-left: 180px;
+  }
+  
+  .hero-title-container {
+    padding: 0 2rem;
+  }
+}
+
+@media (max-width: 1023px) and (min-width: 900px) {
+  .hero-title.mega {
+    margin-right: 120px;
+  }
+  
+  .hero-title.buddies {
+    margin-left: 120px;
+  }
+  
+  .hero-title-container {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (max-width: 899px) and (min-width: 769px) {
+  .hero-title.mega {
+    margin-right: 80px;
+  }
+  
+  .hero-title.buddies {
+    margin-left: 80px;
+  }
+  
+  .hero-title-container {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-title.mega,
+  .hero-title.buddies {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
 }
 
 /* Обновленные медиа-запросы для мобильных устройств */
