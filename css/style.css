@@ -2101,102 +2101,55 @@ body {
   transform: translateX(100%);
 }
 
-/* Увеличиваем отступы для текста, чтобы дать больше места модели */
+/* Базовые отступы для равномерного расположения заголовков относительно 3D модели */
 .hero-title.mega {
-  margin-right: 300px; /* Базовый отступ, который JavaScript может уточнить */
+  margin-right: 0; /* Будет динамически регулироваться JavaScript */
   transition: margin 0.3s ease;
 }
 
 .hero-title.buddies {
-  margin-left: 300px; /* Базовый отступ, который JavaScript может уточнить */
+  margin-left: 0; /* Будет динамически регулироваться JavaScript */
   transition: margin 0.3s ease;
 }
 
-/* Адаптивные отступы для заголовка MEGA BUDDIES с учетом отступов от краев */
+/* Адаптивные отступы контейнера заголовка (отступы самих заголовков управляются JavaScript) */
 @media (min-width: 1600px) {
-  .hero-title.mega {
-    margin-right: 320px; /* Увеличиваем для очень больших экранов */
-  }
-  
-  .hero-title.buddies {
-    margin-left: 320px;
-  }
-  
   .hero-title-container {
     padding: 0 3rem; /* Дополнительный отступ от краев */
   }
 }
 
 @media (max-width: 1599px) and (min-width: 1400px) {
-  .hero-title.mega {
-    margin-right: 280px;
-  }
-  
-  .hero-title.buddies {
-    margin-left: 280px;
-  }
-  
   .hero-title-container {
     padding: 0 2.5rem;
   }
 }
 
 @media (max-width: 1399px) and (min-width: 1200px) {
-  .hero-title.mega {
-    margin-right: 220px;
-  }
-  
-  .hero-title.buddies {
-    margin-left: 220px;
-  }
-  
   .hero-title-container {
     padding: 0 2rem;
   }
 }
 
 @media (max-width: 1199px) and (min-width: 1024px) {
-  .hero-title.mega {
-    margin-right: 180px;
-  }
-  
-  .hero-title.buddies {
-    margin-left: 180px;
-  }
-  
   .hero-title-container {
     padding: 0 2rem;
   }
 }
 
 @media (max-width: 1023px) and (min-width: 900px) {
-  .hero-title.mega {
-    margin-right: 120px;
-  }
-  
-  .hero-title.buddies {
-    margin-left: 120px;
-  }
-  
   .hero-title-container {
     padding: 0 1.5rem;
   }
 }
 
 @media (max-width: 899px) and (min-width: 769px) {
-  .hero-title.mega {
-    margin-right: 80px;
-  }
-  
-  .hero-title.buddies {
-    margin-left: 80px;
-  }
-  
   .hero-title-container {
     padding: 0 1.5rem;
   }
 }
 
+/* На мобильных устройствах убираем отступы заголовков для вертикального расположения */
 @media (max-width: 768px) {
   .hero-title.mega,
   .hero-title.buddies {
