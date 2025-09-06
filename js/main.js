@@ -633,115 +633,128 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Precise spacing adjustment between MEGA and BUDDIES
+    // Улучшенное выравнивание слов MEGA и BUDDIES относительно центра 3D модели
     function adjustTextSpacing() {
         const megaTitle = document.querySelector('.hero-title.mega');
         const buddiesTitle = document.querySelector('.hero-title.buddies');
         const heroAnimation = document.getElementById('hero-animation');
+        const titleContainer = document.querySelector('.hero-title-container');
         const viewportWidth = window.innerWidth;
         
-        if (!megaTitle || !buddiesTitle || !heroAnimation) {
-            console.log('Не найдены все необходимые элементы для выравнивания');
+        if (!megaTitle || !buddiesTitle) {
+            console.log('Не найдены заголовки MEGA и BUDDIES');
             return;
         }
         
-        // На мобильных устройствах не применяем динамическую регулировку
+        // На мобильных устройствах убираем все отступы для вертикального расположения
         if (viewportWidth <= 768) {
             megaTitle.style.marginRight = '0';
             buddiesTitle.style.marginLeft = '0';
             return;
         }
 
-        // Получаем текущие размеры и позиции элементов
+        // Если нет 3D модели, используем центр экрана
+        let centerX = viewportWidth / 2;
+        if (heroAnimation) {
+            const heroRect = heroAnimation.getBoundingClientRect();
+            centerX = heroRect.left + (heroRect.width / 2);
+        }
+
+        // Получаем размеры заголовков
         const megaRect = megaTitle.getBoundingClientRect();
         const buddiesRect = buddiesTitle.getBoundingClientRect();
-        const heroRect = heroAnimation.getBoundingClientRect();
         
-        // Вычисляем центр 3D модели
-        const heroCenterX = heroRect.left + (heroRect.width / 2);
+        // Вычисляем ширину каждого слова
+        const megaWidth = megaRect.width;
+        const buddiesWidth = buddiesRect.width;
         
-        // Вычисляем текущие расстояния от центра модели до конца MEGA и начала BUDDIES
-        const distanceToMegaEnd = heroCenterX - megaRect.right;
-        const distanceToBuddiesStart = buddiesRect.left - heroCenterX;
+        // Определяем базовые отступы в зависимости от размера экрана
+        let baseSpacing = 40; // Минимальное расстояние между словом и центром
+        if (viewportWidth >= 1600) baseSpacing = 60;
+        else if (viewportWidth >= 1400) baseSpacing = 50;
+        else if (viewportWidth >= 1200) baseSpacing = 45;
+        else if (viewportWidth >= 1024) baseSpacing = 40;
+        else if (viewportWidth >= 900) baseSpacing = 35;
+        else if (viewportWidth >= 769) baseSpacing = 30;
         
-        // Выводим логи для отладки
-        console.log('=== ДИАГНОСТИКА ВЫРАВНИВАНИЯ ===');
-        console.log('Ширина окна:', viewportWidth);
-        console.log('Центр модели X:', heroCenterX);
-        console.log('MEGA право:', megaRect.right);
-        console.log('BUDDIES лево:', buddiesRect.left);
-        console.log('Расстояние до конца MEGA:', distanceToMegaEnd);
-        console.log('Расстояние до начала BUDDIES:', distanceToBuddiesStart);
+        // Вычисляем оптимальные отступы для равномерного расположения
+        // MEGA должно заканчиваться на расстоянии baseSpacing от центра
+        // BUDDIES должно начинаться на расстоянии baseSpacing от центра
         
-        // Проверяем, нужна ли корректировка (разница больше 10px)
-        if (Math.abs(distanceToMegaEnd - distanceToBuddiesStart) > 10) {
-            console.log('Требуется корректировка отступов...');
+        // Для MEGA: нужно, чтобы правый край был на (centerX - baseSpacing)
+        // Для BUDDIES: нужно, чтобы левый край был на (centerX + baseSpacing)
+        
+        const targetMegaRightEdge = centerX - baseSpacing;
+        const targetBuddiesLeftEdge = centerX + baseSpacing;
+        
+        // Получаем текущие позиции без отступов
+        megaTitle.style.marginRight = '0';
+        buddiesTitle.style.marginLeft = '0';
+        
+        // Ждем обновления DOM
+        setTimeout(() => {
+            const updatedMegaRect = megaTitle.getBoundingClientRect();
+            const updatedBuddiesRect = buddiesTitle.getBoundingClientRect();
             
-            // Получаем текущие значения margin из CSS
-            const currentMegaMargin = parseInt(window.getComputedStyle(megaTitle).marginRight) || 0;
-            const currentBuddiesMargin = parseInt(window.getComputedStyle(buddiesTitle).marginLeft) || 0;
+            // Вычисляем необходимые отступы
+            const megaMarginNeeded = Math.max(0, updatedMegaRect.right - targetMegaRightEdge);
+            const buddiesMarginNeeded = Math.max(0, targetBuddiesLeftEdge - updatedBuddiesRect.left);
             
-            console.log('Текущие отступы: MEGA:', currentMegaMargin, 'BUDDIES:', currentBuddiesMargin);
-            
-            // Определяем максимальные отступы в зависимости от размера экрана
-            let maxMargin = 300; // По умолчанию для средних больших экранов
-            if (viewportWidth >= 1600) maxMargin = 320; // Очень большие экраны
-            else if (viewportWidth >= 1400) maxMargin = 280; // Большие экраны
-            else if (viewportWidth >= 1200) maxMargin = 220; // Средние экраны
-            else if (viewportWidth >= 1024) maxMargin = 180; // Планшеты
-            else if (viewportWidth >= 900) maxMargin = 120;  // Маленькие планшеты
-            else if (viewportWidth >= 769) maxMargin = 80;   // Большие мобильные
-            
-            console.log('Максимальный отступ для данного разрешения:', maxMargin);
-            
-            // Вычисляем целевое расстояние (max + небольшой запас)
-            const targetDistance = Math.max(distanceToMegaEnd, distanceToBuddiesStart) + 20;
-            
-            // Корректируем отступы для достижения равных расстояний, но не превышаем максимум
-            if (distanceToMegaEnd < targetDistance) {
-                const newMegaMargin = Math.min(currentMegaMargin + (targetDistance - distanceToMegaEnd), maxMargin);
-                megaTitle.style.marginRight = `${newMegaMargin}px`;
-                console.log('Новый отступ MEGA:', newMegaMargin, '(ограничен максимумом:', maxMargin, ')');
+            // Применяем отступы
+            if (megaMarginNeeded > 0) {
+                megaTitle.style.marginRight = `${megaMarginNeeded}px`;
+            }
+            if (buddiesMarginNeeded > 0) {
+                buddiesTitle.style.marginLeft = `${buddiesMarginNeeded}px`;
             }
             
-            if (distanceToBuddiesStart < targetDistance) {
-                const newBuddiesMargin = Math.min(currentBuddiesMargin + (targetDistance - distanceToBuddiesStart), maxMargin);
-                buddiesTitle.style.marginLeft = `${newBuddiesMargin}px`;
-                console.log('Новый отступ BUDDIES:', newBuddiesMargin, '(ограничен максимумом:', maxMargin, ')');
-            }
+            // Логирование для отладки
+            console.log('=== ВЫРАВНИВАНИЕ ЗАГОЛОВКОВ ===');
+            console.log('Ширина окна:', viewportWidth);
+            console.log('Центр:', centerX);
+            console.log('Базовое расстояние:', baseSpacing);
+            console.log('MEGA отступ справа:', megaMarginNeeded);
+            console.log('BUDDIES отступ слева:', buddiesMarginNeeded);
             
-            // Проверяем результаты корректировки
+            // Финальная проверка
             setTimeout(() => {
                 const finalMegaRect = megaTitle.getBoundingClientRect();
                 const finalBuddiesRect = buddiesTitle.getBoundingClientRect();
-                const finalDistanceToMegaEnd = heroCenterX - finalMegaRect.right;
-                const finalDistanceToBuddiesStart = finalBuddiesRect.left - heroCenterX;
+                const distanceToMegaEnd = centerX - finalMegaRect.right;
+                const distanceToBuddiesStart = finalBuddiesRect.left - centerX;
                 
-                console.log('=== ИТОГОВАЯ ПРОВЕРКА ===');
-                console.log('Итоговое расстояние до MEGA:', finalDistanceToMegaEnd);
-                console.log('Итоговое расстояние до BUDDIES:', finalDistanceToBuddiesStart);
-                console.log('Разница расстояний:', Math.abs(finalDistanceToMegaEnd - finalDistanceToBuddiesStart));
-            }, 100);
-        } else {
-            console.log('Корректировка не требуется, разница менее 10px');
-        }
+                console.log('Итоговые расстояния:');
+                console.log('До конца MEGA:', distanceToMegaEnd);
+                console.log('До начала BUDDIES:', distanceToBuddiesStart);
+                console.log('Разница:', Math.abs(distanceToMegaEnd - distanceToBuddiesStart));
+            }, 50);
+        }, 10);
     }
     
     // Вызываем функцию после полной загрузки страницы
     window.addEventListener('load', function() {
         // Более длительная задержка для гарантии, что ThreeJS полностью инициализирован
-        setTimeout(adjustTextSpacing, 500);
+        setTimeout(adjustTextSpacing, 300);
+        setTimeout(adjustTextSpacing, 800); // Дополнительная проверка
     });
     
     // Вызываем функцию при изменении размера окна
     window.addEventListener('resize', function() {
-        setTimeout(adjustTextSpacing, 500);
+        // Дебаунсинг для производительности
+        clearTimeout(window.resizeTimeout);
+        window.resizeTimeout = setTimeout(adjustTextSpacing, 200);
     });
     
     // Запускаем несколько раз с разными задержками для гарантии применения
     // после загрузки всех ресурсов, включая шрифты и 3D-модель
-    setTimeout(adjustTextSpacing, 500);
-    setTimeout(adjustTextSpacing, 1500);
-    setTimeout(adjustTextSpacing, 3000); // Длительная задержка для гарантии
+    setTimeout(adjustTextSpacing, 100);   // Быстрая попытка
+    setTimeout(adjustTextSpacing, 500);   // После базовой загрузки
+    setTimeout(adjustTextSpacing, 1500);  // После загрузки 3D модели
+    setTimeout(adjustTextSpacing, 3000);  // Финальная проверка
+    
+    // Дополнительный вызов после скрытия прелоадера
+    setTimeout(() => {
+        if (!preloaderHidden) return;
+        setTimeout(adjustTextSpacing, 200);
+    }, 4000);
 });
-
