@@ -190,12 +190,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Функция для получения текста редкости
     function getRarityText(rarity) {
         const rarityTexts = {
-            'common': 'Обычный',
-            'rare': 'Редкий',
-            'legendary': 'Легендарный'
+            'common': 'Common',
+            'rare': 'Rare',
+            'legendary': 'Legendary'
         };
         
-        return rarityTexts[rarity] || 'Обычный';
+        return rarityTexts[rarity] || 'Common';
     }
     
     // Функция для получения цены NFT
