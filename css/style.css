@@ -2784,8 +2784,23 @@ body {
     background: linear-gradient(135deg, rgba(25, 25, 35, 1) 0%, rgba(35, 35, 45, 1) 100%);
     border-color: var(--secondary-color);
     color: var(--secondary-color);
-    box-shadow: 0 0 20px rgba(112, 135, 227, 0.5);
-    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 0 30px rgba(112, 135, 227, 0.8), 0 0 60px rgba(112, 135, 227, 0.4);
+    transform: translateY(-50%) scale(1.15);
+    animation: pulse-glow 1.5s ease-in-out infinite;
+}
+
+.slider-arrow:active {
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 0 40px rgba(112, 135, 227, 1), 0 0 80px rgba(112, 135, 227, 0.6);
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 30px rgba(112, 135, 227, 0.8), 0 0 60px rgba(112, 135, 227, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(112, 135, 227, 1), 0 0 80px rgba(112, 135, 227, 0.6);
+    }
 }
 
 .slider-arrow-left {
