@@ -1402,6 +1402,35 @@ body {
   color: var(--secondary-color);
 }
 
+/* Testnet Collection Button */
+.testnet-collection-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: rgba(146, 147, 151, 0.1);
+  color: var(--accent-color);
+  border: 2px solid var(--accent-color);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  max-width: 500px;
+}
+
+.testnet-collection-btn:hover {
+  background-color: rgba(146, 147, 151, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px var(--accent-glow-color),
+              0 0 30px rgba(146, 147, 151, calc(var(--glow-intensity) * 0.3));
+}
+
+.testnet-collection-btn i {
+  margin-right: 5px;
+}
+
 .nft-grid {
   display: none;
   padding: 20px 0;
