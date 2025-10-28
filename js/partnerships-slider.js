@@ -6,9 +6,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const sliderWrapper = sliderContainer.querySelector('.partnerships-slider-wrapper');
     const leftArrow = sliderContainer.querySelector('.slider-arrow-left');
     const rightArrow = sliderContainer.querySelector('.slider-arrow-right');
-    const cards = sliderTrack.querySelectorAll('.partnership-card');
+    const originalCards = Array.from(sliderTrack.querySelectorAll('.partnership-card'));
     
-    if (!sliderTrack || !leftArrow || !rightArrow || cards.length === 0) return;
+    if (!sliderTrack || !leftArrow || !rightArrow || originalCards.length === 0) return;
 
     // Check if mobile device
     const isMobile = window.innerWidth <= 768;
@@ -19,7 +19,19 @@ document.addEventListener('DOMContentLoaded', function() {
         return; // Exit early on mobile
     }
 
-    let currentIndex = 0;
+    // Clone cards for infinite loop
+    const clonedCardsStart = originalCards.map(card => card.cloneNode(true));
+    const clonedCardsEnd = originalCards.map(card => card.cloneNode(true));
+    
+    // Append cloned cards to create infinite loop
+    clonedCardsEnd.forEach(card => sliderTrack.appendChild(card));
+    clonedCardsStart.reverse().forEach(card => sliderTrack.insertBefore(card, sliderTrack.firstChild));
+    
+    // Get all cards including clones
+    const cards = sliderTrack.querySelectorAll('.partnership-card');
+    const totalOriginalCards = originalCards.length;
+
+    let currentIndex = totalOriginalCards; // Start from the first original card (after clones)
     let cardWidth = 0;
     let cardsPerView = 1;
     let isDragging = false;
@@ -27,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentTranslate = 0;
     let prevTranslate = 0;
     let animationID = 0;
+    let isTransitioning = false;
 
     // Calculate dimensions
     function calculateDimensions() {
@@ -49,14 +62,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Update slider position
     function updateSliderPosition(animate = true) {
-        const maxIndex = Math.max(0, cards.length - cardsPerView);
-        currentIndex = Math.max(0, Math.min(currentIndex, maxIndex));
-        
         const translateX = -currentIndex * cardWidth;
         
-        if (animate) {
+        if (animate && !isTransitioning) {
             sliderTrack.style.transition = 'transform 0.3s ease-out';
-        } else {
+            isTransitioning = true;
+        } else if (!animate) {
             sliderTrack.style.transition = 'none';
         }
         
@@ -64,42 +75,39 @@ document.addEventListener('DOMContentLoaded', function() {
         currentTranslate = translateX;
         prevTranslate = translateX;
         
-        // Update arrow states
-        updateArrowStates();
-    }
-
-    // Update arrow visibility/state
-    function updateArrowStates() {
-        const maxIndex = Math.max(0, cards.length - cardsPerView);
-        
-        if (currentIndex <= 0) {
-            leftArrow.style.opacity = '0.3';
-            leftArrow.style.cursor = 'not-allowed';
-        } else {
-            leftArrow.style.opacity = '1';
-            leftArrow.style.cursor = 'pointer';
+        // Handle infinite loop
+        if (animate) {
+            setTimeout(() => {
+                isTransitioning = false;
+                checkAndResetPosition();
+            }, 300);
         }
-        
-        if (currentIndex >= maxIndex) {
-            rightArrow.style.opacity = '0.3';
-            rightArrow.style.cursor = 'not-allowed';
-        } else {
-            rightArrow.style.opacity = '1';
-            rightArrow.style.cursor = 'pointer';
+    }
+    
+    // Check if we need to reset position for infinite loop
+    function checkAndResetPosition() {
+        // If we're at or past the end clones, jump back to the corresponding position in original cards
+        if (currentIndex >= totalOriginalCards * 2) {
+            currentIndex = currentIndex - totalOriginalCards;
+            updateSliderPosition(false);
+        }
+        // If we're in the start clones, jump forward to the corresponding position in original cards
+        else if (currentIndex < totalOriginalCards) {
+            currentIndex = currentIndex + totalOriginalCards;
+            updateSliderPosition(false);
         }
     }
 
-    // Arrow navigation
+    // Arrow navigation - infinite scrolling, no boundaries
     leftArrow.addEventListener('click', () => {
-        if (currentIndex > 0) {
+        if (!isTransitioning) {
             currentIndex--;
             updateSliderPosition(true);
         }
     });
 
     rightArrow.addEventListener('click', () => {
-        const maxIndex = Math.max(0, cards.length - cardsPerView);
-        if (currentIndex < maxIndex) {
+        if (!isTransitioning) {
             currentIndex++;
             updateSliderPosition(true);
         }
@@ -129,10 +137,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const movedBy = currentTranslate - prevTranslate;
         
-        // Determine if we should move to next or previous slide
-        if (movedBy < -50 && currentIndex < cards.length - cardsPerView) {
+        // Determine if we should move to next or previous slide (infinite)
+        if (movedBy < -50) {
             currentIndex++;
-        } else if (movedBy > 50 && currentIndex > 0) {
+        } else if (movedBy > 50) {
             currentIndex--;
         }
         
