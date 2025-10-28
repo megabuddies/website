@@ -941,6 +941,14 @@ html, body {
     margin-bottom: 20px;
   }
   
+  /* Mobile responsive for testnet collection button */
+  .testnet-collection-btn {
+    font-size: 9px;
+    padding: 8px 15px;
+    max-width: 90%;
+    line-height: 1.3;
+  }
+  
   .filter-btn {
     font-size: 12px;
     padding: 8px 12px;
