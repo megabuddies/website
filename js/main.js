@@ -757,4 +757,90 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!preloaderHidden) return;
         setTimeout(adjustTextSpacing, 200);
     }, 4000);
+    
+    // Partnership Slider Functionality
+    const partnershipsSlider = document.querySelector('.partnerships-slider-track');
+    const sliderArrowLeft = document.querySelector('.slider-arrow-left');
+    const sliderArrowRight = document.querySelector('.slider-arrow-right');
+    const sliderWrapper = document.querySelector('.partnerships-slider-wrapper');
+    
+    if (partnershipsSlider && sliderArrowLeft && sliderArrowRight) {
+        let currentIndex = 0;
+        const cards = partnershipsSlider.querySelectorAll('.partnership-card');
+        const cardWidth = 350 + 30; // card width + gap
+        const isMobileDevice = () => window.innerWidth <= 768;
+        
+        function updateSliderPosition() {
+            if (isMobileDevice()) return;
+            
+            const maxIndex = Math.max(0, cards.length - Math.floor(sliderWrapper.offsetWidth / cardWidth));
+            currentIndex = Math.max(0, Math.min(currentIndex, maxIndex));
+            
+            const translateX = -currentIndex * cardWidth;
+            partnershipsSlider.style.transform = `translateX(${translateX}px)`;
+            
+            // Update arrow states
+            sliderArrowLeft.disabled = currentIndex === 0;
+            sliderArrowRight.disabled = currentIndex >= maxIndex;
+        }
+        
+        sliderArrowLeft.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateSliderPosition();
+            }
+        });
+        
+        sliderArrowRight.addEventListener('click', () => {
+            const maxIndex = Math.max(0, cards.length - Math.floor(sliderWrapper.offsetWidth / cardWidth));
+            if (currentIndex < maxIndex) {
+                currentIndex++;
+                updateSliderPosition();
+            }
+        });
+        
+        // Touch/Swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        sliderWrapper.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        sliderWrapper.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+        
+        function handleSwipe() {
+            if (!isMobileDevice()) return;
+            
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swipe left
+                    const maxIndex = cards.length - 1;
+                    if (currentIndex < maxIndex) {
+                        currentIndex++;
+                    }
+                } else {
+                    // Swipe right
+                    if (currentIndex > 0) {
+                        currentIndex--;
+                    }
+                }
+            }
+        }
+        
+        // Update on window resize
+        window.addEventListener('resize', () => {
+            currentIndex = 0;
+            updateSliderPosition();
+        });
+        
+        // Initialize
+        updateSliderPosition();
+    }
 });
