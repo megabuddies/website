@@ -2962,7 +2962,8 @@ body {
 /* Responsive design for partnerships */
 @media (max-width: 768px) {
     .partnerships-slider-container {
-        padding: 0 40px;
+        padding: 0;
+        overflow: hidden;
     }
     
     .slider-arrow {
