@@ -129,6 +129,30 @@
     display: none !important;
   }
   
+  /* Hide slider arrows on mobile */
+  .partnerships-slider-container .slider-arrow {
+    display: none !important;
+  }
+  
+  /* Enable touch scrolling for partnerships slider on mobile */
+  .partnerships-slider-container {
+    padding: 0 15px !important;
+    overflow: visible !important;
+  }
+  
+  .partnerships-slider-wrapper {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) transparent;
+  }
+  
+  .partnerships-slider-track {
+    touch-action: pan-x;
+  }
+  
   /* Горизонтальный скролл для partnerships */
   #partnerships .partnerships-grid {
     display: flex !important;

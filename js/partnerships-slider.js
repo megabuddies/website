@@ -10,6 +10,18 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (!sliderTrack || !leftArrow || !rightArrow || cards.length === 0) return;
 
+    // Check if mobile device
+    const isMobile = window.innerWidth <= 768;
+    
+    // On mobile, use native scroll instead of custom slider
+    if (isMobile) {
+        sliderWrapper.style.overflowX = 'auto';
+        sliderWrapper.style.webkitOverflowScrolling = 'touch';
+        sliderTrack.style.display = 'flex';
+        sliderTrack.style.gap = '30px';
+        return; // Exit early on mobile
+    }
+
     let currentIndex = 0;
     let cardWidth = 0;
     let cardsPerView = 1;
