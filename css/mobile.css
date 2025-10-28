@@ -274,7 +274,29 @@
     width: 100% !important;
     margin: 0 !important;
     position: relative !important;
+    pointer-events: none !important; /* Отключаем события мыши/тача для iframe, чтобы не блокировать скролл */
+  }
+  
+  /* Добавляем overlay поверх Twitter iframe для обработки вертикального скролла */
+  .twitter-embed-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    pointer-events: auto;
+    background: transparent;
+  }
+  
+  /* Когда пользователь хочет взаимодействовать с твитом (клик), временно включаем pointer-events */
+  .twitter-embed-container.interactive .twitter-tweet iframe {
     pointer-events: auto !important;
+  }
+  
+  .twitter-embed-container.interactive::before {
+    display: none;
   }
   
   /* Горизонтальный скролл для ecosystem */

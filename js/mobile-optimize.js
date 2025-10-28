@@ -279,7 +279,69 @@ document.addEventListener('DOMContentLoaded', function() {
         updateActiveNavItem(); // Инициальное обновление
     }
     
+    // Обработка Twitter embeds для разрешения вертикального скролла
+    function initTwitterEmbedScrollFix() {
+        const twitterContainers = document.querySelectorAll('.twitter-embed-container');
+        
+        twitterContainers.forEach(container => {
+            let tapTimeout;
+            let isTapping = false;
+            
+            // Обработка tap событий - если это быстрый тап, включаем взаимодействие
+            container.addEventListener('touchstart', function(e) {
+                isTapping = true;
+                
+                // Если пользователь держит палец неподвижно короткое время, это похоже на клик
+                tapTimeout = setTimeout(() => {
+                    if (isTapping) {
+                        container.classList.add('interactive');
+                        // Убираем interactive класс через 3 секунды
+                        setTimeout(() => {
+                            container.classList.remove('interactive');
+                        }, 3000);
+                    }
+                }, 200);
+            }, { passive: true });
+            
+            container.addEventListener('touchmove', function(e) {
+                // Если палец двигается, это скролл, а не клик
+                isTapping = false;
+                clearTimeout(tapTimeout);
+                container.classList.remove('interactive');
+            }, { passive: true });
+            
+            container.addEventListener('touchend', function(e) {
+                clearTimeout(tapTimeout);
+                // Если это был быстрый тап (клик), оставляем interactive на некоторое время
+                if (isTapping) {
+                    container.classList.add('interactive');
+                    setTimeout(() => {
+                        container.classList.remove('interactive');
+                    }, 2000);
+                }
+                isTapping = false;
+            }, { passive: true });
+            
+            container.addEventListener('touchcancel', function(e) {
+                isTapping = false;
+                clearTimeout(tapTimeout);
+                container.classList.remove('interactive');
+            }, { passive: true });
+        });
+    }
+    
     // Запуск инициализации
     init();
     initMobileNavigation();
+    
+    // Инициализируем исправление для Twitter embeds
+    if (isMobile()) {
+        // Ждем загрузки Twitter виджетов
+        if (window.twttr) {
+            window.twttr.events.bind('loaded', initTwitterEmbedScrollFix);
+        }
+        // Также запускаем через небольшую задержку на случай, если виджеты уже загружены
+        setTimeout(initTwitterEmbedScrollFix, 1000);
+        setTimeout(initTwitterEmbedScrollFix, 3000);
+    }
 }); 
