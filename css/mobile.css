@@ -151,6 +151,7 @@
     margin: 0 !important;
     padding: 0 !important;
     scroll-snap-type: x proximity;
+    touch-action: manipulation !important; /* Разрешаем браузеру определять направление */
   }
   
   .partnerships-slider-wrapper::-webkit-scrollbar {
@@ -168,7 +169,7 @@
   }
   
   .partnerships-slider-track {
-    touch-action: pan-x pan-y !important; /* Разрешаем и горизонтальную, и вертикальную прокрутку */
+    touch-action: manipulation !important; /* Разрешаем браузеру определять направление */
     padding: 0 15px !important;
     display: flex !important;
     gap: 20px !important;
@@ -177,14 +178,12 @@
   /* Убедимся что секция partnerships не обрезает контент */
   #partnerships {
     overflow: visible !important;
-    touch-action: pan-y !important; /* Разрешаем вертикальную прокрутку */
   }
   
   #partnerships .container {
     overflow: visible !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
-    touch-action: pan-y !important; /* Разрешаем вертикальную прокрутку */
   }
   
   /* Сохраняем отступы для заголовка и линии */
@@ -212,8 +211,8 @@
     min-height: auto !important;
     position: relative !important;
     scroll-snap-align: start;
-    touch-action: pan-y !important; /* Разрешаем вертикальную прокрутку */
     pointer-events: auto !important;
+    touch-action: manipulation !important; /* Разрешаем браузеру определять направление */
   }
   
   /* Исправление структуры partnership карточек */
@@ -259,7 +258,6 @@
     align-items: flex-start !important;
     flex-grow: 0 !important;
     display: block !important;
-    touch-action: pan-y !important; /* Разрешаем вертикальную прокрутку страницы */
   }
   
   .twitter-embed-container .twitter-tweet {
@@ -268,7 +266,6 @@
     width: 100% !important;
     position: relative !important;
     z-index: 1 !important;
-    touch-action: pan-y !important; /* Разрешаем вертикальную прокрутку страницы */
   }
   
   /* Дополнительные стили для корректного отображения Twitter виджетов */
@@ -277,7 +274,6 @@
     width: 100% !important;
     margin: 0 !important;
     position: relative !important;
-    touch-action: pan-y !important; /* Разрешаем вертикальную прокрутку страницы */
     pointer-events: auto !important;
   }
   
