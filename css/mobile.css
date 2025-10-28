@@ -168,7 +168,7 @@
   }
   
   .partnerships-slider-track {
-    touch-action: pan-x;
+    touch-action: pan-x pan-y !important; /* Разрешаем и горизонтальную, и вертикальную прокрутку */
     padding: 0 15px !important;
     display: flex !important;
     gap: 20px !important;
@@ -177,12 +177,14 @@
   /* Убедимся что секция partnerships не обрезает контент */
   #partnerships {
     overflow: visible !important;
+    touch-action: pan-y !important; /* Разрешаем вертикальную прокрутку */
   }
   
   #partnerships .container {
     overflow: visible !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
+    touch-action: pan-y !important; /* Разрешаем вертикальную прокрутку */
   }
   
   /* Сохраняем отступы для заголовка и линии */
@@ -210,6 +212,8 @@
     min-height: auto !important;
     position: relative !important;
     scroll-snap-align: start;
+    touch-action: pan-y !important; /* Разрешаем вертикальную прокрутку */
+    pointer-events: auto !important;
   }
   
   /* Исправление структуры partnership карточек */
@@ -255,6 +259,7 @@
     align-items: flex-start !important;
     flex-grow: 0 !important;
     display: block !important;
+    touch-action: pan-y !important; /* Разрешаем вертикальную прокрутку страницы */
   }
   
   .twitter-embed-container .twitter-tweet {
@@ -263,6 +268,7 @@
     width: 100% !important;
     position: relative !important;
     z-index: 1 !important;
+    touch-action: pan-y !important; /* Разрешаем вертикальную прокрутку страницы */
   }
   
   /* Дополнительные стили для корректного отображения Twitter виджетов */
@@ -271,6 +277,8 @@
     width: 100% !important;
     margin: 0 !important;
     position: relative !important;
+    touch-action: pan-y !important; /* Разрешаем вертикальную прокрутку страницы */
+    pointer-events: auto !important;
   }
   
   /* Горизонтальный скролл для ecosystem */
@@ -997,7 +1005,34 @@ html, body {
     animation: pulseText 1.5s infinite alternate ease-in-out;
   }
   
-  /* Индикатор прокрутки для partnerships */
+  /* Индикатор прокрутки для partnerships - теперь используем отдельные элементы */
+  .swipe-indicator {
+    display: none; /* Скрываем на desktop */
+  }
+  
+  .swipe-indicator-top {
+    text-align: center;
+    font-size: 12px;
+    color: var(--accent-color);
+    margin-bottom: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+    opacity: 0.7;
+    animation: pulseText 1.5s infinite alternate ease-in-out;
+    display: block; /* Показываем только на мобильных */
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  /* Скрываем swipe indicator на desktop */
+  @media (min-width: 769px) {
+    .swipe-indicator-top {
+      display: none !important;
+    }
+  }
+  
+  /* Нижний индикатор через ::after остается */
   #partnerships .container::after {
     content: '← swipe to see more →';
     display: block;
