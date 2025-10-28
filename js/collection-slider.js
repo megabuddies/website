@@ -59,7 +59,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     <img src="${imgPath}" alt="Mega Buddy #${i}" class="nft-image">
                 </div>
                 <div class="nft-info">
-                    <h3 class="nft-name">${getNftName(category, i)}</h3>
                     <p class="nft-rarity">${getRarityText(category === 'all' ? nftCard.getAttribute('data-rarity') : category)}</p>
                     <p class="nft-price">${getNftPrice(category === 'all' ? nftCard.getAttribute('data-rarity') : category)}</p>
                 </div>
@@ -79,7 +78,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     <img src="${imgPath}" alt="Mega Buddy #${i}" class="nft-image">
                 </div>
                 <div class="nft-info">
-                    <h3 class="nft-name">${getNftName(category, i)}</h3>
                     <p class="nft-rarity">${getRarityText(category === 'all' ? nftCard.getAttribute('data-rarity') : category)}</p>
                     <p class="nft-price">${getNftPrice(category === 'all' ? nftCard.getAttribute('data-rarity') : category)}</p>
                 </div>
