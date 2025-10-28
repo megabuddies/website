@@ -201,14 +201,14 @@
   .partnership-card {
     min-width: 300px !important;
     max-width: 300px !important;
+    min-height: 450px !important;
+    max-height: 450px !important;
     flex-shrink: 0 !important;
     margin: 0 !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start !important;
     padding: 20px !important;
-    height: auto !important;
-    min-height: auto !important;
     position: relative !important;
     scroll-snap-align: start;
     pointer-events: auto !important;
@@ -258,6 +258,14 @@
     align-items: flex-start !important;
     flex-grow: 0 !important;
     display: block !important;
+  }
+  
+  /* Ограничение высоты Twitter embed в карточках */
+  .partnership-card .twitter-embed-container {
+    max-height: 350px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    overflow: auto !important;
   }
   
   .twitter-embed-container .twitter-tweet {
