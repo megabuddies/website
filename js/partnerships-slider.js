@@ -15,10 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // On mobile, use native scroll instead of custom slider
     if (isMobile) {
-        sliderWrapper.style.overflowX = 'auto';
-        sliderWrapper.style.webkitOverflowScrolling = 'touch';
-        sliderTrack.style.display = 'flex';
-        sliderTrack.style.gap = '30px';
+        // Let CSS handle mobile styling completely
         return; // Exit early on mobile
     }
 
