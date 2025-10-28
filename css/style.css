@@ -2746,10 +2746,11 @@ body {
     position: relative;
     margin-top: 40px;
     padding: 0 60px;
+    overflow: visible;
 }
 
 .partnerships-slider-wrapper {
-    overflow: hidden;
+    overflow: visible;
     width: 100%;
 }
 
@@ -2839,9 +2840,9 @@ body {
 }
 
 .partnership-card:hover {
-    transform: translateY(-5px);
     border-color: var(--secondary-color);
-    box-shadow: 0 10px 30px rgba(112, 135, 227, 0.3);
+    box-shadow: 0 0 20px rgba(112, 135, 227, 0.6),
+                0 0 40px rgba(112, 135, 227, 0.3);
 }
 
 .partnership-badge {
